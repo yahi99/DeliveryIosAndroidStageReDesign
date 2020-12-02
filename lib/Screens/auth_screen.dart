@@ -248,9 +248,9 @@ class ButtonState extends State<Button> {
       color: color,
       splashColor: Colors.grey,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
+      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
       onPressed: () async {
         if (await Internet.checkConnection()) {
           currentUser.phone = currentUser.phone.replaceAll('-', '');

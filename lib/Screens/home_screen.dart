@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/GetData/centrifugo.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/PostData/chat.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/PostData/restaurant_data_pass.dart';
+import 'package:flutter_app/Screens/device_id_screen.dart';
 import 'package:flutter_app/Screens/orders_details.dart';
 import 'package:flutter_app/Screens/profile_screen.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
@@ -20,6 +22,7 @@ import 'package:flutter_app/models/ChatHistoryModel.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_app/models/QuickMessagesModel.dart';
 import 'package:flutter_app/models/centrifugo.dart';
+import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,6 +50,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   int records_count = -1;
   Amplitude analytics;
   final String apiKey = 'e0a9f43456e45fc41f68e3d8a149d18d';
+  Records restaurant;
+  bool _color;
 
   @override
   void initState() {
@@ -56,6 +61,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    _color = true;
   }
 
   @override
@@ -76,6 +82,129 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     ]);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  _buildProductCategoryList(){
+    return Container(
+      height: 50,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: List.generate(restaurant.product_category.length, (index) {
+          return GestureDetector(
+            child: Padding(
+                padding:
+                EdgeInsets.only(left: 16, right: 10, top: 5, bottom: 5),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      color: (restaurant.product_category[index] != category)
+                          ? Color(0xFFF6F6F6)
+                          : Color(0xFFFE534F)),
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: Center(
+                        child: Text(
+                          restaurant.product_category[index],
+                          style: TextStyle(
+                              color: (restaurant.product_category[index] !=
+                                  category)
+                                  ? Color(0xFF424242)
+                                  : Colors.white,
+                              fontSize: 15),
+                        ),
+                      )),
+                )),
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                setState(() {
+                  isLoading = true;
+                  page = 1;
+                  category = (restaurant.product_category[index] == category) ? '' : restaurant.product_category[index];
+                  _color = !_color;
+                });
+              } else {
+                noConnection(context);
+              }
+            },
+          );
+        }),
+      ),
+    );
+  }
+
+  _buildFiltersList(){
+    return SingleChildScrollView(
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Container(
+              width: 48,
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Color(0xFFF6F6F6),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: SvgPicture.asset('assets/svg_images/union.svg'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 5),
+            child: Container(
+                width: 107,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Center(
+                  child: Text('Самовывоз',
+                    style: TextStyle(
+                        fontSize: 14
+                    ),
+                  ),
+                )
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 5),
+            child: Container(
+                width: 94,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Center(
+                  child: Text('Кухни',
+                    style: TextStyle(
+                        fontSize: 14
+                    ),
+                  ),
+                )
+            ),
+          ),
+//          Padding(
+//            padding: const EdgeInsets.only(left: 5.0, right: 5),
+//            child: Container(
+//                width: 73,
+//                height: 40,
+//                decoration: BoxDecoration(
+//                    color: Color(0xFFF6F6F6),
+//                    borderRadius: BorderRadius.circular(10)
+//                ),
+//                child: Center(
+//                  child: Text('Акции',
+//                    style: TextStyle(
+//                        fontSize: 14
+//                    ),
+//                  ),
+//                )
+//            ),
+//          ),
+        ],
+      )
+    );
   }
 
   _buildRestaurantsList() {
@@ -194,15 +323,24 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               color: Colors.black.withOpacity(0.5)
                           ),
                           child: Center(
-                            child: Text(
-                              (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5.0, left: 5),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/rest_car.svg'),
+                                ),
+                                Text(
+                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            )
                           ),
                         ),
                       ),
@@ -221,8 +359,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           restaurant.name,
                           style: TextStyle(
                               fontSize: 21.0,
-                              color: Color(0xFF3F3F3F),
-                              fontWeight: FontWeight.bold),
+                              color: Color(0xFF3F3F3F),),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -284,6 +421,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   List<Widget> getSideBarItems(bool isLogged) {
     List<Widget> allSideBarItems = [
       ListTile(
+        leading: SvgPicture.asset('assets/svg_images/info.svg'),
         title: Padding(
           padding: EdgeInsets.only(top: 20, bottom: 20),
           child: Text(
@@ -344,6 +482,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           ),
         ),
         ListTile(
+          leading: SvgPicture.asset('assets/svg_images/order_story.svg'),
           title: Padding(
             padding: EdgeInsets.only(top: 20, bottom: 20),
             child: Text(
@@ -366,6 +505,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           },
         ),
         ListTile(
+          leading: SvgPicture.asset('assets/svg_images/my_addresses.svg'),
           title: Padding(
             padding: EdgeInsets.only(top: 20, bottom: 20),
             child: Text(
@@ -388,6 +528,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           },
         ),
         ListTile(
+          leading: SvgPicture.asset('assets/svg_images/service.svg'),
           title: Padding(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Stack(
@@ -408,6 +549,35 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   builder: (context) => new ServiceScreen(),
                 ),
               );
+            } else {
+              noConnection(context);
+            }
+          },
+        ),
+        ListTile(
+          leading: SvgPicture.asset('assets/svg_images/exit.svg'),
+          title: Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 20),
+              child: Stack(
+                children: [
+                  Text(
+                    'Выход',
+                    style: TextStyle(
+                        fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
+                  ),
+                ],
+              )
+          ),
+          onTap: () async {
+            if (await Internet.checkConnection()) {
+              necessaryDataForAuth.refresh_token = null;
+              authCodeData.refresh_token = null;
+              await NecessaryDataForAuth.saveData();
+              await LastAddressesModel.clear();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => DeviceIdScreen()),
+                      (Route<dynamic> route) => false);
             } else {
               noConnection(context);
             }
@@ -569,13 +739,14 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                             SizedBox(
                               height: 10,
                             ),
+                            _buildFiltersList(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
                                   padding:
                                   EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Text('Все рестораны',
+                                  child: Text('Рестораны',
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         color: Color(0xFF3F3F3F),

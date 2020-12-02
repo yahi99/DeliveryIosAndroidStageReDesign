@@ -57,8 +57,7 @@ class NameScreenState extends State<NameScreen> {
                         padding: EdgeInsets.only(top: 0, bottom: 15),
                         child: Text('Как вас зовут?',
                             style: TextStyle(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
                                 )),
                       ),
                     ),
@@ -87,16 +86,14 @@ class NameScreenState extends State<NameScreen> {
                                     textCapitalization:
                                         TextCapitalization.sentences,
                                     style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 18,),
                                     keyboardType: TextInputType.text,
                                     decoration: new InputDecoration(
                                       hintText: 'Ваше имя',
                                       contentPadding: EdgeInsets.only(left: 15),
                                       hintStyle: TextStyle(
                                           color: Color(0xFFB5B5B5),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold),
+                                          fontSize: 18),
                                       border: InputBorder.none,
                                       counterText: '',
                                     ),
@@ -184,9 +181,9 @@ class ButtonState extends State<Button> {
               color: Colors.white)),
       color: color,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
+      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
       onPressed: () async {
         await onTap();
       },

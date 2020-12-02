@@ -121,26 +121,44 @@ class _CodeScreenState extends State<CodeScreen> {
           loadAuthData(necessaryDataForAuth.device_id, currentUser.phone),
           builder: (BuildContext context, AsyncSnapshot<AuthData> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
+              return Stack(
                 children: <Widget>[
-                  InkWell(
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                                padding: EdgeInsets.only(right: 15, top: 30),
-                                child: Container(
-                                  width: 40,
-                                  height: 60,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/code_cross.svg'),
-                                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.only(left: 0, top: 30),
+                            child: Container(
+                                height: 40,
+                                width: 60,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 12, bottom: 12, right: 10),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/arrow_left.svg'),
                                 ))),
-                      ],
-                    ),
-                    onTap: () => Navigator.pop(context),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.only(left: 0, top: 30),
+                            child: Container(
+                                height: 40,
+                                width: 60,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 12, bottom: 12, right: 10),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/code_cross.svg'),
+                                ))),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 140),
@@ -181,8 +199,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                   right: 0, left: 0, bottom: 0),
                               child: Row(
                                 children: <Widget>[
-                                  Flexible(
-                                    flex: 1,
+                                  Expanded(
                                     child: Padding(
                                       padding:
                                       EdgeInsets.only(left: 25, right: 25),
@@ -210,8 +227,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                           }),
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 1,
+                                  Expanded(
                                     child: Padding(
                                       padding:
                                       EdgeInsets.only(left: 25, right: 25),
@@ -241,8 +257,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                           }),
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 1,
+                                  Expanded(
                                     child: Padding(
                                       padding:
                                       EdgeInsets.only(left: 25, right: 25),
@@ -272,8 +287,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                           }),
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 1,
+                                  Expanded(
                                     child: Padding(
                                       padding:
                                       EdgeInsets.only(left: 25, right: 25),
@@ -322,14 +336,15 @@ class _CodeScreenState extends State<CodeScreen> {
                     ),
                   ),
                   Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 100),
-                        child: new TimerCountDown(codeScreenState: this),
-                      )),
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 90),
+                      child: new TimerCountDown(codeScreenState: this),
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child:  Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(
                           bottom: 20, left: 0, right: 0, top: 10),
                       child: Button(
@@ -364,15 +379,15 @@ class _CodeScreenState extends State<CodeScreen> {
                                   ),
                                 );
                               }
-//                                      else{
-//                                        homeScreenKey =
-//                                        new GlobalKey<HomeScreenState>();
-//                                        currentUser.isLoggedIn = true;
-//                                        Navigator.of(context).pushAndRemoveUntil(
-//                                            MaterialPageRoute(
-//                                                builder: (context) => HomeScreen()),
-//                                                (Route<dynamic> route) => false);
-//                                      }
+                              else{
+                                homeScreenKey =
+                                new GlobalKey<HomeScreenState>();
+                                currentUser.isLoggedIn = true;
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()),
+                                        (Route<dynamic> route) => false);
+                              }
                             } else {
                               setState(() {
                                 error = 'Вы ввели неверный смс код';
@@ -383,7 +398,7 @@ class _CodeScreenState extends State<CodeScreen> {
                           }
                         },
                       ),
-                    ),
+                    )
                   ),
                 ],
               );
@@ -446,14 +461,12 @@ class TimerCountDownState extends State<TimerCountDown> {
       startTimer();
     }
     return _start != 0
-        ? Center(
-      child: Text('Получить новый код можно через $_start c',
-          style: TextStyle(
-            color: Color(0x97979797),
-            fontSize: 13.0,
-            letterSpacing: 1.2,
-          )),
-    )
+        ? Text('Получить новый код можно через $_start c',
+        style: TextStyle(
+          color: Color(0x97979797),
+          fontSize: 13.0,
+          letterSpacing: 1.2,
+        ))
         : GestureDetector(
       child: Text(
         'Отпарвить код повторно',
@@ -504,9 +517,9 @@ class ButtonState extends State<Button> {
       color: color,
       splashColor: Colors.grey,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
+      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
       onPressed: () async {
         if (await Internet.checkConnection()) {
           await onTap();

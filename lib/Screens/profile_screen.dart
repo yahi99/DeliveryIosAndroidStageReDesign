@@ -155,37 +155,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            Flexible(
-              flex: 1,
-              child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 30, bottom: 30),
-                    child: GestureDetector(
-                      child: Text(
-                        'Выход',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF424242)),
-                      ),
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          necessaryDataForAuth.refresh_token = null;
-                          authCodeData.refresh_token = null;
-                          await NecessaryDataForAuth.saveData();
-                          await LastAddressesModel.clear();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => DeviceIdScreen()),
-                                  (Route<dynamic> route) => false);
-                        } else {
-                          noConnection(context);
-                        }
-                      },
-                    ),
-                  )),
-            )
           ],
         ));
   }
