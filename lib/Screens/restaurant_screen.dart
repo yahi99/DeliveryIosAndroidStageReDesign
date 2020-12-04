@@ -258,9 +258,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   void initState() {
     super.initState();
 
-    AmplitudeAnalytics.analytics.logEvent('open_restaurant', eventProperties: {
-      'uuid': restaurant.uuid,
-    });
+
     // Инициализируем список категорий
     categoryList = new CategoryList(key: new GlobalKey<CategoryListState>(), restaurant: restaurant, parent: this);
     int offset = 21;
@@ -1484,9 +1482,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
     GlobalKey<PriceFieldState> priceFieldKey =
     new GlobalKey<PriceFieldState>();
 
-    AmplitudeAnalytics.analytics.logEvent('open_product', eventProperties: {
-      'uuid': restaurantDataItems.uuid
-    });
 
     return Container(
       decoration: BoxDecoration(
@@ -1724,9 +1719,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                   cartItemsQuantityKey.currentState.refresh();
                                   parent.counterKey.currentState.refresh();
                                 }
-                                AmplitudeAnalytics.analytics.logEvent('add_to_cart', eventProperties: {
-                                  'uuid': restaurantDataItems.uuid
-                                });
                               } else {
                                 noConnection(context);
                               }

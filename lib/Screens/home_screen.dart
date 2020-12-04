@@ -9,10 +9,10 @@ import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
 import 'package:flutter_app/GetData/getTicketByFilter.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/PostData/RestarurantCategories.dart';
 import 'package:flutter_app/PostData/chat.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/PostData/restaurant_data_pass.dart';
-import 'package:flutter_app/Screens/device_id_screen.dart';
 import 'package:flutter_app/Screens/orders_details.dart';
 import 'package:flutter_app/Screens/profile_screen.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
@@ -21,12 +21,14 @@ import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ChatHistoryModel.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_app/models/QuickMessagesModel.dart';
+import 'package:flutter_app/models/RestaurantCategoriesModel.dart';
 import 'package:flutter_app/models/centrifugo.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'auth_screen.dart';
+import 'device_id_screen.dart';
 import 'infromation_screen.dart';
 import 'my_addresses_screen.dart';
 import 'orders_story_screen.dart';
@@ -44,14 +46,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   int limit = 12;
   bool isLoading = true;
   List<Records> records_items = new List<Records>();
-  String category;
+  String category_uuid = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<BasketButtonState> basketButtonStateKey = new GlobalKey<BasketButtonState>();
   int records_count = -1;
   Amplitude analytics;
   final String apiKey = 'e0a9f43456e45fc41f68e3d8a149d18d';
-  Records restaurant;
-  bool _color;
+  RestaurantCategories restaurantCategories;
 
   @override
   void initState() {
@@ -61,7 +62,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    _color = true;
   }
 
   @override
@@ -84,128 +84,334 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     super.dispose();
   }
 
-  _buildProductCategoryList(){
-    return Container(
-      height: 50,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: List.generate(restaurant.product_category.length, (index) {
-          return GestureDetector(
-            child: Padding(
-                padding:
-                EdgeInsets.only(left: 16, right: 10, top: 5, bottom: 5),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: (restaurant.product_category[index] != category)
-                          ? Color(0xFFF6F6F6)
-                          : Color(0xFFFE534F)),
-                  child: Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Center(
-                        child: Text(
-                          restaurant.product_category[index],
-                          style: TextStyle(
-                              color: (restaurant.product_category[index] !=
-                                  category)
-                                  ? Color(0xFF424242)
-                                  : Colors.white,
-                              fontSize: 15),
-                        ),
-                      )),
+
+  _filter() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 380,
+            child: _buildFilterNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
                 )),
-            onTap: () async {
-              if (await Internet.checkConnection()) {
-                setState(() {
-                  isLoading = true;
-                  page = 1;
-                  category = (restaurant.product_category[index] == category) ? '' : restaurant.product_category[index];
-                  _color = !_color;
-                });
-              } else {
-                noConnection(context);
-              }
-            },
           );
-        }),
+        });
+  }
+
+  _buildFilterNavigationMenu() {
+    return Container(
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 15),
+              child: Text(
+                'Отобразить сначала',
+                style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('Доверюсь вам'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('С высоким рейтингом'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Быстрые'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Недорогие'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Дорогие'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          FlatButton(
+            child: Text('Готово',
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: Color(0xFF000000))),
+            color: Color(0xFFE6E6E6),
+            splashColor: Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+            onPressed: () async {
+              Navigator.pop(context);
+            },
+          )
+        ],
       ),
     );
   }
 
-  _buildFiltersList(){
-    return SingleChildScrollView(
-      child: Row(
+
+  _kitchensFilter() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 600,
+            child: _buildKitchensFilterNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildKitchensFilterNavigationMenu() {
+    return Container(
+      height: 600,
+      child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: Container(
-              width: 48,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Color(0xFFF6F6F6),
-                  borderRadius: BorderRadius.circular(10)
+            padding: const EdgeInsets.only(top: 8.0, left: 8),
+            child: Text(
+              'Кухни',
+              style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
               ),
-              child: SvgPicture.asset('assets/svg_images/union.svg'),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 5.0, right: 5),
+            padding: const EdgeInsets.only(top: 30.0),
             child: Container(
-                width: 107,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: Center(
-                  child: Text('Самовывоз',
-                    style: TextStyle(
-                        fontSize: 14
+              height: 500,
+              child: GridView.count(
+                crossAxisCount: 3 ,
+                children: List.generate(12,(index){
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10.0, left: 5, right: 5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      width: 93,
+                      height: 88,
+                      child: Card(
+                        color: Color(0xFFE6E6E6),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SvgPicture.asset('assets/svg_images/kitchen_filter.svg'),
+                            ),
+                            Text('Пицца')
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                )
+                  );
+                }),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5.0, right: 5),
-            child: Container(
-                width: 94,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: Center(
-                  child: Text('Кухни',
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: FlatButton(
+                child: Text('Применить',
                     style: TextStyle(
-                        fontSize: 14
-                    ),
-                  ),
-                )
+                        fontSize: 18.0,
+                        color: Color(0xFF000000))),
+                color: Color(0xFFE6E6E6),
+                splashColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          ),
-//          Padding(
-//            padding: const EdgeInsets.only(left: 5.0, right: 5),
-//            child: Container(
-//                width: 73,
-//                height: 40,
-//                decoration: BoxDecoration(
-//                    color: Color(0xFFF6F6F6),
-//                    borderRadius: BorderRadius.circular(10)
-//                ),
-//                child: Center(
-//                  child: Text('Акции',
-//                    style: TextStyle(
-//                        fontSize: 14
-//                    ),
-//                  ),
-//                )
-//            ),
-//          ),
+          )
         ],
-      )
+      ),
     );
   }
+
+
+  _distanceFilter() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 500,
+            child: _buildDistanceFilterNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildDistanceFilterNavigationMenu() {
+    return Container(
+      height: 500,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 15),
+              child: Text(
+                'Показывать с отдаленностью',
+                style: TextStyle(
+                    color: Color(0xFF000000),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('Доверюсь вам'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('С высоким рейтингом'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Быстрые'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Недорогие'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          ListTile(
+            title: Text('Дорогие'),
+            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+          ),
+          FlatButton(
+            child: Text('Готово',
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: Color(0xFF000000))),
+            color: Color(0xFFE6E6E6),
+            splashColor: Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+            onPressed: () async {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+
+  _buildSharesList(){
+    return Container(
+      height: 110,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 100,
+              width: 130,
+              decoration: BoxDecoration(
+                color: Color(0xFFE6E6E6),
+                borderRadius: BorderRadius.circular(10)
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 100,
+              width: 130,
+              decoration: BoxDecoration(
+                  color: Color(0xFFE6E6E6),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 100,
+              width: 130,
+              decoration: BoxDecoration(
+                  color: Color(0xFFE6E6E6),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildRestaurantFoodCategoriesList(List<Records> restaurantFoodCategories){
+    List<Widget> result = new List<Widget>();
+    restaurantFoodCategories.forEach((element) {
+      result.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xFFE6E6E6)
+          ),
+          child: Text(restaurantFoodCategories[0].product_category.toString()),
+        )
+      );
+    });
+  }
+
+
 
   _buildRestaurantsList() {
     DateTime now = DateTime.now();
@@ -340,7 +546,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
-                            )
+                            ),
                           ),
                         ),
                       ),
@@ -412,7 +618,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     childrenColumn.addAll(restaurantList);
     if(restaurantList.length < records_count){
       childrenColumn.add(
-       CircularProgressIndicator()
+          CircularProgressIndicator()
       );
     }
     return Column(children: childrenColumn);
@@ -619,6 +825,175 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     return allSideBarItems;
   }
 
+  List<Widget> _buildRestaurantCategoriesList(List<Record> categories){
+    List<Widget> result = new List<Widget>();
+    result.add(Row(
+      children: [
+        GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Color(0xFFF6F6F6),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: SvgPicture.asset('assets/svg_images/union.svg'),
+              ),
+            ),
+          ),
+          onTap: () async {
+            if (await Internet.checkConnection()) {
+              _filter();
+            } else {
+              noConnection(context);
+            }
+          },
+        ),
+        GestureDetector(
+          child: Padding(
+              padding:
+              EdgeInsets.only(left: 10, right: 5, top: 8, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: ('' != category_uuid)
+                        ? Color(0xFFF6F6F6)
+                        : Color(0xFFFE534F)),
+                child: Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Center(
+                      child: Text(
+                        "Кухни",
+                        style: TextStyle(
+                            color: ('' !=
+                                category_uuid)
+                                ? Color(0xFF424242)
+                                : Colors.white,
+                            fontSize: 15),
+                      ),
+                    )),
+              )),
+          onTap: () async {
+            if (await Internet.checkConnection()) {
+              _kitchensFilter();
+            } else {
+              noConnection(context);
+            }
+          },
+        ),
+        GestureDetector(
+          child: Padding(
+              padding:
+              EdgeInsets.only(left: 10, right: 5, top: 8, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: ('' != category_uuid)
+                        ? Color(0xFFF6F6F6)
+                        : Color(0xFFFE534F)),
+                child: Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Center(
+                      child: Text(
+                        "По расстоянию",
+                        style: TextStyle(
+                            color: ('' !=
+                                category_uuid)
+                                ? Color(0xFF424242)
+                                : Colors.white,
+                            fontSize: 15),
+                      ),
+                    )),
+              )),
+          onTap: () async {
+            if (await Internet.checkConnection()) {
+              _distanceFilter();
+            } else {
+              noConnection(context);
+            }
+          },
+        )
+      ],
+    ));
+    categories.forEach((element) {
+      result.add(GestureDetector(
+        child: Padding(
+            padding:
+            EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: (element.uuid != category_uuid)
+                      ? Color(0xFFF6F6F6)
+                      : Color(0xFFFE534F)),
+              child: Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Center(
+                    child: Text(
+                      element.name[0].toUpperCase() + element.name.substring(1),
+                      style: TextStyle(
+                          color: (element.uuid !=
+                              category_uuid)
+                              ? Color(0xFF424242)
+                              : Colors.white,
+                          fontSize: 15),
+                    ),
+                  )),
+            )),
+        onTap: () async {
+          if (await Internet.checkConnection()) {
+            setState(() {
+              isLoading = true;
+              page = 1;
+              category_uuid = (element.uuid == category_uuid) ? '' : element.uuid;
+            });
+          } else {
+            noConnection(context);
+          }
+        },
+      ));
+    });
+    return result;
+  }
+
+
+  _buildRestaurantCategories(){
+    if(restaurantCategories != null){
+      return Container(
+        height: 55,
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: _buildRestaurantCategoriesList(restaurantCategories.records)
+        ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 0.0),
+      child: Container(
+        height: 55,
+        child: FutureBuilder<RestaurantCategories>(
+          future: loadRestaurantCategories(1, 12),
+          initialData: null,
+          builder: (BuildContext context, AsyncSnapshot<RestaurantCategories> snapshot){
+            if(snapshot.hasData){
+              if(snapshot.connectionState == ConnectionState.done){
+                restaurantCategories = snapshot.data;
+                return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: _buildRestaurantCategoriesList(restaurantCategories.records)
+                );
+              }
+            }
+            return Container(height: 0);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -633,7 +1008,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           ),
         ),
         body: FutureBuilder<DeliveryResponseData>(
-            future: loadRestaurant(page, limit),
+            future: loadRestaurant(page, limit, category_uuid),
             initialData: null,
             builder: (BuildContext context,
                 AsyncSnapshot<DeliveryResponseData> snapshot) {
@@ -643,13 +1018,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   records_count = snapshot.data.records_count;
                   this.records_items.clear();
                 }
-                if (snapshot.data.records_count == 0) {
-                  return Center(
-                    child: Text('Нет товаров данной категории'),
-                  );
-                }
+//                if (snapshot.data.records_count == 0) {
+//                  return Center(
+//                    child: Text('Нет товаров данной категории'),
+//                  );
+//                }
                 if (snapshot.connectionState == ConnectionState.done) {
-                  records_items.addAll(snapshot.data.records);
+                  if(snapshot.data.records != null){
+                    records_items.addAll(snapshot.data.records);
+                  }
                   isLoading = false;
                 }
                 return NotificationListener<ScrollNotification>(
@@ -669,37 +1046,42 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   },
                   child: Column(
                     children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 5, top: 30),
+                          child: InkWell(
+                            child: Container(
+                                height: 40,
+                                width: 60,
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 20, bottom: 4, left: 5),
+                                    child: SvgPicture.asset(
+                                        'assets/svg_images/menu.svg')
+                                )),
+                            onTap: () {
+                              _scaffoldKey.currentState.openDrawer();
+                            },
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        height: 0,
+                        color: Color(0xFFEEEEEE),
+                      ),
+                      Container(
+                        child: _buildRestaurantCategories(),
+                      ),
+                      Divider(
+                        height: 0,
+                        color: Color(0xFFEEEEEE),
+                      ),
                       Expanded(
                         child: ListView(
                           padding: EdgeInsets.zero,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 30, bottom: 0, left: 0),
-                              child: Row(
-                                children: <Widget>[
-                                  Flexible(
-                                    flex: 0,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 0),
-                                      child: InkWell(
-                                        child: Container(
-                                            height: 40,
-                                            width: 60,
-                                            child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: 20, bottom: 4, left: 10),
-                                                child: SvgPicture.asset(
-                                                    'assets/svg_images/menu.svg')
-                                            )),
-                                        onTap: () {
-                                          _scaffoldKey.currentState.openDrawer();
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+
 //                            FlatButton(
 //                                onPressed: () async {
 //                                  print(authCodeData.client_uuid);
@@ -736,17 +1118,17 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
+                            _buildSharesList(),
                             SizedBox(
                               height: 10,
                             ),
-                            _buildFiltersList(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
                                   padding:
                                   EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Text('Рестораны',
+                                  child: Text('Все рестораны',
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         color: Color(0xFF3F3F3F),
@@ -756,7 +1138,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 ),
                               ],
                             ),
-                            _buildRestaurantsList()
+                            (records_items.isEmpty && !isLoading) ?  Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 150),
+                                child: Text('Нет товаров данной категории'),
+                              ),
+                            ) : _buildRestaurantsList()
                           ],
                         ),
                       ),
@@ -926,7 +1313,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
   @override
   Widget build(BuildContext context) {
     var processing = ['waiting_for_confirmation'
-      ];
+    ];
     var cooking_state = [
       'cooking',
       'offer_offered',
@@ -947,7 +1334,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     print('ALO RABOTAI SUKA' + '' + ordersStoryModelItem.own_delivery.toString());
     print(ordersStoryModelItem.state);
     return Container(
-      width: 320,
+        width: 320,
         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
             boxShadow: [

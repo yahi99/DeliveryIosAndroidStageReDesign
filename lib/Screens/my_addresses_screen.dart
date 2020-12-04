@@ -166,16 +166,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                         InkWell(
                           child: Align(
                               alignment: Alignment.topRight,
-                              child: Container(
-                                  height: 40,
-                                  width: 60,
-                                  child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 12, bottom: 12, right: 15),
-                                      child: SvgPicture.asset(
-                                          'assets/svg_images/plus.svg')
-                                  )
-                              ),
+                              child: Text('Изменить')
                           ),
                           onTap: () async {
                             if (await Internet.checkConnection()) {
