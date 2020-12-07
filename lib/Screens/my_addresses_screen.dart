@@ -163,10 +163,24 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                     (Route<dynamic> route) => false);
                           },
                         ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 20, left: 30, bottom: 15),
+                            child: Text('Мои адреса',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF424242))),
+                          ),
+                        ),
                         InkWell(
                           child: Align(
                               alignment: Alignment.topRight,
-                              child: Text('Изменить')
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: Text('Изменить'),
+                              )
                           ),
                           onTap: () async {
                             if (await Internet.checkConnection()) {
@@ -181,19 +195,9 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 20, left: 30, bottom: 15),
-                      child: Text('Мои адреса',
-                          style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF424242))),
-                    ),
-                  ),
                   Expanded(
                     child: ListView(
+                      padding: EdgeInsets.zero,
                       children:
                       List.generate(myAddressesModelList.length, (index) {
                         if (myAddressesModelList[index].tag ==
@@ -246,55 +250,97 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                           );
                         }
                         return Padding(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Column(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 0, top: 10, bottom: 10),
-                                  child: Text(
-                                    (myAddressesModelList[index].name != " ") ?
-                                    myAddressesModelList[index].name
-                                        :
-                                    "-",
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                          padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10, bottom: 10),
+                          child: GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.only(right: 10, left: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.grey)
                               ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: GestureDetector(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 0, top: 10, bottom: 10),
-                                    child: Text(
-                                        myAddressesModelList[index].address.unrestrictedValue),
+                              child: Column(
+                                children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 0, top: 10, bottom: 10),
+                                      child: Text(
+                                        (myAddressesModelList[index].name != " ") ?
+                                        myAddressesModelList[index].name
+                                            :
+                                        "-",
+                                        style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                   ),
-                                  onTap: () async {
-                                    if (await Internet.checkConnection()) {
-                                      Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                            builder: (context) {
-                                              return new AddMyAddressScreen(
-                                                myAddressesModel:
-                                                myAddressesModelList[index],
-                                              );
-                                            }),
-                                      );
-                                    } else {
-                                      noConnection(context);
-                                    }
-                                  },
-                                ),
-                              )
-                            ],
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child:  Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 0, top: 10, bottom: 10),
+                                      child: Text(
+                                          myAddressesModelList[index].address.unrestrictedValue),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 10, right: 10, bottom: 20, left: 0),
+                                      child: Text(
+                                          'г.Владикавказ, республика Северная Осетия-Алания, Россия',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () async {
+                              if (await Internet.checkConnection()) {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) {
+                                        return new AddMyAddressScreen(
+                                          myAddressesModel:
+                                          myAddressesModelList[index],
+                                        );
+                                      }),
+                                );
+                              } else {
+                                noConnection(context);
+                              }
+                            },
                           ),
                         );
                       }),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: FlatButton(
+                      child: Text('Добавить адрес',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                      color: Color(0xFFE6E6E6),
+                      splashColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                      onPressed: () async {
+                        if (await Internet.checkConnection()) {
+                          setState(() {
+                            addressScreenButton = true;
+                          });
+                        } else {
+                          noConnection(context);
+                        }
+                      },
                     ),
                   )
                 ],

@@ -175,10 +175,10 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                 color: Color(0xFFFE534F),
                 splashColor: Colors.redAccent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 padding:
-                EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+                EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
                 onPressed: () async {
                   if (await Internet.checkConnection()) {
                     myAddressesModel.tag = "house";

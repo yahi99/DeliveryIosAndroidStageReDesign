@@ -194,51 +194,52 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   _buildKitchensFilterNavigationMenu() {
     return Container(
-      height: 600,
-      child: Stack(
+      height: 610,
+      child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 8),
-            child: Text(
-              'Кухни',
-              style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
+          Expanded(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 8),
+                child: Text(
+                  'Кухни',
+                  style: TextStyle(
+                      color: Color(0xFF000000),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Container(
-              height: 500,
-              child: GridView.count(
-                crossAxisCount: 3 ,
-                children: List.generate(12,(index){
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10.0, left: 5, right: 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      width: 93,
-                      height: 88,
-                      child: Card(
-                        color: Color(0xFFE6E6E6),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: SvgPicture.asset('assets/svg_images/kitchen_filter.svg'),
-                            ),
-                            Text('Пицца')
-                          ],
-                        ),
+          Container(
+            padding: EdgeInsets.only(bottom: 10, left: 8, right: 8),
+            height: 490,
+            child: GridView.count(
+              crossAxisCount: 3 ,
+              children: List.generate(12,(index){
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30.0, left: 5, right: 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFE6E6E6)
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: SvgPicture.asset('assets/svg_images/kitchen_filter.svg'),
+                          ),
+                          Text('Пицца')
+                        ],
                       ),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ),
           ),
           Align(
@@ -1380,7 +1381,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           height: 30,
                           decoration: BoxDecoration(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(44)),
+                              BorderRadius.all(Radius.circular(10)),
                               color: Color(0xF6F6F6F6)),
                           child: Padding(
                               padding: EdgeInsets.only(
@@ -1427,7 +1428,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         height: 70,
                         width: 70,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: (processing
                                 .contains(ordersStoryModelItem.state))
                                 ? Color(0xFF4DC3E9)
@@ -1464,7 +1465,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         height: 70,
                         width: 70,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: (cooking_state
                                 .contains(ordersStoryModelItem.state))
                                 ? Color(0xFF51ca64)
@@ -1501,7 +1502,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         height: 70,
                         width: 70,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: Color(0xF6F6F6F6)),
                         child: Column(
                           children: <Widget>[
@@ -1535,7 +1536,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         height: 70,
                         width: 70,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: (take.contains(ordersStoryModelItem.state))
                                 ? Color(0xFFFE534F)
                                 : Color(0xF6F6F6F6)),

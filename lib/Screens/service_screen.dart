@@ -16,6 +16,9 @@ class ServiceScreen extends StatefulWidget {
 
 class ServiceScreenState extends State<ServiceScreen> {
 
+  TicketModel ticketModel;
+  TicketsListRecord ticketsListRecord;
+
   @override
   Widget build(BuildContext context) {
     var format1 = new DateFormat('dd.MM.yy, HH:mm');
@@ -246,30 +249,46 @@ class ServiceScreenState extends State<ServiceScreen> {
                                 padding: EdgeInsets.zero,
                                 children: List.generate(unresolvedTickets.length, (index) {
                                   var format = new DateFormat('dd.MM.yy, HH:mm');
-                                  return ListTile(
-                                    leading: Text(format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
-                                      style: TextStyle(
-                                          color: Color(0xFF424242),
-                                          fontSize: 17
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10, bottom: 10),
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 10, left: 15),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(color: Colors.grey)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text('ticketModel.title'),
+                                          ListTile(
+                                            leading: SvgPicture.asset('assets/svg_images/clock.svg'),
+                                            title: Text(format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                              style: TextStyle(
+                                                  color: Color(0xFF424242),
+                                                  fontSize: 17
+                                              ),
+                                            ),
+                                            trailing: Text('ticketsListRecord.status'),
+                                            onTap: () async {
+                                              if (await Internet.checkConnection()) {
+                                                Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(
+                                                        builder: (context) =>
+                                                        new TicketsChatScreen(
+                                                          order_uuid: unresolvedTickets[index].uuid,
+                                                          time: format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                                        ))
+                                                );
+                                              } else {
+                                                noConnection(context);
+                                              }
+                                              print('OYAOYA');
+                                            },
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    trailing: SvgPicture.asset('assets/svg_images/arrow_right.svg'),
-                                    onTap: () async {
-                                      if (await Internet.checkConnection()) {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                new TicketsChatScreen(
-                                                  order_uuid: unresolvedTickets[index].uuid,
-                                                  time: format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
-                                                ))
-                                        );
-                                      } else {
-                                        noConnection(context);
-                                      }
-                                      print('OYAOYA');
-                                    },
                                   );
                                 }),
                               ),

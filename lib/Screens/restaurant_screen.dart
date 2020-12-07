@@ -333,6 +333,111 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       return Container(height: 0);
   }
 
+  // List<Widget> _buildRestaurantCategoriesList(List<Records> categories){
+  //   List<Widget> result = new List<Widget>();
+  //   result.add(Row(
+  //     children: [
+  //       GestureDetector(
+  //         child: Padding(
+  //           padding: const EdgeInsets.only(left: 15.0),
+  //           child: Container(
+  //             height: 50,
+  //             decoration: BoxDecoration(
+  //                 color: Color(0xFFF6F6F6),
+  //                 borderRadius: BorderRadius.circular(10)
+  //             ),
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(5.0),
+  //               child: SvgPicture.asset('assets/svg_images/menu.svg'),
+  //             ),
+  //           ),
+  //         ),
+  //         onTap: () async {
+  //           if (await Internet.checkConnection()) {
+  //             _filter();
+  //           } else {
+  //             noConnection(context);
+  //           }
+  //         },
+  //       ),
+  //     ],
+  //   ));
+  //   categories.forEach((element) {
+  //     result.add(GestureDetector(
+  //       child: Padding(
+  //           padding:
+  //           EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.all(Radius.circular(10)),
+  //                 color: (element.uuid != category)
+  //                     ? Color(0xFFF6F6F6)
+  //                     : Color(0xFFFE534F)),
+  //             child: Padding(
+  //                 padding: EdgeInsets.only(left: 15, right: 15),
+  //                 child: Center(
+  //                   child: Text(
+  //                     element.name[0].toUpperCase() + element.name.substring(1),
+  //                     style: TextStyle(
+  //                         color: (element.uuid !=
+  //                             category)
+  //                             ? Color(0xFF424242)
+  //                             : Colors.white,
+  //                         fontSize: 15),
+  //                   ),
+  //                 )),
+  //           )),
+  //       onTap: () async {
+  //         if (await Internet.checkConnection()) {
+  //           setState(() {
+  //             isLoading = true;
+  //             page = 1;
+  //             category = (element.uuid == category) ? '' : element.uuid;
+  //           });
+  //         } else {
+  //           noConnection(context);
+  //         }
+  //       },
+  //     ));
+  //   });
+  //   return result;
+  // }
+  //
+  //
+  // _buildRestaurantCategories(){
+  //   if(categoryList != null){
+  //     return Container(
+  //       height: 55,
+  //       child: ListView(
+  //           scrollDirection: Axis.horizontal,
+  //           children: _buildRestaurantCategoriesList(restaurantCategories.records)
+  //       ),
+  //     );
+  //   }
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 0.0),
+  //     child: Container(
+  //       height: 55,
+  //       child: FutureBuilder<RestaurantCategories>(
+  //         future: loadRestaurantCategories(1, 12),
+  //         initialData: null,
+  //         builder: (BuildContext context, AsyncSnapshot<RestaurantCategories> snapshot){
+  //           if(snapshot.hasData){
+  //             if(snapshot.connectionState == ConnectionState.done){
+  //               restaurantCategories = snapshot.data;
+  //               return ListView(
+  //                   scrollDirection: Axis.horizontal,
+  //                   children: _buildRestaurantCategoriesList(restaurantCategories.records)
+  //               );
+  //             }
+  //           }
+  //           return Container(height: 0);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget _buildScreen() {
     isLoading = false;
     // Если хавки нет
@@ -421,60 +526,135 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 40, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Flexible(
-                        flex: 1,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: InkWell(
-                              onTap: () async {
-                                if(await Internet.checkConnection()){
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()),
-                                          (Route<dynamic> route) => false);
-                                }else{
-                                  noConnection(context);
-                                }
-                              },
-                              child: Container(
-                                  height: 40,
-                                  width: 60,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 12,
-                                        bottom: 12,
-                                        right: 16),
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/arrow_left.svg'),
-                                  ))),
-                        )),
-                    Flexible(
-                      flex: 7,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 30),
-                          child: Text(
-                            this.restaurant.name,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF3F3F3F)),
-                          ),
+          ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(0),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0)),
+              child: Stack(
+                children: <Widget>[
+                  Hero(
+                      tag: restaurant.name,
+                      child: Image.network(
+                        getImage(restaurant.image),
+                        fit: BoxFit.cover,
+                        height: 170.0,
+                        width: MediaQuery.of(context).size.width,
+                      )),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 40, left: 15),
+                        child: GestureDetector(
+                          child: SvgPicture.asset(
+                              'assets/svg_images/rest_arrow_left.svg'),
+                          onTap: () async {
+                            if(await Internet.checkConnection()){
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                      (Route<dynamic> route) => false);
+                            }else{
+                              noConnection(context);
+                            }
+                          },
                         ),
-                      ),
-                    )
-                  ],
+                      ))
+                ],
+              )),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    this.restaurant.name,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF3F3F3F)),
+                  ),
                 ),
-              )
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: SvgPicture.asset(
+                      'assets/svg_images/rest_info.svg'),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Container(
+                  height: 26,
+                  width: 51,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFFE6E6E6)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/svg_images/star.svg'),
+                          Text('5.0')
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Container(
+                  height: 26,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFFE6E6E6)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/svg_images/rest_car.svg'),
+                          Text(
+                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : ''
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Container(
+                  height: 26,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFFE6E6E6)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
+                      child: Row(
+                        children: [
+                          Text('Доставка'),
+                          Text(
+                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : ''
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           Padding(
@@ -490,7 +670,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             child: new StaggeredGridView.countBuilder(
               controller: foodScrollController,
               padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-              crossAxisCount: 2,
+              crossAxisCount: 1,
               itemCount: menuWithTitles.length,
               itemBuilder: (BuildContext context, int index) => menuWithTitles[index],
               staggeredTileBuilder: (int index) {
@@ -606,7 +786,6 @@ class MenuItemTitleState extends State<MenuItemTitle> with AutomaticKeepAliveCli
       style: TextStyle(
           color: Color(0xFF424242),
           fontSize: 21,
-          fontWeight: FontWeight.bold
       ),
     );
   }
@@ -1245,7 +1424,7 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
           EdgeInsets.only(left: 11, top: 5, bottom: 5),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: (value != categoryList.currentCategory)
                     ? Color(0xFFF6F6F6)
                     : Color(0xFFFE534F)),
@@ -1325,8 +1504,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                 }
               },
               child: Container(
-                //width: 170,
-                height: 260,
+                height: 150,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -1338,73 +1516,92 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(width: 1.0, color: Colors.grey[200])),
-                child: Stack(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15)),
-                        child: Hero(
-                          tag: restaurantDataItems.name,
-                          child: Image.network(
-                            getImage(restaurantDataItems.image),
-                            fit: BoxFit.cover,
-                            height: 190,
-                            width: MediaQuery.of(context).size.width,
-                          ),)),
-                    Align(
-                      alignment: Alignment.bottomCenter,
+                    Flexible(
                       child: Container(
-                        height: 90,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFFFFFFF),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 10, bottom: 15),
-                              child: Text(
-                                restaurantDataItems.name,
-                                style: TextStyle(
-                                    fontSize: 15.0, color: Color(0xFF3F3F3F)),
-                                overflow: TextOverflow.ellipsis,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFFFFF),
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15)),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            Padding(
-                              padding:
-                              EdgeInsets.only(left: 10, right: 10, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              child: Stack(
                                 children: <Widget>[
-                                  Align(
-                                    child: Text(
-                                      '${restaurantDataItems.price}\₽',
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF6EC292)),
-                                      overflow: TextOverflow.ellipsis,
+                                  Column(
+                                    children: [
+                                      Text(
+                                        restaurantDataItems.name,
+                                        style: TextStyle(
+                                            fontSize: 15.0, color: Color(0xFF3F3F3F)),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      Align(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
+                                            style: TextStyle(
+                                                fontSize: 12.0,
+                                                color: Colors.grey),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, bottom: 10),
+                                    child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFE6E6E6),
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
+                                          child: Text(
+                                            '${restaurantDataItems.price} \₽',
+                                            style: TextStyle(
+                                                fontSize: 12.0,
+                                                color: Colors.black),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ),
                                     ),
                                   ),
-                                  Align(
-                                    child: cartItemsQuantity,
-                                  )
+                                  // Align(
+                                  //   child: cartItemsQuantity,
+                                  // )
                                 ],
                               ),
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          child: Hero(
+                            tag: restaurantDataItems.name,
+                            child: Image.network(
+                              getImage(restaurantDataItems.image),
+                              fit: BoxFit.cover,
+                              height: 150,
+                              width: 168,
+                            ),)),
                     )
                   ],
                 ),
@@ -1438,7 +1635,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               !available ||
               !(currentTime >= work_beginning && currentTime < work_ending)){
             return Container(
-              height: 200,
+              height: 260,
               child: parent._dayOff(food, cartItemsQuantityKey),
               decoration: BoxDecoration(
                   color: Theme.of(context).canvasColor,
@@ -1450,7 +1647,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           }else{
             if(food.comment != "" && food.comment != null){
               return Container(
-                height: 520,
+                height: 330,
                 child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -1459,9 +1656,21 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       topRight: const Radius.circular(12),
                     )),
               );
-            }else{
+            }if(food.variants == null){
               return Container(
-                height: 440,
+                height: 290,
+                child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(12),
+                      topRight: const Radius.circular(12),
+                    )),
+              );
+            }
+            else{
+              return Container(
+                height: 570,
                 child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -1510,7 +1719,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                 child: Image.network(
                                   getImage(restaurantDataItems.image),
                                   fit: BoxFit.cover,
-                                  height: 320.0,
+                                  height: 160.0,
                                   width: MediaQuery.of(context).size.width,
                                 )),
                             Align(
@@ -1529,55 +1738,69 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                         )),
                     (restaurantDataItems.comment != "" &&
                         restaurantDataItems.comment != null)
-                        ? Container(
-                      color: Color(0xFFFAFAFA),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                            EdgeInsets.only(left: 15, top: 20, bottom: 10),
-                            child: Text(
-                              restaurantDataItems.comment,
-                              style: TextStyle(
-                                  color: Color(0xFFB0B0B0), fontSize: 13),
-                            ),
-                          )),
-                    )
-                        : Container(
-                      height: 0,
-                    ),
-                    (restaurantDataItems.variants != null)
-                        ? Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 15, top: 10),
-                        child: Text(
-                          'Варианты',
-                          style: TextStyle(color: Color(0xFF424242)),
-                        ),
+                        ? Padding(
+                      padding:
+                      EdgeInsets.only(left: 15, top: 20, bottom: 10),
+                      child: Text(
+                        restaurantDataItems.comment,
+                        style: TextStyle(
+                            color: Color(0xFFB0B0B0), fontSize: 13),
                       ),
                     )
                         : Container(
                       height: 0,
+                    ),
+                    Divider(height: 0, color: Color(0xFFE6E6E6),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        (restaurantDataItems.variants != null)
+                            ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15, top: 10),
+                            child: Text(
+                              restaurantDataItems.name,
+                              style: TextStyle(color: Color(0xFF424242)),
+                            ),
+                          ),
+                        )
+                            : Container(
+                          height: 0,
+                        ),
+                        (restaurantDataItems.variants != null) ? Padding(
+                          padding: EdgeInsets.only(right: 15, top: 10),
+                          child: Text('Обязательно'),
+                        ) : Container()
+                      ],
                     ),
                     (restaurantDataItems.variants != null)
                         ? VariantsSelector(
                         key: variantsSelectorStateKey,
                         variantsList: restaurantDataItems.variants)
                         : Container(height: 0),
-                    (restaurantDataItems.toppings != null)
-                        ? Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 15, top: 10),
-                        child: Text(
-                          'Топпинги',
-                          style: TextStyle(color: Color(0xFF424242)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        (restaurantDataItems.toppings != null)
+                            ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15, top: 10),
+                            child: Text(
+                              'Добавки',
+                              style: TextStyle(color: Color(0xFF424242)),
+                            ),
+                          ),
+                        )
+                            : Container(
+                          height: 0,
                         ),
-                      ),
-                    )
-                        : Container(
-                      height: 0,
+                        (restaurantDataItems.toppings != null) ? Padding(
+                          padding: EdgeInsets.only(right: 15, top: 10),
+                          child: Text('Опционально'),
+                        ) : Container()
+                      ],
                     ),
                     (restaurantDataItems.toppings != null)
                         ? ToppingsSelector(
@@ -1605,13 +1828,12 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               TextSpan(text: restaurantDataItems.name,
                                 style: TextStyle(
                                     fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
                                     color: Color(0xFF000000)),),
-                              TextSpan(text: (restaurantDataItems.weight != null && restaurantDataItems.weight_measure!= null)
-                                  ? '  ' + restaurantDataItems.weight + " " + restaurantDataItems.weight_measure
-                                  : '', style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Color(0xFFB0B0B0)),)
+                              // TextSpan(text: (restaurantDataItems.weight != null && restaurantDataItems.weight_measure!= null)
+                              //     ? '  ' + restaurantDataItems.weight + " " + restaurantDataItems.weight_measure
+                              //     : '', style: TextStyle(
+                              //     fontSize: 12.0,
+                              //     color: Color(0xFFB0B0B0)),)
                             ]
                         )
                         ),
@@ -1656,7 +1878,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: EdgeInsets.only(
-                                left: 70, top: 20, right: 70, bottom: 20),
+                                left: 70, top: 15, right: 70, bottom: 15),
                             onPressed: () async {
                               if (await Internet.checkConnection()) {
                                 FoodRecords foodOrder =

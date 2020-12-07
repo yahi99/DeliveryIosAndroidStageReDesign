@@ -23,49 +23,68 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
 
   Widget column(OrdersStoryModelItem ordersStoryModelItem) {
     var format = new DateFormat('HH:mm, dd.MM.yy');
-    return Column(
-      children: <Widget>[
-        InkWell(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 15, left: 15),
-                child: Text(ordersStoryModelItem.routes[0].value,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-                child: Text(
-                  format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
-                  style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 5, left: 15, bottom: 15),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFFB0B0B0),
+    return Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
+        child: Container(
+            padding: EdgeInsets.only(right: 10, left: 15),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey)
+            ),
+            child: Column(
+              children: [
+                InkWell(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 15, left: 15),
+                            child: Text(ordersStoryModelItem.store.name,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset('assets/svg_images/clock.svg'),
+                              Padding(
+                                padding: EdgeInsets.only(left: 15, top: 10, right: 15),
+                                child: Text(
+                                  format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
+                                  style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 5, left: 15, bottom: 15),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFFB0B0B0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(ordersStoryModelItem.state_title,)
+                        ],
+                      )
+                    ],
                   ),
                 ),
-              ),
+                Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+              ],
             )
-          ],
         ),
-        Divider(height: 1.0, color: Color(0xFFF5F5F5)),
-      ],
-    );
+      );
   }
 
   _buildOrdersStoryItems() {

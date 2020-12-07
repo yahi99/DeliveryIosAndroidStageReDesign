@@ -382,7 +382,7 @@ class PageState extends State<PageScreen> {
                           child: Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
-                              "Оформление заказа",
+                              "Подтверждение заказа",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -486,188 +486,170 @@ class PageState extends State<PageScreen> {
                 },
               ),
             ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 8, bottom: 10, left: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        "Способ оплаты",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFB0B0B0)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.only(left: 20, bottom: 5),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 10, left: 15, right: 15, bottom: 10),
+              child: GestureDetector(
                 child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      (selectedPaymentId == 1) ? SvgPicture.asset(card_image) : SvgPicture.asset(cash_image),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          (selectedPaymentId == 1) ? card : cash,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                  width: 140,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 10, left: 15, right: 15, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            Text(
+                              "Способ оплаты",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFB0B0B0)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Text(
+                                (selectedPaymentId == 1) ? card : cash,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: SvgPicture.asset('assets/svg_images/arrow_right.svg'),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: SvgPicture.asset(
+                                  'assets/svg_images/arrow_down.svg'),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
+                onTap: () async {
+                  _payment();
+                },
               ),
-              onTap: () async {
-                _payment();
-              },
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
-                child: FlatButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Flexible(
-                          flex: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE32636),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(5)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                '30-50 мин.',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )),
-                      Flexible(
-                          flex: 0,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 20, left: 5),
-                            child: Text('Оформить',
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                          )),
-                      Flexible(
-                          flex: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE32636),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(5)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                  '${(totalPrice).toStringAsFixed(0)} \₽',
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                            ),
-                          )),
-                    ],
-                  ),
-                  color: Color(0xFFFE534F),
-                  splashColor: Colors.redAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: EdgeInsets.only(
-                      left: 10, top: 10, right: 10, bottom: 10),
-                  onPressed: () async {
-                    if (await Internet.checkConnection()) {
-                      if (addressScreenKey.currentState.addressField.text.length >
-                          0 || selectedPageId == 1) {
-                        Center(
-                          child: CircularProgressIndicator(),
-                        );
-                        if(selectedPaymentId != 1){
-                          showAlertDialog(context);
-                        }
-                        if(selectedPageId == 0 && addressScreenKey.currentState != null) {
-                          createOrder = new CreateOrder(
-                            address: addressScreenKey.currentState.selectedAddress,
-                            restaurantAddress: addressScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
-                            office: addressScreenKey.currentState.officeField
-                                .text,
-                            floor: addressScreenKey.currentState.floorField.text,
-                            entrance: addressScreenKey.currentState.entranceField
-                                .text,
-                            intercom: addressScreenKey.currentState.intercomField
-                                .text,
-                            comment: addressScreenKey.currentState.commentField
-                                .text,
-                            cartDataModel: currentUser.cartDataModel,
-                            restaurant: restaurant,
-                            payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
-                            door_to_door: addressScreenKey.currentState.status1,
-                          );
-                          if(selectedPaymentId == 1){
-                            _cardPayment(totalPrice);
-                            return;
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          '30-50 мин.',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                            '${(totalPrice).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black))
+                      ],
+                    ),
+                    FlatButton(
+                      child: Text('Заказать',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                      color: Color(0xFFFE534F),
+                      splashColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.only(
+                          left: 10, top: 10, right: 10, bottom: 10),
+                      onPressed: () async {
+                        if (await Internet.checkConnection()) {
+                          if (addressScreenKey.currentState.addressField.text.length >
+                              0 || selectedPageId == 1) {
+                            Center(
+                              child: CircularProgressIndicator(),
+                            );
+                            if(selectedPaymentId != 1){
+                              showAlertDialog(context);
+                            }
+                            if(selectedPageId == 0 && addressScreenKey.currentState != null) {
+                              createOrder = new CreateOrder(
+                                address: addressScreenKey.currentState.selectedAddress,
+                                restaurantAddress: addressScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                                office: addressScreenKey.currentState.officeField
+                                    .text,
+                                floor: addressScreenKey.currentState.floorField.text,
+                                entrance: addressScreenKey.currentState.entranceField
+                                    .text,
+                                intercom: addressScreenKey.currentState.intercomField
+                                    .text,
+                                comment: addressScreenKey.currentState.commentField
+                                    .text,
+                                cartDataModel: currentUser.cartDataModel,
+                                restaurant: restaurant,
+                                payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
+                                door_to_door: addressScreenKey.currentState.status1,
+                              );
+                              if(selectedPaymentId == 1){
+                                _cardPayment(totalPrice);
+                                return;
+                              }
+                              print('Payment');
+                              await createOrder.sendData();
+                            } else if (takeAwayScreenKey.currentState != null) {
+                              createOrderTakeAway =
+                              new CreateOrderTakeAway(
+                                  comment: (takeAwayScreenKey.currentState.status1) ? "Поем в заведении" : takeAwayScreenKey.currentState.comment,
+                                  cartDataModel: currentUser.cartDataModel,
+                                  restaurantAddress: takeAwayScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                                  without_delivery: true,
+                                  restaurant: restaurant);
+                              if(selectedPaymentId == 1){
+                                _cardPayment(totalPrice);
+                                return;
+                              }
+                              await createOrderTakeAway.sendData();
+                            }
+                            else{
+                              print('All go');
+                            }
+                            currentUser.cartDataModel.cart.clear();
+                            currentUser.cartDataModel.saveData();
+                            homeScreenKey = new GlobalKey<HomeScreenState>();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                                    (Route<dynamic> route) => false);
+                          } else {
+                            emptyFields(context);
                           }
-                          print('Payment');
-                          await createOrder.sendData();
-                        } else if (takeAwayScreenKey.currentState != null) {
-                          createOrderTakeAway =
-                          new CreateOrderTakeAway(
-                              comment: (takeAwayScreenKey.currentState.status1) ? "Поем в заведении" : takeAwayScreenKey.currentState.comment,
-                              cartDataModel: currentUser.cartDataModel,
-                              restaurantAddress: takeAwayScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
-                              without_delivery: true,
-                              restaurant: restaurant);
-                          if(selectedPaymentId == 1){
-                            _cardPayment(totalPrice);
-                            return;
-                          }
-                          await createOrderTakeAway.sendData();
+                        } else {
+                          noConnection(context);
                         }
-                        else{
-                          print('All go');
-                        }
-                        currentUser.cartDataModel.cart.clear();
-                        currentUser.cartDataModel.saveData();
-                        homeScreenKey = new GlobalKey<HomeScreenState>();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
-                                (Route<dynamic> route) => false);
-                      } else {
-                        emptyFields(context);
-                      }
-                    } else {
-                      noConnection(context);
-                    }
-                  },
+                      },
+                    )
+                  ],
                 ),
               ),
             )
@@ -914,7 +896,7 @@ class AddressScreenState extends State<AddressScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      width: 150,
+                      width: 60,
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -945,7 +927,7 @@ class AddressScreenState extends State<AddressScreen>
                       ),
                     ),
                     Container(
-                      width: 150,
+                      width: 60,
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -975,22 +957,8 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: Divider(
-                    height: 1.0, color: Color(0xFFEDEDED)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: 15, left: 15, bottom: 5, right: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
                     Container(
-                      width: 150,
+                      width: 60,
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -1021,7 +989,7 @@ class AddressScreenState extends State<AddressScreen>
                       ),
                     ),
                     Container(
-                      width: 150,
+                      width: 60,
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -1065,7 +1033,7 @@ class AddressScreenState extends State<AddressScreen>
                 child: Row(
                   children: <Widget>[
                     Text(
-                      'Комментарий к заказу',
+                      'Комментарий',
                       style: TextStyle(
                           color: Color(0xFFB0B0B0),
                           fontSize: 13),
@@ -1087,9 +1055,76 @@ class AddressScreenState extends State<AddressScreen>
                     ),
                   )),
               Padding(
+                padding: EdgeInsets.only(
+                    top: 10, left: 15, right: 15, bottom: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Заказ другому человеку',
+                          style: TextStyle(
+                              color: Color(0xFF3F3F3F),
+                              fontSize: 15),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 0),
+                          child: FlutterSwitch(
+                            width: 55.0,
+                            height: 25.0,
+                            inactiveColor: Color(0xD6D6D6D6),
+                            activeColor: Colors.red,
+                            valueFontSize: 12.0,
+                            toggleSize: 18.0,
+                            value: status1,
+                            onToggle: (value) {
+                              setState(() {
+                                status1 = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.only(left: 15, right: 15),
                 child: Divider(
                     height: 1.0, color: Color(0xFFEDEDED)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 15, left: 15, bottom: 5),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      'Стомость',
+                      style: TextStyle(
+                          color: Color(0xFFB0B0B0),
+                          fontSize: 13),
+                    ),
+                    Text(
+                      '${(totalPrice).toStringAsFixed(0)} \₽',
+                      style: TextStyle(
+                          color: Color(0xFFB0B0B0),
+                          fontSize: 13),
+                    )
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -1101,18 +1136,31 @@ class AddressScreenState extends State<AddressScreen>
                       style: TextStyle(
                           color: Color(0xFFB0B0B0),
                           fontSize: 13),
+                    ),
+                    Text(
+                      '30-50 мин.',
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 13),
                     )
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15, bottom: 5),
+                padding: EdgeInsets.only(
+                    top: 15, left: 15, bottom: 5),
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '30-50 мин.',
+                      'Итого',
                       style: TextStyle(
-                          color: Colors.black, fontSize: 13),
+                          color: Color(0xFFB0B0B0),
+                          fontSize: 13),
+                    ),
+                    Text(
+                      '${(totalPrice).toStringAsFixed(0)} \₽',
+                      style: TextStyle(
+                          color: Color(0xFFB0B0B0),
+                          fontSize: 13),
                     )
                   ],
                 ),
@@ -1124,34 +1172,95 @@ class AddressScreenState extends State<AddressScreen>
               Padding(
                 padding: EdgeInsets.only(
                     top: 10, left: 15, right: 15, bottom: 10),
-                child: Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Доставка до двери',
-                      style: TextStyle(
-                          color: Color(0xFF3F3F3F),
-                          fontSize: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    border: Border.all(
+                      color: Colors.grey,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 0),
-                      child: FlutterSwitch(
-                        width: 55.0,
-                        height: 25.0,
-                        inactiveColor: Color(0xD6D6D6D6),
-                        activeColor: Colors.red,
-                        valueFontSize: 12.0,
-                        toggleSize: 18.0,
-                        value: status1,
-                        onToggle: (value) {
-                          setState(() {
-                            status1 = value;
-                          });
-                        },
-                      ),
-                    )
-                  ],
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'До двери',
+                          style: TextStyle(
+                              color: Color(0xFF3F3F3F),
+                              fontSize: 15),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 0),
+                          child: FlutterSwitch(
+                            width: 55.0,
+                            height: 25.0,
+                            inactiveColor: Color(0xD6D6D6D6),
+                            activeColor: Colors.red,
+                            valueFontSize: 12.0,
+                            toggleSize: 18.0,
+                            value: status1,
+                            onToggle: (value) {
+                              setState(() {
+                                status1 = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 10, left: 15, right: 15, bottom: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 10, left: 15, right: 15, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            Text(
+                              'Время доставки',
+                              style: TextStyle(
+                                  color: Color(0xFF3F3F3F),
+                                  fontSize: 15),
+                            ),
+                            Text(
+                              '30-40 мин',
+                              style: TextStyle(
+                                  color: Color(0xFF3F3F3F),
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Изменить',
+                          style: TextStyle(
+                              color: Color(0xFF3F3F3F),
+                              fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               Container(

@@ -67,10 +67,13 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Container(
-                  height: 90,
+                  height: 91,
                   width: 300,
                   decoration: BoxDecoration(
                     color: Color(0xFFF6F6F6),
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(10.0),
                     ),

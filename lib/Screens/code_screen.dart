@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Config/config.dart';
@@ -121,8 +122,27 @@ class _CodeScreenState extends State<CodeScreen> {
           loadAuthData(necessaryDataForAuth.device_id, currentUser.phone),
           builder: (BuildContext context, AsyncSnapshot<AuthData> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
+              return Stack(
                 children: <Widget>[
+                  InkWell(
+                    child: Stack(
+                      children: <Widget>[
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                                padding: EdgeInsets.only(right: 15, top: 30),
+                                child: Container(
+                                  width: 40,
+                                  height: 60,
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                        'assets/svg_images/arrow_left.svg'),
+                                  ),
+                                ))),
+                      ],
+                    ),
+                    onTap: () => Navigator.pop(context),
+                  ),
                   InkWell(
                     child: Stack(
                       children: <Widget>[
@@ -142,28 +162,43 @@ class _CodeScreenState extends State<CodeScreen> {
                     ),
                     onTap: () => Navigator.pop(context),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 40),
-                        child: Text('Введите код из смс',
-                            style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[
-                          Center(
-                            child: Container(
-                              width: 180,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 140),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: 120,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topCenter,
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                    right: 0, left: 0, bottom: 10),
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: Text(
+                                  'Введите код из смс',
+                                  style: TextStyle(
+                                      fontSize: 18),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                padding: EdgeInsets.only(bottom: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                  color: Colors.white
+                                ),
                                 child: Row(
                                   children: <Widget>[
                                     Flexible(
@@ -290,92 +325,87 @@ class _CodeScreenState extends State<CodeScreen> {
                                   ],
                                 ),
                               ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 0,
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 10, bottom: 0, left: 0),
-                                child: Text(
-                                  error,
-                                  style: TextStyle(
-                                      color: Colors.red, fontSize: 12),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 0, top: 15),
-                              child: new TimerCountDown(codeScreenState: this),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 20, left: 0, right: 0, top: 10),
-                              child: Button(
-                                key: buttonStateKey,
-                                color: Color(0xFFF3F3F3),
-                                onTap: () async {
-                                  if (await Internet.checkConnection()) {
-                                    String temp = '';
-                                    temp = code1.controller.text +
-                                        code2.controller.text +
-                                        code3.controller.text +
-                                        code4.controller.text;
-                                    authCodeData = await loadAuthCodeData(
-                                        necessaryDataForAuth.device_id,
-                                        int.parse(temp));
-                                    if (authCodeData != null) {
-                                      await AmplitudeAnalytics.analytics.setUserId(currentUser.phone);
-                                      AmplitudeAnalytics.analytics.logEvent('login');
-                                      necessaryDataForAuth.phone_number =
-                                          currentUser.phone;
-                                      necessaryDataForAuth.refresh_token =
-                                          authCodeData.refresh_token;
-                                      NecessaryDataForAuth.saveData();
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 0, left: 0),
+                      child: Text(
+                        error,
+                        style: TextStyle(
+                            color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 90, top: 15),
+                      child: new TimerCountDown(codeScreenState: this),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          bottom: 20, left: 0, right: 0, top: 10),
+                      child: Button(
+                        key: buttonStateKey,
+                        color: Color(0xFFF3F3F3),
+                        onTap: () async {
+                          if (await Internet.checkConnection()) {
+                            String temp = '';
+                            temp = code1.controller.text +
+                                code2.controller.text +
+                                code3.controller.text +
+                                code4.controller.text;
+                            authCodeData = await loadAuthCodeData(
+                                necessaryDataForAuth.device_id,
+                                int.parse(temp));
+                            if (authCodeData != null) {
+                              await AmplitudeAnalytics.analytics.setUserId(currentUser.phone);
+                              AmplitudeAnalytics.analytics.logEvent('login');
+                              necessaryDataForAuth.phone_number =
+                                  currentUser.phone;
+                              necessaryDataForAuth.refresh_token =
+                                  authCodeData.refresh_token;
+                              NecessaryDataForAuth.saveData();
 //                                      await new FirebaseNotifications().setUpFirebase();
-                                      await Centrifugo.connectToServer();
-                                      if(necessaryDataForAuth.name == null){
-                                        Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                            builder: (context) =>
-                                            new NameScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else{
-                                        homeScreenKey =
-                                        new GlobalKey<HomeScreenState>();
-                                        currentUser.isLoggedIn = true;
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                                builder: (context) => HomeScreen()),
-                                                (Route<dynamic> route) => false);
-                                      }
-                                    } else {
-                                      setState(() {
-                                        error = 'Вы ввели неверный смс код';
-                                      });
-                                    }
-                                  } else {
-                                    noConnection(context);
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        )),
+                              await Centrifugo.connectToServer();
+                              if(necessaryDataForAuth.name == null){
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                    builder: (context) =>
+                                    new NameScreen(),
+                                  ),
+                                );
+                              }
+                              else{
+                                homeScreenKey =
+                                new GlobalKey<HomeScreenState>();
+                                currentUser.isLoggedIn = true;
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()),
+                                        (Route<dynamic> route) => false);
+                              }
+                            } else {
+                              setState(() {
+                                error = 'Вы ввели неверный смс код';
+                              });
+                            }
+                          } else {
+                            noConnection(context);
+                          }
+                        },
+                      ),
+                    )
                   )
                 ],
               );
@@ -438,14 +468,12 @@ class TimerCountDownState extends State<TimerCountDown> {
       startTimer();
     }
     return _start != 0
-        ? Center(
-      child: Text('Получить новый код можно через $_start c',
-          style: TextStyle(
-            color: Color(0x97979797),
-            fontSize: 13.0,
-            letterSpacing: 1.2,
-          )),
-    )
+        ? Text('Получить новый код можно через $_start c',
+        style: TextStyle(
+          color: Color(0x97979797),
+          fontSize: 13.0,
+          letterSpacing: 1.2,
+        ))
         : GestureDetector(
       child: Text(
         'Отпарвить код повторно',
@@ -496,9 +524,9 @@ class ButtonState extends State<Button> {
       color: color,
       splashColor: Colors.grey,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
+      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
       onPressed: () async {
         if (await Internet.checkConnection()) {
           await onTap();
