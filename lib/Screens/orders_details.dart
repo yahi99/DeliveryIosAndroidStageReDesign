@@ -95,10 +95,124 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
 
   List<Widget> _buildListItems(){
     double totalPrice = ordersStoryModelItem.tariff.totalPrice.toDouble();
+    var format = new DateFormat('HH:mm, dd.MM.yy');
     List<Widget> result = new List<Widget>();
     if(ordersStoryModelItem.products == null){
       return List<Container>();
     }
+    result.add(Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
+      child: Container(
+        height: 170,
+        padding: EdgeInsets.only(right: 10, left: 15),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8.0, // soften the shadow
+                spreadRadius: 3.0, //extend the shadow
+              )
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(width: 1.0, color: Colors.grey[200])),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    (ordersStoryModelItem.store != null)
+                        ? ordersStoryModelItem.store.name
+                        : 'Пусто',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF3F3F3F),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFFB0B0B0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/svg_images/clock.svg'),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15, top: 0, right: 15),
+                          child: Text(
+                            format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
+                            style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(ordersStoryModelItem.state_title)
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Адрес заведения',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF3F3F3F),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Адрес доставки',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF3F3F3F),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    (ordersStoryModelItem.store != null)
+                        ? ordersStoryModelItem.routes[0].street + ' ' +
+                        ordersStoryModelItem.routes[0].house
+                        : 'Пусто',
+                    style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                  ),
+                  Text(
+                    (ordersStoryModelItem.store != null)
+                        ? ordersStoryModelItem.routes[0].street + ' ' +
+                        ordersStoryModelItem.routes[0].house
+                        : 'Пусто',
+                    style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
     ordersStoryModelItem.products.forEach((product) {
       if(product.selectedVariant != null && product.selectedVariant.price != null){
         totalPrice += product.number * (product.price + product.selectedVariant.price);
@@ -122,79 +236,12 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 (product.selectedVariant == null || product.toppings == null ||
                     product.selectedVariant == null && product.toppings == null) ? Expanded(
                   child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 33.0),
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              product.name,
-                              style: TextStyle(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF000000)),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          (product.selectedVariant != null)
-                              ? Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text(
-                                product.selectedVariant .name,
-                                style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF000000)),
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                          )
-                              : Text(''),
-                          (product.toppings != null)
-                              ? Padding(
-                            padding: EdgeInsets.only(top: 15),
-                            child: Column(
-                              children: List.generate(
-                                  product.toppings.length,
-                                      (index) => Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding:
-                                      EdgeInsets.only(bottom: 5, left: 2),
-                                      child: Text(
-                                        product.toppings[index]
-                                            .name,
-                                        style: TextStyle(
-                                            decoration:
-                                            TextDecoration.none,
-                                            fontSize: 10.0,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            color: Color(0xFF000000)),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                  )),
-                            ),
-                          )
-                              : Text(''),
-                        ],
-                      ),
-                    ),
-                  ),
-                ) : Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
+                    child:  Column(
                       children: <Widget>[
                         Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(top: 10, right: 0),
+                            padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               product.name,
                               style: TextStyle(
@@ -211,6 +258,73 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              product.selectedVariant .name,
+                              style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF000000)),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        )
+                            : Text(''),
+                        (product.toppings != null)
+                            ? Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Column(
+                            children: List.generate(
+                                product.toppings.length,
+                                    (index) => Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.only(bottom: 5, left: 2),
+                                    child: Text(
+                                      product.toppings[index]
+                                          .name,
+                                      style: TextStyle(
+                                          decoration:
+                                          TextDecoration.none,
+                                          fontSize: 10.0,
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          color: Color(0xFF000000)),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        )
+                            : Text(''),
+                      ],
+                    ),
+                  ),
+                ) : Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10, left: 15),
+                            child: Text(
+                              product.name,
+                              style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF000000)),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ),
+                        (product.selectedVariant != null)
+                            ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 5, left: 15),
                             child: Text(
                               product.selectedVariant .name,
                               style: TextStyle(
@@ -256,6 +370,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   ),
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(right: 15),
@@ -268,7 +383,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 15),
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10),
                       child: Text(
                         '${product.number}2шт',
                         style: TextStyle(
@@ -407,7 +522,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
           }
         }
     );
-    var format = new DateFormat('HH:mm, dd.MM.yy');
     var state_array = [
       'waiting_for_confirmation',
       'cooking',
@@ -481,117 +595,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               ),
             ),
             Divider(height: 1.0, color: Color(0xFFF5F5F5)),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
-              child: Container(
-                padding: EdgeInsets.only(right: 10, left: 15),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey)
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 15, left: 15),
-                              child: Text(
-                                (ordersStoryModelItem.store != null)
-                                    ? ordersStoryModelItem.store.name
-                                    : 'Пусто',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF3F3F3F),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.asset('assets/svg_images/clock.svg'),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-                                  child: Text(
-                                    format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
-                                    style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 5, left: 15, bottom: 15),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFFB0B0B0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Text(ordersStoryModelItem.state_title)
-                          ],
-                        )
-                      ],
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Text(
-                              'Адрес заведения',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF3F3F3F),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              (ordersStoryModelItem.store != null)
-                                  ? ordersStoryModelItem.routes[0].street + ' ' +
-                                  ordersStoryModelItem.routes[0].house
-                                  : 'Пусто',
-                              style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Адрес доставки',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF3F3F3F),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              (ordersStoryModelItem.store != null)
-                                  ? ordersStoryModelItem.routes[0].street + ' ' +
-                                  ordersStoryModelItem.routes[0].house
-                                  : 'Пусто',
-                              style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 30,
-              color: Color(0xF3F3F3F3),
-            ),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -600,9 +603,9 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             ),
             Center(
               child: Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                  padding: EdgeInsets.only(top: 20, bottom: 10, right: 10, left: 10),
                   child: Align(
-                    alignment: Alignment.bottomRight,
+                    alignment: Alignment.bottomCenter,
                     child: (!state_array.contains(ordersStoryModelItem.state)) ? GestureDetector(
                       child: Container(
                           height: 50,
@@ -685,7 +688,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             ),
             Center(
               child: Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 20, right: 10, left: 10),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: (!state_array.contains(ordersStoryModelItem.state)) ? GestureDetector(

@@ -140,149 +140,149 @@ class _CartScreenState extends State<CartScreen> {
     }
     GlobalKey<CounterState> counterKey = new GlobalKey();
     return Container(
-        child: GestureDetector(
-          child: Row(
-            children: <Widget>[
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 8.0),
-              //   child: ClipRRect(
-              //       borderRadius: BorderRadius.only(
-              //           bottomLeft: Radius.circular(10),
-              //           topLeft: Radius.circular(10),
-              //           topRight: Radius.circular(10),
-              //           bottomRight: Radius.circular(10)),
-              //       child: Hero(
-              //         tag: order.food.name,
-              //         child: Image.network(
-              //           getImage(order.food.image),
-              //           fit: BoxFit.cover,
-              //           height: 70,
-              //           width: 70,
-              //         ),)),
-              // ),
-              Column(
-                children: [
-                  (order.food.variants == null || order.food.toppings == null ||
-                      order.food.variants == null && order.food.toppings == null) ? Container(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 15.0, top: 27),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                order.food.name,
-                                style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 14.0,
-                                    color: Color(0xFF000000)),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              (order.food.variants != null)
-                                  ? Text(
-                                order.food.variants[0].name,
-                                style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 10.0,
-                                    color: Color(0xFF000000)),
-                                textAlign: TextAlign.start,
-                              ) : Text(''),
-                              (order.food.toppings != null)
-                                  ? Column(
-                                children: List.generate(
-                                    order.food.toppings.length,
-                                        (index) => Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        order.food.toppings[index]
-                                            .name,
-                                        style: TextStyle(
-                                            decoration:
-                                            TextDecoration.none,
-                                            fontSize: 10.0,
-                                            color: Color(0xFF000000)),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              child: Row(
+                children: <Widget>[
+                   Padding(
+                     padding: const EdgeInsets.only(left: 8.0),
+                     child: ClipRRect(
+                         borderRadius: BorderRadius.only(
+                             bottomLeft: Radius.circular(10),
+                             topLeft: Radius.circular(10),
+                             topRight: Radius.circular(10),
+                             bottomRight: Radius.circular(10)),
+                         child: Hero(
+                           tag: order.food.name,
+                           child: Image.network(
+                             getImage(order.food.image),
+                             fit: BoxFit.cover,
+                             height: 70,
+                             width: 70,
+                           ),)),
+                   ),
+                  Column(
+                    children: [
+                      (order.food.variants == null || order.food.toppings == null ||
+                          order.food.variants == null && order.food.toppings == null) ? Container(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 15.0, top: 27),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    order.food.name,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontSize: 14.0,
+                                        color: Color(0xFF000000)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  (order.food.variants != null)
+                                      ? Text(
+                                    order.food.variants[0].name,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontSize: 10.0,
+                                        color: Color(0xFF000000)),
+                                    textAlign: TextAlign.start,
+                                  ) : Text(''),
+                                  (order.food.toppings != null)
+                                      ? Column(
+                                    children: List.generate(
+                                        order.food.toppings.length,
+                                            (index) => Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            order.food.toppings[index]
+                                                .name,
+                                            style: TextStyle(
+                                                decoration:
+                                                TextDecoration.none,
+                                                fontSize: 10.0,
+                                                color: Color(0xFF000000)),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        )),
+                                  )
+                                      : Text(''),
+                                ],
                               )
-                                  : Text(''),
-                            ],
-                          )
-                      ),
-                    ),
-                  ) : Container(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                order.food.name,
-                                style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 14.0,
-                                    color: Color(0xFF000000)),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              (order.food.variants != null)
-                                  ? Text(
-                                order.food.variants[0].name,
-                                style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 10.0,
-                                    color: Color(0xFF000000)),
-                                textAlign: TextAlign.start,
-                              ) : Text(''),
-                              (order.food.toppings != null)
-                                  ? Column(
-                                children: List.generate(
-                                    order.food.toppings.length,
-                                        (index) => Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        order.food.toppings[index]
-                                            .name,
-                                        style: TextStyle(
-                                            decoration:
-                                            TextDecoration.none,
-                                            fontSize: 10.0,
-                                            color: Color(0xFF000000)),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    )),
+                          ),
+                        ),
+                      ) : Container(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    order.food.name,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontSize: 14.0,
+                                        color: Color(0xFF000000)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  (order.food.variants != null)
+                                      ? Text(
+                                    order.food.variants[0].name,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontSize: 10.0,
+                                        color: Color(0xFF000000)),
+                                    textAlign: TextAlign.start,
+                                  ) : Text(''),
+                                  (order.food.toppings != null)
+                                      ? Column(
+                                    children: List.generate(
+                                        order.food.toppings.length,
+                                            (index) => Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            order.food.toppings[index]
+                                                .name,
+                                            style: TextStyle(
+                                                decoration:
+                                                TextDecoration.none,
+                                                fontSize: 10.0,
+                                                color: Color(0xFF000000)),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        )),
+                                  )
+                                      : Text(''),
+                                ],
                               )
-                                  : Text(''),
-                            ],
-                          )
+                          ),
+                        ),
                       ),
-                    ),
+
+                    ],
                   ),
-                  Counter(
-                    key: counterKey,
-                    priceFieldKey: priceFieldKey
+                  Expanded(
+                    child: Align(
+                        alignment: Alignment.centerRight,
+                        child: PriceField(key: priceFieldKey, order: order)
+                    ),
                   ),
                 ],
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: PriceField(key: priceFieldKey, order: order)
-                ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Counter(
+                  key: counterKey,
+                  priceFieldKey: priceFieldKey
               ),
-
-            ],
-          ),
-          // onTap: () {
-          //   setState(() {
-          //     if (order.isSelected) {
-          //       order.quantity = counterKey.currentState.counter;
-          //     }
-          //     order.isSelected = !order.isSelected;
-          //   });
-          // },
+            ),
+          ],
         ));
   }
 
@@ -424,19 +424,13 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     Padding(
                         padding: EdgeInsets.only(right: 10),
-                        child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(5))),
-                            child: GestureDetector(
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/delete.svg'),
-                              onTap: () {
-                                showAlertDialog(context);
-                              },
-                            ))),
+                        child: GestureDetector(
+                          child: SvgPicture.asset(
+                              'assets/svg_images/del_basket.svg'),
+                          onTap: () {
+                            showAlertDialog(context);
+                          },
+                        )),
                   ],
                 ),
               ),
@@ -459,21 +453,21 @@ class _CartScreenState extends State<CartScreen> {
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
-                              (restaurant.order_preparation_time_second != null)? '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                '${totalPrice.toStringAsFixed(0)} \₽',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black)),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.black,
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                                '${totalPrice.toStringAsFixed(0)} \₽',
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black)),
-                          )
                         ],
                       ),
                       FlatButton(
@@ -493,7 +487,7 @@ class _CartScreenState extends State<CartScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: EdgeInsets.only(
-                            left: 70, top: 15, right: 70, bottom: 15),
+                            left: 70, top: 20, right: 70, bottom: 20),
                         onPressed: () async {
                           if (await Internet.checkConnection()) {
                             if (currentUser.isLoggedIn) {
@@ -565,78 +559,81 @@ class CounterState extends State<Counter> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 15, right: 0),
-      child: Container(
-        width: 122,
-        height: 58,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Color(0xF5F5F5F5))),
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(
-            padding: EdgeInsets.only(left: 0, top: 0, bottom: 0),
-            child: InkWell(
-              onTap: () {
-                if (counter != 1) {
-                  _incrementCounter_minus();
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Padding(
+          padding: EdgeInsets.only(left: 0, top: 0, bottom: 0),
+          child: InkWell(
+            onTap: () {
+              if (counter != 1) {
+                _incrementCounter_minus();
+                // counter = restaurantDataItems.records_count;
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8)),
+              ),
+              height: 40,
+              width: 28,
+              child: Padding(
+                padding: EdgeInsets.all(7),
+                child: SvgPicture.asset('assets/svg_images/mini_minus.svg'),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 19.0),
+        Container(
+          height: 30,
+          width: 70,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xFFE6E6E6)
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(right: 10, left: 10),
+            child: Center(
+              child: Text(
+                '$counter',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
+          child: InkWell(
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                setState(() {
+                  _incrementCounter_plus();
                   // counter = restaurantDataItems.records_count;
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8)),
-                ),
-                height: 40,
-                width: 28,
-                child: Padding(
-                  padding: EdgeInsets.all(7),
-                  child: SvgPicture.asset('assets/svg_images/minus.svg'),
-                ),
+                });
+              } else {
+                noConnection(context);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8)),
+              ),
+              height: 40,
+              width: 28,
+              child: Padding(
+                padding: EdgeInsets.all(7),
+                child: SvgPicture.asset('assets/svg_images/plus_counter.svg'),
               ),
             ),
           ),
-          SizedBox(width: 19.0),
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Text(
-              '$counter',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
-            child: InkWell(
-              onTap: () async {
-                if (await Internet.checkConnection()) {
-                  setState(() {
-                    _incrementCounter_plus();
-                    // counter = restaurantDataItems.records_count;
-                  });
-                } else {
-                  noConnection(context);
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                ),
-                height: 40,
-                width: 28,
-                child: Padding(
-                  padding: EdgeInsets.all(7),
-                  child: SvgPicture.asset('assets/svg_images/plus_counter.svg'),
-                ),
-              ),
-            ),
-          )
-        ]),
-      ),
+        )
+      ])
     );
   }
 

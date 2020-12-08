@@ -397,19 +397,45 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     );
   }
 
-  List<Widget> _buildRestaurantFoodCategoriesList(List<Records> restaurantFoodCategories){
+  List<Widget> _buildRestaurantFoodCategoriesList(Records restaurant){
     List<Widget> result = new List<Widget>();
-    restaurantFoodCategories.forEach((element) {
-      result.add(
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color(0xFFE6E6E6)
+    result.add(
+        Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Container(
+            padding: EdgeInsets.only(left: 8, right: 8, top: 0),
+            height: 25,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFFE6E6E6)
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset('assets/svg_images/rest_star.svg'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 3.0),
+                  child: Text('5.0'),
+                )
+              ],
+            )
           ),
-          child: Text(restaurantFoodCategories[0].product_category.toString()),
         )
-      );
+    );
+    restaurant.product_category.forEach((element) {
+      result.add(Padding(
+        padding: const EdgeInsets.only(right: 5.0),
+        child: Container(
+          padding: EdgeInsets.only(left: 8, right: 8, top: 0),
+          height: 25,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xFFE6E6E6)
+          ),
+          child: Center(child: Text(element)),
+        ),
+      ));
     });
+    return result;
   }
 
 
@@ -516,7 +542,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               fit: BoxFit.cover,
                             ))),
                     Padding(
-                      padding: const EdgeInsets.only(top: 150.0),
+                      padding: const EdgeInsets.only(top: 168.0),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Container(
@@ -525,15 +551,14 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20)
                               ),
-                              color: Colors.black.withOpacity(0.5)
+                              color: Colors.white.withOpacity(0.5)
                           ),
                           child: Center(
                             child: Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 5.0, left: 5),
+                                  padding: const EdgeInsets.only(right: 5.0, left: 10),
                                   child: SvgPicture.asset(
                                       'assets/svg_images/rest_car.svg'),
                                 ),
@@ -541,8 +566,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                   style: TextStyle(
                                       fontSize: 12.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white
+                                      color: Colors.black
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -573,28 +597,18 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       SizedBox(
                         height: 4.0,
                       ),
-                      Row(
-                        children: <Widget>[
-                          Flexible(child: Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 5, right: 10),
-                              child: Text(
-                                (restaurant.product_category != null) ? restaurant.getCategoriesString():
-                                '',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF3F3F3F),
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ))
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4.0,
-                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 5, right: 10),
+                          child: (restaurant.product_category != null) ? Container(
+                            height: 25,
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.horizontal,
+                                children: _buildRestaurantFoodCategoriesList(restaurant),
+                              )
+                          ):
+                          Container()
+                      )
                     ],
                   ),
                 )
@@ -761,6 +775,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             }
           },
         ),
+      ]);
+      allSideBarItems.add(
         ListTile(
           leading: SvgPicture.asset('assets/svg_images/exit.svg'),
           title: Padding(
@@ -790,7 +806,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             }
           },
         ),
-      ]);
+      );
     } else {
       allSideBarItems.insert(
           0,

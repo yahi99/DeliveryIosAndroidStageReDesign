@@ -261,67 +261,20 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
     // Инициализируем список категорий
     categoryList = new CategoryList(key: new GlobalKey<CategoryListState>(), restaurant: restaurant, parent: this);
-    int offset = 21;
+
     // Навешиваем лисенер на скролл контроллер
     foodScrollController.addListener(() {
-      // Примерная высота одного элемента хавки
-      int item_height = 225;
-      int title_height  = 21;
-      List<int> categoryTitlesHeight = new List<int>();
-      restaurant.product_category.forEach((element) {
-        categoryTitlesHeight.add(21);
-      });
-
-      // Вычисляем точную высоту одного элемента хавки
-      if(foodMenuItems.length>0 && foodMenuItems[0].key.currentContext != null) {
-        item_height = foodMenuItems[0].key.currentContext.size.height.round();
-      }
-
-      // Вычисляем точную высоту одного заголовка
-      if(foodMenuTitles.length>0 && foodMenuTitles[0].key.currentContext != null) {
-        title_height = foodMenuTitles[0].key.currentContext.size.height.round();
-      }
-
-      if(!isLoading){
-        // Используя силу математики, находим индекс хавки, на которую сейчас
-        // смотрим
-        int ind = ((foodScrollController.position.pixels-offset+21)~/item_height)*2;
-        // Если: у нас не пустой список еды, индекс подходит по верхней
-        // и нижней границе листа, а также существует стейт элемента хавки, на который мы смотрим
-        if(foodMenuItems.length > 0 && ind < foodMenuItems.length && ind >= 0 && foodMenuItems[ind].key.currentState != null) {
-          // Если категория выбранная категория изменилась
-          String selectedCategory = categoryList.key.currentState.currentCategory;
-          String currentCategory = foodMenuItems[ind].key.currentState
-              .restaurantDataItems.category;
-          if (selectedCategory != currentCategory) {
-
-            // Вычисляем сдвиг индекса относительно заголовков категорий
-            int selectedCategoryIndex = restaurant.product_category.indexOf(selectedCategory); // Выбранная категория в списке
-            int currentCategoryIndex = restaurant.product_category.indexOf(currentCategory); // Вычисленная текущая категория
-            if(currentCategoryIndex > selectedCategoryIndex){
-              for(int i = currentCategoryIndex+1; i<=selectedCategoryIndex; i++){
-                offset +=(foodMenuTitles.length>0 && foodMenuTitles[0].key.currentContext != null)
-                      ?
-                        foodMenuTitles[i].key.currentContext.size.height.round()
-                      :
-                        21;
-              }
-            } else {
-              for(int i = selectedCategoryIndex; i<currentCategoryIndex; i++){
-                offset -=(foodMenuTitles.length>0 && foodMenuTitles[0].key.currentContext != null)
-                    ?
-                foodMenuTitles[i].key.currentContext.size.height.round()
-                    :
-                21;
-              }
-            }
-            // Вычислили
-
-            // Выбираем категорию и скроллим сам список категорий к ней
-            categoryList.key.currentState.SelectCategory(currentCategory);
-            categoryList.key.currentState.ScrollToSelectedCategory();
-          }
+      try{
+        if(!isLoading){
+          // Используя силу математики, находим индекс хавки, на которую сейчас
+          // смотрим
+          var currentCategoryWidget = foodMenuTitles.firstWhere((element) => element.key.currentState!=null);
+          String currentCategory = (currentCategoryWidget != null) ? currentCategoryWidget.title : categoryList.key.currentState.currentCategory;
+          categoryList.key.currentState.SelectCategory(currentCategory);
+          categoryList.key.currentState.ScrollToSelectedCategory();
         }
+      }catch(e){
+
       }
     });
   }
@@ -667,21 +620,43 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             child: Divider(color: Color(0xFFEEEEEE), height: 1,),
           ),
           Expanded(
-            child: new StaggeredGridView.countBuilder(
+            child: ListView.builder(
+                itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
               controller: foodScrollController,
               padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-              crossAxisCount: 1,
               itemCount: menuWithTitles.length,
-              itemBuilder: (BuildContext context, int index) => menuWithTitles[index],
-              staggeredTileBuilder: (int index) {
-                if(menuWithTitles[index] is MenuItemTitle)
-                  return new StaggeredTile.count(2, 0.17);
-                return new StaggeredTile.count(1, 1.5);
-              },
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 8.0,
-            )
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+            ),
           ),
+//        Expanded(
+//          child: GridView.count(
+//            controller: foodScrollController,
+//            padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
+//            crossAxisCount: 1,
+//            mainAxisSpacing: 10.0,
+//            crossAxisSpacing: 8.0,
+//            children: List.generate(menuWithTitles.length, (index){
+//              return menuWithTitles[index];
+//            }),
+//          ),
+//        ),
+//          Expanded(
+//            child: new StaggeredGridView.countBuilder(
+//              controller: foodScrollController,
+//              padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
+//              crossAxisCount: 1,
+//              itemCount: menuWithTitles.length,
+//              itemBuilder: (BuildContext context, int index) => menuWithTitles[index],
+//              staggeredTileBuilder: (int index) {
+//                if(menuWithTitles[index] is MenuItemTitle)
+//                  return new StaggeredTile.count(1, 0.17);
+//                return new StaggeredTile.count(1, 1.017);
+//              },
+//              mainAxisSpacing: 10.0,
+//              crossAxisSpacing: 8.0,
+//            )
+//          ),
           BasketButton(
               key: basketButtonStateKey, restaurant: restaurant),
         ],
@@ -729,6 +704,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     );
   }
   // Подгрузка итемов с категорией
+  // ignore: non_constant_identifier_names
   Future<bool> GoToCategory(int categoryIndex) async {
     if(isLoading)
       return false;
@@ -773,19 +749,20 @@ class MenuItemTitle extends StatefulWidget {
   }
 }
 
-class MenuItemTitleState extends State<MenuItemTitle> with AutomaticKeepAliveClientMixin{
+class MenuItemTitleState extends State<MenuItemTitle>{
   final String  title;
-  @override
-  bool get wantKeepAlive => true;
 
   MenuItemTitleState(this.title);
 
   @override
   Widget build(BuildContext context) {
-    return Text(title[0].toUpperCase() + title.substring(1),
-      style: TextStyle(
-          color: Color(0xFF424242),
-          fontSize: 21,
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      child: Text(title[0].toUpperCase() + title.substring(1),
+        style: TextStyle(
+            color: Color(0xFF424242),
+            fontSize: 21,
+        ),
       ),
     );
   }
@@ -1493,7 +1470,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
       restaurantDataItems: restaurantDataItems,
     );
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 15.0),
       child: Center(
           child: GestureDetector(
               onTap: () async {
@@ -1529,32 +1506,39 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               decoration: BoxDecoration(
                                 color: Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
                                     bottomLeft: Radius.circular(15),
                                     bottomRight: Radius.circular(15)),
                               ),
-                              child: Stack(
+                              child: Column(
                                 children: <Widget>[
-                                  Column(
-                                    children: [
-                                      Text(
-                                        restaurantDataItems.name,
-                                        style: TextStyle(
-                                            fontSize: 15.0, color: Color(0xFF3F3F3F)),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      Align(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 10.0),
-                                          child: Text(
-                                            restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
-                                            style: TextStyle(
-                                                fontSize: 12.0,
-                                                color: Colors.grey),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10.0, left: 10),
+                                        child: Text(
+                                          restaurantDataItems.name,
+                                          style: TextStyle(
+                                              fontSize: 15.0, color: Color(0xFF3F3F3F)),
+                                          textAlign: TextAlign.start,
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0, bottom: 30),
+                                      child: Text(
+                                        restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Colors.grey),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10.0, bottom: 10),

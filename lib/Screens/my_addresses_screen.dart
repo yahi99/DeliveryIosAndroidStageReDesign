@@ -139,7 +139,6 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 30, bottom: 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         InkWell(
                           child: Align(
@@ -163,34 +162,16 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                     (Route<dynamic> route) => false);
                           },
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
+                        Flexible(
+                          flex: 3,
                           child: Padding(
-                            padding: EdgeInsets.only(top: 20, left: 30, bottom: 15),
+                            padding: EdgeInsets.only(top: 20, left: 70, bottom: 15),
                             child: Text('Мои адреса',
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF424242))),
                           ),
-                        ),
-                        InkWell(
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: Text('Изменить'),
-                              )
-                          ),
-                          onTap: () async {
-                            if (await Internet.checkConnection()) {
-                              setState(() {
-                                addressScreenButton = true;
-                              });
-                            } else {
-                              noConnection(context);
-                            }
-                          },
                         ),
                       ],
                     ),
@@ -255,9 +236,16 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                             child: Container(
                               padding: EdgeInsets.only(right: 10, left: 15),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.grey)
-                              ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 8.0, // soften the shadow
+                                      spreadRadius: 3.0, //extend the shadow
+                                    )
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(width: 1.0, color: Colors.grey[200])),
                               child: Column(
                                 children: <Widget>[
                                   Align(
@@ -319,19 +307,18 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
+                    padding: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
                     child: FlatButton(
                       child: Text('Добавить адрес',
                           style: TextStyle(
                               fontSize: 14.0,
-                              fontWeight: FontWeight.w600,
                               color: Colors.white)),
                       color: Color(0xFFE6E6E6),
                       splashColor: Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                      padding: EdgeInsets.only(left: 110, top: 20, right: 110, bottom: 20),
                       onPressed: () async {
                         if (await Internet.checkConnection()) {
                           setState(() {

@@ -251,43 +251,75 @@ class ServiceScreenState extends State<ServiceScreen> {
                                   var format = new DateFormat('dd.MM.yy, HH:mm');
                                   return Padding(
                                     padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10, bottom: 10),
-                                    child: Container(
-                                      padding: EdgeInsets.only(right: 10, left: 15),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          border: Border.all(color: Colors.grey)
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text('ticketModel.title'),
-                                          ListTile(
-                                            leading: SvgPicture.asset('assets/svg_images/clock.svg'),
-                                            title: Text(format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
-                                              style: TextStyle(
-                                                  color: Color(0xFF424242),
-                                                  fontSize: 17
+                                    child: GestureDetector(
+                                      child: Container(
+                                        height: 90,
+                                        padding: EdgeInsets.only(right: 10, left: 15),
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 8.0, // soften the shadow
+                                                spreadRadius: 3.0, //extend the shadow
+                                              )
+                                            ],
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                                                  child: Text('ticketModel.title'),
+                                                ),
                                               ),
                                             ),
-                                            trailing: Text('ticketsListRecord.status'),
-                                            onTap: () async {
-                                              if (await Internet.checkConnection()) {
-                                                Navigator.push(
-                                                    context,
-                                                    new MaterialPageRoute(
-                                                        builder: (context) =>
-                                                        new TicketsChatScreen(
-                                                          order_uuid: unresolvedTickets[index].uuid,
-                                                          time: format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
-                                                        ))
-                                                );
-                                              } else {
-                                                noConnection(context);
-                                              }
-                                              print('OYAOYA');
-                                            },
-                                          )
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 5.0),
+                                                          child: SvgPicture.asset('assets/svg_images/clock.svg'),
+                                                        ),
+                                                        Text(format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                                          style: TextStyle(
+                                                              color: Color(0xFF424242),
+                                                              fontSize: 17
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Text('ticketsListRecord.status'),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      onTap: () async {
+                                        if (await Internet.checkConnection()) {
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                  new TicketsChatScreen(
+                                                    order_uuid: unresolvedTickets[index].uuid,
+                                                    time: format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                                  ))
+                                          );
+                                        } else {
+                                          noConnection(context);
+                                        }
+                                      },
                                     ),
                                   );
                                 }),

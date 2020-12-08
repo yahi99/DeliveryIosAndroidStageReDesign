@@ -26,62 +26,63 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
     return Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
         child: Container(
+          height: 90,
             padding: EdgeInsets.only(right: 10, left: 15),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey)
-            ),
-            child: Column(
-              children: [
-                InkWell(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 15, left: 15),
-                            child: Text(ordersStoryModelItem.store.name,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8.0, // soften the shadow
+                    spreadRadius: 3.0, //extend the shadow
+                  )
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(width: 1.0, color: Colors.grey[200])),
+            child: InkWell(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(ordersStoryModelItem.store.name,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
+                        Text(
+                          '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFFB0B0B0),
                           ),
-                          Row(
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Row(
                             children: [
                               SvgPicture.asset('assets/svg_images/clock.svg'),
-                              Padding(
-                                padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-                                child: Text(
-                                  format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
-                                  style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                                ),
+                              Text(
+                                format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
+                                style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
                               ),
                             ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, left: 15, bottom: 15),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFFB0B0B0),
-                                ),
-                              ),
-                            ),
                           ),
-                          Text(ordersStoryModelItem.state_title,)
-                        ],
-                      )
-                    ],
+                        ),
+                        Text(ordersStoryModelItem.state_title,)
+                      ],
+                    ),
                   ),
-                ),
-                Divider(height: 1.0, color: Color(0xFFF5F5F5)),
-              ],
+                ],
+              ),
             )
         ),
       );
