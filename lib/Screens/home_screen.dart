@@ -431,7 +431,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               borderRadius: BorderRadius.circular(10),
               color: Color(0xFFE6E6E6)
           ),
-          child: Center(child: Text(element)),
+          child: Center(child: Text('#' + element[0].toUpperCase() + element.substring(1))),
         ),
       ));
     });
@@ -641,28 +641,28 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   List<Widget> getSideBarItems(bool isLogged) {
     List<Widget> allSideBarItems = [
-      ListTile(
-        leading: SvgPicture.asset('assets/svg_images/info.svg'),
-        title: Padding(
-          padding: EdgeInsets.only(top: 20, bottom: 20),
-          child: Text(
+      Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: ListTile(
+          leading: SvgPicture.asset('assets/svg_images/info.svg'),
+          title: Text(
             'Информация',
             style: TextStyle(
                 fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
           ),
+          onTap: () async {
+            if (await Internet.checkConnection()) {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (context) => new InformationScreen(),
+                ),
+              );
+            } else {
+              noConnection(context);
+            }
+          },
         ),
-        onTap: () async {
-          if (await Internet.checkConnection()) {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => new InformationScreen(),
-              ),
-            );
-          } else {
-            noConnection(context);
-          }
-        },
       ),
     ];
 
@@ -671,21 +671,24 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         Padding(
           padding: EdgeInsets.only(top: 60),
           child: InkWell(
-            child: ListTile(
-              title: Text(
-                necessaryDataForAuth.name ?? ' ',
-                style: TextStyle(
-                    color: Color(0xFF424242),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17),
-              ),
-              subtitle: Text(
-                necessaryDataForAuth.phone_number ?? ' ',
-                style: TextStyle(color: Color(0x9B9B9B9B), fontSize: 14),
-              ),
-              trailing: GestureDetector(
-                child: SvgPicture.asset(
-                    'assets/svg_images/pencil.svg'),
+            child: Container(
+              color: Color(0xFFB8B8B8),
+              child: ListTile(
+                title: Text(
+                  necessaryDataForAuth.name ?? ' ',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                ),
+                subtitle: Text(
+                  necessaryDataForAuth.phone_number ?? ' ',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                trailing: GestureDetector(
+                  child: SvgPicture.asset(
+                      'assets/svg_images/pencil.svg'),
+                ),
               ),
             ),
             onTap: () async {
@@ -702,109 +705,104 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             },
           ),
         ),
-        ListTile(
-          leading: SvgPicture.asset('assets/svg_images/order_story.svg'),
-          title: Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
-            child: Text(
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: SvgPicture.asset('assets/svg_images/order_story.svg'),
+            ),
+            title: Text(
               'История заказов',
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) => new OrdersStoryScreen(),
+                  ),
+                );
+              } else {
+                noConnection(context);
+              }
+            },
           ),
-          onTap: () async {
-            if (await Internet.checkConnection()) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => new OrdersStoryScreen(),
-                ),
-              );
-            } else {
-              noConnection(context);
-            }
-          },
         ),
-        ListTile(
-          leading: SvgPicture.asset('assets/svg_images/my_addresses.svg'),
-          title: Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
-            child: Text(
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: ListTile(
+            leading: SvgPicture.asset('assets/svg_images/my_addresses.svg'),
+            title: Text(
               'Мои адреса',
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
-          ),
-          onTap: () async {
-            if (await Internet.checkConnection()) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => new MyAddressesScreen(),
-                ),
-              );
-            } else {
-              noConnection(context);
-            }
-          },
-        ),
-        ListTile(
-          leading: SvgPicture.asset('assets/svg_images/service.svg'),
-          title: Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Stack(
-                children: [
-                  Text(
-                    'Служба поддержки',
-                    style: TextStyle(
-                        fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) => new MyAddressesScreen(),
                   ),
-                ],
-              )
+                );
+              } else {
+                noConnection(context);
+              }
+            },
           ),
-          onTap: () async {
-            if (await Internet.checkConnection()) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => new ServiceScreen(),
-                ),
-              );
-            } else {
-              noConnection(context);
-            }
-          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: ListTile(
+            leading: SvgPicture.asset('assets/svg_images/service.svg'),
+            title: Text(
+              'Служба поддержки',
+              style: TextStyle(
+                  fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
+            ),
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) => new ServiceScreen(),
+                  ),
+                );
+              } else {
+                noConnection(context);
+              }
+            },
+          ),
         ),
       ]);
       allSideBarItems.add(
-        ListTile(
-          leading: SvgPicture.asset('assets/svg_images/exit.svg'),
-          title: Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Stack(
-                children: [
-                  Text(
-                    'Выход',
-                    style: TextStyle(
-                        fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
-                  ),
-                ],
-              )
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: ListTile(
+            leading: SvgPicture.asset('assets/svg_images/exit.svg'),
+            title: Text(
+              'Выход',
+              style: TextStyle(
+                  fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
+            ),
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                necessaryDataForAuth.refresh_token = null;
+                authCodeData.refresh_token = null;
+                await NecessaryDataForAuth.saveData();
+                await LastAddressesModel.clear();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => DeviceIdScreen()),
+                        (Route<dynamic> route) => false);
+              } else {
+                noConnection(context);
+              }
+            },
           ),
-          onTap: () async {
-            if (await Internet.checkConnection()) {
-              necessaryDataForAuth.refresh_token = null;
-              authCodeData.refresh_token = null;
-              await NecessaryDataForAuth.saveData();
-              await LastAddressesModel.clear();
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => DeviceIdScreen()),
-                      (Route<dynamic> route) => false);
-            } else {
-              noConnection(context);
-            }
-          },
         ),
       );
     } else {
@@ -874,6 +872,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               padding:
               EdgeInsets.only(left: 10, right: 5, top: 8, bottom: 8),
               child: Container(
+                height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: ('' != category_uuid)
@@ -881,16 +880,23 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         : Color(0xFFFE534F)),
                 child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Center(
-                      child: Text(
-                        "Кухни",
-                        style: TextStyle(
-                            color: ('' !=
-                                category_uuid)
-                                ? Color(0xFF424242)
-                                : Colors.white,
-                            fontSize: 15),
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Кухни",
+                          style: TextStyle(
+                              color: ('' !=
+                                  category_uuid)
+                                  ? Color(0xFF424242)
+                                  : Colors.white,
+                              fontSize: 15),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: SvgPicture.asset('assets/svg_images/arrow_down'),
+                        )
+                      ],
                     )),
               )),
           onTap: () async {
@@ -1145,7 +1151,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 Padding(
                                   padding:
                                   EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Text('Все рестораны',
+                                  child: Text('Рестораны',
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         color: Color(0xFF3F3F3F),

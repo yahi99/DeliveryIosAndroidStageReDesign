@@ -183,6 +183,9 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                       List.generate(myAddressesModelList.length, (index) {
                         if (myAddressesModelList[index].tag ==
                             null) {
+//                          return Text(
+//                            'У вас еще нет ни одного\nсохранённого адреса'
+//                          );
                           return Column(
                             children: <Widget>[
                               GestureDetector(
@@ -206,9 +209,9 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                       child: Text(
                                                         'Добавить адрес дома',
                                                         style: TextStyle(
-                                                            fontSize: 17,
+                                                            fontSize: 16,
                                                             color:
-                                                            Color(0xFF424242)),
+                                                            Colors.grey),
                                                       ),
                                                     )
                                                   ],
@@ -234,6 +237,8 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                           padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10, bottom: 10),
                           child: GestureDetector(
                             child: Container(
+                              height: 110,
+                              width: MediaQuery.of(context).size.width,
                               padding: EdgeInsets.only(right: 10, left: 15),
                               decoration: BoxDecoration(
                                   boxShadow: [
@@ -247,41 +252,56 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   border: Border.all(width: 1.0, color: Colors.grey[200])),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 0, top: 10, bottom: 10),
-                                      child: Text(
-                                        (myAddressesModelList[index].name != " ") ?
-                                        myAddressesModelList[index].name
-                                            :
-                                        "-",
-                                        style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 30, right: 20),
+                                        child: Container(
+                                          height: 70,
+                                          child: Column(
+                                            children: [
+                                              //(myAddressesModelList[index].tag = "Дом") != null ? SvgPicture.asset('assets/svg_images/home_my_addresses.svg') : SvgPicture.asset('assets/svg_images/star_my_addresses.svg'),
+                                              SvgPicture.asset('assets/svg_images/star_my_addresses.svg'),
+                                              Text(
+                                                (myAddressesModelList[index].name != " ") ?
+                                                myAddressesModelList[index].name
+                                                    :
+                                                "-",
+                                                style:
+                                                TextStyle(fontSize: 10, color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child:  Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 0, top: 10, bottom: 10),
-                                      child: Text(
-                                          myAddressesModelList[index].address.unrestrictedValue),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 10, right: 10, bottom: 20, left: 0),
-                                      child: Text(
-                                          'г.Владикавказ, республика Северная Осетия-Алания, Россия',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
-                                    ),
-                                  ),
+                                      Flexible(
+                                        child: Container(
+                                          height: 80,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(right: 10, bottom: 5),
+                                                  child: Text(
+                                                    myAddressesModelList[index].address.unrestrictedValue,
+                                                    textAlign: TextAlign.left,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                  'г.Владикавказ, республика Северная Осетия-Алания, Россия',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
@@ -311,14 +331,14 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                     child: FlatButton(
                       child: Text('Добавить адрес',
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               color: Colors.white)),
                       color: Color(0xFFE6E6E6),
                       splashColor: Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.only(left: 110, top: 20, right: 110, bottom: 20),
+                      padding: EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
                       onPressed: () async {
                         if (await Internet.checkConnection()) {
                           setState(() {

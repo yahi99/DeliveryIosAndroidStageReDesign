@@ -72,7 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   decoration: BoxDecoration(
                     color: Color(0xFFF6F6F6),
                     border: Border.all(
-                      color: Colors.grey,
+                      color: Color(0xFFE6E6E6),
                     ),
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(10.0),
@@ -149,7 +149,7 @@ class _AuthScreenState extends State<AuthScreen> {
               alignment: Alignment.bottomCenter,
               child: GestureDetector(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 80, top: 10),
+                  padding: EdgeInsets.only(bottom: 85, top: 10),
                   child: Text.rich(
                     TextSpan(
                         text:

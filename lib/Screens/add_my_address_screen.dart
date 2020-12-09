@@ -166,19 +166,17 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
               padding: EdgeInsets.only(bottom: 20),
               child: FlatButton(
                 child: Text(
-                  "Сохранить",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
+                  "Добавить адрес",
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.white)
                 ),
-                color: Color(0xFFFE534F),
-                splashColor: Colors.redAccent,
+                color: Color(0xFFE6E6E6),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding:
-                EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
                 onPressed: () async {
                   if (await Internet.checkConnection()) {
                     myAddressesModel.tag = "house";

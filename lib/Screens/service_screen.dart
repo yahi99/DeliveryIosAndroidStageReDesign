@@ -218,17 +218,6 @@ class ServiceScreenState extends State<ServiceScreen> {
                                 color: Color(0xFFB9B9B9))),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 15, left: 16, bottom: 10),
-                        child: Text('Текущие обращения',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFB9B9B9))),
-                      ),
-                    ),
                     Container(
                       child: FutureBuilder<TicketsList>(
                         future:
@@ -240,15 +229,13 @@ class ServiceScreenState extends State<ServiceScreen> {
                             if(snapshot.data.records == null && snapshot.data.recordsCount == 0){
                               return Container();
                             }
-                            List<TicketsListRecord> unresolvedTickets = new List<TicketsListRecord>();
-                            unresolvedTickets.addAll(snapshot.data.records.where((element) => element.status != 'resolved'));
+                            var format = new DateFormat(' HH:mm  dd.MM.yyyy');
                             return Container(
                               child: ListView(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 padding: EdgeInsets.zero,
-                                children: List.generate(unresolvedTickets.length, (index) {
-                                  var format = new DateFormat('dd.MM.yy, HH:mm');
+                                children: List.generate(snapshot.data.recordsCount, (index){
                                   return Padding(
                                     padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10, bottom: 10),
                                     child: GestureDetector(
@@ -273,7 +260,11 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                 alignment: Alignment.topLeft,
                                                 child: Padding(
                                                   padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                                                  child: Text('ticketModel.title'),
+                                                  child: Text('title',
+                                                    style: TextStyle(
+                                                      fontSize: 15
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -286,10 +277,10 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                     child: Row(
                                                       children: [
                                                         Padding(
-                                                          padding: const EdgeInsets.only(right: 5.0),
+                                                          padding: const EdgeInsets.only(right: 0.0),
                                                           child: SvgPicture.asset('assets/svg_images/clock.svg'),
                                                         ),
-                                                        Text(format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                                        Text(format.format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.records[index].createdAtUnix * 1000)),
                                                           style: TextStyle(
                                                               color: Color(0xFF424242),
                                                               fontSize: 17
@@ -298,7 +289,11 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Text('ticketsListRecord.status'),
+                                                  Text('status',
+                                                    style: TextStyle(
+                                                      fontSize: 18
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -312,85 +307,20 @@ class ServiceScreenState extends State<ServiceScreen> {
                                               new MaterialPageRoute(
                                                   builder: (context) =>
                                                   new TicketsChatScreen(
-                                                    order_uuid: unresolvedTickets[index].uuid,
-                                                    time: format.format(DateTime.fromMillisecondsSinceEpoch(unresolvedTickets[index].createdAtUnix * 1000)),
+                                                    order_uuid: snapshot.data.records[index].uuid,
+                                                    time: format.format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.records[index].createdAtUnix * 1000)),
                                                   ))
                                           );
                                         } else {
                                           noConnection(context);
                                         }
+                                        print('OYAOYA');
                                       },
                                     ),
                                   );
                                 }),
                               ),
                             );
-                          }
-                          return Center(child: Container());
-                        },
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 15, left: 16, bottom: 10),
-                        child: Text('Решенные',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFB9B9B9))),
-                      ),
-                    ),
-                    Container(
-                      child: FutureBuilder<TicketsList>(
-                        future:
-                        getTicketsByFilter(1, 0, necessaryDataForAuth.phone_number, status: 'resolved'),
-                        builder:
-                            (BuildContext context, AsyncSnapshot<TicketsList> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done &&
-                              snapshot.data != null) {
-                            if(snapshot.data.records == null && snapshot.data.recordsCount == 0){
-                              return Container();
-                            }
-                            return Container(
-                                child: ListView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  children: List.generate(snapshot.data.recordsCount, (index) {
-                                    var format = new DateFormat('dd.MM.yy, HH:mm');
-                                    return Column(
-                                      children: <Widget>[
-                                        ListTile(
-                                          leading: Text(format.format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.records[index].createdAtUnix * 1000)),
-                                            style: TextStyle(
-                                                color: Color(0xFF424242),
-                                                fontSize: 17
-                                            ),
-                                          ),
-                                          trailing: SvgPicture.asset('assets/svg_images/arrow_right.svg'),
-                                          onTap: () async {
-                                            if (await Internet.checkConnection()) {
-                                              Navigator.push(
-                                                  context,
-                                                  new MaterialPageRoute(
-                                                      builder: (context) =>
-                                                      new TicketsChatScreen(
-                                                        order_uuid: snapshot.data.records[index].uuid,
-                                                        time: format.format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.records[index].createdAtUnix * 1000)),
-                                                      ))
-                                              );
-                                            } else {
-                                              noConnection(context);
-                                            }
-                                            print('OYAOYA');
-                                          },
-                                        ),
-                                        Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                                      ],
-                                    );
-                                  }),
-                                ));
                           }
                           return Center(child: Container());
                         },

@@ -7,6 +7,7 @@ import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'orders_details.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class OrdersStoryScreen extends StatefulWidget {
   OrdersStoryScreen({Key key}) : super(key: key);
@@ -22,7 +23,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
   List<OrdersStoryModelItem> records_items = new List<OrdersStoryModelItem>();
 
   Widget column(OrdersStoryModelItem ordersStoryModelItem) {
-    var format = new DateFormat('HH:mm, dd.MM.yy');
+    var format = new DateFormat('  HH:mm    dd.MM.yyyy');
     return Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
         child: Container(
@@ -50,12 +51,12 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                       children: [
                         Text(ordersStoryModelItem.store.name,
                             textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
+                            style: TextStyle(fontSize: 18, color: Color(0xFF000000))),
                         Text(
                           '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFFB0B0B0),
+                            fontSize: 18,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -69,7 +70,10 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                         Container(
                           child: Row(
                             children: [
-                              SvgPicture.asset('assets/svg_images/clock.svg'),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                                child: SvgPicture.asset('assets/svg_images/clock.svg'),
+                              ),
                               Text(
                                 format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
                                 style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
@@ -77,7 +81,20 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                             ],
                           ),
                         ),
-                        Text(ordersStoryModelItem.state_title,)
+                        Row(
+                          children: [
+                            Text((ordersStoryModelItem.state_title = "Завершен") != null ? 'Доставлен' : '',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: SvgPicture.asset('assets/svg_images/delivered.svg'),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -96,11 +113,6 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
       return Container();
     }else{
       records_items.forEach((OrdersStoryModelItem ordersStoryModelItem) {
-        var format = new DateFormat('HH:mm, dd-MM-yy');
-        var date = new DateTime.fromMicrosecondsSinceEpoch(
-            ordersStoryModelItem.created_at_unix * 1000);
-        var time = '';
-        time = format.format(date);
         if(ordersStoryModelItem.products!= null && ordersStoryModelItem.products.length > 0){
           restaurantList.add(
             InkWell(

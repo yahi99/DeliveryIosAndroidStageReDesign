@@ -95,7 +95,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
 
   List<Widget> _buildListItems(){
     double totalPrice = ordersStoryModelItem.tariff.totalPrice.toDouble();
-    var format = new DateFormat('HH:mm, dd.MM.yy');
+    var format = new DateFormat('  HH:mm    dd.MM.yyyy');
     List<Widget> result = new List<Widget>();
     if(ordersStoryModelItem.products == null){
       return List<Container>();
@@ -127,16 +127,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     (ordersStoryModelItem.store != null)
                         ? ordersStoryModelItem.store.name
                         : 'Пусто',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF3F3F3F),
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, color: Color(0xFF000000)),
                   ),
                   Text(
                     '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFFB0B0B0),
+                      fontSize: 18,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -161,9 +158,26 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                       ],
                     ),
                   ),
-                  Text(ordersStoryModelItem.state_title)
+                  Row(
+                    children: [
+                      Text((ordersStoryModelItem.state_title = "Завершен") != null ? 'Доставлен' : '',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: SvgPicture.asset('assets/svg_images/delivered.svg'),
+                      )
+                    ],
+                  )
                 ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Divider(color: Color(0xFFE6E6E6),),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10),
@@ -174,15 +188,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     'Адрес заведения',
                     style: TextStyle(
                         fontSize: 14,
-                        color: Color(0xFF3F3F3F),
-                        fontWeight: FontWeight.bold),
+                        color: Color(0xFF3F3F3F),),
                   ),
                   Text(
                     'Адрес доставки',
                     style: TextStyle(
                         fontSize: 14,
-                        color: Color(0xFF3F3F3F),
-                        fontWeight: FontWeight.bold),
+                        color: Color(0xFF3F3F3F),),
                   ),
                 ],
               ),
@@ -246,8 +258,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               product.name,
                               style: TextStyle(
                                   decoration: TextDecoration.none,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
                                   color: Color(0xFF000000)),
                               textAlign: TextAlign.start,
                             ),
@@ -263,7 +274,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               style: TextStyle(
                                   decoration: TextDecoration.none,
                                   fontSize: 10.0,
-                                  fontWeight: FontWeight.bold,
                                   color: Color(0xFF000000)),
                               textAlign: TextAlign.start,
                             ),
@@ -288,8 +298,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                           decoration:
                                           TextDecoration.none,
                                           fontSize: 10.0,
-                                          fontWeight:
-                                          FontWeight.bold,
                                           color: Color(0xFF000000)),
                                       textAlign: TextAlign.start,
                                     ),
@@ -313,8 +321,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               product.name,
                               style: TextStyle(
                                   decoration: TextDecoration.none,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
                                   color: Color(0xFF000000)),
                               textAlign: TextAlign.start,
                             ),
@@ -330,7 +337,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               style: TextStyle(
                                   decoration: TextDecoration.none,
                                   fontSize: 10.0,
-                                  fontWeight: FontWeight.bold,
                                   color: Color(0xFF000000)),
                               textAlign: TextAlign.start,
                             ),
@@ -355,8 +361,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                           decoration:
                                           TextDecoration.none,
                                           fontSize: 10.0,
-                                          fontWeight:
-                                          FontWeight.bold,
                                           color: Color(0xFF000000)),
                                       textAlign: TextAlign.start,
                                     ),
@@ -379,15 +383,15 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         (product.number * (product.price + product.selectedVariant.price) + toppingsCost).toStringAsFixed(0) :
                         (product.number * product.price + toppingsCost).toStringAsFixed(0)} \₽',
                         style: TextStyle(
-                            color: Color(0xFFB0B0B0), fontSize: 14),
+                            color: Colors.black, fontSize: 18),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 15, right: 15, top: 10),
                       child: Text(
-                        '${product.number}2шт',
+                        '${product.number}шт',
                         style: TextStyle(
-                            color: Color(0xFF000000), fontSize: 14),
+                            color: Colors.black, fontSize: 18),
                       ),
                     ),
                   ],
@@ -396,8 +400,8 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 0),
-            child: Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Divider(color: Color(0xFFE6E6E6)),
           ),
         ],
       ));
@@ -413,8 +417,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               child: Text(
                 'Итого',
                 style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
                     color: Color(0xFF000000)),
               ),
             ),
@@ -422,8 +425,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               padding: EdgeInsets.only(right: 15, bottom: 20),
               child: Text('${own_delivery_price.toStringAsFixed(0)} \₽',
                   style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
                       color: Color(0xFF000000))),
             )
           ],
@@ -457,16 +459,15 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 Text(
                   "Доставка",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
                       color: Color(0xFF000000),
-                      fontSize: 14),
+                      fontSize: 18),
                 ),
                 Padding(
                   padding: EdgeInsets.only(),
                   child: Text(
                     (ordersStoryModelItem.tariff.totalPrice - ordersStoryModelItem.tariff.bonusPayment).toString() + ' \₽',
                     style: TextStyle(
-                        color: Color(0xFFB0B0B0), fontSize: 14),
+                        color: Colors.black, fontSize: 18),
                   ),
                 ),
               ],
@@ -480,8 +481,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               child: Text(
                 'Итого',
                 style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
                     color: Color(0xFF000000)),
               ),
             ),
@@ -489,8 +489,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               padding: EdgeInsets.only(right: 15, bottom: 20),
               child: Text('${totalPrice.toStringAsFixed(0)} \₽',
                   style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
                       color: Color(0xFF000000))),
             )
           ],
@@ -603,7 +602,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             ),
             Center(
               child: Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 10, right: 10, left: 10),
+                  padding: EdgeInsets.only(top: 20, bottom: 5, right: 10, left: 10),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: (!state_array.contains(ordersStoryModelItem.state)) ? GestureDetector(
@@ -619,8 +618,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               'Повторить заказ',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 18,),
                             ),
                           )),
                       onTap: () async {
@@ -662,8 +660,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               'Отменить',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 18,),
                             ),
                           )),
                       onTap: () async {
@@ -704,8 +701,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               'Удалить данные о заказе',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 18,),
                             ),
                           )),
                     ) : Container(),

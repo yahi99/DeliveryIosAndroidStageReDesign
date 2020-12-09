@@ -124,55 +124,48 @@ class _CodeScreenState extends State<CodeScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               return Stack(
                 children: <Widget>[
-                  InkWell(
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                                padding: EdgeInsets.only(right: 15, top: 30),
-                                child: Container(
-                                  width: 40,
-                                  height: 60,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/arrow_left.svg'),
-                                  ),
-                                ))),
-                      ],
-                    ),
-                    onTap: () => Navigator.pop(context),
-                  ),
-                  InkWell(
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                                padding: EdgeInsets.only(right: 15, top: 30),
-                                child: Container(
-                                  width: 40,
-                                  height: 60,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/code_cross.svg'),
-                                  ),
-                                ))),
-                      ],
-                    ),
-                    onTap: () => Navigator.pop(context),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        child: Padding(
+                            padding: EdgeInsets.only(left: 0, top: 30),
+                            child: Container(
+                              width: 40,
+                              height: 60,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_left.svg'),
+                              ),
+                            )),
+                        onTap: () => Navigator.pop(context),
+                      ),
+                      InkWell(
+                        child:  Padding(
+                            padding: EdgeInsets.only(right: 15, top: 30),
+                            child: Container(
+                              width: 40,
+                              height: 60,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/code_cross.svg'),
+                              ),
+                            )),
+                        onTap: () => Navigator.pop(context),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 140),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        height: 120,
+                        height: 130,
                         width: 300,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Color(0xFFE6E6E6),
                           border: Border.all(
-                            color: Colors.grey,
+                            color: Color(0xFFE6E6E6),
                           ),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),
@@ -194,18 +187,19 @@ class _CodeScreenState extends State<CodeScreen> {
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Container(
-                                padding: EdgeInsets.only(bottom: 10),
+                                padding: EdgeInsets.only(bottom: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10)),
                                   color: Colors.white
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Flexible(
                                       flex: 1,
                                       child: Padding(
                                         padding:
-                                        EdgeInsets.only(left: 7, right: 7),
+                                        EdgeInsets.only(left: 15, right: 15),
                                         child: code1 = TextField(
                                             autofocus: true,
                                             focusNode: new FocusNode(),
@@ -234,7 +228,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                       flex: 1,
                                       child: Padding(
                                         padding:
-                                        EdgeInsets.only(left: 7, right: 7),
+                                        EdgeInsets.only(left: 15, right: 15),
                                         child: code2 = TextField(
                                             focusNode: new FocusNode(),
                                             controller: controller2,
@@ -265,7 +259,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                       flex: 1,
                                       child: Padding(
                                         padding:
-                                        EdgeInsets.only(left: 7, right: 7),
+                                        EdgeInsets.only(left: 15, right: 15),
                                         child: code3 = TextField(
                                             focusNode: new FocusNode(),
                                             controller: controller3,
@@ -296,7 +290,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                       flex: 1,
                                       child: Padding(
                                         padding:
-                                        EdgeInsets.only(left: 7, right: 7),
+                                        EdgeInsets.only(left: 15, right: 15),
                                         child: code4 = TextField(
                                           onChanged: (String value){
                                             if(value.isEmpty){
@@ -334,7 +328,7 @@ class _CodeScreenState extends State<CodeScreen> {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: 10, bottom: 0, left: 0),
+                          top: 10, bottom: 60, left: 0),
                       child: Text(
                         error,
                         style: TextStyle(
