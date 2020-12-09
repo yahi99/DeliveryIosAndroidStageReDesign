@@ -521,27 +521,19 @@ class PageState extends State<PageScreen> {
                                     fontSize: 12,
                                     color: Color(0xFFB8B8B8)),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  (selectedPaymentId == 1) ? card : cash,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
+                              Text(
+                                (selectedPaymentId == 1) ? card : cash,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black),
                               ),
                             ],
                           ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 15),
-                                child: SvgPicture.asset(
-                                    'assets/svg_images/arrow_down.svg'),
-                              ),
-                            ),
-                          )
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: SvgPicture.asset(
+                                'assets/svg_images/arrow_down.svg'),
+                          ),
                         ],
                       ),
                     ),
