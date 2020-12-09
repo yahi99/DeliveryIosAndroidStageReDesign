@@ -489,63 +489,67 @@ class PageState extends State<PageScreen> {
             Padding(
               padding: EdgeInsets.only(
                   top: 10, left: 15, right: 15, bottom: 10),
-              child: GestureDetector(
-                child: Container(
-                  width: 140,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    border: Border.all(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: 10, left: 15, right: 15, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Text(
-                              "Способ оплаты",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFB0B0B0)),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 15),
-                              child: Text(
-                                (selectedPaymentId == 1) ? card : cash,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: GestureDetector(
+                  child: Container(
+                    width: 167,
+                    height: 64,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 8.0, // soften the shadow
+                            spreadRadius: 3.0, //extend the shadow
+                          )
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(width: 1.0, color: Colors.grey[200])),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, left: 15, right: 15, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Text(
+                                "Способ оплаты",
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
+                                    fontSize: 12,
+                                    color: Color(0xFFB8B8B8)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  (selectedPaymentId == 1) ? card : cash,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 15),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_down.svg'),
                               ),
                             ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 15),
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/arrow_down.svg'),
-                            ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
+                  onTap: () async {
+                    _payment();
+                  },
                 ),
-                onTap: () async {
-                  _payment();
-                },
               ),
             ),
             Align(
@@ -553,27 +557,28 @@ class PageState extends State<PageScreen> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
                         Text(
-                          '30-50 мин.',
+                            '${(totalPrice).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black)),
+                        Text(
+                          '~30-50 мин.',
                           style: TextStyle(
-                            fontSize: 14.0,
+                            fontSize: 12.0,
                             color: Colors.black,
                           ),
                         ),
-                        Text(
-                            '${(totalPrice).toStringAsFixed(0)} \₽',
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.black))
                       ],
                     ),
                     FlatButton(
                       child: Text('Заказать',
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.w600,
                               color: Colors.white)),
                       color: Color(0xFFFE534F),
@@ -582,7 +587,7 @@ class PageState extends State<PageScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.only(
-                          left: 10, top: 10, right: 10, bottom: 10),
+                          left: 60, top: 20, right: 60, bottom: 20),
                       onPressed: () async {
                         if (await Internet.checkConnection()) {
                           if (addressScreenKey.currentState.addressField.text.length >
@@ -1059,14 +1064,16 @@ class AddressScreenState extends State<AddressScreen>
                     top: 10, left: 15, right: 15, bottom: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    border: Border.all(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
-                    ),
-                  ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8.0, // soften the shadow
+                          spreadRadius: 3.0, //extend the shadow
+                        )
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(width: 1.0, color: Colors.grey[200])),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
@@ -1108,59 +1115,63 @@ class AddressScreenState extends State<AddressScreen>
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: 15, left: 15, bottom: 5),
+                    top: 15, left: 15, bottom: 5, right: 15),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       'Стомость',
                       style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 14),
                     ),
                     Text(
                       '${(totalPrice).toStringAsFixed(0)} \₽',
                       style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 14),
                     )
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: 15, left: 15, bottom: 5),
+                    top: 15, left: 15, bottom: 5, right: 15),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       'Доставка',
                       style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 14),
                     ),
                     Text(
                       '30-50 мин.',
                       style: TextStyle(
-                          color: Colors.black, fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 14),
                     )
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: 15, left: 15, bottom: 5),
+                    top: 15, left: 15, bottom: 5, right: 15),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       'Итого',
                       style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 22),
                     ),
                     Text(
                       '${(totalPrice).toStringAsFixed(0)} \₽',
                       style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 13),
+                          color: Colors.black,
+                          fontSize: 22),
                     )
                   ],
                 ),
@@ -1174,14 +1185,16 @@ class AddressScreenState extends State<AddressScreen>
                     top: 10, left: 15, right: 15, bottom: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    border: Border.all(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
-                    ),
-                  ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8.0, // soften the shadow
+                          spreadRadius: 3.0, //extend the shadow
+                        )
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(width: 1.0, color: Colors.grey[200])),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
@@ -1221,14 +1234,16 @@ class AddressScreenState extends State<AddressScreen>
                     top: 10, left: 15, right: 15, bottom: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    border: Border.all(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
-                    ),
-                  ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8.0, // soften the shadow
+                          spreadRadius: 3.0, //extend the shadow
+                        )
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(width: 1.0, color: Colors.grey[200])),
                   child: Padding(
                     padding: EdgeInsets.only(
                         top: 10, left: 15, right: 15, bottom: 10),

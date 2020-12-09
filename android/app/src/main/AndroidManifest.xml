@@ -11,7 +11,7 @@
     <application
         android:name=".Application"
         android:label="Faem Eda Stage"
-        android:icon="@mipmap/faem"
+        android:icon="@mipmap/delivery_logo"
         android:usesCleartextTraffic="true">
 
         <meta-data android:name="com.google.android.geo.API_KEY"

@@ -262,7 +262,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                   padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                                                   child: Text('title',
                                                     style: TextStyle(
-                                                      fontSize: 15
+                                                      fontSize: 18
                                                     ),
                                                   ),
                                                 ),
@@ -282,18 +282,28 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                         ),
                                                         Text(format.format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.records[index].createdAtUnix * 1000)),
                                                           style: TextStyle(
-                                                              color: Color(0xFF424242),
-                                                              fontSize: 17
+                                                              color: Color(0xFF9B9B9B),
+                                                              fontSize: 11
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                  Text('status',
-                                                    style: TextStyle(
-                                                      fontSize: 18
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Text('status',
+                                                          style: TextStyle(
+                                                              fontSize: 18
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(left: 8.0),
+                                                          child: SvgPicture.asset('assets/svg_images/delivered.svg'),
+                                                        )
+                                                      ],
                                                     ),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                             ),
