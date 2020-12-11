@@ -3,6 +3,8 @@ import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
+import '../models/my_addresses_model.dart';
+import '../models/my_addresses_model.dart';
 import 'add_my_address_screen.dart';
 import 'auto_complete.dart';
 import 'home_screen.dart';
@@ -16,6 +18,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
   List<MyFavouriteAddressesModel> myAddressesModelList;
   GlobalKey<AutoCompleteDemoState> autoCompleteKey = new GlobalKey();
   bool addressScreenButton = false;
+  bool changeMode = false;
 
   void _autocomplete(MyFavouriteAddressesModel myAddressesModel) {
     showModalBottomSheet(
@@ -89,7 +92,6 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                   Navigator.push(
                                     context,
                                     new MaterialPageRoute(builder: (context) {
-                                      myAddressesModel.tag = "house";
                                       myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteKey
                                           .currentState.selectedValue);
                                       return new AddMyAddressScreen(
@@ -129,16 +131,59 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
               AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               myAddressesModelList = snapshot.data;
-              if (myAddressesModelList.length == 0 || addressScreenButton) {
+              if (addressScreenButton) {
                 myAddressesModelList
-                    .add(new MyFavouriteAddressesModel(tag: null));
+                    .add(new MyFavouriteAddressesModel(tag: MyFavouriteAddressesModel.MyAddressesTags[0]));
+                myAddressesModelList
+                    .add(new MyFavouriteAddressesModel(tag: MyFavouriteAddressesModel.MyAddressesTags[1]));
+                myAddressesModelList
+                    .add(new MyFavouriteAddressesModel(tag: MyFavouriteAddressesModel.MyAddressesTags[2]));
                 addressScreenButton = false;
+              }
+              if(myAddressesModelList.isEmpty){
+                return Stack(
+                  children: [
+                    Center(
+                      child: Text('У вас еще нет ни одного\nсохранённого адреса',
+                      textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
+                        child: FlatButton(
+                          child: Text('Добавить адрес',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white)),
+                          color: Color(0xFFE6E6E6),
+                          splashColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+                          onPressed: () async {
+                            if (await Internet.checkConnection()) {
+                              setState(() {
+                                addressScreenButton = true;
+                              });
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                );
               }
               return Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: 30, bottom: 0),
+                    padding: EdgeInsets.only(top: 30, bottom: 0, right: 15),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         InkWell(
                           child: Align(
@@ -162,17 +207,22 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                     (Route<dynamic> route) => false);
                           },
                         ),
-                        Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20, left: 70, bottom: 15),
-                            child: Text('Мои адреса',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF424242))),
-                          ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 0, left: 0, bottom: 0),
+                          child: Text('Мои адреса',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF424242))),
                         ),
+                        InkWell(
+                          child: (changeMode) ? Text('Готово') : Text('Изменить'),
+                          onTap: () async {
+                            setState(() {
+                              changeMode = !changeMode;
+                            });
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -181,11 +231,8 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                       padding: EdgeInsets.zero,
                       children:
                       List.generate(myAddressesModelList.length, (index) {
-                        if (myAddressesModelList[index].tag ==
-                            null) {
-//                          return Text(
-//                            'У вас еще нет ни одного\nсохранённого адреса'
-//                          );
+                        if (myAddressesModelList[index].uuid ==
+                            null || myAddressesModelList[index].uuid == "") {
                           return Column(
                             children: <Widget>[
                               GestureDetector(
@@ -207,7 +254,9 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                       padding:
                                                       EdgeInsets.only(left: 20),
                                                       child: Text(
-                                                        'Добавить адрес дома',
+                                                        (myAddressesModelList[index].tag == MyFavouriteAddressesModel.MyAddressesTags[0]) ?
+                                                        "Добавить адрес работы" : ((myAddressesModelList[index].tag == MyFavouriteAddressesModel.MyAddressesTags[1]) ?
+                                                        "Добавить адрес дома" : "Добавить адрес"),
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             color:
@@ -263,7 +312,9 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                           child: Column(
                                             children: [
                                               //(myAddressesModelList[index].tag = "Дом") != null ? SvgPicture.asset('assets/svg_images/home_my_addresses.svg') : SvgPicture.asset('assets/svg_images/star_my_addresses.svg'),
-                                              SvgPicture.asset('assets/svg_images/star_my_addresses.svg'),
+                                              (myAddressesModelList[index].tag == MyFavouriteAddressesModel.MyAddressesTags[0]) ?
+                                              SvgPicture.asset('assets/svg_images/work.svg') : ((myAddressesModelList[index].tag == MyFavouriteAddressesModel.MyAddressesTags[1]) ?
+                                              SvgPicture.asset('assets/svg_images/home_my_addresses.svg') : SvgPicture.asset('assets/svg_images/star_my_addresses.svg')),
                                               Text(
                                                 (myAddressesModelList[index].name != " ") ?
                                                 myAddressesModelList[index].name
@@ -300,6 +351,15 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                           ),
                                         ),
                                       ),
+                                      (changeMode) ? GestureDetector(
+                                        child: SvgPicture.asset('assets/svg_images/Icon.svg'),
+                                        onTap: () async {
+                                          await myAddressesModelList[index].delete();
+                                          setState((){
+
+                                          });
+                                        },
+                                      ) : Container()
                                     ],
                                   )
                                 ],
@@ -326,7 +386,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                       }),
                     ),
                   ),
-                  Padding(
+                  (addressScreenButton) ? Container() : Padding(
                     padding: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
                     child: FlatButton(
                       child: Text('Добавить адрес',

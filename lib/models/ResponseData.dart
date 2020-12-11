@@ -70,6 +70,17 @@ class Records{
       });
     }
 
+    List<dynamic> ws;
+    if(work_schedule != null && work_schedule.length > 0) {
+      ws = new List<dynamic>();
+//      dp.add(destination_points[0].toJson());
+      work_schedule.forEach((element) {
+        ws.add(
+            element.toJson()
+        );
+      });
+    }
+
     return
       {
         'uuid': this.uuid,
@@ -79,9 +90,9 @@ class Records{
         'own_delivery': this.own_delivery,
         'image': this.image,
         'available': this.available,
-        'work_schedule': null,
+        'work_schedule': ws,
         'type': this.type,
-        'product_category': null,
+        'product_category': this.product_category,
         'destination_points': dp,
         'destination_points_uuid': null,
         'order_preparation_time_second': this.order_preparation_time_second,

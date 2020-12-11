@@ -10,6 +10,8 @@ import 'package:flutter_svg/svg.dart';
 import 'address_screen.dart';
 import 'auth_screen.dart';
 import 'home_screen.dart';
+import 'restaurant_screen.dart';
+import 'restaurant_screen.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({Key key, this.restaurant}) : super(key: key);
@@ -27,31 +29,15 @@ class _CartScreenState extends State<CartScreen> {
   String discount;
   final Records restaurant;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
+  GlobalKey<TotalPriceState> totalPriceKey;
+  List<TotalPrice> totalPrices;
   double total;
   bool delete = false;
-  GlobalKey<PriceFieldState> priceFieldKey =
-  new GlobalKey<PriceFieldState>();
+
 
   _CartScreenState(this.restaurant);
 
   _buildList() {
-    double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
     return Expanded(
       child: ListView.separated(
         padding: EdgeInsets.zero,
@@ -109,10 +95,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: 18.0,
                             color: Color(0xFF000000)),
                       ),
-                      Text('${totalPrice.toStringAsFixed(0)} \₽',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: Color(0xFF000000))),
+                      totalPrices[0]
                     ],
                   ),
                   SizedBox(height: 80.0)
@@ -137,6 +120,8 @@ class _CartScreenState extends State<CartScreen> {
       });
     }
     GlobalKey<CounterState> counterKey = new GlobalKey();
+    GlobalKey<PriceFieldState> priceFieldKey =
+    new GlobalKey<PriceFieldState>();
     return Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -152,14 +137,12 @@ class _CartScreenState extends State<CartScreen> {
                              topLeft: Radius.circular(10),
                              topRight: Radius.circular(10),
                              bottomRight: Radius.circular(10)),
-                         child: Hero(
-                           tag: order.food.name,
-                           child: Image.network(
-                             getImage(order.food.image),
-                             fit: BoxFit.cover,
-                             height: 70,
-                             width: 70,
-                           ),)),
+                         child: Image.network(
+                           getImage(order.food.image),
+                           fit: BoxFit.cover,
+                           height: 70,
+                           width: 70,
+                         ),),
                    ),
                   Column(
                     children: [
@@ -269,7 +252,9 @@ class _CartScreenState extends State<CartScreen> {
                         alignment: Alignment.centerLeft,
                         child: Counter(
                             key: counterKey,
-                            priceFieldKey: priceFieldKey
+                            priceFieldKey: priceFieldKey,
+                            order: order,
+                            totalPriceList: totalPrices,
                         ),
                       ),
                     ],
@@ -374,165 +359,160 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
-    return new Scaffold(
-      key: _scaffoldStateKey,
-      body: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                            height: 40,
-                            width: 60,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 12, bottom: 12, right: 25),
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/arrow_left.svg'),
-                            ))),
-                    Padding(
-                      padding: EdgeInsets.only(right: 20),
-                      child: Text(
-                        restaurant.name,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF3F3F3F)),
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          child: SvgPicture.asset(
-                              'assets/svg_images/del_basket.svg'),
-                          onTap: () {
-                            showAlertDialog(context);
-                          },
-                        )),
-                  ],
-                ),
-              ),
-              Container(
-                color: Color(0xFFF5F5F5),
-                height: 10,
-                width: MediaQuery.of(context).size.width,
-              ),
-              _buildList(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding:
-                  EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
+    totalPrices = new List<TotalPrice>();
+    totalPrices.add(new TotalPrice(key: new GlobalKey(),));
+    totalPrices.add(new TotalPrice(key: new GlobalKey(),));
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+                (Route<dynamic> route) => route.isFirst);
+        return false;
+      },
+      child: new Scaffold(
+        key: _scaffoldStateKey,
+        body: Container(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                                '${totalPrice.toStringAsFixed(0)} \₽',
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Colors.black)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
+                    children: <Widget>[
+                      InkWell(
+                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+                                  (Route<dynamic> route) => route.isFirst),
+                          child: Container(
+                              height: 40,
+                              width: 60,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 12, bottom: 12, right: 25),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_left.svg'),
+                              ))),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Text(
+                          restaurant.name,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3F3F3F)),
+                        ),
                       ),
-                      FlatButton(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: 15,
-                          ),
-                          child: Text('Далее',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                        ),
-                        color: Color(0xFFFE534F),
-                        splashColor: Colors.redAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.only(
-                            left: 70, top: 20, right: 70, bottom: 20),
-                        onPressed: () async {
-                          if (await Internet.checkConnection()) {
-                            if (currentUser.isLoggedIn) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) =>
-                                    new PageScreen(restaurant: restaurant)),
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new AuthScreen()),
-                              );
-                            }
-                          } else {
-                            noConnection(context);
-                          }
-                        },
-                      )
+                      Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: GestureDetector(
+                            child: SvgPicture.asset(
+                                'assets/svg_images/del_basket.svg'),
+                            onTap: () {
+                              showAlertDialog(context);
+                            },
+                          )),
                     ],
                   ),
                 ),
-              ),
-            ],
-          )),
+                Container(
+                  color: Color(0xFFF5F5F5),
+                  height: 10,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                _buildList(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding:
+                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            totalPrices[1],
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        FlatButton(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: 15,
+                            ),
+                            child: Text('Далее',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white)),
+                          ),
+                          color: Color(0xFFFE534F),
+                          splashColor: Colors.redAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.only(
+                              left: 70, top: 20, right: 70, bottom: 20),
+                          onPressed: () async {
+                            if (await Internet.checkConnection()) {
+                              if (currentUser.isLoggedIn) {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                      new PageScreen(restaurant: restaurant)),
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new AuthScreen()),
+                                );
+                              }
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
     );
   }
 }
 
 class Counter extends StatefulWidget {
   GlobalKey<PriceFieldState> priceFieldKey;
-  Counter({Key key, this.priceFieldKey}) : super(key: key);
+  Order order;
+  List<TotalPrice> totalPriceList;
+  Counter({Key key, this.priceFieldKey, this.order, this.totalPriceList}) : super(key: key);
 
   @override
   CounterState createState() {
-    return new CounterState(priceFieldKey);
+    return new CounterState(priceFieldKey, order, totalPriceList);
   }
 }
 
 class CounterState extends State<Counter> {
   GlobalKey<PriceFieldState> priceFieldKey;
-  CounterState(this.priceFieldKey);
+  List<TotalPrice> totalPriceList;
+  Order order;
+  CounterState(this.priceFieldKey, this.order, this.totalPriceList);
 
   int counter = 1;
 
@@ -540,9 +520,7 @@ class CounterState extends State<Counter> {
   void _incrementCounter_plus() {
     setState(() {
       counter++;
-      if(priceFieldKey.currentState != null){
-        priceFieldKey.currentState.setCount(counter);
-      }
+      updateCartItemQuantity();
     });
   }
 
@@ -550,14 +528,27 @@ class CounterState extends State<Counter> {
   void _incrementCounter_minus() {
     setState(() {
       counter--;
-      if(priceFieldKey.currentState != null){
-        priceFieldKey.currentState.setCount(counter);
-      }
+      updateCartItemQuantity();
     });
   }
 
 
+  void updateCartItemQuantity(){
+    order.quantity = counter;
+    priceFieldKey.currentState.setState(() {
+
+    });
+    totalPriceList.forEach((totalPrice) {
+      if(totalPrice.key.currentState != null)
+        totalPrice.key.currentState.setState(() {
+
+        });
+    });
+
+  }
+
   Widget build(BuildContext context) {
+    counter = order.quantity;
     return Padding(
       padding: EdgeInsets.only(left: 15, right: 0),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -684,6 +675,54 @@ class PriceFieldState extends State<PriceField> {
     });
   }
 }
+
+
+
+// ignore: must_be_immutable
+class TotalPrice extends StatefulWidget {
+  GlobalKey<TotalPriceState> key;
+  TotalPrice({this.key}) : super(key: key);
+
+  @override
+  TotalPriceState createState() {
+    return new TotalPriceState();
+  }
+}
+
+class TotalPriceState extends State<TotalPrice> {
+
+  TotalPriceState();
+
+  Widget build(BuildContext context) {
+    double totalPrice = 0;
+    currentUser.cartDataModel.cart.forEach(
+            (Order order) {
+          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+          }else{
+            totalPrice += order.quantity * order.food.price;
+          }
+          double toppingsCost = 0;
+          if(order.food.toppings != null){
+            order.food.toppings.forEach((element) {
+              toppingsCost += order.quantity * element.price;
+            });
+            totalPrice += toppingsCost;
+          }
+        }
+    );
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Text(
+          '${totalPrice.toStringAsFixed(0)} \₽',
+          style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black)),
+    );
+  }
+}
+
+
 
 class EmptyCartScreen extends StatefulWidget {
   final Records restaurant;

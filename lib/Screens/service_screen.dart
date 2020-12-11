@@ -230,6 +230,13 @@ class ServiceScreenState extends State<ServiceScreen> {
                               return Container();
                             }
                             var format = new DateFormat(' HH:mm  dd.MM.yyyy');
+                            snapshot.data.records.sort((var a, var b) {
+                              if(a.status == b.status)
+                                return 0;
+                              if(a.status == "resolved")
+                                return 1;
+                              return -1;
+                            });
                             return Container(
                               child: ListView(
                                 physics: NeverScrollableScrollPhysics(),
@@ -260,7 +267,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                 alignment: Alignment.topLeft,
                                                 child: Padding(
                                                   padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                                                  child: Text('title',
+                                                  child: Text(snapshot.data.records[index].title,
                                                     style: TextStyle(
                                                       fontSize: 18
                                                     ),
@@ -292,14 +299,14 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                   Container(
                                                     child: Row(
                                                       children: [
-                                                        Text('status',
+                                                        Text((snapshot.data.records[index].status == "resolved") ? 'Обработанно' : 'В обработке',
                                                           style: TextStyle(
                                                               fontSize: 18
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.only(left: 8.0),
-                                                          child: SvgPicture.asset('assets/svg_images/delivered.svg'),
+                                                          child: (snapshot.data.records[index].status == "resolved") ? SvgPicture.asset('assets/svg_images/delivered.svg') : SvgPicture.asset('assets/svg_images/unresolved.svg'),
                                                         )
                                                       ],
                                                     ),

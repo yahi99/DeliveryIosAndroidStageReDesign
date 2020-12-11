@@ -56,33 +56,33 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                   Navigator.pop(context);
                 },
               ),
-              (myAddressesModel.uuid != null && myAddressesModel.uuid != "") ?
-              GestureDetector(
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 40, right: 15, bottom: 25),
-                      child: Text(
-                        'Удалить',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF424242)),
-                      ),
-                    )),
-                onTap: () async {
-                  if (await Internet.checkConnection()) {
-                    await myAddressesModel.delete();
-                    Navigator.pushAndRemoveUntil(context,
-                        new MaterialPageRoute(builder: (context) => new MyAddressesScreen()),
-                            (route) => route.isFirst);
-                  } else {
-                    noConnection(context);
-                  }
-                },
-              )
-                  :
-              Container(height: 0,width: 0)
+              // (myAddressesModel.uuid != null && myAddressesModel.uuid != "") ?
+              // GestureDetector(
+              //   child: Align(
+              //       alignment: Alignment.topRight,
+              //       child: Padding(
+              //         padding: EdgeInsets.only(top: 40, right: 15, bottom: 25),
+              //         child: Text(
+              //           'Удалить',
+              //           style: TextStyle(
+              //               fontSize: 15,
+              //               fontWeight: FontWeight.bold,
+              //               color: Color(0xFF424242)),
+              //         ),
+              //       )),
+              //   onTap: () async {
+              //     if (await Internet.checkConnection()) {
+              //       await myAddressesModel.delete();
+              //       Navigator.pushAndRemoveUntil(context,
+              //           new MaterialPageRoute(builder: (context) => new MyAddressesScreen()),
+              //               (route) => route.isFirst);
+              //     } else {
+              //       noConnection(context);
+              //     }
+              //   },
+              // )
+              //     :
+              // Container(height: 0,width: 0)
             ],
           ),
           Align(
@@ -179,7 +179,6 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                 EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
                 onPressed: () async {
                   if (await Internet.checkConnection()) {
-                    myAddressesModel.tag = "house";
                     myAddressesModel.name = nameField.text;
                     myAddressesModel.description = commentField.text;
                     await myAddressesModel.ifNoBrainsSave();

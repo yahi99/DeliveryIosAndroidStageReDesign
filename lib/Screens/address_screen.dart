@@ -636,7 +636,7 @@ class PageState extends State<PageScreen> {
 //                            homeScreenKey = new GlobalKey<HomeScreenState>();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => OrderSuccessScreen(name: currentUser.name,)),
+                                    builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
                                     (Route<dynamic> route) => false);
                           } else {
                             emptyFields(context);

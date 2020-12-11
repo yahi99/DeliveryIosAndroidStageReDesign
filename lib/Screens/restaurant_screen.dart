@@ -10,6 +10,8 @@ import 'package:flutter_app/models/food.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import '../data/data.dart';
+import '../models/RestaurantDataItems.dart';
 import '../models/RestaurantDataItems.dart';
 import '../models/RestaurantDataItems.dart';
 import 'cart_screen.dart';
@@ -54,7 +56,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   RestaurantScreenState(this.restaurant, this.category);
 
   _dayOff(FoodRecords restaurantDataItems,
-      GlobalKey<CartItemsQuantityState> cartItemsQuantityKey) {
+      GlobalKey<MenuItemCounterState> menuItemCounterKey) {
     GlobalKey<VariantsSelectorState> variantsSelectorStateKey =
     GlobalKey<VariantsSelectorState>();
     GlobalKey<ToppingsSelectorState> toppingsSelectorStateKey =
@@ -151,7 +153,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   }
 
   showCartClearDialog(BuildContext context, Order order,
-      GlobalKey<CartItemsQuantityState> cartItemsQuantityKey) {
+      GlobalKey<MenuItemCounterState> menuItemCounterKey) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -203,7 +205,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                             currentUser.cartDataModel.addItem(order);
                             currentUser.cartDataModel.saveData();
                             basketButtonStateKey.currentState.refresh();
-                            cartItemsQuantityKey.currentState.refresh();
+                            menuItemCounterKey.currentState.refresh();
                             counterKey.currentState.refresh();
                           }
                           Navigator.pop(context);
@@ -1155,8 +1157,16 @@ class VariantsSelector extends StatefulWidget {
 }
 
 class VariantsSelectorState extends State<VariantsSelector> {
-  Variants selectedVariant = null;
+  Variants selectedVariant;
   List<Variants> variantsList;
+
+  @override
+  void initState() {
+    if(variantsList.length > 0){
+      selectedVariant = variantsList[0];
+    }
+    super.initState();
+  }
 
   VariantsSelectorState(this.variantsList);
 
@@ -1430,6 +1440,163 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
   }
 }
 
+class MenuItemCounter extends StatefulWidget {
+  GlobalKey<PriceFieldState> priceFieldKey;
+  FoodRecords foodRecords;
+  MenuItemCounter({Key key, this.priceFieldKey, this.foodRecords}) : super(key: key);
+
+  @override
+  MenuItemCounterState createState() {
+    return new MenuItemCounterState(priceFieldKey, this.foodRecords);
+  }
+}
+
+class MenuItemCounterState extends State<MenuItemCounter> {
+  GlobalKey<PriceFieldState> priceFieldKey;
+  Order order;
+  FoodRecords foodRecords;
+  MenuItemCounterState(this.priceFieldKey, this.foodRecords);
+
+  int counter = 1;
+
+  // ignore: non_constant_identifier_names
+  void _incrementCounter_plus() {
+    setState(() {
+      counter++;
+      updateCartItemQuantity();
+    });
+  }
+
+  // ignore: non_constant_identifier_names
+  void _incrementCounter_minus() {
+    setState(() {
+      counter--;
+      updateCartItemQuantity();
+    });
+  }
+
+
+  void updateCartItemQuantity(){
+    order.quantity = counter;
+  }
+
+  Widget build(BuildContext context) {
+    try{
+      order = currentUser.cartDataModel.cart.firstWhere((element) => element.food.uuid == foodRecords.uuid);
+    }catch(e){
+      order = null;
+    }
+    if(order == null){
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, bottom: 5),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Color(0xFFE6E6E6),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
+                child: Text(
+                  '${foodRecords.price} \₽',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+          ),
+        ),
+      );
+    }
+    counter = order.quantity;
+    return Padding(
+        padding: EdgeInsets.only(left: 15, right: 0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Padding(
+            padding: EdgeInsets.only(left: 0, top: 0, bottom: 0),
+            child: InkWell(
+              onTap: () {
+                if (counter != 1) {
+                  _incrementCounter_minus();
+                  // counter = restaurantDataItems.records_count;
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8)),
+                ),
+                height: 40,
+                width: 28,
+                child: Padding(
+                  padding: EdgeInsets.all(7),
+                  child: SvgPicture.asset('assets/svg_images/mini_minus.svg'),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 30,
+            width: 70,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFFE6E6E6)
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(right: 10, left: 10),
+              child: Center(
+                child: Text(
+                  '$counter',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
+            child: InkWell(
+              onTap: () async {
+                if (await Internet.checkConnection()) {
+                  setState(() {
+                    _incrementCounter_plus();
+                    // counter = restaurantDataItems.records_count;
+                  });
+                } else {
+                  noConnection(context);
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      bottomRight: Radius.circular(8)),
+                ),
+                height: 40,
+                width: 28,
+                child: Padding(
+                  padding: EdgeInsets.all(7),
+                  child: SvgPicture.asset('assets/svg_images/plus_counter.svg'),
+                ),
+              ),
+            ),
+          )
+        ])
+    );
+  }
+
+  void refresh() {
+    setState(() {});
+  }
+}
+
+
+
 // Итем хавки
 class MenuItem extends StatefulWidget {
   MenuItem({this.key, this.restaurantDataItems, this.parent}) : super(key: key);
@@ -1454,6 +1621,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
   final FoodRecords restaurantDataItems;
   final RestaurantScreenState parent;
 
+
   MenuItemState(this.restaurantDataItems, this.parent);
 
 
@@ -1464,6 +1632,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
   Widget build(BuildContext context) {
     super.build(context);
     GlobalKey<CartItemsQuantityState> cartItemsQuantityKey = new GlobalKey();
+    GlobalKey<MenuItemCounterState> menuItemCounterKey = new GlobalKey();
     CartItemsQuantity cartItemsQuantity = new CartItemsQuantity(
       key: cartItemsQuantityKey,
       restaurantDataItems: restaurantDataItems,
@@ -1474,7 +1643,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           child: GestureDetector(
               onTap: () async {
                 if (await Internet.checkConnection()) {
-                  _onPressedButton(restaurantDataItems, cartItemsQuantityKey);
+                  _onPressedButton(restaurantDataItems, menuItemCounterKey);
                 } else {
                   noConnection(context);
                 }
@@ -1543,28 +1712,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       ],
                                     ),
                                   ),
-                                 Align(
-                                   alignment: Alignment.centerLeft,
-                                   child: Padding(
-                                     padding: const EdgeInsets.only(left: 10, bottom: 5),
-                                     child: Container(
-                                         decoration: BoxDecoration(
-                                             color: Color(0xFFE6E6E6),
-                                             borderRadius: BorderRadius.circular(10)
-                                         ),
-                                         child: Padding(
-                                           padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
-                                           child: Text(
-                                             '${restaurantDataItems.price} \₽',
-                                             style: TextStyle(
-                                                 fontSize: 18.0,
-                                                 color: Colors.black),
-                                             overflow: TextOverflow.ellipsis,
-                                           ),
-                                         )
-                                     ),
-                                   ),
-                                 )
+                                  MenuItemCounter(foodRecords: restaurantDataItems, key: menuItemCounterKey,)
                                   // Align(
                                   //   child: cartItemsQuantity,
                                   // )
@@ -1595,7 +1743,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               ))),
     );
   }
-  void _onPressedButton(FoodRecords food, GlobalKey<CartItemsQuantityState> cartItemsQuantityKey) {
+  void _onPressedButton(FoodRecords food, GlobalKey<MenuItemCounterState> menuItemCounterKey) {
 
     DateTime now = DateTime.now();
     int currentTime = now.hour*60+now.minute;
@@ -1623,7 +1771,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               !(currentTime >= work_beginning && currentTime < work_ending)){
             return Container(
               height: 260,
-              child: parent._dayOff(food, cartItemsQuantityKey),
+              child: parent._dayOff(food, menuItemCounterKey),
               decoration: BoxDecoration(
                   color: Theme.of(context).canvasColor,
                   borderRadius: BorderRadius.only(
@@ -1635,7 +1783,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             if(food.comment != "" && food.comment != null){
               return Container(
                 height: 335,
-                child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
+                child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.only(
@@ -1646,7 +1794,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             }if(food.variants == null){
               return Container(
                 height: 290,
-                child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
+                child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.only(
@@ -1658,7 +1806,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             else{
               return Container(
                 height: 570,
-                child: _buildBottomNavigationMenu(food, cartItemsQuantityKey),
+                child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.only(
@@ -1670,7 +1818,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           }
         });
   }
-  Container _buildBottomNavigationMenu(FoodRecords restaurantDataItems, GlobalKey<CartItemsQuantityState> cartItemsQuantityKey) {
+  Container _buildBottomNavigationMenu(FoodRecords restaurantDataItems, GlobalKey<MenuItemCounterState> menuItemCounterKey) {
     GlobalKey<VariantsSelectorState> variantsSelectorStateKey =
     GlobalKey<VariantsSelectorState>();
     GlobalKey<ToppingsSelectorState> toppingsSelectorStateKey =
@@ -1911,7 +2059,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                           parent.counterKey.currentState.counter,
                                           restaurant: parent.restaurant,
                                           date: DateTime.now().toString()),
-                                      cartItemsQuantityKey);
+                                      menuItemCounterKey);
                                 } else {
                                   currentUser.cartDataModel.addItem(new Order(
                                       food: foodOrder,
@@ -1925,7 +2073,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                     child: parent.showAlertDialog(context),
                                   );
                                   parent.basketButtonStateKey.currentState.refresh();
-                                  cartItemsQuantityKey.currentState.refresh();
+                                  menuItemCounterKey.currentState.refresh();
                                   parent.counterKey.currentState.refresh();
                                 }
                               } else {

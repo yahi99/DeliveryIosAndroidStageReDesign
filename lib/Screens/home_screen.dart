@@ -875,9 +875,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: ('' != category_uuid)
-                        ? Color(0xFFF6F6F6)
-                        : Color(0xFFFE534F)),
+                    color: Color(0xFFF6F6F6)),
                 child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: Row(
@@ -886,10 +884,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         Text(
                           "Кухни",
                           style: TextStyle(
-                              color: ('' !=
-                                  category_uuid)
-                                  ? Color(0xFF424242)
-                                  : Colors.white,
+                              color: Color(0xFF424242),
                               fontSize: 15),
                         ),
                         Padding(
@@ -914,19 +909,14 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: ('' != category_uuid)
-                        ? Color(0xFFF6F6F6)
-                        : Color(0xFFFE534F)),
+                    color: Color(0xFFF6F6F6)),
                 child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: Center(
                       child: Text(
                         "По расстоянию",
                         style: TextStyle(
-                            color: ('' !=
-                                category_uuid)
-                                ? Color(0xFF424242)
-                                : Colors.white,
+                            color: Color(0xFF424242),
                             fontSize: 15),
                       ),
                     )),

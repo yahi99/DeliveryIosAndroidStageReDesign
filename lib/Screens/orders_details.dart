@@ -10,6 +10,7 @@ import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import '../GetData/getImage.dart';
 import 'home_screen.dart';
 
 class OrdersDetailsScreen extends StatefulWidget {
@@ -158,9 +159,9 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                       ],
                     ),
                   ),
-                  Row(
+                  (ordersStoryModelItem.state_title == "Завершен") ? Row(
                     children: [
-                      Text((ordersStoryModelItem.state_title = "Завершен") != null ? 'Доставлен' : '',
+                      Text('Доставлен',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14
@@ -171,6 +172,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         child: SvgPicture.asset('assets/svg_images/delivered.svg'),
                       )
                     ],
+                  ) : Container(
+                    child: Text(ordersStoryModelItem.state_title,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -199,26 +207,29 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    (ordersStoryModelItem.store != null)
-                        ? ordersStoryModelItem.routes[0].street + ' ' +
-                        ordersStoryModelItem.routes[0].house
-                        : 'Пусто',
-                    style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+            Flexible(
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        (ordersStoryModelItem.store != null)
+                            ? ordersStoryModelItem.routes[0].unrestrictedValue
+                            : 'Пусто',
+                        style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                      ),
+                      Text(
+                        (ordersStoryModelItem.store != null && ordersStoryModelItem.routes.length > 1)
+                            ?  ordersStoryModelItem.routes[1].unrestrictedValue
+                            : 'Пусто',
+                        style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0),),
+                        textAlign: TextAlign.start,
+                      )
+                    ],
                   ),
-                  Text(
-                    (ordersStoryModelItem.store != null)
-                        ? ordersStoryModelItem.routes[0].street + ' ' +
-                        ordersStoryModelItem.routes[0].house
-                        : 'Пусто',
-                    style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
-                  )
-                ],
+                ),
               ),
             ),
           ],
@@ -245,6 +256,21 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                    child: Image.network(
+                      getImage(product.image),
+                      fit: BoxFit.cover,
+                      height: 70,
+                      width: 70,
+                    ),),
+                ),
                 (product.selectedVariant == null || product.toppings == null ||
                     product.selectedVariant == null && product.toppings == null) ? Expanded(
                   child: SingleChildScrollView(

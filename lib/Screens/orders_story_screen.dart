@@ -81,12 +81,12 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                             ],
                           ),
                         ),
-                        Row(
+                        (ordersStoryModelItem.state_title == "Завершен") ? Row(
                           children: [
-                            Text((ordersStoryModelItem.state_title = "Завершен") != null ? 'Доставлен' : '',
+                            Text('Доставлен',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14
+                                  color: Colors.black,
+                                  fontSize: 14
                               ),
                             ),
                             Padding(
@@ -94,6 +94,13 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                               child: SvgPicture.asset('assets/svg_images/delivered.svg'),
                             )
                           ],
+                        ) : Container(
+                          child: Text(ordersStoryModelItem.state_title,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14
+                            ),
+                          ),
                         )
                       ],
                     ),

@@ -55,7 +55,8 @@ class CartDataModel {
         "toppings": toppings,
         "number": order.quantity,
         "price": order.food.price,
-        "restaurant": order.restaurant.toJson()
+        "restaurant": order.restaurant.toJson(),
+        "image": order.food.image
       };
       list.add(item);
     });

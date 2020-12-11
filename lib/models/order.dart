@@ -30,6 +30,7 @@ class Order {
           uuid: parsedJson['uuid'],
           price: parsedJson['price'],
           name: parsedJson['name'],
+          image: parsedJson['image'],
           variants: [
             new Variants(
                 uuid: parsedJson['variant_uuid'],
