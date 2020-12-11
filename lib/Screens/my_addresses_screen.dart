@@ -268,9 +268,12 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                 onTap: () async {
                                                   if (await Internet
                                                       .checkConnection()) {
-                                                    _autocomplete(
-                                                        myAddressesModelList[
-                                                        index]);
+                                                    Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (context) => new AddMyAddressScreen(myAddressesModel: myAddressesModelList[index],),
+                                                      ),
+                                                    );
                                                   } else {
                                                     noConnection(context);
                                                   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Screens/autocolplete_field_list.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,6 +21,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
   bool status1 = false;
   String name;
   MyFavouriteAddressesModel myAddressesModel;
+  GlobalKey<AutoCompleteFieldState> autoCompleteFieldKey = new GlobalKey();
 
   AddMyAddressScreenState(this.myAddressesModel);
 
@@ -111,55 +113,59 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                       ),
                     ),
                     Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    AutoCompleteField(autoCompleteFieldKey, onSelected: (){
+                      myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteFieldKey.currentState.selectedValue);
+                      return;
+                    }, initialValue: (myAddressesModel.address == null) ? '' : myAddressesModel.address.unrestrictedValue,)
                   ],
                 ),
               )
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: 120, left: 0),
-              child: Column(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 30, left: 15, right: 15),
-                      child: Text(myAddressesModel.address.unrestrictedValue,
-                          style: TextStyle(fontSize: 17, color: Color(0xFF424242))),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10, right: 10, bottom: 20, left: 15),
-                      child: Text(
-                          'г.Владикавказ, республика Северная Осетия-Алания, Россия',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
-                    ),
-                  ),
-                  Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 230),
-              child: TextField(
-                controller: commentField,
-                textCapitalization: TextCapitalization.sentences,
-                decoration: new InputDecoration(
-                  hintText: 'Подкажите водителю, как лучше к вам подъехать',
-                  hintStyle: TextStyle(color: Color(0xFF9B9B9B), fontSize: 14),
-                  border: InputBorder.none,
-                  counterText: '',
-                ),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(top: 120, left: 0),
+          //     child: Column(
+          //       children: <Widget>[
+          //         Align(
+          //           alignment: Alignment.centerLeft,
+          //           child: Padding(
+          //             padding: EdgeInsets.only(top: 30, left: 15, right: 15),
+          //             child: Text(myAddressesModel.address.unrestrictedValue,
+          //                 style: TextStyle(fontSize: 17, color: Color(0xFF424242))),
+          //           ),
+          //         ),
+          //         Align(
+          //           alignment: Alignment.centerLeft,
+          //           child: Padding(
+          //             padding: EdgeInsets.only(top: 10, right: 10, bottom: 20, left: 15),
+          //             child: Text(
+          //                 'г.Владикавказ, республика Северная Осетия-Алания, Россия',
+          //                 textAlign: TextAlign.left,
+          //                 style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
+          //           ),
+          //         ),
+          //         Divider(height: 1.0, color: Color(0xFFEDEDED)),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(left: 20, top: 230),
+          //     child: TextField(
+          //       controller: commentField,
+          //       textCapitalization: TextCapitalization.sentences,
+          //       decoration: new InputDecoration(
+          //         hintText: 'Подкажите водителю, как лучше к вам подъехать',
+          //         hintStyle: TextStyle(color: Color(0xFF9B9B9B), fontSize: 14),
+          //         border: InputBorder.none,
+          //         counterText: '',
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -179,6 +185,9 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                 EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
                 onPressed: () async {
                   if (await Internet.checkConnection()) {
+                    if(myAddressesModel.address == null){
+                      return;
+                    }
                     myAddressesModel.name = nameField.text;
                     myAddressesModel.description = commentField.text;
                     await myAddressesModel.ifNoBrainsSave();
