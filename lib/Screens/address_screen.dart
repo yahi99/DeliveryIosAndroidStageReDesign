@@ -1570,7 +1570,7 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                   padding: EdgeInsets.only(bottom: 20),
                   child: Text(name + ', ваш заказ принят! ',
                     style: TextStyle(
-                      fontSize: 24
+                        fontSize: 24
                     ),
                   ),
                 ),

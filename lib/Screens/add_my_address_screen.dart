@@ -113,6 +113,14 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                       ),
                     ),
                     Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Text('Адрес',
+                            style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
+                      ),
+                    ),
                     AutoCompleteField(autoCompleteFieldKey, onSelected: (){
                       myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteFieldKey.currentState.selectedValue);
                       return;
@@ -168,36 +176,40 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
           // ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: FlatButton(
-                child: Text(
-                  "Добавить адрес",
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.white)
-                ),
-                color: Color(0xFFE6E6E6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding:
-                EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
-                onPressed: () async {
-                  if (await Internet.checkConnection()) {
-                    if(myAddressesModel.address == null){
-                      return;
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 5),
+                child: FlatButton(
+                  child: Text(
+                    "Добавить адрес",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white)
+                  ),
+                  color: Color(0xFFE6E6E6),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding:
+                  EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+                  onPressed: () async {
+                    if (await Internet.checkConnection()) {
+                      if(myAddressesModel.address == null){
+                        return;
+                      }
+                      myAddressesModel.name = nameField.text;
+                      myAddressesModel.description = commentField.text;
+                      await myAddressesModel.ifNoBrainsSave();
+                      Navigator.pushAndRemoveUntil(context,
+                          new MaterialPageRoute(builder: (context) => new MyAddressesScreen()),
+                              (route) => route.isFirst);
+                    } else {
+                      noConnection(context);
                     }
-                    myAddressesModel.name = nameField.text;
-                    myAddressesModel.description = commentField.text;
-                    await myAddressesModel.ifNoBrainsSave();
-                    Navigator.pushAndRemoveUntil(context,
-                        new MaterialPageRoute(builder: (context) => new MyAddressesScreen()),
-                            (route) => route.isFirst);
-                  } else {
-                    noConnection(context);
-                  }
-                },
+                  },
+                ),
               ),
             ),
           )

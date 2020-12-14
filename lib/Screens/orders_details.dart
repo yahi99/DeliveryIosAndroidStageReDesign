@@ -172,11 +172,17 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         child: SvgPicture.asset('assets/svg_images/delivered.svg'),
                       )
                     ],
-                  ) : Container(
-                    child: Text(ordersStoryModelItem.state_title,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14
+                  ) : Flexible(
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(ordersStoryModelItem.state_title,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -683,7 +689,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Отменить',
+                              'Оменить заказ',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,),
@@ -695,13 +701,19 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
 //                            showNoCancelAlertDialog(context);
 //                            return;
 //                          }
-                          showAlertDialog(context);
-                          await loadOrderCancel(ordersStoryModelItem.uuid);
-                          homeScreenKey = new GlobalKey();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                                  (Route<dynamic> route) => false);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) {
+                              return OrderRejectScreen(ordersStoryModelItem: ordersStoryModelItem,);
+                            }),
+                          );
+//                          showAlertDialog(context);
+//                          await loadOrderCancel(ordersStoryModelItem.uuid);
+//                          homeScreenKey = new GlobalKey();
+//                          Navigator.of(context).pushAndRemoveUntil(
+//                              MaterialPageRoute(
+//                                  builder: (context) => HomeScreen()),
+//                                  (Route<dynamic> route) => false);
                         } else {
                           noConnection(context);
                         }
@@ -735,5 +747,159 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             )
           ],
         ));
+  }
+}
+
+class OrderRejectScreen extends StatefulWidget {
+  final OrdersStoryModelItem ordersStoryModelItem;
+  OrderRejectScreen({Key key, this.ordersStoryModelItem}) : super(key: key);
+
+  @override
+  OrderRejectScreenState createState() {
+    return new OrderRejectScreenState(ordersStoryModelItem);
+  }
+}
+
+class OrderRejectScreenState extends State<OrderRejectScreen> {
+  final OrdersStoryModelItem ordersStoryModelItem;
+  OrderRejectScreenState(this.ordersStoryModelItem);
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          child: Container(
+              height: 150,
+              width: 320,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
+                    child: Text(
+                      'Отмена заказа',
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF424242)),
+                    ),
+                  ),
+                  Center(
+                    child: CircularProgressIndicator(),
+                  )
+                ],
+              )),
+        );
+      },
+    );
+  }
+
+  Widget build(BuildContext context) {
+    double toppingsCost = 0;
+    return Scaffold(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                InkWell(
+                  child: Container(
+                      height: 50,
+                      width: 60,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 12, bottom: 12, right: 15),
+                        child: Center(
+                          child:SvgPicture.asset(
+                              'assets/svg_images/arrow_left.svg'),
+                        ),
+                      )
+                  ),
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.35),
+                  child: Text('Отмена заказа',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10),
+            child: Text('Почему вы решили отменить заказ?',style: TextStyle(fontSize: 18, color: Color(0xFF424242))),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: List.generate(5,(index){
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30.0, left: 15, right: 15),
+                  child: Container(
+                    width: 345,
+                    height: 56,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFE6E6E6)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Align(alignment: Alignment.centerLeft,child: Text('Заказал случайно', textAlign: TextAlign.start,)),
+                    )
+                  ),
+                );
+              }),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: GestureDetector(
+                  child: Container(
+                      height: 40,
+                      width: 340,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFE534F),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Оменить заказ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,),
+                        ),
+                      )),
+                  onTap: () async {
+                    if (await Internet.checkConnection()) {
+//                          if(not_cancel_state.contains(ordersStoryModelItem.state)){
+//                            showNoCancelAlertDialog(context);
+//                            return;
+//                          }
+                      showAlertDialog(context);
+                      await loadOrderCancel(ordersStoryModelItem.uuid);
+                      homeScreenKey = new GlobalKey();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()),
+                              (Route<dynamic> route) => false);
+                    } else {
+                      noConnection(context);
+                    }
+                  },
+                ),
+              ),
+            ),
+          )
+        ],
+      )
+    );
   }
 }
