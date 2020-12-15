@@ -10,8 +10,10 @@ import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../GetData/getImage.dart';
 import 'home_screen.dart';
+import 'dart:io' show Platform;
 
 class OrdersDetailsScreen extends StatefulWidget {
   final OrdersStoryModelItem ordersStoryModelItem;
@@ -25,6 +27,7 @@ class OrdersDetailsScreen extends StatefulWidget {
 
 class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
   final OrdersStoryModelItem ordersStoryModelItem;
+  var in_the_way = ['on_the_way'];
 
   OrdersDetailsScreenState(this.ordersStoryModelItem);
 
@@ -94,6 +97,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     );
   }
 
+
   List<Widget> _buildListItems(){
     double totalPrice = ordersStoryModelItem.tariff.totalPrice.toDouble();
     var format = new DateFormat('  HH:mm    dd.MM.yyyy');
@@ -104,7 +108,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     result.add(Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
       child: Container(
-        height: 170,
+        height: (in_the_way.contains(ordersStoryModelItem.state)) ? 230 : 190,
         padding: EdgeInsets.only(right: 10, left: 15),
         decoration: BoxDecoration(
             boxShadow: [
@@ -238,6 +242,60 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 ),
               ),
             ),
+        (in_the_way.contains(ordersStoryModelItem.state)) ? GestureDetector(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                child: Container(
+                  width: 310,
+                  height: 42,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color(0xFFF6F6F6)),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
+                    child: Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 45, top: 5),
+                          child: SvgPicture.asset('assets/svg_images/message_icon.svg'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 20, top: 2, left: 80),
+                          child: Text(
+                            'Чат с водителем',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if(snapshot.connectionState == ConnectionState.done && snapshot.data){
+                              return Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 189, bottom: 0),
+                                  child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
+                                ),
+                              );
+                            }
+                            return Container(height: 0);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ),
+              onTap: (){
+                Navigator.pushReplacement(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) => new ChatScreen(order_uuid: ordersStoryModelItem.uuid, key: chatKey),
+                  ),
+                );
+              },
+            ): Container(height: 0,),
           ],
         ),
       ),
@@ -532,6 +590,95 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     return result;
   }
 
+
+  callTo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 0),
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            child: Container(
+                height: 210,
+                width: 315,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
+                      child: Text(
+                        'Кому вы хотите позвонить?',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF424242)),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                    InkWell(
+                      child: Container(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 20, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                SvgPicture.asset(
+                                    'assets/svg_images/call_to_restaurant.svg'),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    'В заведение',
+                                    style: TextStyle(
+                                        fontSize: 17, color: Color(0xFF424242)),
+                                  ),
+                                )
+                              ],
+                            )
+                        ),
+                      ),
+                      onTap: () {
+                        launch("tel://" + ordersStoryModelItem.store.phone);
+                      },
+                    ),
+                    Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                    InkWell(
+                      child: Container(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 20, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                SvgPicture.asset(
+                                    'assets/svg_images/call_to_driver.svg'),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    'Водителю',
+                                    style: TextStyle(
+                                        fontSize: 17, color: Color(0xFF424242)),
+                                  ),
+                                )
+                              ],
+                            )
+                        ),
+                      ),
+                      onTap: () {
+                        launch("tel://" + ordersStoryModelItem.driver.phone);
+                      },
+                    )
+                  ],
+                )),
+          ),
+        );
+      },
+    );
+  }
+
   bool status1 = false;
 
   @override
@@ -718,7 +865,126 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           noConnection(context);
                         }
                       },
-                    ): Container(),
+                    ): (in_the_way.contains(ordersStoryModelItem.state)) ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10, right: 30, left: 10),
+                            child: (in_the_way.contains(ordersStoryModelItem.state))
+                                ? Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(11)),
+                                  color: Color(0xFF50B561)),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5, right: 10, bottom: 5, left: 10),
+                                child:  Center(
+                                  child: Text(
+                                    'Позвонить',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                    color: Colors.white
+                                    ),
+                                  ),
+                                )
+                              ),
+                            )
+                                : Container(),
+                          ),
+                          onTap: () {
+                            if(Platform.isIOS){
+                              return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                                    child: Column(
+                                      children: [
+                                        Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          child: Container(
+                                            height: 220,
+                                            child: Column(
+                                              children: [
+                                                Text('Кому вы хотите позвонить?',
+                                                  style: TextStyle(
+                                                      fontSize: 20
+                                                  ),
+                                                ),
+                                                Divider(color: Colors.grey,),
+                                                InkWell(
+                                                  child: Container(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: Center(
+                                                      child: Text("В заведение",
+                                                        style: TextStyle(
+                                                            color: Color(0xFF007AFF),
+                                                            fontSize: 20
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    launch("tel://" + ordersStoryModelItem.store.phone);
+                                                  },
+                                                ),
+                                                Divider(color: Colors.grey,),
+                                                InkWell(
+                                                  child: Container(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: Center(
+                                                      child: Text("Водителю",
+                                                        style: TextStyle(
+                                                            color: Color(0xFF007AFF),
+                                                            fontSize: 20
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    launch("tel://" + ordersStoryModelItem.driver.phone);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          child: InkWell(
+                                            child: Container(
+                                              height: 50,
+                                              width: 100,
+                                              child: Center(
+                                                child: Text("Отмена",
+                                                  style: TextStyle(
+                                                      color: Color(0xFFDC634A),
+                                                      fontSize: 20
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: (){
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                            callTo(context);
+                          },
+                        )) : Container(),
                   )),
             ),
             Center(

@@ -12,6 +12,7 @@ import 'auth_screen.dart';
 import 'home_screen.dart';
 import 'restaurant_screen.dart';
 import 'restaurant_screen.dart';
+import 'dart:io' show Platform;
 
 class CartScreen extends StatefulWidget {
   CartScreen({Key key, this.restaurant}) : super(key: key);
@@ -411,6 +412,73 @@ class _CartScreenState extends State<CartScreen> {
                             child: SvgPicture.asset(
                                 'assets/svg_images/del_basket.svg'),
                             onTap: () {
+                              if(Platform.isIOS){
+                                return showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                                      child: Column(
+                                        children: [
+                                          Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                            child: InkWell(
+                                              child: Container(
+                                                height: 50,
+                                                width: 100,
+                                                child: Center(
+                                                  child: Text("Очистить корзину",
+                                                    style: TextStyle(
+                                                        color: Color(0xFFFF3B30),
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
+                                                  currentUser.cartDataModel.cart.clear();
+                                                  currentUser.cartDataModel.saveData();
+                                                });
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    new EmptyCartScreen(restaurant: restaurant),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                            child: InkWell(
+                                              child: Container(
+                                                height: 50,
+                                                width: 100,
+                                                child: Center(
+                                                  child: Text("Отмена",
+                                                    style: TextStyle(
+                                                        color: Color(0xFF007AFF),
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: (){
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                               showAlertDialog(context);
                             },
                           )),
@@ -786,16 +854,8 @@ class EmptyCartScreenState extends State<EmptyCartScreen> {
                       ),
                       Padding(
                           padding: EdgeInsets.only(right: 10),
-                          child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                              child: GestureDetector(
-                                child: SvgPicture.asset(
-                                    'assets/svg_images/delete.svg'),
-                              ))),
+                          child: SvgPicture.asset(
+                              'assets/svg_images/del_basket.svg'),),
                     ],
                   ),
                 ),

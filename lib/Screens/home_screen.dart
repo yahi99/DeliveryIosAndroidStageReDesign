@@ -281,7 +281,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         context: context,
         builder: (context) {
           return Container(
-            height: 500,
+            height: 400,
             child: _buildDistanceFilterNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -295,7 +295,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   _buildDistanceFilterNavigationMenu() {
     return Container(
-      height: 500,
       child: Column(
         children: [
           Align(
@@ -332,20 +331,23 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             title: Text('Дорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
-          FlatButton(
-            child: Text('Готово',
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Color(0xFF000000))),
-            color: Color(0xFFE6E6E6),
-            splashColor: Colors.grey,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: FlatButton(
+              child: Text('Готово',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Color(0xFF000000))),
+              color: Color(0xFFE6E6E6),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+              onPressed: () async {
+                Navigator.pop(context);
+              },
             ),
-            padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
-            onPressed: () async {
-              Navigator.pop(context);
-            },
           )
         ],
       ),
@@ -1235,93 +1237,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
 
   OrderCheckingState(this.ordersStoryModelItem);
 
-  showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Container(
-                height: 210,
-                width: 315,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
-                      child: Text(
-                        'Кому вы хотите позвонить?',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF424242)),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20, left: 15),
-                            child: Row(
-                              children: <Widget>[
-                                SvgPicture.asset(
-                                    'assets/svg_images/call_to_restaurant.svg'),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    'В заведение',
-                                    style: TextStyle(
-                                        fontSize: 17, color: Color(0xFF424242)),
-                                  ),
-                                )
-                              ],
-                            )
-                        ),
-                      ),
-                      onTap: () {
-                        launch("tel://" + ordersStoryModelItem.store.phone);
-                      },
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20, left: 15),
-                            child: Row(
-                              children: <Widget>[
-                                SvgPicture.asset(
-                                    'assets/svg_images/call_to_driver.svg'),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    'Водителю',
-                                    style: TextStyle(
-                                        fontSize: 17, color: Color(0xFF424242)),
-                                  ),
-                                )
-                              ],
-                            )
-                        ),
-                      ),
-                      onTap: () {
-                        launch("tel://" + ordersStoryModelItem.driver.phone);
-                      },
-                    )
-                  ],
-                )),
-          ),
-        );
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1589,117 +1505,117 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                       fontSize: 14
                   ),
                 )
-            ) :
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 10, bottom: 10, right: 30, left: 10),
-                        child: (in_the_way.contains(ordersStoryModelItem.state))
-                            ? Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(11)),
-                              border: Border.all(color: Color(0xFF45C64E)),
-                              color: Colors.white),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                top: 5, right: 10, bottom: 5, left: 10),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                SvgPicture.asset(
-                                    'assets/svg_images/phone.svg'),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    'Позвонить',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                            : Container(),
-                      ),
-                      onTap: () {
-                        showAlertDialog(context);
-                      },
-                    )),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-                        child: (in_the_way.contains(ordersStoryModelItem.state)) ? Container(
-                          width: 130,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(11)),
-                              color: Color(0xFF45C64E)),
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
-                            child: Stack(
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: SvgPicture.asset('assets/svg_images/chat.svg'),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 20, top: 2),
-                                    child: Text(
-                                      'Чат',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
-                                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if(snapshot.connectionState == ConnectionState.done && snapshot.data){
-                                      return Align(
-                                        alignment: Alignment.topRight,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(right: 65, bottom: 2),
-                                          child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
-                                        ),
-                                      );
-                                    }
-                                    return Container(height: 0);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ) : Container(),
-                      ),
-                      onTap: (){
-                        Navigator.pushReplacement(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (context) => new ChatScreen(order_uuid: ordersStoryModelItem.uuid, key: chatKey),
-                          ),
-                        );
-                      },
-                    )
-                ),
-              ],
-            )
+            ) :Container()
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              children: <Widget>[
+//                Align(
+//                    alignment: Alignment.centerLeft,
+//                    child: GestureDetector(
+//                      child: Padding(
+//                        padding: EdgeInsets.only(
+//                            top: 10, bottom: 10, right: 30, left: 10),
+//                        child: (in_the_way.contains(ordersStoryModelItem.state))
+//                            ? Container(
+//                          decoration: BoxDecoration(
+//                              borderRadius:
+//                              BorderRadius.all(Radius.circular(11)),
+//                              border: Border.all(color: Color(0xFF45C64E)),
+//                              color: Colors.white),
+//                          child: Padding(
+//                            padding: EdgeInsets.only(
+//                                top: 5, right: 10, bottom: 5, left: 10),
+//                            child: Row(
+//                              mainAxisAlignment:
+//                              MainAxisAlignment.spaceBetween,
+//                              children: <Widget>[
+//                                SvgPicture.asset(
+//                                    'assets/svg_images/phone.svg'),
+//                                Padding(
+//                                  padding: EdgeInsets.only(left: 10),
+//                                  child: Text(
+//                                    'Позвонить',
+//                                    style: TextStyle(
+//                                        fontWeight: FontWeight.bold,
+//                                        fontSize: 14),
+//                                  ),
+//                                )
+//                              ],
+//                            ),
+//                          ),
+//                        )
+//                            : Container(),
+//                      ),
+//                      onTap: () {
+//                        showAlertDialog(context);
+//                      },
+//                    )),
+//                Align(
+//                    alignment: Alignment.centerRight,
+//                    child: GestureDetector(
+//                      child: Padding(
+//                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+//                        child: (in_the_way.contains(ordersStoryModelItem.state)) ? Container(
+//                          width: 130,
+//                          decoration: BoxDecoration(
+//                              borderRadius: BorderRadius.all(Radius.circular(11)),
+//                              color: Color(0xFF45C64E)),
+//                          child: Padding(
+//                            padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
+//                            child: Stack(
+//                              children: <Widget>[
+//                                Align(
+//                                  alignment: Alignment.topLeft,
+//                                  child: Padding(
+//                                    padding: EdgeInsets.only(left: 15),
+//                                    child: SvgPicture.asset('assets/svg_images/chat.svg'),
+//                                  ),
+//                                ),
+//                                Align(
+//                                  alignment: Alignment.topRight,
+//                                  child: Padding(
+//                                    padding: EdgeInsets.only(right: 20, top: 2),
+//                                    child: Text(
+//                                      'Чат',
+//                                      style: TextStyle(
+//                                          fontWeight: FontWeight.bold,
+//                                          fontSize: 14,
+//                                          color: Colors.white
+//                                      ),
+//                                    ),
+//                                  ),
+//                                ),
+//                                FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
+//                                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+//                                    if(snapshot.connectionState == ConnectionState.done && snapshot.data){
+//                                      return Align(
+//                                        alignment: Alignment.topRight,
+//                                        child: Padding(
+//                                          padding: EdgeInsets.only(right: 65, bottom: 2),
+//                                          child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
+//                                        ),
+//                                      );
+//                                    }
+//                                    return Container(height: 0);
+//                                  },
+//                                ),
+//                              ],
+//                            ),
+//                          ),
+//                        ) : Container(),
+//                      ),
+//                      onTap: (){
+//                        Navigator.pushReplacement(
+//                          context,
+//                          new MaterialPageRoute(
+//                            builder: (context) => new ChatScreen(order_uuid: ordersStoryModelItem.uuid, key: chatKey),
+//                          ),
+//                        );
+//                      },
+//                    )
+//                ),
+//              ],
+//            )
           ],
         ));
   }

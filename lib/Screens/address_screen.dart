@@ -343,6 +343,8 @@ class PageState extends State<PageScreen> {
     print('suka');
     var addressScreen = AddressScreen(restaurant: restaurant, key: addressScreenKey,);
     var takeAwayScreen = TakeAway(restaurant: restaurant, key: takeAwayScreenKey,);
+    bool f = false;
+    GlobalKey<PromoCodeFieldState> promoCodeFieldKey = new GlobalKey();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -486,63 +488,101 @@ class PageState extends State<PageScreen> {
                 },
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: 10, left: 15, right: 15, bottom: 10),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: GestureDetector(
-                  child: Container(
-                    width: 167,
-                    height: 64,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 8.0, // soften the shadow
-                            spreadRadius: 3.0, //extend the shadow
-                          )
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(width: 1.0, color: Colors.grey[200])),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 10, left: 15, right: 15, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            children: [
-                              Text(
-                                "Способ оплаты",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFFB8B8B8)),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 10, left: 15, right: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: GestureDetector(
+                      child: Container(
+                        width: 167,
+                        height: 64,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 15, right: 15, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                children: [
+                                  Text(
+                                    "Способ оплаты",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFFB8B8B8)),
+                                  ),
+                                  Text(
+                                    (selectedPaymentId == 1) ? card : cash,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                (selectedPaymentId == 1) ? card : cash,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_down.svg'),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: SvgPicture.asset(
-                                'assets/svg_images/arrow_down.svg'),
-                          ),
-                        ],
+                        ),
                       ),
+                      onTap: () async {
+                        _payment();
+                      },
                     ),
                   ),
-                  onTap: () async {
-                    _payment();
-                  },
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 10, left: 0, right: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: InkWell(
+                      child: Container(
+                        width: 140,
+                        height: 64,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 15, right: 15, bottom: 10),
+                          child: (f) ? PromoCodeField(key: promoCodeFieldKey) : Center(child: Text('  Введите\nпромокод')),
+                        ),
+                      ),
+                      onTap: () async {
+                        setState(() {
+                          f = !f;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -1568,7 +1608,7 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                 alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 20),
-                  child: Text(name + ', ваш заказ принят! ',
+                  child: (necessaryDataForAuth.name == '') ? Text('Ваш заказ принят!', ) : Text(name + ', ваш заказ принят! ',
                     style: TextStyle(
                         fontSize: 24
                     ),
@@ -1618,6 +1658,32 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
               ),
             ],
           )
+      ),
+    );
+  }
+}
+
+class PromoCodeField extends StatefulWidget {
+  PromoCodeField({Key key}) : super(key: key);
+
+  @override
+  PromoCodeFieldState createState() {
+    return new PromoCodeFieldState();
+  }
+}
+
+class PromoCodeFieldState extends State<PromoCodeField> {
+  PromoCodeFieldState();
+
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      height: 64,
+      child: TextField(
+        decoration: new InputDecoration(
+          border: InputBorder.none,
+          counterText: '',
+        ),
       ),
     );
   }

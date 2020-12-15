@@ -1780,6 +1780,18 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                   )),
             );
           }else{
+            if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){
+              return Container(
+                height: 470,
+                child: _buildBottomNavigationMenu(food, menuItemCounterKey),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(12),
+                      topRight: const Radius.circular(12),
+                    )),
+              );
+            }
             if(food.comment != "" && food.comment != null){
               return Container(
                 height: 335,
@@ -1791,7 +1803,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       topRight: const Radius.circular(12),
                     )),
               );
-            }if(food.variants == null){
+            }if(food.variants == null || food.toppings == null){
               return Container(
                 height: 290,
                 child: _buildBottomNavigationMenu(food, menuItemCounterKey),
