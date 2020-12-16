@@ -15,6 +15,7 @@ import '../models/CreateModelTakeAway.dart';
 import '../models/CreateOrderModel.dart';
 import 'auto_complete.dart';
 import 'home_screen.dart';
+import 'package:flutter_app/Screens/add_address_screen.dart';
 
 
 class PageScreen extends StatefulWidget {
@@ -748,6 +749,7 @@ class AddressScreenState extends State<AddressScreen>
   }
 
   bool status1 = false;
+  bool status2 = false;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
   final maxLines = 1;
   TextEditingController commentField = new TextEditingController();
@@ -761,6 +763,8 @@ class AddressScreenState extends State<AddressScreen>
   TextField entranceTextField;
   TextField officeTextField;
   AutoComplete autoComplete;
+  GlobalKey<AutoCompleteDemoState> autoCompleteKey = new GlobalKey();
+  bool addressScreenButton = false;
 
   String addressName = '';
   int deliveryPrice = 0;
@@ -768,7 +772,7 @@ class AddressScreenState extends State<AddressScreen>
   List<MyFavouriteAddressesModel> myAddressesModelList;
   MyFavouriteAddressesModel myAddressesModel;
 
-  void _autocomplete(AutoComplete autoComplete) {
+  void _autocomplete(MyFavouriteAddressesModel myAddressesModel) {
     showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -782,7 +786,7 @@ class AddressScreenState extends State<AddressScreen>
           return Container(
               height: MediaQuery.of(context).size.height * 0.8,
               child: Container(
-                child: _buildAutocompleteBottomNavigationMenu(autoComplete),
+                child: _buildAutocompleteBottomNavigationMenu(myAddressesModel),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.only(
@@ -793,7 +797,7 @@ class AddressScreenState extends State<AddressScreen>
         });
   }
 
-  _buildAutocompleteBottomNavigationMenu(AutoComplete autoComplete) {
+  _buildAutocompleteBottomNavigationMenu(MyFavouriteAddressesModel myAddressesModel) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Stack(
@@ -833,22 +837,37 @@ class AddressScreenState extends State<AddressScreen>
                               left: 25,
                               bottom: 5,
                             ),
-                            child: autoComplete,
+                            child: AutoComplete(
+                              autoCompleteKey, 'Введите адрес дома',
+                              onSelected: () async {
+                                if (await Internet.checkConnection()) {
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(builder: (context) {
+                                      myAddressesModel.tag = "house";
+                                      myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteKey
+                                          .currentState.selectedValue);
+                                      return new AddAddressScreen(
+                                          myAddressesModel: myAddressesModel);
+                                    }),
+                                  );
+                                } else {
+                                  noConnection(context);
+                                }
+                              },
+                            ),
                           ),
                         ],
                       )),
-                  Padding(
-                    padding: EdgeInsets.only(top: 0),
-                    child: Divider(
-                      color: Color(0xFFEDEDED),
-                      height: 1,
-                      thickness: 1,
-                    ),
+                  Divider(
+                    color: Color(0xFFEDEDED),
+                    height: 1,
+                    thickness: 1,
                   ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -885,47 +904,206 @@ class AddressScreenState extends State<AddressScreen>
                 destinationPoints: restaurant.destination_points,
                 key: destinationPointsSelectorStateKey,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 15),
-                child: Row(
-                  children: <Widget>[
-                    //_buildTextFormField('Адрес доставки')
-                    Text(
-                      'Адрес доставки',
-                      style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 11),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(left: 15, top: 5),
-                  child: Container(
-                    height: 40,
-                    child: TextField(
-                      controller: addressField,
-                      readOnly: true,
-                      onTap: (){
-                        if(autoComplete.controller != null){
-                          print('nazaho');
-                          autoComplete.controller
-                              .text = addressField.text;
+//              Padding(
+//                padding: EdgeInsets.only(top: 10, left: 15),
+//                child: Row(
+//                  children: <Widget>[
+//                    //_buildTextFormField('Адрес доставки')
+//                    Text(
+//                      'Адрес доставки',
+//                      style: TextStyle(
+//                          color: Color(0xFFB0B0B0),
+//                          fontSize: 11),
+//                    )
+//                  ],
+//                ),
+//              ),
+//              Padding(
+//                  padding: EdgeInsets.only(left: 15, top: 5),
+//                  child: Container(
+//                    height: 40,
+//                    child: TextField(
+//                      controller: addressField,
+//                      readOnly: true,
+//                      onTap: (){
+//                        if(autoComplete.controller != null){
+//                          print('nazaho');
+//                          autoComplete.controller
+//                              .text = addressField.text;
+//                        }
+//                        _autocomplete(autoComplete);
+//                      },
+//                      focusNode: focusNode,
+//                      decoration: new InputDecoration(
+//                        border: InputBorder.none,
+//                        counterText: '',
+//                      ),
+//                    ),
+//                  )),
+//              Padding(
+//                padding: EdgeInsets.only(left: 15, right: 15),
+//                child: Divider(
+//                    height: 1.0, color: Color(0xFFEDEDED)),
+//              ),
+                  Container(
+                    height: 200,
+                    child: FutureBuilder<List<MyFavouriteAddressesModel>>(
+                      future: MyFavouriteAddressesModel.getAddresses(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          myAddressesModelList = snapshot.data;
+                          if (myAddressesModelList.length == 0 || addressScreenButton) {
+                            myAddressesModelList
+                                .add(new MyFavouriteAddressesModel(tag: null));
+                            addressScreenButton = false;
+                          }
+                          return Column(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
+                                  child: Text('Подтверждение адреса',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF424242))),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListView(
+                                  children:
+                                  List.generate(myAddressesModelList.length, (index) {
+                                    if (myAddressesModelList[index].tag ==
+                                        null) {
+                                      return Column(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Padding(
+                                                        padding: EdgeInsets.only(
+                                                            top: 15, left: 30, bottom: 15),
+                                                        child: GestureDetector(
+                                                            child: Row(
+                                                              children: <Widget>[
+                                                            SvgPicture.asset(
+                                                            'assets/svg_images/address_screen_plus.svg'),
+                                                                Padding(
+                                                                  padding:
+                                                                  EdgeInsets.only(left: 20),
+                                                                  child: Text(
+                                                                    'Добавить новый адрес',
+                                                                    style: TextStyle(
+                                                                        fontSize: 17,
+                                                                        color:
+                                                                        Color(0xFF424242)),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            onTap: () async {
+                                                              if (await Internet.checkConnection()) {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  new MaterialPageRoute(
+                                                                      builder: (context) {
+                                                                        return new AddAddressScreen(
+                                                                          myAddressesModel:
+                                                                          myAddressesModelList[index],
+                                                                        );
+                                                                      }),
+                                                                );
+                                                              } else {
+                                                                noConnection(context);
+                                                              }
+                                                            })),
+                                                  ),
+                                                ],
+                                              )),
+                                        ],
+                                      );
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: InkWell(
+                                              child: Container(
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        'assets/svg_images/circle.svg'),
+                                                    Flexible(
+                                                      child: Container(
+                                                        padding: EdgeInsets.only(left: 15),
+                                                        child: Align(
+                                                          alignment: Alignment.topLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 10, bottom: 5),
+                                                            child: Text(
+                                                              myAddressesModelList[index].address.street + ' ' +
+                                                                  myAddressesModelList[index].address.house,
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              onTap: ()async {
+
+                                              },
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 20,
+                                            color: Colors.grey,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 15),
+                                            child: InkWell(
+                                              child: SvgPicture.asset(
+                                                  'assets/svg_images/edit.svg'),
+                                              onTap: ()async {
+                                                if (await Internet.checkConnection()) {
+                                                  Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return new AddAddressScreen(
+                                                            myAddressesModel:
+                                                            myAddressesModelList[index],
+                                                          );
+                                                        }),
+                                                  );
+                                                } else {
+                                                  noConnection(context);
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return Container();
                         }
-                        _autocomplete(autoComplete);
                       },
-                      focusNode: focusNode,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        counterText: '',
-                      ),
                     ),
-                  )),
-              Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: Divider(
-                    height: 1.0, color: Color(0xFFEDEDED)),
-              ),
+                  ),
               Padding(
                 padding: EdgeInsets.only(
                     top: 15, left: 15, bottom: 5, right: 0),
@@ -1094,7 +1272,85 @@ class AddressScreenState extends State<AddressScreen>
               Padding(
                 padding: EdgeInsets.only(
                     top: 10, left: 15, right: 15, bottom: 10),
-                child: Container(
+                child: (status2) ? Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8.0, // soften the shadow
+                          spreadRadius: 3.0, //extend the shadow
+                        )
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(width: 1.0, color: Colors.grey[200])),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Заказ другому человеку',
+                                style: TextStyle(
+                                    color: Color(0xFF3F3F3F),
+                                    fontSize: 15),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 0),
+                                child: FlutterSwitch(
+                                  width: 55.0,
+                                  height: 25.0,
+                                  inactiveColor: Color(0xD6D6D6D6),
+                                  activeColor: Colors.red,
+                                  valueFontSize: 12.0,
+                                  toggleSize: 18.0,
+                                  value: status2,
+                                  onToggle: (value) {
+                                    setState(() {
+                                      status2 = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: TextField(
+                            decoration: new InputDecoration(
+                              hintText: 'Номер телефона получателя',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey
+                              ),
+                              border: InputBorder.none,
+                              counterText: '',
+                            ),
+                          ),
+                        ),
+                        Divider(color: Colors.grey,),
+                        Container(
+                          child: TextField(
+                            decoration: new InputDecoration(
+                              hintText: 'Имя получателя',
+                              hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey
+                              ),
+                              border: InputBorder.none,
+                              counterText: '',
+                            ),
+                          ),
+                        ),
+                        Divider(color: Colors.grey,),
+                      ],
+                    ),
+                  ),
+                ) : Container(
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -1127,10 +1383,10 @@ class AddressScreenState extends State<AddressScreen>
                             activeColor: Colors.red,
                             valueFontSize: 12.0,
                             toggleSize: 18.0,
-                            value: status1,
+                            value: status2,
                             onToggle: (value) {
                               setState(() {
-                                status1 = value;
+                                status2 = value;
                               });
                             },
                           ),

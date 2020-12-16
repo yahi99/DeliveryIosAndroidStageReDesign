@@ -24,7 +24,6 @@ class NecessaryDataForAuth{
 
   static Future<NecessaryDataForAuth> getData() async{
   //    await Future.delayed(Duration(seconds: 4), () {});
-    print('Dima OPPAI 3');
     if(_necessaryDataForAuth != null)
       return _necessaryDataForAuth;
     String device_id = await DeviceId.getID;
@@ -57,7 +56,6 @@ class NecessaryDataForAuth{
   }
 
   static Future<String> refreshToken(String refresh_token) async {
-    print('Dima top OPPAI 1');
     String result = null;
     var url = 'https://client.apis.stage.faem.pro/api/v2/auth/refresh';
     var response = await http.post(url, body: jsonEncode({"refresh": refresh_token}),
@@ -65,7 +63,6 @@ class NecessaryDataForAuth{
           'Content-Type': 'application/json; charset=UTF-8',
         });
     if (response.statusCode == 200) {
-      print('Dima top OPPAI 2');
       var jsonResponse = convert.jsonDecode(response.body);
       authCodeData = AuthCodeData.fromJson(jsonResponse);
       result = authCodeData.refresh_token;

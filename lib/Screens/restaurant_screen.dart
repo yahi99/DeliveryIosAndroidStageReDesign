@@ -55,6 +55,8 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
   RestaurantScreenState(this.restaurant, this.category);
 
+
+
   _dayOff(FoodRecords restaurantDataItems,
       GlobalKey<MenuItemCounterState> menuItemCounterKey) {
     GlobalKey<VariantsSelectorState> variantsSelectorStateKey =

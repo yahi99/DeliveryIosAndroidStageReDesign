@@ -13,6 +13,232 @@ import 'home_screen.dart';
 import 'restaurant_screen.dart';
 import 'restaurant_screen.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_app/models/CreateModelTakeAway.dart';
+import 'package:flutter_app/models/CreateOrderModel.dart';
+
+
+class CartPageScreen extends StatefulWidget {
+  final Records restaurant;
+
+  CartPageScreen({
+    Key key,
+    this.restaurant,
+  }) : super(key: key);
+
+  @override
+  CartPageScreenState createState() => CartPageScreenState(restaurant);
+}
+
+class CartPageScreenState extends State<CartPageScreen> {
+  final Records restaurant;
+  bool _color = false;
+  CreateOrder createOrder;
+  CreateOrderTakeAway createOrderTakeAway;
+
+  CartPageScreenState(this.restaurant);
+
+  PageController _controller = PageController(
+    initialPage: 0,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  int selectedPageId = 0;
+  GlobalKey<_CartScreenState> cartScreenKey = new GlobalKey<_CartScreenState>();
+  GlobalKey<AddressScreenState> addressScreenKey = new GlobalKey<AddressScreenState>();
+
+  int selectedPaymentId = 0;
+
+
+  @override
+  Widget build(BuildContext context) {
+    FocusNode focusNode;
+    double totalPrice = 0;
+    currentUser.cartDataModel.cart.forEach(
+            (Order order) {
+          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+          }else{
+            totalPrice += order.quantity * order.food.price;
+          }
+          double toppingsCost = 0;
+          if(order.food.toppings != null){
+            order.food.toppings.forEach((element) {
+              toppingsCost += order.quantity * element.price;
+            });
+            totalPrice += toppingsCost;
+          }
+        }
+    );
+    print('suka');
+    var addressScreen = AddressScreen(restaurant: restaurant, key: addressScreenKey,);
+    var cartScreen = CartScreen(restaurant: restaurant);
+    bool f = false;
+    GlobalKey<PromoCodeFieldState> promoCodeFieldKey = new GlobalKey();
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05, bottom: 10),
+                    child: Stack(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 0),
+                            child: InkWell(
+                              onTap: () => Navigator.pop(context),
+                              child: Padding(
+                                  padding: EdgeInsets.only(right: 0),
+                                  child: Container(
+                                      height: 40,
+                                      width: 60,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 12, bottom: 12, right: 20),
+                                        child: SvgPicture.asset(
+                                            'assets/svg_images/arrow_left.svg'),
+                                      ))),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Подтверждение заказа",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF000000)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 346,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4)
+                    ),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          child: Container(
+                            width: 173,
+                            height: 34,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4))
+                            ),
+                            child: Text(
+                              'Доставка',
+                              style: TextStyle(
+                                  color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                            ),
+                          ),
+                          onTap: () async {
+                            if (await Internet.checkConnection()) {
+                              _controller.animateToPage(0,
+                                  duration: Duration(seconds: 1),
+                                  curve: Curves.elasticOut);
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        ),
+                        InkWell(
+                          child: Container(
+                            width: 173,
+                            height: 34,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4))
+                            ),
+                            child: Text(
+                              'Самовывоз',
+                              style: TextStyle(
+                                  color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                            ),
+                          ),
+                          onTap: () async {
+                            if (await Internet.checkConnection()) {
+                              _controller.animateToPage(0,
+                                  duration: Duration(seconds: 1),
+                                  curve: Curves.elasticOut);
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: PageView(
+                controller: _controller,
+                children: [addressScreen, cartScreen],
+                onPageChanged: (int pageId) {
+                  setState(() {
+                    selectedPageId = pageId;
+                  });
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                            '${(totalPrice).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black)),
+                        Text(
+                          '~30-50 мин.',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class CartScreen extends StatefulWidget {
   CartScreen({Key key, this.restaurant}) : super(key: key);

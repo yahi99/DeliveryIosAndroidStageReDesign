@@ -10,7 +10,7 @@
 
     <application
         android:name=".Application"
-        android:label="Faem Eda Stage"
+        android:label="Можно заказать Stage"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
 
