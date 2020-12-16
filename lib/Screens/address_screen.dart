@@ -13,6 +13,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/CreateModelTakeAway.dart';
 import '../models/CreateOrderModel.dart';
+import '../models/my_addresses_model.dart';
 import 'auto_complete.dart';
 import 'home_screen.dart';
 import 'package:flutter_app/Screens/add_address_screen.dart';
@@ -20,14 +21,15 @@ import 'package:flutter_app/Screens/add_address_screen.dart';
 
 class PageScreen extends StatefulWidget {
   final Records restaurant;
-
+  List<MyFavouriteAddressesModel> myAddressesModelList;
   PageScreen({
     Key key,
     this.restaurant,
+    this.myAddressesModelList
   }) : super(key: key);
 
   @override
-  PageState createState() => PageState(restaurant);
+  PageState createState() => PageState(restaurant, myAddressesModelList: myAddressesModelList);
 }
 
 class PageState extends State<PageScreen> {
@@ -36,7 +38,7 @@ class PageState extends State<PageScreen> {
   CreateOrder createOrder;
   CreateOrderTakeAway createOrderTakeAway;
 
-  PageState(this.restaurant);
+  PageState(this.restaurant, {this.myAddressesModelList});
 
   PageController _controller = PageController(
     initialPage: 0,
@@ -342,7 +344,7 @@ class PageState extends State<PageScreen> {
         }
     );
     print('suka');
-    var addressScreen = AddressScreen(restaurant: restaurant, key: addressScreenKey,);
+    var addressScreen = AddressScreen(restaurant: restaurant, key: addressScreenKey, myAddressesModelList: myAddressesModelList);
     var takeAwayScreen = TakeAway(restaurant: restaurant, key: takeAwayScreenKey,);
     bool f = false;
     GlobalKey<PromoCodeFieldState> promoCodeFieldKey = new GlobalKey();
@@ -633,7 +635,7 @@ class PageState extends State<PageScreen> {
                             }
                             if(selectedPageId == 0 && addressScreenKey.currentState != null) {
                               createOrder = new CreateOrder(
-                                address: addressScreenKey.currentState.selectedAddress,
+                                address: addressScreenKey.currentState.addressSelectorKey.currentState.myFavouriteAddressesModel.address,
                                 restaurantAddress: addressScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
                                 office: addressScreenKey.currentState.officeField
                                     .text,
@@ -699,16 +701,17 @@ class PageState extends State<PageScreen> {
 }
 
 class AddressScreen extends StatefulWidget {
-  MyFavouriteAddressesModel myAddressesModel;
+  MyFavouriteAddressesModel addedAddress;
+  List<MyFavouriteAddressesModel> myAddressesModelList;
 
   AddressScreen(
-      {Key key, this.restaurant, this.myAddressesModel})
+      {Key key, this.restaurant, this.addedAddress, this.myAddressesModelList})
       : super(key: key);
   final Records restaurant;
 
   @override
   AddressScreenState createState() =>
-      AddressScreenState(restaurant, myAddressesModel);
+      AddressScreenState(restaurant, addedAddress, myAddressesModelList: myAddressesModelList);
 }
 
 class AddressScreenState extends State<AddressScreen>
@@ -725,7 +728,7 @@ class AddressScreenState extends State<AddressScreen>
 
   GlobalKey<AutoCompleteDemoState> destinationPointsKey;
 
-  AddressScreenState(this.restaurant, this.myAddressesModel);
+  AddressScreenState(this.restaurant, this.addedAddress, {this.myAddressesModelList});
 
   @override
   bool get wantKeepAlive => true;
@@ -733,6 +736,9 @@ class AddressScreenState extends State<AddressScreen>
   @override
   void initState() {
     super.initState();
+    // if(myAddressesModelList.length > 0){
+    //   addedAddress = myAddressesModelList[0];
+    // }
     // Инициализируем автокомплит
     destinationPointsKey = new GlobalKey();
     autoComplete = new AutoComplete(destinationPointsKey, 'Введите адрес',
@@ -764,13 +770,14 @@ class AddressScreenState extends State<AddressScreen>
   TextField officeTextField;
   AutoComplete autoComplete;
   GlobalKey<AutoCompleteDemoState> autoCompleteKey = new GlobalKey();
+  GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
   bool addressScreenButton = false;
 
   String addressName = '';
   int deliveryPrice = 0;
 
   List<MyFavouriteAddressesModel> myAddressesModelList;
-  MyFavouriteAddressesModel myAddressesModel;
+  MyFavouriteAddressesModel addedAddress;
 
   void _autocomplete(AutoComplete autoComplete) {
     showModalBottomSheet(
@@ -855,6 +862,54 @@ class AddressScreenState extends State<AddressScreen>
     );
   }
 
+
+  Widget buildAddressesList(){
+    if(myAddressesModelList != null){
+      return Container(
+        height: 200,
+        child: buildAddressesListSelector()
+      );
+    }
+    return Container(
+      height: 200,
+      child: FutureBuilder<List<MyFavouriteAddressesModel>>(
+        future: MyFavouriteAddressesModel.getAddresses(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            myAddressesModelList = snapshot.data;
+            myAddressesModelList
+                .add(new MyFavouriteAddressesModel(tag: null));
+            return buildAddressesListSelector();
+          } else {
+            return Container();
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildAddressesListSelector(){
+    return Column(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
+            child: Text('Подтверждение адреса',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF424242))),
+          ),
+        ),
+        Expanded(
+          child: AddressSelector(myFavouriteAddressList: myAddressesModelList, parent:  this, addressSelectorKey: addressSelectorKey),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     FocusNode focusNode;
@@ -886,206 +941,48 @@ class AddressScreenState extends State<AddressScreen>
                 destinationPoints: restaurant.destination_points,
                 key: destinationPointsSelectorStateKey,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 15),
-                child: Row(
-                  children: <Widget>[
-                    //_buildTextFormField('Адрес доставки')
-                    Text(
-                      'Адрес доставки',
-                      style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 11),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(left: 15, top: 5),
-                  child: Container(
-                    height: 40,
-                    child: TextField(
-                      controller: addressField,
-                      readOnly: true,
-                      onTap: (){
-                        if(autoComplete.controller != null){
-                          print('nazaho');
-                          autoComplete.controller
-                              .text = addressField.text;
-                        }
-                        _autocomplete(autoComplete);
-                      },
-                      focusNode: focusNode,
-                      decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        counterText: '',
-                      ),
-                    ),
-                  )),
-              Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: Divider(
-                    height: 1.0, color: Color(0xFFEDEDED)),
-              ),
-//                  Container(
-//                    height: 200,
-//                    child: FutureBuilder<List<MyFavouriteAddressesModel>>(
-//                      future: MyFavouriteAddressesModel.getAddresses(),
-//                      builder: (BuildContext context,
-//                          AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
-//                        if (snapshot.connectionState == ConnectionState.done) {
-//                          myAddressesModelList = snapshot.data;
-//                          if (myAddressesModelList.length == 0 || addressScreenButton) {
-//                            myAddressesModelList
-//                                .add(new MyFavouriteAddressesModel(tag: null));
-//                            addressScreenButton = false;
-//                          }
-//                          return Column(
-//                            children: <Widget>[
-//                              Align(
-//                                alignment: Alignment.centerLeft,
-//                                child: Padding(
-//                                  padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
-//                                  child: Text('Подтверждение адреса',
-//                                      style: TextStyle(
-//                                          fontSize: 18,
-//                                          fontWeight: FontWeight.bold,
-//                                          color: Color(0xFF424242))),
-//                                ),
-//                              ),
-//                              Expanded(
-//                                child: ListView(
-//                                  children:
-//                                  List.generate(myAddressesModelList.length, (index) {
-//                                    if (myAddressesModelList[index].tag ==
-//                                        null) {
-//                                      return Column(
-//                                        children: <Widget>[
-//                                          GestureDetector(
-//                                              child: Row(
-//                                                children: <Widget>[
-//                                                  Align(
-//                                                    alignment: Alignment.centerLeft,
-//                                                    child: Padding(
-//                                                        padding: EdgeInsets.only(
-//                                                            top: 15, left: 30, bottom: 15),
-//                                                        child: GestureDetector(
-//                                                            child: Row(
-//                                                              children: <Widget>[
-//                                                            SvgPicture.asset(
-//                                                            'assets/svg_images/address_screen_plus.svg'),
-//                                                                Padding(
-//                                                                  padding:
-//                                                                  EdgeInsets.only(left: 20),
-//                                                                  child: Text(
-//                                                                    'Добавить новый адрес',
-//                                                                    style: TextStyle(
-//                                                                        fontSize: 17,
-//                                                                        color:
-//                                                                        Color(0xFF424242)),
-//                                                                  ),
-//                                                                )
-//                                                              ],
-//                                                            ),
-//                                                            onTap: () async {
-//                                                              if (await Internet.checkConnection()) {
-//                                                                Navigator.push(
-//                                                                  context,
-//                                                                  new MaterialPageRoute(
-//                                                                      builder: (context) {
-//                                                                        return new AddAddressScreen(
-//                                                                          myAddressesModel:
-//                                                                          myAddressesModelList[index],
-//                                                                        );
-//                                                                      }),
-//                                                                );
-//                                                              } else {
-//                                                                noConnection(context);
-//                                                              }
-//                                                            })),
-//                                                  ),
-//                                                ],
-//                                              )),
-//                                        ],
-//                                      );
-//                                    }
-//                                    return Padding(
-//                                      padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
-//                                      child: Row(
-//                                        children: <Widget>[
-//                                          Flexible(
-//                                            child: InkWell(
-//                                              child: Container(
-//                                                child: Row(
-//                                                  children: [
-//                                                    SvgPicture.asset(
-//                                                        'assets/svg_images/circle.svg'),
-//                                                    Flexible(
-//                                                      child: Container(
-//                                                        padding: EdgeInsets.only(left: 15),
-//                                                        child: Align(
-//                                                          alignment: Alignment.topLeft,
-//                                                          child: Padding(
-//                                                            padding: const EdgeInsets.only(right: 10, bottom: 5),
-//                                                            child: Text(
-//                                                              myAddressesModelList[index].address.street + ' ' +
-//                                                                  myAddressesModelList[index].address.house,
-//                                                              textAlign: TextAlign.left,
-//                                                            ),
-//                                                          ),
-//                                                        ),
-//                                                      ),
-//                                                    ),
-//                                                  ],
-//                                                ),
-//                                              ),
-//                                              onTap: ()async {
-//
-//                                              },
-//                                            ),
-//                                          ),
-//                                          Container(
-//                                            width: 1,
-//                                            height: 20,
-//                                            color: Colors.grey,
-//                                          ),
-//                                          Padding(
-//                                            padding: const EdgeInsets.only(left: 15),
-//                                            child: InkWell(
-//                                              child: SvgPicture.asset(
-//                                                  'assets/svg_images/edit.svg'),
-//                                              onTap: ()async {
-//                                                if (await Internet.checkConnection()) {
-//                                                  Navigator.push(
-//                                                    context,
-//                                                    new MaterialPageRoute(
-//                                                        builder: (context) {
-//                                                          return new AddAddressScreen(
-//                                                            myAddressesModel:
-//                                                            myAddressesModelList[index],
-//                                                          );
-//                                                        }),
-//                                                  );
-//                                                } else {
-//                                                  noConnection(context);
-//                                                }
-//                                              },
-//                                            ),
-//                                          ),
-//                                        ],
-//                                      ),
-//                                    );
-//                                  }),
-//                                ),
-//                              )
-//                            ],
-//                          );
-//                        } else {
-//                          return Container();
-//                        }
-//                      },
-//                    ),
-//                  ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 10, left: 15),
+              //   child: Row(
+              //     children: <Widget>[
+              //       //_buildTextFormField('Адрес доставки')
+              //       Text(
+              //         'Адрес доставки',
+              //         style: TextStyle(
+              //             color: Color(0xFFB0B0B0),
+              //             fontSize: 11),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              // Padding(
+              //     padding: EdgeInsets.only(left: 15, top: 5),
+              //     child: Container(
+              //       height: 40,
+              //       child: TextField(
+              //         controller: addressField,
+              //         readOnly: true,
+              //         onTap: (){
+              //           if(autoComplete.controller != null){
+              //             print('nazaho');
+              //             autoComplete.controller
+              //                 .text = addressField.text;
+              //           }
+              //           _autocomplete(autoComplete);
+              //         },
+              //         focusNode: focusNode,
+              //         decoration: new InputDecoration(
+              //           border: InputBorder.none,
+              //           counterText: '',
+              //         ),
+              //       ),
+              //     )),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 15, right: 15),
+              //   child: Divider(
+              //       height: 1.0, color: Color(0xFFEDEDED)),
+              // ),
+                 buildAddressesList(),
               Padding(
                 padding: EdgeInsets.only(
                     top: 15, left: 15, bottom: 5, right: 0),
@@ -1747,6 +1644,174 @@ class TakeAwayState extends State<TakeAway>
             ],
           )
       ),);
+  }
+}
+
+
+class AddressSelector extends StatefulWidget {
+  List<MyFavouriteAddressesModel> myFavouriteAddressList;
+  AddressScreenState parent;
+  GlobalKey<AddressSelectorState> addressSelectorKey;
+
+  AddressSelector({this.addressSelectorKey, this.myFavouriteAddressList, this.parent}) : super(key: addressSelectorKey);
+
+  @override
+  AddressSelectorState createState() => AddressSelectorState(myFavouriteAddressList, parent);
+}
+
+class AddressSelectorState extends State<AddressSelector> {
+  MyFavouriteAddressesModel myFavouriteAddressesModel = null;
+  List<MyFavouriteAddressesModel> myFavouriteAddressList;
+  AddressScreenState parent;
+
+  AddressSelectorState(this.myFavouriteAddressList, this.parent);
+
+  void initState() {
+    if(myFavouriteAddressList.length > 0){
+      myFavouriteAddressesModel = myFavouriteAddressList[0];
+    }
+  }
+
+
+  Widget build(BuildContext context) {
+    List<Widget> widgetsList = new List<Widget>();
+    myFavouriteAddressList.forEach((element) {
+      if(element.tag == null) {
+        widgetsList.add(GestureDetector(
+            child: Row(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, left: 30, bottom: 15),
+                      child: GestureDetector(
+                          child: Row(
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                  'assets/svg_images/address_screen_plus.svg'),
+                              Padding(
+                                padding:
+                                EdgeInsets.only(left: 20),
+                                child: Text(
+                                  'Добавить новый адрес',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color:
+                                      Color(0xFF424242)),
+                                ),
+                              )
+                            ],
+                          ),
+                          onTap: () async {
+                            if (await Internet.checkConnection()) {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) {
+                                      return new AddAddressScreen(
+                                          myAddressesModel:
+                                          element,
+                                          parent: parent
+                                      );
+                                    }),
+                              );
+                            } else {
+                              noConnection(context);
+                            }
+                          })),
+                ),
+              ],
+            )));
+      } else {
+        widgetsList.add(
+            Padding(
+              padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    child: InkWell(
+                      child: Container(
+                        child: Row(
+                          children: [
+                            (myFavouriteAddressesModel == element)
+                                ? SvgPicture.asset(
+                                'assets/svg_images/address_screen_selector.svg')
+                                :
+                            SvgPicture.asset(
+                                'assets/svg_images/circle.svg'),
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.only(left: 15),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 10, bottom: 5),
+                                    child: Text(
+                                      element.address.street + ' ' +
+                                          element.address.house,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        setState(() {
+                          myFavouriteAddressesModel = element;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 20,
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: InkWell(
+                      child: SvgPicture.asset(
+                          'assets/svg_images/edit.svg'),
+                      onTap: () async {
+                        if (await Internet.checkConnection()) {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) {
+                                  return new AddAddressScreen(
+                                    myAddressesModel: element,
+                                    parent: parent,
+                                  );
+                                }),
+                          );
+                        } else {
+                          noConnection(context);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+        );
+      }
+    });
+    return Container(
+      color: Colors.white,
+      child: ScrollConfiguration(
+        behavior: new ScrollBehavior(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: widgetsList,
+          ),
+        ),
+      ),
+    );
   }
 }
 

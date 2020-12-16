@@ -5,17 +5,19 @@ import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/Screens/address_screen.dart';
+import 'address_screen.dart';
 import 'my_addresses_screen.dart';
 
 // ignore: must_be_immutable
 class AddAddressScreen extends StatefulWidget {
   MyFavouriteAddressesModel myAddressesModel;
+  AddressScreenState parent;
 
-  AddAddressScreen({Key key, this.myAddressesModel}) : super(key: key);
+  AddAddressScreen({Key key, this.myAddressesModel, this.parent}) : super(key: key);
 
   @override
   AddAddressScreenState createState() =>
-      AddAddressScreenState(myAddressesModel);
+      AddAddressScreenState(myAddressesModel, parent);
 }
 
 class AddAddressScreenState extends State<AddAddressScreen> {
@@ -23,8 +25,10 @@ class AddAddressScreenState extends State<AddAddressScreen> {
   String name;
   MyFavouriteAddressesModel myAddressesModel;
   GlobalKey<AutoCompleteFieldState> autoCompleteFieldKey = new GlobalKey();
+  AddressScreenState parent;
 
-  AddAddressScreenState(this.myAddressesModel);
+
+  AddAddressScreenState(this.myAddressesModel, this.parent);
 
   TextEditingController nameField = new TextEditingController();
   TextEditingController commentField = new TextEditingController();
@@ -182,10 +186,20 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                       }
                       myAddressesModel.name = nameField.text;
                       myAddressesModel.description = commentField.text;
-                      await myAddressesModel.ifNoBrainsSave();
-                      Navigator.pushAndRemoveUntil(context,
-                          new MaterialPageRoute(builder: (context) => new AddressScreen(myAddressesModel: myAddressesModel)),
-                              (route) => route.isFirst);
+                      if(myAddressesModel.tag == null) {
+                        myAddressesModel.tag = "";
+                        parent.myAddressesModelList
+                            .add(new MyFavouriteAddressesModel(tag: null));
+                      }
+                      //await myAddressesModel.ifNoBrainsSave();
+
+
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => new PageScreen(restaurant: parent.restaurant, myAddressesModelList: parent.myAddressesModelList,)),
+                      );
                     } else {
                       noConnection(context);
                     }

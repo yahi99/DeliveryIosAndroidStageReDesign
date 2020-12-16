@@ -144,6 +144,35 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
               if(myAddressesModelList.isEmpty){
                 return Stack(
                   children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 30, bottom: 0, right: 15),
+                      child: Row(
+                        children: <Widget>[
+                          InkWell(
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                    height: 40,
+                                    width: 60,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 12, bottom: 12, right: 10),
+                                      child: SvgPicture.asset(
+                                          'assets/svg_images/arrow_left.svg'),
+                                    )
+                                )
+                            ),
+                            onTap: () {
+                              homeScreenKey = new GlobalKey<HomeScreenState>();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                      (Route<dynamic> route) => false);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                     Center(
                       child: Text('У вас еще нет ни одного\nсохранённого адреса',
                       textAlign: TextAlign.center,
