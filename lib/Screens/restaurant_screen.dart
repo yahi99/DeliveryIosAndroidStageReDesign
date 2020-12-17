@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
@@ -54,6 +55,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
 
   RestaurantScreenState(this.restaurant, this.category);
+
 
   _dayOff(FoodRecords restaurantDataItems,
       GlobalKey<MenuItemCounterState> menuItemCounterKey) {
@@ -280,6 +282,88 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       }
     });
   }
+  int _currentPage = 0;
+  bool visible;
+  int chosenItem = 0;
+  double height;
+  Image myImage;
+
+  _pageView() {
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.27,
+          child: Stack(
+            children: <Widget>[
+              CarouselSlider(
+                options: CarouselOptions(height: 400.0),
+                items: [1,2,3,4,5].map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                              color: Colors.amber
+                          ),
+                          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+              Visibility(
+                visible: visible,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: null,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.keyboard_arrow_left,
+                      color: Colors.black,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        NotificationListener<DraggableScrollableNotification>(
+          // ignore: missing_return
+          onNotification: (notification) {
+            if (notification.extent == 1.0) {
+              visible = false;
+            } else {
+              visible = true;
+            }
+          },
+          child: DraggableScrollableSheet(
+              minChildSize: 0.7,
+              initialChildSize: 0.7,
+              maxChildSize: 1.0,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return Container(
+                  child: ListView.builder(
+                      itemCount: 1,
+                      controller: scrollController,
+                      itemBuilder: (BuildContext context, index) {
+                        return _buildScreen();
+                      }),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      )),
+                );
+              }),
+        ),
+      ],
+    );
+  }
 
   _buildFoodCategoryList() {
     if(restaurant.product_category.length>0)
@@ -392,6 +476,24 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   //     ),
   //   );
   // }
+
+  CarouselSlider carouselSlider;
+  int _current = 0;
+  List imgList = [
+    'https://images.unsplash.com/photo-1502117859338-fd9daa518a9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1554321586-92083ba0a115?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1536679545597-c2e5e1946495?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1543922596-b3bbaba80649?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1502943693086-33b5b1cfdf2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'
+  ];
+
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
+  }
 
   Widget _buildScreen() {
     isLoading = false;

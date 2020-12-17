@@ -681,8 +681,6 @@ class PageState extends State<PageScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
                                     (Route<dynamic> route) => false);
-                          } else {
-                            emptyFields(context);
                           }
                         } else {
                           noConnection(context);
@@ -1764,6 +1762,7 @@ class AddressSelectorState extends State<AddressSelector> {
                         setState(() {
                           myFavouriteAddressesModel = element;
                         });
+                        print('chegokogo' + element.address.unrestrictedValue);
                       },
                     ),
                   ),

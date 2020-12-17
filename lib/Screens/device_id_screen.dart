@@ -4,8 +4,11 @@ import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CartDataModel.dart';
 import 'package:flutter_app/models/amplitude.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DeviceIdScreen extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<NecessaryDataForAuth>(
@@ -34,10 +37,12 @@ class DeviceIdScreen extends StatelessWidget {
           return HomeScreen();
         } else {
           return Center(
-            child: CircularProgressIndicator()
-//            Image.asset('assets/images/popugai.gif', height: 200.0,
-//              width: 200.0,
-//            ),
+            child: CircularProgressIndicator(),
+          );
+          return FadeInImage(
+            fadeInCurve: Curves.bounceIn,
+            placeholder: AssetImage('assets/images/loading.gif'),
+            image: AssetImage('assets/images/logo.png'),
           );
         }
       },
