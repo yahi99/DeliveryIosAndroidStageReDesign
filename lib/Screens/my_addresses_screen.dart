@@ -384,141 +384,148 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                           ),
                                         ),
                                       ),
-                                      (changeMode) ? InkWell(
-                                        child: SvgPicture.asset('assets/svg_images/Icon.svg'),
-                                        onTap: () async {
-                                          if(Platform.isAndroid){
-                                            return showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Padding(
-                                                  padding: EdgeInsets.only(bottom: 0),
-                                                  child: Dialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                                                    child: Container(
-                                                        height: 130,
-                                                        width: 300,
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            InkWell(
-                                                              child: Container(
-                                                                padding: EdgeInsets.only(top: 20, bottom: 20),
-                                                                child: Center(
-                                                                  child: Text("Удалить адрес",
-                                                                    style: TextStyle(
-                                                                        color: Color(0xFFFF3B30),
-                                                                        fontSize: 20
+                                      (changeMode) ? Container(
+                                        width: 50,
+                                        height: 80,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(17.0),
+                                          child: InkWell(
+                                            child: SvgPicture.asset('assets/svg_images/Icon.svg'),
+                                            onTap: () async {
+                                              if(Platform.isAndroid){
+                                                return showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(bottom: 0),
+                                                      child: Dialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                                                        child: Container(
+                                                            height: 130,
+                                                            width: 300,
+                                                            child: Column(
+                                                              children: <Widget>[
+                                                                InkWell(
+                                                                  child: Container(
+                                                                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                                                                    child: Center(
+                                                                      child: Text("Удалить адрес",
+                                                                        style: TextStyle(
+                                                                            color: Color(0xFFFF3B30),
+                                                                            fontSize: 20
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                              onTap: () async {
-                                                                await myAddressesModelList[index].delete();
-                                                                setState((){
+                                                                  onTap: () async {
+                                                                    await myAddressesModelList[index].delete();
+                                                                    setState((){
 
-                                                                });
-                                                                Navigator.pushReplacement(
-                                                                  context,
-                                                                  new MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                    new MyAddressesScreen(),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ),
-                                                            Divider(
-                                                              height: 1,
-                                                              color: Colors.grey,
-                                                            ),
-                                                            InkWell(
-                                                              child: Container(
-                                                                padding: EdgeInsets.only(top: 20, bottom: 20),
-                                                                child: Center(
-                                                                  child: Text("Отмена",
-                                                                    style: TextStyle(
-                                                                        color: Color(0xFF007AFF),
-                                                                        fontSize: 20
+                                                                    });
+                                                                    Navigator.pushReplacement(
+                                                                      context,
+                                                                      new MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                        new MyAddressesScreen(),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                                Divider(
+                                                                  height: 1,
+                                                                  color: Colors.grey,
+                                                                ),
+                                                                InkWell(
+                                                                  child: Container(
+                                                                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                                                                    child: Center(
+                                                                      child: Text("Отмена",
+                                                                        style: TextStyle(
+                                                                            color: Color(0xFF007AFF),
+                                                                            fontSize: 20
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
+                                                                  onTap: (){
+                                                                    Navigator.pop(context);
+                                                                  },
                                                                 ),
-                                                              ),
-                                                              onTap: (){
-                                                                Navigator.pop(context);
-                                                              },
-                                                            ),
-                                                          ],
-                                                        )),
-                                                  ),
+                                                              ],
+                                                            )),
+                                                      ),
+                                                    );
+                                                  },
                                                 );
-                                              },
-                                            );
-                                          }
-                                          return showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                                                child: Column(
-                                                  children: [
-                                                    Dialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                                      child: InkWell(
-                                                        child: Container(
-                                                          height: 50,
-                                                          width: 100,
-                                                          child: Center(
-                                                            child: Text("Удалить адрес",
-                                                              style: TextStyle(
-                                                                color: Color(0xFFFF3B30),
-                                                                fontSize: 20
+                                              }
+                                              return showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Container(
+                                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                                                    child: Column(
+                                                      children: [
+                                                        Dialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                                          child: InkWell(
+                                                            child: Container(
+                                                              height: 50,
+                                                              width: 100,
+                                                              child: Center(
+                                                                child: Text("Удалить адрес",
+                                                                  style: TextStyle(
+                                                                    color: Color(0xFFFF3B30),
+                                                                    fontSize: 20
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                        onTap: () async {
-                                                          await myAddressesModelList[index].delete();
-                                                          setState((){
+                                                            onTap: () async {
+                                                              await myAddressesModelList[index].delete();
+                                                              setState((){
 
-                                                          });
-                                                          Navigator.pushReplacement(
-                                                            context,
-                                                            new MaterialPageRoute(
-                                                              builder: (context) =>
-                                                              new MyAddressesScreen(),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Dialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                                      child: InkWell(
-                                                        child: Container(
-                                                          height: 50,
-                                                          width: 100,
-                                                          child: Center(
-                                                            child: Text("Отмена",
-                                                              style: TextStyle(
-                                                                  color: Color(0xFF007AFF),
-                                                                  fontSize: 20
-                                                              ),
-                                                            ),
+                                                              });
+                                                              Navigator.pushReplacement(
+                                                                context,
+                                                                new MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                  new MyAddressesScreen(),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
                                                         ),
-                                                        onTap: (){
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
+                                                        Dialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                                          child: InkWell(
+                                                            child: Container(
+                                                              height: 50,
+                                                              width: 100,
+                                                              child: Center(
+                                                                child: Text("Отмена",
+                                                                  style: TextStyle(
+                                                                      color: Color(0xFF007AFF),
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            onTap: (){
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
                                               );
                                             },
-                                          );
-                                        },
+                                          ),
+                                        ),
                                       ) : Container()
                                     ],
                                   )

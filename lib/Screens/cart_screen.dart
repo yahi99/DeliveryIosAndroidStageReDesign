@@ -172,7 +172,7 @@ class CartPageState extends State<CartPageScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: const EdgeInsets.only(top: 40, bottom: 15),
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,9 +194,9 @@ class CartPageState extends State<CartPageScreen> {
                     Padding(
                       padding: EdgeInsets.only(right: 20),
                       child: Text(
-                        restaurant.name,
+                        'Корзина',
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF3F3F3F)),
                       ),
@@ -281,84 +281,85 @@ class CartPageState extends State<CartPageScreen> {
                 ),
               ),
             ),
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
-                  child: SizedBox(
-                    height: 40,
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0,
-                            right: 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(40)),
-                            color: (selectedPageId == 0) ? Color(0xFFFE534F) : Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 40, right: 40, top: 10),
-                            child: Text(
-                              'Доставка',
-                              style: TextStyle(
-                                  color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
-                            ),
+            Container(
+              width: 348,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: Color(0xFFE6E6E6),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 0,
+                          right: 0),
+                      child: Container(
+                        height: 40,
+                        width: 173,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+                          color: (selectedPageId == 0) ? Color(0xFFFE534F) : Colors.white,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 40, right: 40, top: 10),
+                          child: Text(
+                            'Доставка',
+                            style: TextStyle(
+                                color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
                           ),
                         ),
                       ),
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          _controller.animateToPage(0,
-                              duration: Duration(seconds: 1),
-                              curve: Curves.elasticOut);
-                        } else {
-                          noConnection(context);
-                        }
-                      },
                     ),
+                    onTap: () async {
+                      if (await Internet.checkConnection()) {
+                        _controller.animateToPage(0,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.elasticOut);
+                      } else {
+                        noConnection(context);
+                      }
+                    },
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.05),
-                  child: SizedBox(
-                    height: 40,
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0,
-                            right: 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(40)),
-                            color: (selectedPageId == 1) ? Color(0xFFFE534F) : Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 40, right: 40, top: 10),
-                            child: Text(
-                              'Заберу сам',
-                              style: TextStyle(
-                                  color: (selectedPageId == 1) ? Colors.white : Color(0xFF999999), fontSize: 15),
-                            ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 0,
+                          right: 0),
+                      child: Container(
+                        height: 40,
+                        width: 173,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
+                          color: (selectedPageId == 1) ? Color(0xFFFE534F) : Colors.white,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 40, right: 40, top: 10),
+                          child: Text(
+                            'Самовывоз',
+                            style: TextStyle(
+                                color: (selectedPageId == 1) ? Colors.white : Color(0xFF999999), fontSize: 15),
                           ),
                         ),
                       ),
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          _controller.animateToPage(1,
-                              duration: Duration(seconds: 1),
-                              curve: Curves.elasticOut);
-                        } else {
-                          noConnection(context);
-                        }
-                      },
                     ),
+                    onTap: () async {
+                      if (await Internet.checkConnection()) {
+                        _controller.animateToPage(1,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.elasticOut);
+                      } else {
+                        noConnection(context);
+                      }
+                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Expanded(
               child: PageView(
@@ -415,12 +416,21 @@ class CartPageState extends State<CartPageScreen> {
                       onPressed: () async {
                         if (await Internet.checkConnection()) {
                           if (currentUser.isLoggedIn) {
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                  new PageScreen(restaurant: restaurant)),
-                            );
+                            if(selectedPageId == 0){
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                    new AddressScreen(restaurant: restaurant)),
+                              );
+                            }else{
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                    new TakeAway(restaurant: restaurant)),
+                              );
+                            }
                           } else {
                             Navigator.push(
                               context,
@@ -516,49 +526,54 @@ class CartScreenState extends State<CartScreen> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        'Доставка',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color(0xFF000000)),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Text(
+                              'Доставка',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Color(0xFF000000)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0, top: 5),
+                              child: Text(
+                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '150',
                           style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
+                              fontSize: 18.0,
+                              color: Color(0xFF000000)),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Expanded(
-                          child: Text(
-                            '150',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xFF000000)),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Итого',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color(0xFF000000)),
-                      ),
-                      totalPrices[0]
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Итого',
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color: Color(0xFF000000)),
+                        ),
+                        totalPrices[0]
+                      ],
+                    ),
                   ),
                   SizedBox(height: 80.0)
                 ],
@@ -838,186 +853,186 @@ class CartScreenState extends State<CartScreen> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      InkWell(
-                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-                                  (Route<dynamic> route) => route.isFirst),
-                          child: Container(
-                              height: 40,
-                              width: 60,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 12, bottom: 12, right: 25),
-                                child: SvgPicture.asset(
-                                    'assets/svg_images/arrow_left.svg'),
-                              ))),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: Text(
-                          restaurant.name,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF3F3F3F)),
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: GestureDetector(
-                            child: SvgPicture.asset(
-                                'assets/svg_images/del_basket.svg'),
-                            onTap: () {
-                              if(Platform.isIOS){
-                                return showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                                      child: Column(
-                                        children: [
-                                          Dialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                            child: InkWell(
-                                              child: Container(
-                                                height: 50,
-                                                width: 100,
-                                                child: Center(
-                                                  child: Text("Очистить корзину",
-                                                    style: TextStyle(
-                                                        color: Color(0xFFFF3B30),
-                                                        fontSize: 20
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                                                  currentUser.cartDataModel.cart.clear();
-                                                  currentUser.cartDataModel.saveData();
-                                                });
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  new MaterialPageRoute(
-                                                    builder: (context) =>
-                                                    new EmptyCartScreen(restaurant: restaurant),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          Dialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                            child: InkWell(
-                                              child: Container(
-                                                height: 50,
-                                                width: 100,
-                                                child: Center(
-                                                  child: Text("Отмена",
-                                                    style: TextStyle(
-                                                        color: Color(0xFF007AFF),
-                                                        fontSize: 20
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              onTap: (){
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-                              showAlertDialog(context);
-                            },
-                          )),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Color(0xFFF5F5F5),
-                  height: 10,
-                  width: MediaQuery.of(context).size.width,
-                ),
+//                Padding(
+//                  padding: const EdgeInsets.only(top: 40),
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                    children: <Widget>[
+//                      InkWell(
+//                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
+//                              MaterialPageRoute(
+//                                  builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+//                                  (Route<dynamic> route) => route.isFirst),
+//                          child: Container(
+//                              height: 40,
+//                              width: 60,
+//                              child: Padding(
+//                                padding: EdgeInsets.only(
+//                                    top: 12, bottom: 12, right: 25),
+//                                child: SvgPicture.asset(
+//                                    'assets/svg_images/arrow_left.svg'),
+//                              ))),
+//                      Padding(
+//                        padding: EdgeInsets.only(right: 20),
+//                        child: Text(
+//                          restaurant.name,
+//                          style: TextStyle(
+//                              fontSize: 14,
+//                              fontWeight: FontWeight.bold,
+//                              color: Color(0xFF3F3F3F)),
+//                        ),
+//                      ),
+//                      Padding(
+//                          padding: EdgeInsets.only(right: 10),
+//                          child: GestureDetector(
+//                            child: SvgPicture.asset(
+//                                'assets/svg_images/del_basket.svg'),
+//                            onTap: () {
+//                              if(Platform.isIOS){
+//                                return showDialog(
+//                                  context: context,
+//                                  builder: (BuildContext context) {
+//                                    return Container(
+//                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+//                                      child: Column(
+//                                        children: [
+//                                          Dialog(
+//                                            shape: RoundedRectangleBorder(
+//                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+//                                            child: InkWell(
+//                                              child: Container(
+//                                                height: 50,
+//                                                width: 100,
+//                                                child: Center(
+//                                                  child: Text("Очистить корзину",
+//                                                    style: TextStyle(
+//                                                        color: Color(0xFFFF3B30),
+//                                                        fontSize: 20
+//                                                    ),
+//                                                  ),
+//                                                ),
+//                                              ),
+//                                              onTap: () {
+//                                                setState(() {
+//                                                  AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
+//                                                  currentUser.cartDataModel.cart.clear();
+//                                                  currentUser.cartDataModel.saveData();
+//                                                });
+//                                                Navigator.pushReplacement(
+//                                                  context,
+//                                                  new MaterialPageRoute(
+//                                                    builder: (context) =>
+//                                                    new EmptyCartScreen(restaurant: restaurant),
+//                                                  ),
+//                                                );
+//                                              },
+//                                            ),
+//                                          ),
+//                                          Dialog(
+//                                            shape: RoundedRectangleBorder(
+//                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+//                                            child: InkWell(
+//                                              child: Container(
+//                                                height: 50,
+//                                                width: 100,
+//                                                child: Center(
+//                                                  child: Text("Отмена",
+//                                                    style: TextStyle(
+//                                                        color: Color(0xFF007AFF),
+//                                                        fontSize: 20
+//                                                    ),
+//                                                  ),
+//                                                ),
+//                                              ),
+//                                              onTap: (){
+//                                                Navigator.pop(context);
+//                                              },
+//                                            ),
+//                                          )
+//                                        ],
+//                                      ),
+//                                    );
+//                                  },
+//                                );
+//                              }
+//                              showAlertDialog(context);
+//                            },
+//                          )),
+//                    ],
+//                  ),
+//                ),
+//                Container(
+//                  color: Color(0xFFF5F5F5),
+//                  height: 10,
+//                  width: MediaQuery.of(context).size.width,
+//                ),
                 _buildList(),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding:
-                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            totalPrices[1],
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        FlatButton(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: 15,
-                            ),
-                            child: Text('Далее',
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                          ),
-                          color: Color(0xFFFE534F),
-                          splashColor: Colors.redAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.only(
-                              left: 70, top: 20, right: 70, bottom: 20),
-                          onPressed: () async {
-                            if (await Internet.checkConnection()) {
-                              if (currentUser.isLoggedIn) {
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                      new PageScreen(restaurant: restaurant)),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) => new AuthScreen()),
-                                );
-                              }
-                            } else {
-                              noConnection(context);
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+//                Align(
+//                  alignment: Alignment.bottomCenter,
+//                  child: Padding(
+//                    padding:
+//                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
+//                    child: Row(
+//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                      children: [
+//                        Column(
+//                          children: [
+//                            totalPrices[1],
+//                            Padding(
+//                              padding: EdgeInsets.all(10),
+//                              child: Text(
+//                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+//                                style: TextStyle(
+//                                  fontSize: 18.0,
+//                                  color: Colors.black,
+//                                ),
+//                              ),
+//                            ),
+//                          ],
+//                        ),
+//                        FlatButton(
+//                          child: Padding(
+//                            padding: EdgeInsets.only(
+//                              right: 15,
+//                            ),
+//                            child: Text('Далее',
+//                                style: TextStyle(
+//                                    fontSize: 14.0,
+//                                    fontWeight: FontWeight.w600,
+//                                    color: Colors.white)),
+//                          ),
+//                          color: Color(0xFFFE534F),
+//                          splashColor: Colors.redAccent,
+//                          shape: RoundedRectangleBorder(
+//                            borderRadius: BorderRadius.circular(10),
+//                          ),
+//                          padding: EdgeInsets.only(
+//                              left: 70, top: 20, right: 70, bottom: 20),
+//                          onPressed: () async {
+//                            if (await Internet.checkConnection()) {
+//                              if (currentUser.isLoggedIn) {
+//                                Navigator.push(
+//                                  context,
+//                                  new MaterialPageRoute(
+//                                      builder: (context) =>
+//                                      new PageScreen(restaurant: restaurant)),
+//                                );
+//                              } else {
+//                                Navigator.push(
+//                                  context,
+//                                  new MaterialPageRoute(
+//                                      builder: (context) => new AuthScreen()),
+//                                );
+//                              }
+//                            } else {
+//                              noConnection(context);
+//                            }
+//                          },
+//                        )
+//                      ],
+//                    ),
+//                  ),
+//                ),
               ],
             )),
       ),
@@ -1097,7 +1112,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
-                  Text('Заберите заказ на ул.Ленина 46, через 25 минут',
+                  Text('Заберите заказ на ${restaurant.destination_points[index].street + " " + restaurant.destination_points[index].house}, через 25 минут',
                     style: TextStyle(
                       fontSize: 14
                     ),
@@ -1687,14 +1702,11 @@ class TotalPriceState extends State<TotalPrice> {
           }
         }
     );
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Text(
-          '${totalPrice.toStringAsFixed(0)} \₽',
-          style: TextStyle(
-              fontSize: 18.0,
-              color: Colors.black)),
-    );
+    return Text(
+        '${totalPrice.toStringAsFixed(0)} \₽',
+        style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.black));
   }
 }
 

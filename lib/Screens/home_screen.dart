@@ -362,7 +362,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         scrollDirection: Axis.horizontal,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 20, right: 8, top: 8, bottom: 8),
             child: Container(
               height: 100,
               width: 130,
@@ -373,7 +373,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
             child: Container(
               height: 100,
               width: 130,
@@ -384,7 +384,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 0, right: 15, top: 8, bottom: 8),
             child: Container(
               height: 100,
               width: 130,

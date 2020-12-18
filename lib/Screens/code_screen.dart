@@ -163,7 +163,7 @@ class _CodeScreenState extends State<CodeScreen> {
                         height: 130,
                         width: 300,
                         decoration: BoxDecoration(
-                          color: Color(0xFFE6E6E6),
+                          color: Color(0xFFF6F6F6),
                           border: Border.all(
                             color: Color(0xFFE6E6E6),
                           ),
@@ -470,7 +470,7 @@ class TimerCountDownState extends State<TimerCountDown> {
         ))
         : GestureDetector(
       child: Text(
-        'Отпарвить код повторно',
+        'Отправить код повторно',
         style: TextStyle(),
       ),
       onTap: () {

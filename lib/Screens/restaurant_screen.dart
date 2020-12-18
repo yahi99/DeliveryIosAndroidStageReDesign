@@ -1230,7 +1230,7 @@ class BasketButtonState extends State<BasketButton> {
               Navigator.push(
                 context,
                 new MaterialPageRoute(
-                  builder: (context) => new CartScreen(restaurant: restaurant),
+                  builder: (context) => new CartPageScreen(restaurant: restaurant),
                 ),
               );
             }
