@@ -17,7 +17,9 @@ class AutoCompleteField extends StatefulWidget {
   }
 }
 
-class AutoCompleteFieldState extends State<AutoCompleteField> {
+class AutoCompleteFieldState extends State<AutoCompleteField> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   AutoCompleteFieldState(this.onSelected, this.initialValue);
   String initialValue;
   List<InitialAddressModel> suggestions = new List<InitialAddressModel>();

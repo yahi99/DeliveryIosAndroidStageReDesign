@@ -722,7 +722,7 @@ class AddressScreenState extends State<AddressScreen>
   InitialAddressModel selectedAddress; // Последний выбранный адрес
   final Records restaurant;
   GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
-  GlobalKey<DestinationPointsSelectorState>();
+  GlobalKey();
   CreateOrder createOrder;
 
   GlobalKey<AutoCompleteDemoState> destinationPointsKey;
@@ -1178,8 +1178,6 @@ class AddressScreenState extends State<AddressScreen>
 
   @override
   dispose() {
-    phoneNumberController.dispose();
-    nameController.dispose();
     super.dispose();
   }
 
@@ -1256,9 +1254,11 @@ class AddressScreenState extends State<AddressScreen>
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    DestinationPointsSelector(
-                      destinationPoints: restaurant.destination_points,
-                      key: destinationPointsSelectorStateKey,
+                    Container(
+                      child: DestinationPointsSelector(
+                        destinationPoints: restaurant.destination_points,
+                        key: destinationPointsSelectorStateKey,
+                      ),
                     ),
                     // Padding(
                     //   padding: EdgeInsets.only(top: 10, left: 15),
@@ -1908,49 +1908,35 @@ class AddressScreenState extends State<AddressScreen>
                             left: 60, top: 20, right: 60, bottom: 20),
                         onPressed: () async {
                           if (await Internet.checkConnection()) {
-                            if (addressScreenKey.currentState.addressSelectorKey.currentState.myFavouriteAddressesModel.address != null) {
-                              Center(
-                                child: CircularProgressIndicator(),
-                              );
-                              if(selectedPaymentId != 1){
-                                showAlertDialog(context);
-                              }
-                              if(addressScreenKey.currentState != null) {
-                                createOrder = new CreateOrder(
-                                  address: addressScreenKey.currentState.addressSelectorKey.currentState.myFavouriteAddressesModel.address,
-                                  restaurantAddress: addressScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
-                                  office: addressScreenKey.currentState.officeField
-                                      .text,
-                                  floor: addressScreenKey.currentState.floorField.text,
-                                  entrance: addressScreenKey.currentState.entranceField
-                                      .text,
-                                  intercom: addressScreenKey.currentState.intercomField
-                                      .text,
-                                  comment: addressScreenKey.currentState.commentField
-                                      .text,
-                                  cartDataModel: currentUser.cartDataModel,
-                                  restaurant: restaurant,
-                                  payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
-                                  door_to_door: addressScreenKey.currentState.status1,
-                                );
-                                if(selectedPaymentId == 1){
-                                  _cardPayment(totalPrice);
-                                  return;
-                                }
-                                print('Payment');
-                                await createOrder.sendData();
-                              }
-                              else{
-                                print('All go');
-                              }
-                              currentUser.cartDataModel.cart.clear();
-                              currentUser.cartDataModel.saveData();
-//                            homeScreenKey = new GlobalKey<HomeScreenState>();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
-                                      (Route<dynamic> route) => false);
+                            if(selectedPaymentId != 1){
+                              showAlertDialog(context);
                             }
+                            createOrder = new CreateOrder(
+                              address: addressSelectorKey.currentState.myFavouriteAddressesModel.address,
+                              restaurantAddress: destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                              office: officeField.text,
+                              floor: floorField.text,
+                              entrance: entranceField.text,
+                              intercom: intercomField.text,
+                              comment: commentField.text,
+                              cartDataModel: currentUser.cartDataModel,
+                              restaurant: restaurant,
+                              payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
+                              door_to_door: status1,
+                            );
+                            if(selectedPaymentId == 1){
+                              _cardPayment(totalPrice);
+                              return;
+                            }
+                            print('Payment');
+                            await createOrder.sendData();
+                            currentUser.cartDataModel.cart.clear();
+                            currentUser.cartDataModel.saveData();
+//                            homeScreenKey = new GlobalKey<HomeScreenState>();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
+                                    (Route<dynamic> route) => false);
                           } else {
                             noConnection(context);
                           }
@@ -2604,39 +2590,28 @@ class TakeAwayState extends State<TakeAway>
                             left: 60, top: 20, right: 60, bottom: 20),
                         onPressed: () async {
                           if (await Internet.checkConnection()) {
-                            if (addressScreenKey.currentState.addressField.text.length >
-                                0 || selectedPageId == 1) {
-                              Center(
-                                child: CircularProgressIndicator(),
-                              );
-                              if(selectedPaymentId != 1){
-                                showAlertDialog(context);
-                              }
-                              if (takeAwayScreenKey.currentState != null) {
-                                createOrderTakeAway =
-                                new CreateOrderTakeAway(
-                                    comment: (takeAwayScreenKey.currentState.status1) ? "Поем в заведении" : takeAwayScreenKey.currentState.comment,
-                                    cartDataModel: currentUser.cartDataModel,
-                                    restaurantAddress: takeAwayScreenKey.currentState.destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
-                                    without_delivery: true,
-                                    restaurant: restaurant);
-                                if(selectedPaymentId == 1){
-                                  _cardPayment(totalPrice);
-                                  return;
-                                }
-                                await createOrderTakeAway.sendData();
-                              }
-                              else{
-                                print('All go');
-                              }
-                              currentUser.cartDataModel.cart.clear();
-                              currentUser.cartDataModel.saveData();
-//                            homeScreenKey = new GlobalKey<HomeScreenState>();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
-                                      (Route<dynamic> route) => false);
+                            if(selectedPaymentId != 1){
+                              showAlertDialog(context);
                             }
+                            createOrderTakeAway =
+                            new CreateOrderTakeAway(
+                                comment: (status1) ? "Поем в заведении" : comment,
+                                cartDataModel: currentUser.cartDataModel,
+                                restaurantAddress: destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                                without_delivery: true,
+                                restaurant: restaurant);
+                            if(selectedPaymentId == 1){
+                              _cardPayment(totalPrice);
+                              return;
+                            }
+                            await createOrderTakeAway.sendData();
+                            currentUser.cartDataModel.cart.clear();
+                            currentUser.cartDataModel.saveData();
+//                            homeScreenKey = new GlobalKey<HomeScreenState>();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
+                                    (Route<dynamic> route) => false);
                           } else {
                             noConnection(context);
                           }
@@ -2664,7 +2639,9 @@ class AddressSelector extends StatefulWidget {
   AddressSelectorState createState() => AddressSelectorState(myFavouriteAddressList, parent);
 }
 
-class AddressSelectorState extends State<AddressSelector> {
+class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   MyFavouriteAddressesModel myFavouriteAddressesModel = null;
   List<MyFavouriteAddressesModel> myFavouriteAddressList;
   AddressScreenState parent;
@@ -2830,7 +2807,9 @@ class DestinationPointsSelector extends StatefulWidget {
   DestinationPointsSelectorState createState() => DestinationPointsSelectorState(destinationPoints);
 }
 
-class DestinationPointsSelectorState extends State<DestinationPointsSelector> {
+class DestinationPointsSelectorState extends State<DestinationPointsSelector> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   DestinationPoints selectedDestinationPoint = null;
   List<DestinationPoints> destinationPointsList;
 
