@@ -779,15 +779,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
-          ),
           _buildFoodCategoryList(),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
-          ),
           Expanded(
             child: ListView.builder(
                 itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
@@ -1505,11 +1497,25 @@ class CategoryListState extends State<CategoryList> {
       await ScrollToSelectedCategory();
     });
 
-    return  Container(
-      height: 50,
-      child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: categoryItems
+    return  Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Container(
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        height: 65,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8.0, // soften the shadow
+              spreadRadius: 3.0, //extend the shadow
+            )
+          ],
+        ),
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: categoryItems
+        ),
       ),
     );
 

@@ -209,6 +209,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   bool filterSelect = false;
 
+
   _buildKitchensFilterNavigationMenu() {
     return Container(
       height: 610,
@@ -230,74 +231,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(bottom: 10, left: 8, right: 8),
-            height: 490,
-            child: GridView.count(
-              crossAxisCount: 3 ,
-              children: List.generate(12,(index){
-                return InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30.0, left: 5, right: 5),
-                    child: (filterSelect) ? Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFE6E6E6)
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: SvgPicture.asset('assets/svg_images/bread.svg'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text('Пицца',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ) : Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFF424242)
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: SvgPicture.asset('assets/svg_images/bread_white.svg'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text('Пицца',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  onTap: (){
-                    setState(() {
-                      filterSelect = !filterSelect;
-                    });
-                  },
-                );
-              }),
-            ),
-          ),
+          KitchenListScreen(),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -1208,13 +1142,16 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                     snapshot.data.length > 0) {
                                   orderList = snapshot.data;
                                   return (currentUser.isLoggedIn)
-                                      ? Container(
+                                      ? Padding(
+                                        padding: const EdgeInsets.only(top: 15),
+                                        child: Container(
                                     height: 230,
                                     child: ListView(
-                                      children: snapshot.data,
-                                      scrollDirection: Axis.horizontal,
+                                        children: snapshot.data,
+                                        scrollDirection: Axis.horizontal,
                                     ),
-                                  ) : Container(
+                                  ),
+                                      ) : Container(
                                     height: 0,
                                   );
                                 } else {
@@ -2220,6 +2157,140 @@ class QuickMessageScreenState extends State<QuickMessageScreen> with WidgetsBind
           return Container();
         }
       },
+    );
+  }
+}
+
+
+
+class KitchenListScreen extends StatefulWidget {
+
+  KitchenListScreen({Key key}) : super(key: key);
+
+  @override
+  KitchenListScreenState createState() {
+    return new KitchenListScreenState();
+  }
+}
+
+class KitchenListScreenState extends State<KitchenListScreen>{
+
+  KitchenListScreenState();
+
+  List<bool> selectedKitchens = List.generate(12, (index) => false);
+  List<String> images = [
+    'assets/svg_images/sushi.svg',
+    'assets/svg_images/pizza.svg',
+    'assets/svg_images/burger.svg',
+    'assets/svg_images/shashlik.svg',
+    'assets/svg_images/fish_meat.svg',
+    'assets/svg_images/cake.svg',
+    'assets/svg_images/breakfast.svg',
+    'assets/svg_images/dinner.svg',
+    'assets/svg_images/bread.svg',
+    'assets/svg_images/asian.svg',
+    'assets/svg_images/russian.svg',
+    'assets/svg_images/georgian.svg',
+  ];
+  List<String> images_white = [
+    'assets/svg_images/sushi_white.svg',
+    'assets/svg_images/pizza_white.svg',
+    'assets/svg_images/burger_white.svg',
+    'assets/svg_images/shashl_white.svg',
+    'assets/svg_images/fish_meat_white.svg',
+    'assets/svg_images/cake_white.svg',
+    'assets/svg_images/breakfast_white.svg',
+    'assets/svg_images/dinner_white.svg',
+    'assets/svg_images/bread_white.svg',
+    'assets/svg_images/asian_white.svg',
+    'assets/svg_images/russian_white.svg',
+    'assets/svg_images/georgian_white.svg',
+  ];
+  List<String> titles = [
+    'Суши',
+    'Пицца',
+    'Бургеры',
+    'Шашлык',
+    'Мясо и рыба',
+    'Пироги',
+    'Завтраки',
+    'Обеды',
+    'Перекус',
+    'Азиатская',
+    'Русская',
+    'Грузинская',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      padding: EdgeInsets.only(bottom: 10, left: 8, right: 8),
+      height: 490,
+      child: GridView.count(
+        crossAxisCount: 3 ,
+        children: List.generate(12,(index){
+          return InkWell(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0, left: 5, right: 5),
+              child: (!selectedKitchens[index]) ? Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFFE6E6E6)
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: SvgPicture.asset(images[index]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(titles[index],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 10
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ) : Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF424242)
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: SvgPicture.asset(images_white[index]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(titles[index],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onTap: (){
+              setState(() {
+                selectedKitchens[index] = !selectedKitchens[index];
+              });
+            },
+          );
+        }),
+      ),
     );
   }
 }

@@ -728,8 +728,6 @@ class AddressScreenState extends State<AddressScreen>
   GlobalKey();
   CreateOrder createOrder;
 
-  GlobalKey<AutoCompleteDemoState> destinationPointsKey;
-
   AddressScreenState(this.restaurant, this.addedAddress, {this.myAddressesModelList});
 
   bool f = false;
@@ -741,22 +739,8 @@ class AddressScreenState extends State<AddressScreen>
   @override
   void initState() {
     super.initState();
-    // if(myAddressesModelList.length > 0){
-    //   addedAddress = myAddressesModelList[0];
-    // }
-    // Инициализируем автокомплит
-    destinationPointsKey = new GlobalKey();
-    autoComplete = new AutoComplete(destinationPointsKey, 'Введите адрес',
-        onSelected:() { // И навешием событие на выбор адреса
-          // Переносим выбранный адрес в основной текстфилд
-          addressField.text = destinationPointsKey.currentState
-              .searchTextField.textFieldConfiguration.controller
-              .text;
-          // Заполняем последний выбранный адрес
-          selectedAddress = destinationPointsKey.currentState.selectedValue;
-          Navigator.pop(context);
-        }
-    );
+    addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
+    selectedAddress = restaurant.destination_points[0];
   }
 
   showPaymentErrorAlertDialog(BuildContext context) {
@@ -1074,12 +1058,59 @@ class AddressScreenState extends State<AddressScreen>
 
   _buildDispatchAddressBottomNavigationMenu() {
     return Container(
-      child: DestinationPointsSelector(
-        destinationPoints: restaurant.destination_points,
-        key: destinationPointsSelectorStateKey,
+      color: Colors.white,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Text('Адрес отправки',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          DestinationPointsSelector(
+            destinationPoints: restaurant.destination_points,
+            key: destinationPointsSelectorStateKey,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(left:15, right: 15, top: 15),
+              child: InkWell(
+                child: Container(
+                  width: 340,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFE6E6E6),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Center(
+                    child: Text('Готово',
+                      style: TextStyle(
+                          fontSize: 24
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: (){
+                  addressValueController.text = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.street + ' ' +
+                      destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.house;
+                  selectedAddress = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint;
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
+
 
 
   Widget buildAddressesList(){
@@ -1136,6 +1167,7 @@ class AddressScreenState extends State<AddressScreen>
 
   TextEditingController phoneNumberController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
+  TextEditingController addressValueController;
 
   @override
   Widget build(BuildContext context) {
@@ -1277,11 +1309,20 @@ class AddressScreenState extends State<AddressScreen>
                                 padding: const EdgeInsets.only(left: 15, top: 15),
                                 child: Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text('address',
-                                    style: TextStyle(
-                                      fontSize: 14
+                                  child: Container(
+                                    height: 20,
+                                    child: TextField(
+                                      controller: addressValueController,
+                                      enabled: false,
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        counterText: '',
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: 16
+                                      ),
                                     ),
-                                  ),
+                                  )
                                 ),
                               )
                             ],
@@ -1945,7 +1986,7 @@ class AddressScreenState extends State<AddressScreen>
                             }
                             createOrder = new CreateOrder(
                               address: addressSelectorKey.currentState.myFavouriteAddressesModel.address,
-                              restaurantAddress: destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                              restaurantAddress: selectedAddress,
                               office: officeField.text,
                               floor: floorField.text,
                               entrance: entranceField.text,
@@ -2237,9 +2278,55 @@ class TakeAwayState extends State<TakeAway>
 
   _buildDispatchAddressBottomNavigationMenu() {
     return Container(
-      child: DestinationPointsSelector(
-        destinationPoints: restaurant.destination_points,
-        key: destinationPointsSelectorStateKey,
+      color: Colors.white,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Text('Адрес отправки',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          DestinationPointsSelector(
+            destinationPoints: restaurant.destination_points,
+            key: destinationPointsSelectorStateKey,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(left:15, right: 15, top: 15),
+              child: InkWell(
+                child: Container(
+                  width: 340,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFE6E6E6),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Center(
+                    child: Text('Готово',
+                      style: TextStyle(
+                          fontSize: 24
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: (){
+                  addressValueController.text = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.street + ' ' +
+                      destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.house;
+                  selectedAddress = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint;
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -2311,11 +2398,14 @@ class TakeAwayState extends State<TakeAway>
             ))
     );
   }
+  TextEditingController addressValueController;
+  InitialAddressModel selectedAddress;
 
   @override
   void initState() {
     super.initState();
-    _color = true;
+    addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
+    selectedAddress = restaurant.destination_points[0];
   }
 
   String title = 'Наличными';
@@ -2459,12 +2549,21 @@ class TakeAwayState extends State<TakeAway>
                               Padding(
                                 padding: const EdgeInsets.only(left: 15, top: 15),
                                 child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text('Address',
-                                    style: TextStyle(
-                                        fontSize: 14
-                                    ),
-                                  ),
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      height: 20,
+                                      child: TextField(
+                                        controller: addressValueController,
+                                        enabled: false,
+                                        decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          counterText: '',
+                                        ),
+                                        style: TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      ),
+                                    )
                                 ),
                               )
                             ],
@@ -2880,7 +2979,7 @@ class TakeAwayState extends State<TakeAway>
                             new CreateOrderTakeAway(
                                 comment: (status1) ? "Поем в заведении" : comment,
                                 cartDataModel: currentUser.cartDataModel,
-                                restaurantAddress: destinationPointsSelectorStateKey.currentState.selectedDestinationPoint,
+                                restaurantAddress: selectedAddress,
                                 without_delivery: true,
                                 restaurant: restaurant);
                             if(selectedPaymentId == 1){
@@ -3082,44 +3181,36 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
 }
 
 class DestinationPointsSelector extends StatefulWidget {
-  List<DestinationPoints> destinationPoints;
+  final List<DestinationPoints> destinationPoints;
 
   DestinationPointsSelector({Key key, this.destinationPoints}) : super(key: key);
 
   @override
-  DestinationPointsSelectorState createState() => DestinationPointsSelectorState(destinationPoints);
+  DestinationPointsSelectorState createState() {
+    return new DestinationPointsSelectorState(destinationPoints);
+  }
+
 }
 
 class DestinationPointsSelectorState extends State<DestinationPointsSelector> with AutomaticKeepAliveClientMixin{
   @override
   bool get wantKeepAlive => true;
-  DestinationPoints selectedDestinationPoint = null;
+  DestinationPoints selectedDestinationPoint;
   List<DestinationPoints> destinationPointsList;
 
   DestinationPointsSelectorState(this.destinationPointsList);
 
+  @override
   void initState() {
     if(destinationPointsList.length > 0){
       selectedDestinationPoint = destinationPointsList[0];
     }
+    super.initState();
   }
 
   Widget build(BuildContext context) {
+    super.build(context);
     List<Widget> widgetsList = new List<Widget>();
-    widgetsList.add(
-      Align(
-        alignment: Alignment.topLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, top: 15),
-          child: Text('Адрес отправки',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-        ),
-      )
-    );
     destinationPointsList.forEach((element) {
       widgetsList.add(
           Padding(
@@ -3172,31 +3263,6 @@ class DestinationPointsSelectorState extends State<DestinationPointsSelector> wi
           )
       );
     });
-    widgetsList.add(
-      Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.only(left:15, right: 15, top: 15),
-          child: InkWell(
-            child: Container(
-              width: 340,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Color(0xFFE6E6E6),
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: Center(
-                child: Text('Готово',
-                  style: TextStyle(
-                    fontSize: 24
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      )
-    );
     return Container(
       color: Colors.white,
       child: ScrollConfiguration(
