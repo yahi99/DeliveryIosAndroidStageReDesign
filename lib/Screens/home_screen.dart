@@ -97,7 +97,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         context: context,
         builder: (context) {
           return Container(
-            height: 380,
+            height: 420,
             child: _buildFilterNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -116,7 +116,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 15),
+              padding: const EdgeInsets.only(top: 15, left: 15, bottom: 15),
               child: Text(
                 'Отобразить сначала',
                 style: TextStyle(
@@ -147,20 +147,23 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             title: Text('Дорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
-          FlatButton(
-            child: Text('Готово',
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Color(0xFF000000))),
-            color: Color(0xFFE6E6E6),
-            splashColor: Colors.grey,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            child: FlatButton(
+              child: Text('Готово',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Color(0xFF000000))),
+              color: Color(0xFFE6E6E6),
+              splashColor: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+              onPressed: () async {
+                Navigator.pop(context);
+              },
             ),
-            padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
-            onPressed: () async {
-              Navigator.pop(context);
-            },
           )
         ],
       ),
@@ -1154,10 +1157,11 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               ],
                             ),
                             (records_items.isEmpty && !isLoading) ?  Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 150),
-                                child: Text('Нет товаров данной категории'),
-                              ),
+                              child: Container(),
+//                              child: Padding(
+//                                padding: EdgeInsets.only(top: 150),
+//                                child: Text('Нет товаров данной категории'),
+//                              ),
                             ) : _buildRestaurantsList()
                           ],
                         ),

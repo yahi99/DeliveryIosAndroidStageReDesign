@@ -365,6 +365,37 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     );
   }
 
+  _filter() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 420,
+            child: _buildFilterNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildFilterNavigationMenu() {
+    if(restaurant.product_category.length>0)
+      return categoryList;
+    else
+      return Container(height: 0);
+  }
+
   _buildFoodCategoryList() {
     if(restaurant.product_category.length>0)
       return categoryList;
@@ -608,10 +639,29 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                               'assets/svg_images/rest_arrow_left.svg'),
                           onTap: () async {
                             if(await Internet.checkConnection()){
+//                              Navigator.of(context).pushAndRemoveUntil(
+//                                  MaterialPageRoute(
+//                                      builder: (context) => HomeScreen()),
+//                                      (Route<dynamic> route) => false);
                               Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeScreen()),
-                                      (Route<dynamic> route) => false);
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, anotherAnimation) {
+                                    return HomeScreen();
+                                  },
+                                  transitionDuration: Duration(milliseconds: 300),
+                                    transitionsBuilder:
+                                        (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                      return SlideTransition(
+                                        position: Tween(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset(0.0, 0.0))
+                                            .animate(animation),
+                                        child: child,
+                                      );
+                                    }
+                                ), (Route<dynamic> route) => false);
                             }else{
                               noConnection(context);
                             }

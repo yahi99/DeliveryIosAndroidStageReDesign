@@ -1045,7 +1045,7 @@ class AddressScreenState extends State<AddressScreen>
 
   MyFavouriteAddressesModel addedAddress;
 
-  void _autocomplete(AutoComplete autoComplete) {
+  void _dispatchAddress() {
     showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -1057,73 +1057,82 @@ class AddressScreenState extends State<AddressScreen>
         context: context,
         builder: (context) {
           return Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: Container(
-                child: _buildAutocompleteBottomNavigationMenu(autoComplete),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).canvasColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(20),
-                      topRight: const Radius.circular(20),
-                    )),
-              ));
+            height: 200,
+            child: _buildDispatchAddressBottomNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
         });
   }
 
-  _buildAutocompleteBottomNavigationMenu(AutoComplete autoComplete) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 7),
-                    child: Center(
-                      child: Container(
-                        width: 67,
-                        height: 7,
-                        decoration: BoxDecoration(
-                            color: Color(0xFFEBEAEF),
-                            borderRadius: BorderRadius.all(Radius.circular(11))),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: 0, right: 15),
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 15,
-                              top: 33,
-                              bottom: 0,
+  _buildDispatchAddressBottomNavigationMenu() {
+    DestinationPoints selectedDestinationPoint = null;
+    List<DestinationPoints> destinationPointsList;
+
+    if(destinationPointsList.length > 0){
+      selectedDestinationPoint = destinationPointsList[0];
+    }
+    List<Widget> widgetsList = new List<Widget>();
+    destinationPointsList.forEach((element) {
+      widgetsList.add(GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: InkWell(
+                    child: Container(
+                      child: Row(
+                        children: [
+                          (selectedDestinationPoint == element)
+                              ? SvgPicture.asset(
+                              'assets/svg_images/address_screen_selector.svg')
+                              :
+                          SvgPicture.asset(
+                              'assets/svg_images/circle.svg'),
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 10, bottom: 5),
+                                  child: Text(
+                                    element.unrestrictedValue,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: SvgPicture.asset('assets/svg_images/mini_black_ellipse.svg'),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 3,
-                              left: 25,
-                              bottom: 5,
-                            ),
-                            child: autoComplete,
                           ),
                         ],
-                      )),
-                  Divider(
-                    color: Color(0xFFEDEDED),
-                    height: 1,
-                    thickness: 1,
+                      ),
+                    ),
+                    onTap: () async {
+                      setState(() {
+                        selectedDestinationPoint = element;
+                      });
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          )
-        ],
+          )));
+    });
+    return Container(
+      color: Colors.white,
+      child: ScrollConfiguration(
+        behavior: new ScrollBehavior(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: widgetsList,
+          ),
+        ),
       ),
     );
   }
@@ -1162,7 +1171,7 @@ class AddressScreenState extends State<AddressScreen>
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
-            child: Text('Подтверждение адреса',
+            child: Text('Ваш адрес',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -1254,11 +1263,72 @@ class AddressScreenState extends State<AddressScreen>
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    Container(
-                      child: DestinationPointsSelector(
-                        destinationPoints: restaurant.destination_points,
-                        key: destinationPointsSelectorStateKey,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15, bottom: 15),
+                        child: Text('Адрес отправки',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF424242))),
                       ),
+                    ),
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Container(
+                          height: 64,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 8.0, // soften the shadow
+                                  spreadRadius: 3.0, //extend the shadow
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(width: 1.0, color: Colors.grey[200])),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('С какого адреса вам отправить?',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFB8B8B8)
+                                      ),
+                                    ),
+                                    Text('Изменить',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 15),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text('Address',
+                                    style: TextStyle(
+                                      fontSize: 14
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: (){
+                        _dispatchAddress();
+                      },
                     ),
                     // Padding(
                     //   padding: EdgeInsets.only(top: 10, left: 15),
