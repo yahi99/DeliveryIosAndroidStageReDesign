@@ -15,8 +15,11 @@ import '../models/CreateModelTakeAway.dart';
 import '../models/CreateOrderModel.dart';
 import '../models/my_addresses_model.dart';
 import 'auto_complete.dart';
+import 'cart_screen.dart';
 import 'home_screen.dart';
 import 'package:flutter_app/Screens/add_address_screen.dart';
+
+import 'restaurant_screen.dart';
 
 
 class PageScreen extends StatefulWidget {
@@ -1057,7 +1060,7 @@ class AddressScreenState extends State<AddressScreen>
         context: context,
         builder: (context) {
           return Container(
-            height: 200,
+            height: 250,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -1070,77 +1073,12 @@ class AddressScreenState extends State<AddressScreen>
   }
 
   _buildDispatchAddressBottomNavigationMenu() {
-//    DestinationPoints selectedDestinationPoint = null;
-//    List<DestinationPoints> destinationPointsList;
-//
-//    if(destinationPointsList.length > 0){
-//      selectedDestinationPoint = destinationPointsList[0];
-//    }
-//    List<Widget> widgetsList = new List<Widget>();
-//    destinationPointsList.forEach((element) {
-//      widgetsList.add(GestureDetector(
-//          child: Padding(
-//            padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
-//            child: Row(
-//              children: <Widget>[
-//                Flexible(
-//                  child: InkWell(
-//                    child: Container(
-//                      child: Row(
-//                        children: [
-//                          (selectedDestinationPoint == element)
-//                              ? SvgPicture.asset(
-//                              'assets/svg_images/address_screen_selector.svg')
-//                              :
-//                          SvgPicture.asset(
-//                              'assets/svg_images/circle.svg'),
-//                          Flexible(
-//                            child: Container(
-//                              padding: EdgeInsets.only(left: 15),
-//                              child: Align(
-//                                alignment: Alignment.topLeft,
-//                                child: Padding(
-//                                  padding: const EdgeInsets.only(
-//                                      right: 10, bottom: 5),
-//                                  child: Text(
-//                                    element.unrestrictedValue,
-//                                    textAlign: TextAlign.left,
-//                                  ),
-//                                ),
-//                              ),
-//                            ),
-//                          ),
-//                        ],
-//                      ),
-//                    ),
-//                    onTap: () async {
-//                      setState(() {
-//                        selectedDestinationPoint = element;
-//                      });
-//                    },
-//                  ),
-//                ),
-//              ],
-//            ),
-//          )));
-//    });
     return Container(
       child: DestinationPointsSelector(
         destinationPoints: restaurant.destination_points,
         key: destinationPointsSelectorStateKey,
       ),
     );
-//    return Container(
-//      color: Colors.white,
-//      child: ScrollConfiguration(
-//        behavior: new ScrollBehavior(),
-//        child: SingleChildScrollView(
-//          child: Column(
-//            children: widgetsList,
-//          ),
-//        ),
-//      ),
-//    );
   }
 
 
@@ -1235,7 +1173,25 @@ class AddressScreenState extends State<AddressScreen>
                       child: Padding(
                         padding: EdgeInsets.only(left: 0),
                         child: InkWell(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () => Navigator.of(context).push(
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation, anotherAnimation) {
+                                    return CartPageScreen(restaurant: restaurant);
+                                  },
+                                  transitionDuration: Duration(milliseconds: 300),
+                                  transitionsBuilder:
+                                      (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                    return SlideTransition(
+                                      position: Tween(
+                                          begin: Offset(1.0, 0.0),
+                                          end: Offset(0.0, 0.0))
+                                          .animate(animation),
+                                      child: child,
+                                    );
+                                  }
+                              )),
                           child: Padding(
                               padding: EdgeInsets.only(right: 0),
                               child: Container(
@@ -1321,7 +1277,7 @@ class AddressScreenState extends State<AddressScreen>
                                 padding: const EdgeInsets.only(left: 15, top: 15),
                                 child: Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text('Address',
+                                  child: Text('address',
                                     style: TextStyle(
                                       fontSize: 14
                                     ),
@@ -2255,6 +2211,39 @@ class TakeAwayState extends State<TakeAway>
     });
   }
 
+  void _dispatchAddress() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 250,
+            child: _buildDispatchAddressBottomNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildDispatchAddressBottomNavigationMenu() {
+    return Container(
+      child: DestinationPointsSelector(
+        destinationPoints: restaurant.destination_points,
+        key: destinationPointsSelectorStateKey,
+      ),
+    );
+  }
+
 
   int selectedPageId = 0;
   GlobalKey<TakeAwayState> takeAwayScreenKey = new GlobalKey<TakeAwayState>();
@@ -2268,6 +2257,7 @@ class TakeAwayState extends State<TakeAway>
   String cash = 'Наличными';
   String card = 'Картой';
   int selectedPaymentId = 0;
+  bool status2 = false;
 
   CreateOrderTakeAway createOrderTakeAway;
   _cardPayment(double totalPrice){
@@ -2338,6 +2328,8 @@ class TakeAwayState extends State<TakeAway>
   GlobalKey<DestinationPointsSelectorState>();
   TextEditingController commentField = new TextEditingController();
   final maxLines = 1;
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
 
   bool f = false;
   GlobalKey<PromoCodeFieldState> promoCodeFieldKey = new GlobalKey();
@@ -2363,7 +2355,25 @@ class TakeAwayState extends State<TakeAway>
                       child: Padding(
                         padding: EdgeInsets.only(left: 0),
                         child: InkWell(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () => Navigator.of(context).push(
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation, anotherAnimation) {
+                                    return CartPageScreen(restaurant: restaurant,);
+                                  },
+                                  transitionDuration: Duration(milliseconds: 300),
+                                  transitionsBuilder:
+                                      (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                    return SlideTransition(
+                                      position: Tween(
+                                          begin: Offset(1.0, 0.0),
+                                          end: Offset(0.0, 0.0))
+                                          .animate(animation),
+                                      child: child,
+                                    );
+                                  }
+                              )),
                           child: Padding(
                               padding: EdgeInsets.only(right: 0),
                               child: Container(
@@ -2397,35 +2407,73 @@ class TakeAwayState extends State<TakeAway>
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 10, top: 15, left: 15),
-                            child: Text(
-                              'Адрес заведения',
-                              style: TextStyle(
-                                  color: Color(0xFFB0B0B0), fontSize: 11),
-                            )),
-                      ],
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, bottom: 15),
+                        child: Text('Адрес отправки',
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                            padding:
-                            EdgeInsets.only(bottom: 10, top: 0, left: 15),
-                            child: Text(
-                              restaurant.name,
-                              style: TextStyle(
-                                  color: Color(0xFF3F3F3F),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 21),
-                            )),
-                      ],
-                    ),
-                    DestinationPointsSelector(
-                      destinationPoints: restaurant.destination_points,
-                      key: destinationPointsSelectorStateKey,
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Container(
+                          height: 64,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 8.0, // soften the shadow
+                                  spreadRadius: 3.0, //extend the shadow
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(width: 1.0, color: Colors.grey[200])),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('С какого адреса вам отправить?',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFB8B8B8)
+                                      ),
+                                    ),
+                                    Text('Изменить',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 15),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text('Address',
+                                    style: TextStyle(
+                                        fontSize: 14
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: (){
+                        _dispatchAddress();
+                      },
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 5, bottom: 5),
@@ -2435,13 +2483,241 @@ class TakeAwayState extends State<TakeAway>
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 15, left: 15, bottom: 5),
+                      padding: EdgeInsets.only(
+                          top: 10, left: 15, right: 15, bottom: 10),
+                      child: (status2) ? Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'Заказ другому человеку',
+                                      style: TextStyle(
+                                          color: Color(0xFF3F3F3F),
+                                          fontSize: 15),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 0),
+                                      child: FlutterSwitch(
+                                        width: 55.0,
+                                        height: 25.0,
+                                        inactiveColor: Color(0xD6D6D6D6),
+                                        activeColor: Colors.red,
+                                        valueFontSize: 12.0,
+                                        toggleSize: 18.0,
+                                        value: status2,
+                                        onToggle: (value) {
+                                          setState(() {
+                                            status2 = value;
+                                          });
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: TextField(
+                                  controller: phoneNumberController,
+                                  decoration: new InputDecoration(
+                                    hintText: 'Номер телефона получателя',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey
+                                    ),
+                                    border: InputBorder.none,
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              Divider(color: Colors.grey,),
+                              Container(
+                                child: TextField(
+                                  controller: nameController,
+                                  decoration: new InputDecoration(
+                                    hintText: 'Имя получателя',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey
+                                    ),
+                                    border: InputBorder.none,
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              Divider(color: Colors.grey,),
+                            ],
+                          ),
+                        ),
+                      ) : Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Заказ другому человеку',
+                                style: TextStyle(
+                                    color: Color(0xFF3F3F3F),
+                                    fontSize: 15),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 0),
+                                child: FlutterSwitch(
+                                  width: 55.0,
+                                  height: 25.0,
+                                  inactiveColor: Color(0xD6D6D6D6),
+                                  activeColor: Colors.red,
+                                  valueFontSize: 12.0,
+                                  toggleSize: 18.0,
+                                  value: status2,
+                                  onToggle: (value) {
+                                    setState(() {
+                                      status2 = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: Divider(
+                          height: 1.0, color: Color(0xFFEDEDED)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, left: 15, bottom: 5, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Стомость',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14),
+                          ),
+                          Text(
+                            '${(totalPrice).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, left: 15, bottom: 5, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Итого',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22),
+                          ),
+                          Text(
+                            '${(totalPrice).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 10,
+                      color: Color(0xFAFAFAFA),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8.0, // soften the shadow
+                              spreadRadius: 3.0, //extend the shadow
+                            )
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(width: 1.0, color: Colors.grey[200])),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 10, left: 15, right: 15, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'Поем в заведении',
+                              style: TextStyle(
+                                  color: Color(0xFF3F3F3F),
+                                  fontSize: 15),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 0),
+                              child: FlutterSwitch(
+                                width: 55.0,
+                                height: 25.0,
+                                inactiveColor: Color(0xD6D6D6D6),
+                                activeColor: Colors.red,
+                                valueFontSize: 12.0,
+                                toggleSize: 18.0,
+                                value: status1,
+                                onToggle: (value) {
+                                  setState(() {
+                                    status1 = value;
+                                  });
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, left: 15, bottom: 5),
                       child: Row(
                         children: <Widget>[
                           Text(
-                            'Комментарий к заказу',
+                            'Комментарий',
                             style: TextStyle(
-                                color: Color(0xFFB0B0B0), fontSize: 13),
+                                color: Color(0xFFB0B0B0),
+                                fontSize: 13),
                           )
                         ],
                       ),
@@ -2449,7 +2725,7 @@ class TakeAwayState extends State<TakeAway>
                     Padding(
                         padding: EdgeInsets.only(left: 15, bottom: 5),
                         child: Container(
-                          height: 20,
+                          height: 45,
                           child: TextField(
                             textCapitalization: TextCapitalization.sentences,
                             controller: commentField,
@@ -2459,75 +2735,6 @@ class TakeAwayState extends State<TakeAway>
                             ),
                           ),
                         )),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15, left: 15, bottom: 5),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Время готовки',
-                            style: TextStyle(
-                                color: Color(0xFFB0B0B0), fontSize: 13),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15, bottom: 5),
-                        child: Container(
-                          height: 20,
-                          child: TextField(
-                            textCapitalization: TextCapitalization.sentences,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              counterText: '',
-                            ),
-                          ),
-                        )),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10, left: 15, right: 15, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Поем в заведении',
-                            style: TextStyle(
-                                color: Color(0xFF3F3F3F),
-                                fontSize: 15),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 0),
-                            child: FlutterSwitch(
-                              width: 55.0,
-                              height: 25.0,
-                              inactiveColor: Color(0xD6D6D6D6),
-                              activeColor: Colors.red,
-                              valueFontSize: 12.0,
-                              toggleSize: 18.0,
-                              value: status1,
-                              onToggle: (value) {
-                                setState(() {
-                                  status1 = value;
-                                });
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 145,
-                      color: Color(0xFAFAFAFA),
-                    ),
                     Row(
                       children: [
                         Padding(
@@ -2899,38 +3106,97 @@ class DestinationPointsSelectorState extends State<DestinationPointsSelector> wi
 
   Widget build(BuildContext context) {
     List<Widget> widgetsList = new List<Widget>();
+    widgetsList.add(
+      Align(
+        alignment: Alignment.topLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, top: 15),
+          child: Text('Адрес отправки',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+      )
+    );
     destinationPointsList.forEach((element) {
       widgetsList.add(
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: ListTile(
-              contentPadding: EdgeInsets.only(right: 5),
-              title: GestureDetector(
-                child: Text(
-                  element.unrestrictedValue,
-                  style: TextStyle(color: Color(0xFF424242)),
+              contentPadding: EdgeInsets.only(right: 5, left: 15),
+              title: InkWell(
+                child: Container(
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 10, bottom: 5),
+                              child: Text(
+                                element.unrestrictedValue,
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                onTap: (){
+                onTap: () async {
                   setState(() {
                     selectedDestinationPoint = element;
                   });
                 },
               ),
-              leading: Radio(
-                focusColor: Colors.red,
-                value: element,
-                groupValue: selectedDestinationPoint,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (DestinationPoints value) {
+              leading: InkWell(
+                child: (selectedDestinationPoint == element)
+                    ? SvgPicture.asset(
+                    'assets/svg_images/address_screen_selector.svg')
+                    :
+                SvgPicture.asset(
+                    'assets/svg_images/circle.svg'),
+                onTap: ()async {
                   setState(() {
-                    selectedDestinationPoint = value;
+                    selectedDestinationPoint = element;
                   });
                 },
-              ),
+              )
             ),
           )
       );
     });
+    widgetsList.add(
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(left:15, right: 15, top: 15),
+          child: InkWell(
+            child: Container(
+              width: 340,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Color(0xFFE6E6E6),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Text('Готово',
+                  style: TextStyle(
+                    fontSize: 24
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      )
+    );
     return Container(
       color: Colors.white,
       child: ScrollConfiguration(

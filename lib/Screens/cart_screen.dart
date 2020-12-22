@@ -8,6 +8,8 @@ import 'package:flutter_app/models/amplitude.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_svg/svg.dart';
 import 'address_screen.dart';
+import 'address_screen.dart';
+import 'address_screen.dart';
 import 'auth_screen.dart';
 import 'home_screen.dart';
 import 'restaurant_screen.dart';
@@ -179,9 +181,24 @@ class CartPageState extends State<CartPageScreen> {
                   children: <Widget>[
                     InkWell(
                         onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-                                (Route<dynamic> route) => route.isFirst),
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, anotherAnimation) {
+                        return RestaurantScreen(restaurant: restaurant,);
+                      },
+                      transitionDuration: Duration(milliseconds: 300),
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                        return SlideTransition(
+                          position: Tween(
+                              begin: Offset(1.0, 0.0),
+                              end: Offset(0.0, 0.0))
+                              .animate(animation),
+                          child: child,
+                        );
+                      }
+                  ), (Route<dynamic> route) => false),
                         child: Container(
                             height: 40,
                             width: 60,
@@ -417,19 +434,45 @@ class CartPageState extends State<CartPageScreen> {
                         if (await Internet.checkConnection()) {
                           if (currentUser.isLoggedIn) {
                             if(selectedPageId == 0){
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) =>
-                                    new AddressScreen(restaurant: restaurant)),
-                              );
+                              Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation, anotherAnimation) {
+                                        return AddressScreen(restaurant: restaurant);
+                                      },
+                                      transitionDuration: Duration(milliseconds: 300),
+                                      transitionsBuilder:
+                                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                        return SlideTransition(
+                                          position: Tween(
+                                              begin: Offset(-1.0, 0.0),
+                                              end: Offset(0.0, 0.0))
+                                              .animate(animation),
+                                          child: child,
+                                        );
+                                      }
+                                  ));
                             }else{
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) =>
-                                    new TakeAway(restaurant: restaurant)),
-                              );
+                              Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation, anotherAnimation) {
+                                        return TakeAway(restaurant: restaurant);
+                                      },
+                                      transitionDuration: Duration(milliseconds: 300),
+                                      transitionsBuilder:
+                                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                        return SlideTransition(
+                                          position: Tween(
+                                              begin: Offset(-1.0, 0.0),
+                                              end: Offset(0.0, 0.0))
+                                              .animate(animation),
+                                          child: child,
+                                        );
+                                      }
+                                  ));
                             }
                           } else {
                             Navigator.push(
@@ -1748,8 +1791,24 @@ class EmptyCartScreenState extends State<EmptyCartScreen> {
                           onTap: () {
                             homeScreenKey = new GlobalKey<HomeScreenState>();
                             Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => HomeScreen()),
-                                    (Route<dynamic> route) => false);
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation, anotherAnimation) {
+                                      return HomeScreen();
+                                    },
+                                    transitionDuration: Duration(milliseconds: 300),
+                                    transitionsBuilder:
+                                        (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                      return SlideTransition(
+                                        position: Tween(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset(0.0, 0.0))
+                                            .animate(animation),
+                                        child: child,
+                                      );
+                                    }
+                                ), (Route<dynamic> route) => false);
                           },
                           child: Padding(
                               padding: EdgeInsets.only(right: 0),

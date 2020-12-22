@@ -109,6 +109,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         });
   }
 
+  bool firstSelected = false;
+
   _buildFilterNavigationMenu() {
     return Container(
       child: Column(
@@ -116,7 +118,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, bottom: 15),
+              padding: const EdgeInsets.only(top: 15, left: 20, bottom: 15),
               child: Text(
                 'Отобразить сначала',
                 style: TextStyle(
@@ -128,22 +130,32 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Доверюсь вам'),
-            trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
+            trailing: SvgPicture.asset((firstSelected) ? 'assets/svg_images/circle.svg' : 'assets/svg_images/address_screen_selector.svg'),
+            onTap: (){
+              setState(() {
+                firstSelected = !firstSelected;
+              });
+            },
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('С высоким рейтингом'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Быстрые'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Недорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Дорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
@@ -159,7 +171,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+              padding: EdgeInsets.only(left: 150, top: 20, right: 150, bottom: 20),
               onPressed: () async {
                 Navigator.pop(context);
               },
@@ -195,6 +207,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         });
   }
 
+  bool filterSelect = false;
+
   _buildKitchensFilterNavigationMenu() {
     return Container(
       height: 610,
@@ -204,7 +218,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             child: Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 8),
+                padding: const EdgeInsets.only(top: 15.0, left: 15),
                 child: Text(
                   'Кухни',
                   style: TextStyle(
@@ -222,25 +236,64 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             child: GridView.count(
               crossAxisCount: 3 ,
               children: List.generate(12,(index){
-                return Padding(
-                  padding: const EdgeInsets.only(top: 30.0, left: 5, right: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFFE6E6E6)
-                    ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: SvgPicture.asset('assets/svg_images/kitchen_filter.svg'),
-                          ),
-                          Text('Пицца')
-                        ],
+                return InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30.0, left: 5, right: 5),
+                    child: (filterSelect) ? Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFFE6E6E6)
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SvgPicture.asset('assets/svg_images/bread.svg'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text('Пицца',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ) : Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF424242)
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SvgPicture.asset('assets/svg_images/bread_white.svg'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text('Пицца',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  onTap: (){
+                    setState(() {
+                      filterSelect = !filterSelect;
+                    });
+                  },
                 );
               }),
             ),
@@ -303,7 +356,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 15),
+              padding: const EdgeInsets.only(top: 15.0, left: 20),
               child: Text(
                 'Показывать с отдаленностью',
                 style: TextStyle(
@@ -315,22 +368,27 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Доверюсь вам'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('С высоким рейтингом'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Быстрые'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Недорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
+            contentPadding: EdgeInsets.only(left: 20, right: 15),
             title: Text('Дорогие'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
@@ -346,7 +404,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+              padding: EdgeInsets.only(left: 150, top: 20, right: 150, bottom: 20),
               onPressed: () async {
                 Navigator.pop(context);
               },
@@ -359,45 +417,48 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
 
   _buildSharesList(){
-    return Container(
-      height: 110,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 8, top: 8, bottom: 8),
-            child: Container(
-              height: 100,
-              width: 130,
-              decoration: BoxDecoration(
-                color: Color(0xFFE6E6E6),
-                borderRadius: BorderRadius.circular(10)
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
-            child: Container(
-              height: 100,
-              width: 130,
-              decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Container(
+        height: 110,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 8, top: 8, bottom: 8),
+              child: Container(
+                height: 100,
+                width: 130,
+                decoration: BoxDecoration(
                   color: Color(0xFFE6E6E6),
                   borderRadius: BorderRadius.circular(10)
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 0, right: 15, top: 8, bottom: 8),
-            child: Container(
-              height: 100,
-              width: 130,
-              decoration: BoxDecoration(
-                  color: Color(0xFFE6E6E6),
-                  borderRadius: BorderRadius.circular(10)
+            Padding(
+              padding: const EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
+              child: Container(
+                height: 100,
+                width: 130,
+                decoration: BoxDecoration(
+                    color: Color(0xFFE6E6E6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(left: 0, right: 15, top: 8, bottom: 8),
+              child: Container(
+                height: 100,
+                width: 130,
+                decoration: BoxDecoration(
+                    color: Color(0xFFE6E6E6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -674,7 +735,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     if (isLogged) {
       allSideBarItems.insertAll(0, [
         Padding(
-          padding: EdgeInsets.only(top: 60),
+          padding: EdgeInsets.only(top: 0),
           child: InkWell(
             child: Container(
               color: Color(0xFFB8B8B8),
@@ -814,11 +875,11 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       allSideBarItems.insert(
           0,
           Padding(
-            padding: EdgeInsets.only(top: 60),
+            padding: EdgeInsets.only(top: 0),
             child: ListTile(
                 title: InkWell(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                    padding: EdgeInsets.only(top: 0, bottom: 20),
                     child: Text(
                       'Авторизоваться',
                       style: TextStyle(
@@ -851,9 +912,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       children: [
         GestureDetector(
           child: Padding(
-            padding: const EdgeInsets.only(left: 15.0),
+            padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
             child: Container(
-              height: 50,
+              height: 60,
               decoration: BoxDecoration(
                   color: Color(0xFFF6F6F6),
                   borderRadius: BorderRadius.circular(10)
@@ -875,9 +936,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         GestureDetector(
           child: Padding(
               padding:
-              EdgeInsets.only(left: 10, right: 5, top: 8, bottom: 8),
+              EdgeInsets.only(left: 10, right: 5, top: 15, bottom: 15),
               child: Container(
-                height: 50,
+                height: 60,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Color(0xFFF6F6F6)),
@@ -910,7 +971,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         GestureDetector(
           child: Padding(
               padding:
-              EdgeInsets.only(left: 10, right: 5, top: 8, bottom: 8),
+              EdgeInsets.only(left: 10, right: 5, top: 15, bottom: 15),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -940,7 +1001,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       result.add(GestureDetector(
         child: Padding(
             padding:
-            EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
+            EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 15),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -980,18 +1041,41 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   _buildRestaurantCategories(){
     if(restaurantCategories != null){
-      return Container(
-        height: 55,
-        child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: _buildRestaurantCategoriesList(restaurantCategories.records)
+      return Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8.0, // soften the shadow
+                spreadRadius: 3.0, //extend the shadow
+              )
+            ],
+          ),
+          height: 65,
+          child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: _buildRestaurantCategoriesList(restaurantCategories.records)
+          ),
         ),
       );
     }
     return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: Container(
-        height: 55,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8.0, // soften the shadow
+              spreadRadius: 3.0, //extend the shadow
+            )
+          ],
+        ),
+        height: 65,
         child: FutureBuilder<RestaurantCategories>(
           future: loadRestaurantCategories(1, 12),
           initialData: null,
@@ -1020,9 +1104,25 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         drawer: ClipRRect(
           borderRadius: BorderRadius.only(topRight: Radius.circular(15)),
           child: Drawer(
-            child: ListView(
-              children: getSideBarItems(currentUser.isLoggedIn),
-            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: Center(
+                    child: Image(
+                      height: 97,
+                      width: 142,
+                      image: AssetImage('assets/images/logo.png'),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    children: getSideBarItems(currentUser.isLoggedIn),
+                  ),
+                ),
+              ],
+            )
           ),
         ),
         body: FutureBuilder<DeliveryResponseData>(
@@ -1084,22 +1184,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           ),
                         ),
                       ),
-                      Divider(
-                        height: 0,
-                        color: Color(0xFFEEEEEE),
-                      ),
                       Container(
                         child: _buildRestaurantCategories(),
-                      ),
-                      Divider(
-                        height: 0,
-                        color: Color(0xFFEEEEEE),
                       ),
                       Expanded(
                         child: ListView(
                           padding: EdgeInsets.zero,
                           children: <Widget>[
-
 //                            FlatButton(
 //                                onPressed: () async {
 //                                  print(authCodeData.client_uuid);
