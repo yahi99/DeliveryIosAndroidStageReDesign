@@ -1070,71 +1070,77 @@ class AddressScreenState extends State<AddressScreen>
   }
 
   _buildDispatchAddressBottomNavigationMenu() {
-    DestinationPoints selectedDestinationPoint = null;
-    List<DestinationPoints> destinationPointsList;
-
-    if(destinationPointsList.length > 0){
-      selectedDestinationPoint = destinationPointsList[0];
-    }
-    List<Widget> widgetsList = new List<Widget>();
-    destinationPointsList.forEach((element) {
-      widgetsList.add(GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  child: InkWell(
-                    child: Container(
-                      child: Row(
-                        children: [
-                          (selectedDestinationPoint == element)
-                              ? SvgPicture.asset(
-                              'assets/svg_images/address_screen_selector.svg')
-                              :
-                          SvgPicture.asset(
-                              'assets/svg_images/circle.svg'),
-                          Flexible(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 15),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 10, bottom: 5),
-                                  child: Text(
-                                    element.unrestrictedValue,
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onTap: () async {
-                      setState(() {
-                        selectedDestinationPoint = element;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-          )));
-    });
+//    DestinationPoints selectedDestinationPoint = null;
+//    List<DestinationPoints> destinationPointsList;
+//
+//    if(destinationPointsList.length > 0){
+//      selectedDestinationPoint = destinationPointsList[0];
+//    }
+//    List<Widget> widgetsList = new List<Widget>();
+//    destinationPointsList.forEach((element) {
+//      widgetsList.add(GestureDetector(
+//          child: Padding(
+//            padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+//            child: Row(
+//              children: <Widget>[
+//                Flexible(
+//                  child: InkWell(
+//                    child: Container(
+//                      child: Row(
+//                        children: [
+//                          (selectedDestinationPoint == element)
+//                              ? SvgPicture.asset(
+//                              'assets/svg_images/address_screen_selector.svg')
+//                              :
+//                          SvgPicture.asset(
+//                              'assets/svg_images/circle.svg'),
+//                          Flexible(
+//                            child: Container(
+//                              padding: EdgeInsets.only(left: 15),
+//                              child: Align(
+//                                alignment: Alignment.topLeft,
+//                                child: Padding(
+//                                  padding: const EdgeInsets.only(
+//                                      right: 10, bottom: 5),
+//                                  child: Text(
+//                                    element.unrestrictedValue,
+//                                    textAlign: TextAlign.left,
+//                                  ),
+//                                ),
+//                              ),
+//                            ),
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                    onTap: () async {
+//                      setState(() {
+//                        selectedDestinationPoint = element;
+//                      });
+//                    },
+//                  ),
+//                ),
+//              ],
+//            ),
+//          )));
+//    });
     return Container(
-      color: Colors.white,
-      child: ScrollConfiguration(
-        behavior: new ScrollBehavior(),
-        child: SingleChildScrollView(
-          child: Column(
-            children: widgetsList,
-          ),
-        ),
+      child: DestinationPointsSelector(
+        destinationPoints: restaurant.destination_points,
+        key: destinationPointsSelectorStateKey,
       ),
     );
+//    return Container(
+//      color: Colors.white,
+//      child: ScrollConfiguration(
+//        behavior: new ScrollBehavior(),
+//        child: SingleChildScrollView(
+//          child: Column(
+//            children: widgetsList,
+//          ),
+//        ),
+//      ),
+//    );
   }
 
 
