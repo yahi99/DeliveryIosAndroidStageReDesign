@@ -196,13 +196,12 @@ class CostErrorScreenState extends State<CostErrorScreen> {
                     "Отправить",
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                  color: Color(0xFFFC5B58),
-                  splashColor: Colors.redAccent,
+                  color: Color(0xFF67C070),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding:
-                  EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+                  EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
                   onPressed: () async {
                     if (await Internet.checkConnection()) {
                       ticketModel.description = descField.text;

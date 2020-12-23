@@ -40,7 +40,7 @@ class DeviceIdScreen extends StatelessWidget {
           } else {
             return Center(
               child: Image(
-                image: AssetImage('assets/images/logo.png'),
+                image: AssetImage('assets/images/faem.png'),
               )
             );
             return FadeInImage(

@@ -256,7 +256,7 @@ class PageState extends State<PageScreen> {
       height: 91,
       width: 300,
       decoration: BoxDecoration(
-        color: Color(0xFFF6F6F6),
+        color: Color(0xFF67C070),
         border: Border.all(
           color: Color(0xFFE6E6E6),
         ),
@@ -896,7 +896,7 @@ class AddressScreenState extends State<AddressScreen>
         height: 40,
         width: 300,
         decoration: BoxDecoration(
-          color: Color(0xFFF6F6F6),
+          color: Color(0xFF67C070),
           border: Border.all(
             color: Color(0xFFE6E6E6),
           ),
@@ -941,7 +941,8 @@ class AddressScreenState extends State<AddressScreen>
                 ),
                 child: Text('Применить',
                   style: TextStyle(
-                      fontSize: 21
+                      fontSize: 21,
+                    color: Colors.white
                   ),
                 ),
               ),
@@ -1260,13 +1261,14 @@ class AddressScreenState extends State<AddressScreen>
                   width: 340,
                   height: 60,
                   decoration: BoxDecoration(
-                      color: Color(0xFFE6E6E6),
+                      color: Color(0xFF67C070),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
                     child: Text('Готово',
                       style: TextStyle(
-                          fontSize: 24
+                          fontSize: 24,
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -1750,7 +1752,7 @@ class AddressScreenState extends State<AddressScreen>
                                         width: 55.0,
                                         height: 25.0,
                                         inactiveColor: Color(0xD6D6D6D6),
-                                        activeColor: Colors.red,
+                                        activeColor: Colors.green,
                                         valueFontSize: 12.0,
                                         toggleSize: 18.0,
                                         value: status2,
@@ -1827,7 +1829,7 @@ class AddressScreenState extends State<AddressScreen>
                                   width: 55.0,
                                   height: 25.0,
                                   inactiveColor: Color(0xD6D6D6D6),
-                                  activeColor: Colors.red,
+                                  activeColor: Colors.green,
                                   valueFontSize: 12.0,
                                   toggleSize: 18.0,
                                   value: status2,
@@ -1948,7 +1950,7 @@ class AddressScreenState extends State<AddressScreen>
                                   width: 55.0,
                                   height: 25.0,
                                   inactiveColor: Color(0xD6D6D6D6),
-                                  activeColor: Colors.red,
+                                  activeColor: Colors.green,
                                   valueFontSize: 12.0,
                                   toggleSize: 18.0,
                                   value: status1,
@@ -2144,8 +2146,7 @@ class AddressScreenState extends State<AddressScreen>
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white)),
-                        color: Color(0xFFFE534F),
-                        splashColor: Colors.redAccent,
+                        color: Color(0xFF67C070),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -2259,7 +2260,7 @@ class TakeAwayState extends State<TakeAway>
         decoration: BoxDecoration(
           color: Color(0xFFF6F6F6),
           border: Border.all(
-            color: Color(0xFFE6E6E6),
+            color: Color(0xFF67C070),
           ),
           borderRadius: const BorderRadius.all(
             const Radius.circular(10.0),
@@ -2302,7 +2303,8 @@ class TakeAwayState extends State<TakeAway>
                 ),
                 child: Text('Применить',
                   style: TextStyle(
-                      fontSize: 21
+                      fontSize: 21,
+                    color: Colors.white
                   ),
                 ),
               ),
@@ -2567,13 +2569,14 @@ class TakeAwayState extends State<TakeAway>
                   width: 340,
                   height: 60,
                   decoration: BoxDecoration(
-                      color: Color(0xFFE6E6E6),
+                      color: Color(0xFF67C070),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
                     child: Text('Готово',
                       style: TextStyle(
-                          fontSize: 24
+                          fontSize: 24,
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -2878,7 +2881,7 @@ class TakeAwayState extends State<TakeAway>
                                         width: 55.0,
                                         height: 25.0,
                                         inactiveColor: Color(0xD6D6D6D6),
-                                        activeColor: Colors.red,
+                                        activeColor: Colors.green,
                                         valueFontSize: 12.0,
                                         toggleSize: 18.0,
                                         value: status2,
@@ -2955,7 +2958,7 @@ class TakeAwayState extends State<TakeAway>
                                   width: 55.0,
                                   height: 25.0,
                                   inactiveColor: Color(0xD6D6D6D6),
-                                  activeColor: Colors.red,
+                                  activeColor: Colors.green,
                                   valueFontSize: 12.0,
                                   toggleSize: 18.0,
                                   value: status2,
@@ -3053,7 +3056,7 @@ class TakeAwayState extends State<TakeAway>
                                 width: 55.0,
                                 height: 25.0,
                                 inactiveColor: Color(0xD6D6D6D6),
-                                activeColor: Colors.red,
+                                activeColor: Colors.green,
                                 valueFontSize: 12.0,
                                 toggleSize: 18.0,
                                 value: status1,
@@ -3222,8 +3225,7 @@ class TakeAwayState extends State<TakeAway>
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white)),
-                        color: Color(0xFFFE534F),
-                        splashColor: Colors.redAccent,
+                        color: Color(0xFF67C070),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -3596,8 +3598,7 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                         'Продолжить',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      color: Color(0xFFFE534F),
-                      splashColor: Colors.redAccent,
+                      color: Color(0xFF67C070),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

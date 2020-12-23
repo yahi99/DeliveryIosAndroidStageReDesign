@@ -99,8 +99,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                     style:
                     TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  color: Color(0xFFFE534F),
-                  splashColor: Colors.redAccent,
+                  color: Color(0xFF67C070),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -716,15 +715,21 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   width: 51,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFE6E6E6)
+                      color: Color(0xFF67C070)
                   ),
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.all(5),
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/svg_images/star.svg'),
-                          Text('5.0')
+                          SvgPicture.asset('assets/svg_images/star.svg',
+                            color: Colors.white,
+                          ),
+                          Text('5.0',
+                            style: TextStyle(
+                              color: Colors.white
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -737,16 +742,21 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   height: 26,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFE6E6E6)
+                      color: Color(0xFF67C070)
                   ),
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/svg_images/rest_car.svg'),
+                          SvgPicture.asset('assets/svg_images/rest_car.svg',
+                              color: Colors.white
+                          ),
                           Text(
-                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : ''
+                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
                           ),
                         ],
                       ),
@@ -760,16 +770,23 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   height: 26,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFE6E6E6)
+                      color: Color(0xFF67C070)
                   ),
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
                       child: Row(
                         children: [
-                          Text('Доставка'),
+                          Text('Доставка',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
+                          ),
                           Text(
-                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : ''
+                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
                           ),
                         ],
                       ),
@@ -964,7 +981,7 @@ class CartItemsQuantityState extends State<CartItemsQuantity> {
       child: (amount != 0)
           ? Container(
         decoration: BoxDecoration(
-            color: Color(0xFFFE534F), shape: BoxShape.circle),
+            color: Color(0xFF67C070), shape: BoxShape.circle),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: Text('$amount',
@@ -1227,7 +1244,7 @@ class BasketButtonState extends State<BasketButton> {
                 flex: 1,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFE32636),
+                    color: Color(0xFF67C070),
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Padding(
@@ -1256,7 +1273,7 @@ class BasketButtonState extends State<BasketButton> {
                 )),
             Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFE32636),
+                  color: Color(0xFF67C070),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
                 child: Padding(
@@ -1267,8 +1284,7 @@ class BasketButtonState extends State<BasketButton> {
                 ))
           ],
         ),
-        color: Color(0xFFFE534F),
-        splashColor: Colors.redAccent,
+        color: Color(0xFF67C070),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -1586,7 +1602,7 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 color: (value != categoryList.currentCategory)
                     ? Color(0xFFF6F6F6)
-                    : Color(0xFFFE534F)),
+                    : Color(0xFF67C070)),
             child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15),
                 child: Center(
@@ -1666,7 +1682,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
           padding: const EdgeInsets.only(left: 10, bottom: 5),
           child: Container(
               decoration: BoxDecoration(
-                  color: Color(0xFFE6E6E6),
+                  color: Color(0xFF67C070),
                   borderRadius: BorderRadius.circular(10)
               ),
               child: Padding(
@@ -1675,7 +1691,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
                   '${foodRecords.price} \₽',
                   style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black),
+                      color: Colors.white),
                   overflow: TextOverflow.ellipsis,
                 ),
               )
@@ -1716,7 +1732,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
             width: 70,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFE6E6E6)
+                color: Color(0xFF67C070)
             ),
             child: Padding(
               padding: EdgeInsets.only(right: 10, left: 10),
@@ -1725,7 +1741,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
                   '$counter',
                   style: TextStyle(
                     fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
+                    color: Colors.white
                   ),
                 ),
               ),
@@ -2192,8 +2208,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               style:
                               TextStyle(color: Colors.white, fontSize: 16),
                             ),
-                            color: Color(0xFFFE534F),
-                            splashColor: Colors.redAccent,
+                            color: Color(0xFF67C070),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

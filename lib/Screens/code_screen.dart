@@ -44,9 +44,9 @@ class _CodeScreenState extends State<CodeScreen> {
         code3.controller.text +
         code4.controller.text;
     if (code.length > 0 &&
-        buttonStateKey.currentState.color != Color(0xFFFE534F)) {
+        buttonStateKey.currentState.color != Color(0xFF67C070)) {
       buttonStateKey.currentState.setState(() {
-        buttonStateKey.currentState.color = Color(0xFFFE534F);
+        buttonStateKey.currentState.color = Color(0xFF67C070);
       });
     } else if (code.length == 0 &&
         buttonStateKey.currentState.color != Color(0xFFF3F3F3)) {
@@ -163,7 +163,7 @@ class _CodeScreenState extends State<CodeScreen> {
                         height: 130,
                         width: 300,
                         decoration: BoxDecoration(
-                          color: Color(0xFFF6F6F6),
+                          color: Color(0xFF67C070),
                           border: Border.all(
                             color: Color(0xFFE6E6E6),
                           ),
@@ -180,7 +180,9 @@ class _CodeScreenState extends State<CodeScreen> {
                                 child: Text(
                                   'Введите код из смс',
                                   style: TextStyle(
-                                      fontSize: 18),
+                                      fontSize: 18,
+                                    color: Colors.white
+                                  ),
                                 ),
                               ),
                             ),
@@ -212,7 +214,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFFFD6F6D)),
+                                                    color: Color(0xFF67C070)),
                                               ),
                                               counterText: '',
                                             ),
@@ -240,7 +242,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFFFD6F6D)),
+                                                    color: Color(0xFF67C070)),
                                               ),
                                               counterText: '',
                                             ),
@@ -271,7 +273,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFFFD6F6D)),
+                                                    color: Color(0xFF67C070)),
                                               ),
                                               counterText: '',
                                             ),
@@ -309,7 +311,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                           decoration: new InputDecoration(
                                             enabledBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Color(0xFFFD6F6D)),
+                                                  color: Color(0xFF67C070)),
                                             ),
                                             counterText: '',
                                           ),

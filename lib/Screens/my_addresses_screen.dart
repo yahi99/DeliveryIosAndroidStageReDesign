@@ -560,8 +560,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                           style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white)),
-                      color: Color(0xFFE6E6E6),
-                      splashColor: Colors.grey,
+                      color: Color(0xFF67C070),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

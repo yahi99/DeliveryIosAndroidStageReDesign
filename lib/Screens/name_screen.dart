@@ -121,7 +121,7 @@ class NameScreenState extends State<NameScreen> {
                                 bottom: 20),
                             child: Button(
                               key: buttonStateKey,
-                              color: Color(0xFFFE534F),
+                              color: Color(0xFF67C070),
                               onTap: () async {
                                 if (await Internet.checkConnection()) {
                                   necessaryDataForAuth.name = nameFieldController.text;

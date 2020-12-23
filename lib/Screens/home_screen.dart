@@ -165,13 +165,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: Text('Готово',
                   style: TextStyle(
                       fontSize: 18.0,
-                      color: Color(0xFF000000))),
-              color: Color(0xFFE6E6E6),
-              splashColor: Colors.grey,
+                      color: Colors.white)),
+              color: Color(0xFF67C070),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.only(left: 150, top: 20, right: 150, bottom: 20),
+              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
               onPressed: () async {
                 Navigator.pop(context);
               },
@@ -240,13 +239,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 child: Text('Применить',
                     style: TextStyle(
                         fontSize: 18.0,
-                        color: Color(0xFF000000))),
-                color: Color(0xFFE6E6E6),
-                splashColor: Colors.grey,
+                        color: Colors.white)),
+                color: Color(0xFF67C070),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
                 onPressed: () async {
                   Navigator.pop(context);
                 },
@@ -332,13 +330,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: Text('Готово',
                   style: TextStyle(
                       fontSize: 18.0,
-                      color: Color(0xFF000000))),
-              color: Color(0xFFE6E6E6),
-              splashColor: Colors.grey,
+                      color: Colors.white)),
+              color: Color(0xFF67C070),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.only(left: 150, top: 20, right: 150, bottom: 20),
+              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
               onPressed: () async {
                 Navigator.pop(context);
               },
@@ -349,6 +346,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     );
   }
 
+  bool isExpanded = false;
 
   _buildSharesList(){
     return Padding(
@@ -369,17 +367,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
-              child: Container(
-                height: 100,
-                width: 130,
-                decoration: BoxDecoration(
-                    color: Color(0xFFE6E6E6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-              ),
-            ),
+            ContainerReSize(),
             Padding(
               padding: const EdgeInsets.only(left: 0, right: 15, top: 8, bottom: 8),
               child: Container(
@@ -407,14 +395,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             height: 25,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFE6E6E6)
+                color: Color(0xFF67C070)
             ),
             child: Row(
               children: [
-                SvgPicture.asset('assets/svg_images/rest_star.svg'),
+                SvgPicture.asset('assets/svg_images/rest_star.svg',
+                  color: Colors.white,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 3.0),
-                  child: Text('5.0'),
+                  child: Text('5.0',
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                  ),
                 )
               ],
             )
@@ -672,7 +666,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           padding: EdgeInsets.only(top: 0),
           child: InkWell(
             child: Container(
-              color: Color(0xFFB8B8B8),
+              color: Color(0xFF67C070),
               child: ListTile(
                 title: Text(
                   necessaryDataForAuth.name ?? ' ',
@@ -941,7 +935,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: (element.uuid != category_uuid)
                       ? Color(0xFFF6F6F6)
-                      : Color(0xFFFE534F)),
+                      : Color(0xFF67C070)),
               child: Padding(
                   padding: EdgeInsets.only(left: 15, right: 15),
                   child: Center(
@@ -1046,7 +1040,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     child: Image(
                       height: 97,
                       width: 142,
-                      image: AssetImage('assets/images/logo.png'),
+                      image: AssetImage('assets/images/faem.png'),
                     ),
                   ),
                 ),
@@ -1164,7 +1158,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-                            _buildSharesList(),
+                            ContainerReSize(),
                             SizedBox(
                               height: 10,
                             ),
@@ -2037,10 +2031,10 @@ class ChatMessageScreenState extends State<ChatMessageScreen> with WidgetsBindin
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFFFC5B58),
+                          color: Color(0xFF67C070),
                           borderRadius: BorderRadius.circular(17.0),
                           border: Border.all(
-                              width: 1.0, color: Color(0xFFFC5B58))),
+                              width: 1.0, color: Color(0xFF67C070))),
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
@@ -2114,7 +2108,7 @@ class QuickMessageScreenState extends State<QuickMessageScreen> with WidgetsBind
                     ],
                     color: (quickMessage.messages[index] != quickTextMessage)
                         ? Colors.white
-                        : Colors.redAccent),
+                        : Color(0xFF67C070)),
                 child: Padding(
                     padding: EdgeInsets.only(
                       left: 15,
@@ -2161,6 +2155,81 @@ class QuickMessageScreenState extends State<QuickMessageScreen> with WidgetsBind
   }
 }
 
+
+
+class ContainerReSize extends StatefulWidget {
+
+  ContainerReSize({Key key}) : super(key: key);
+
+  @override
+  ContainerReSizeState createState() {
+    return new ContainerReSizeState();
+  }
+}
+
+class ContainerReSizeState extends State<ContainerReSize>{
+
+  ContainerReSizeState();
+  bool isExpanded = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Container(
+        height: 110,
+        width: MediaQuery.of(context).size.width,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            Padding(
+              padding:  (isExpanded) ? EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8) : EdgeInsets.only(left: 15, right: 8, top: 12, bottom: 12),
+              child: GestureDetector(
+                child: AnimatedContainer(
+                  width: isExpanded ? 130 : 120,
+                  duration: const Duration(seconds: 1),
+                  child: Image(
+                    image: AssetImage('assets/images/share_image.png'),
+                  ),
+                ),
+                onTapUp: (value){
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+                onTapDown: (value){
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding:  EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFFE6E6E6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                width: 130,
+              ),
+            ),
+            Padding(
+              padding:  EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFFE6E6E6),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                width:130,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
 class KitchenListScreen extends StatefulWidget {
@@ -2242,7 +2311,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                        padding: const EdgeInsets.only(top: 9.0),
                         child: SvgPicture.asset(images[index]),
                       ),
                       Padding(

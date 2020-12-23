@@ -319,7 +319,7 @@ class CartPageState extends State<CartPageScreen> {
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
-                          color: (selectedPageId == 0) ? Color(0xFFFE534F) : Colors.white,
+                          color: (selectedPageId == 0) ? Color(0xFF67C070) : Colors.white,
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -352,7 +352,7 @@ class CartPageState extends State<CartPageScreen> {
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
-                          color: (selectedPageId == 1) ? Color(0xFFFE534F) : Colors.white,
+                          color: (selectedPageId == 1) ? Color(0xFF67C070) : Colors.white,
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -423,8 +423,7 @@ class CartPageState extends State<CartPageScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white)),
                       ),
-                      color: Color(0xFFFE534F),
-                      splashColor: Colors.redAccent,
+                      color: Color(0xFF67C070),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -1615,7 +1614,7 @@ class CounterState extends State<Counter> {
           width: 70,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color(0xFFE6E6E6)
+            color: Color(0xFF67C070)
           ),
           child: Padding(
             padding: EdgeInsets.only(right: 10, left: 10),
@@ -1624,7 +1623,7 @@ class CounterState extends State<Counter> {
                 '$counter',
                 style: TextStyle(
                   fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
+                  color: Colors.white
                 ),
               ),
             ),
@@ -1893,8 +1892,7 @@ class EmptyCartScreenState extends State<EmptyCartScreen> {
                         'Вернуться на главную',
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                      color: Color(0xFFFE534F),
-                      splashColor: Colors.redAccent,
+                      color: Color(0xFF67C070),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

@@ -1129,8 +1129,8 @@ class OrderRejectScreenState extends State<OrderRejectScreen> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GestureDetector(
                   child: Container(
-                      height: 40,
-                      width: 340,
+                      height: 50,
+                      width: 300,
                       decoration: BoxDecoration(
                         color: Color(0xFFFE534F),
                         borderRadius: BorderRadius.circular(10.0),

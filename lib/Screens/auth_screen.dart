@@ -70,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: 91,
                   width: 300,
                   decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
+                    color: Color(0xFF67C070),
                     border: Border.all(
                       color: Color(0xFFE6E6E6),
                     ),
@@ -85,7 +85,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         child: Text(
                           'Укажите ваш номер телефона',
                           style: TextStyle(
-                              fontSize: 18),
+                              fontSize: 18,
+                            color: Colors.white
+                          ),
                         ),
                       ),
                       Padding(
@@ -124,10 +126,10 @@ class _AuthScreenState extends State<AuthScreen> {
                               currentUser.phone = value;
                               if (value.length > 0 &&
                                   buttonStateKey.currentState.color !=
-                                      Color(0xFFFE534F)) {
+                                      Color(0xFF67C070)) {
                                 buttonStateKey.currentState.setState(() {
                                   buttonStateKey.currentState.color =
-                                      Color(0xFFFE534F);
+                                      Color(0xFF67C070);
                                 });
                               } else if (value.length == 0 &&
                                   buttonStateKey.currentState.color !=
