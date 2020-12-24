@@ -24,6 +24,7 @@ import 'package:flutter_app/models/QuickMessagesModel.dart';
 import 'package:flutter_app/models/RestaurantCategoriesModel.dart';
 import 'package:flutter_app/models/centrifugo.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -387,34 +388,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   List<Widget> _buildRestaurantFoodCategoriesList(Records restaurant){
     List<Widget> result = new List<Widget>();
-    result.add(
-        Padding(
-          padding: const EdgeInsets.only(right: 5.0),
-          child: Container(
-            padding: EdgeInsets.only(left: 8, right: 8, top: 0),
-            height: 25,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFF67C070)
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset('assets/svg_images/rest_star.svg',
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
-                  child: Text('5.0',
-                    style: TextStyle(
-                      color: Colors.white
-                    ),
-                  ),
-                )
-              ],
-            )
-          ),
-        )
-    );
+
     restaurant.product_category.forEach((element) {
       result.add(Padding(
         padding: const EdgeInsets.only(right: 5.0),
@@ -447,7 +421,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       int work_ending = restaurant.work_schedule[dayNumber].work_ending;
       bool day_off = restaurant.work_schedule[dayNumber].day_off;
       bool available = restaurant.available != null ? restaurant.available : true;
-      restaurantList.add(GestureDetector(
+      restaurantList.add(InkWell(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             decoration: BoxDecoration(
@@ -591,18 +565,52 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       SizedBox(
                         height: 4.0,
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 5, right: 10),
-                          child: (restaurant.product_category != null) ? Container(
-                            height: 25,
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.horizontal,
-                                children: _buildRestaurantFoodCategoriesList(restaurant),
-                              )
-                          ):
-                          Container()
-                      )
+                      SizedBox(
+                        height: 30,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 8, right: 8, top: 0),
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color(0xFF67C070)
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset('assets/svg_images/rest_star.svg',
+                                        color: Colors.white,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 3.0),
+                                        child: Text('5.0',
+                                          style: TextStyle(
+                                              color: Colors.white
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(left: 5, right: 10),
+                                child: (restaurant.product_category != null) ? Container(
+                                    height: 25,
+                                    width: 230,
+                                    child: ListView(
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.horizontal,
+                                      children: _buildRestaurantFoodCategoriesList(restaurant),
+                                    )
+                                ):
+                                Container()
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -627,7 +635,10 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     childrenColumn.addAll(restaurantList);
     if(restaurantList.length < records_count){
       childrenColumn.add(
-          CircularProgressIndicator()
+          SpinKitFadingCircle(
+            color: Colors.green,
+            size: 50.0,
+          ),
       );
     }
     return Column(children: childrenColumn);
@@ -1158,6 +1169,29 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 15),
+                              child: Row(
+                                children: [
+                                  Text('Акции и новинки',
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0, left: 10),
+                                    child: Text('смотреть все',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                             ContainerReSize(),
                             SizedBox(
                               height: 10,
@@ -1170,7 +1204,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   EdgeInsets.symmetric(horizontal: 20.0),
                                   child: Text('Рестораны',
                                       style: TextStyle(
-                                        fontSize: 18.0,
+                                        fontSize: 28,
                                         color: Color(0xFF3F3F3F),
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1.2,
@@ -1204,7 +1238,10 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 );
               } else {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitFadingCircle(
+                    color: Colors.green,
+                    size: 50.0,
+                  ),
                 );
               }
             }),
@@ -1288,250 +1325,251 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     }
     print('ALO RABOTAI SUKA' + '' + ordersStoryModelItem.own_delivery.toString());
     print(ordersStoryModelItem.state);
-    return Container(
-        width: 320,
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8.0, // soften the shadow
-                spreadRadius: 3.0, //extend the shadow
-              )
-            ],
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(17.0),
-            border: Border.all(width: 1.0, color: Colors.grey[200])),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Align(
-                        child: Text(
-                          'Ваш заказ из ' +
-                              (ordersStoryModelItem.store != null
-                                  ? ordersStoryModelItem.store.name
-                                  : 'Пусто'),
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 10, left: 20, top: 0),
-                      child: InkWell(
-                        child: Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
-                              color: Color(0xF6F6F6F6)),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 10, right: 10, top: 7, bottom: 0),
-                              child: Text(
-                                'Заказ',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              )),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) {
-                              return OrdersDetailsScreen(
-                                  ordersStoryModelItem: ordersStoryModelItem);
-                            }),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: (in_the_way
-                  .contains(ordersStoryModelItem.state)) ? Padding(
-                padding: EdgeInsets.only(right: 170, bottom: 8),
-                child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.reg_number,
-                  style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
-              ) : Container(height: 0),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 5, right: 10, bottom: 10),
+    return InkWell(
+      child: Container(
+          width: 320,
+          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8.0, // soften the shadow
+                  spreadRadius: 3.0, //extend the shadow
+                )
+              ],
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(17.0),
+              border: Border.all(width: 1.0, color: Colors.grey[200])),
+          child: Column(
+            children: <Widget>[
+              Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: (processing
-                                .contains(ordersStoryModelItem.state))
-                                ? Color(0xFF4DC3E9)
-                                : Color(0xF6F6F6F6)),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: (processing
-                                  .contains(ordersStoryModelItem.state))
-                                  ? SvgPicture.asset(
-                                  'assets/svg_images/white_clock.svg')
-                                  : SvgPicture.asset(
-                                  'assets/svg_images/clock.svg'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text('Обработка',
-                                  style: (processing
-                                      .contains(ordersStoryModelItem.state))
-                                      ? TextStyle(
-                                      color: Colors.white, fontSize: 10)
-                                      : TextStyle(
-                                      color: Color(0x42424242),
-                                      fontSize: 10)),
-                            )
-                          ],
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Align(
+                          child: Text(
+                            'Ваш заказ из ' +
+                                (ordersStoryModelItem.store != null
+                                    ? ordersStoryModelItem.store.name
+                                    : 'Пусто'),
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: (ordersStoryModelItem.without_delivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: (cooking_state
-                                .contains(ordersStoryModelItem.state))
-                                ? Color(0xFF51ca64)
-                                : Color(0xF6F6F6F6)),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: (cooking_state
-                                  .contains(ordersStoryModelItem.state))
-                                  ? SvgPicture.asset(
-                                  'assets/svg_images/white_bell.svg')
-                                  : SvgPicture.asset(
-                                  'assets/svg_images/bell.svg'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text('Готовится',
-                                  style: (cooking_state
-                                      .contains(ordersStoryModelItem.state))
-                                      ? TextStyle(
-                                      color: Colors.white, fontSize: 10)
-                                      : TextStyle(
-                                      color: Color(0x42424242),
-                                      fontSize: 10)),
-                            )
-                          ],
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10, left: 20, top: 0),
+                        child: InkWell(
+                          child: Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                color: Color(0xF6F6F6F6)),
+                            child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10, right: 10, top: 7, bottom: 0),
+                                child: Text(
+                                  'Заказ',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                )),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) {
+                                return OrdersDetailsScreen(
+                                    ordersStoryModelItem: ordersStoryModelItem);
+                              }),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    (ordersStoryModelItem.without_delivery) ? Container() : Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color(0xF6F6F6F6)),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: (in_the_way
-                                  .contains(ordersStoryModelItem.state))
-                                  ? SvgPicture.asset(
-                                  'assets/svg_images/light_car.svg')
-                                  : SvgPicture.asset(
-                                  'assets/svg_images/car.svg'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text('В пути',
-                                  style: (in_the_way
-                                      .contains(ordersStoryModelItem.state))
-                                      ? TextStyle(
-                                      color: Colors.black, fontSize: 10)
-                                      : TextStyle(
-                                      color: Color(0x42424242),
-                                      fontSize: 10)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: (take.contains(ordersStoryModelItem.state))
-                                ? Color(0xFFFE534F)
-                                : Color(0xF6F6F6F6)),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: (take.contains(ordersStoryModelItem.state))
-                                  ? SvgPicture.asset(
-                                  'assets/svg_images/white_ready.svg')
-                                  : SvgPicture.asset(
-                                  'assets/svg_images/ready.svg'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text('Заберите',
-                                  style: (take
-                                      .contains(ordersStoryModelItem.state))
-                                      ? TextStyle(
-                                      color: Colors.white, fontSize: 10)
-                                      : TextStyle(
-                                      color: Color(0x42424242),
-                                      fontSize: 10)),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
-            ),
-            (in_the_way.contains(ordersStoryModelItem.state) && ordersStoryModelItem.own_delivery != null && ordersStoryModelItem.own_delivery) ? Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Text('Доставку осуществляет курьер от заведения',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14
+              Align(
+                alignment: Alignment.centerLeft,
+                child: (in_the_way
+                    .contains(ordersStoryModelItem.state)) ? Padding(
+                  padding: EdgeInsets.only(right: 170, bottom: 8),
+                  child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.reg_number,
+                    style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
+                ) : Container(height: 0),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 5, right: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: (processing
+                                  .contains(ordersStoryModelItem.state))
+                                  ? Color(0xFF4DC3E9)
+                                  : Color(0xF6F6F6F6)),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: (processing
+                                    .contains(ordersStoryModelItem.state))
+                                    ? SvgPicture.asset(
+                                    'assets/svg_images/white_clock.svg')
+                                    : SvgPicture.asset(
+                                    'assets/svg_images/clock.svg'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text('Обработка',
+                                    style: (processing
+                                        .contains(ordersStoryModelItem.state))
+                                        ? TextStyle(
+                                        color: Colors.white, fontSize: 10)
+                                        : TextStyle(
+                                        color: Color(0x42424242),
+                                        fontSize: 10)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: (ordersStoryModelItem.without_delivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: (cooking_state
+                                  .contains(ordersStoryModelItem.state))
+                                  ? Color(0xFF51ca64)
+                                  : Color(0xF6F6F6F6)),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: (cooking_state
+                                    .contains(ordersStoryModelItem.state))
+                                    ? SvgPicture.asset(
+                                    'assets/svg_images/white_bell.svg')
+                                    : SvgPicture.asset(
+                                    'assets/svg_images/bell.svg'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text('Готовится',
+                                    style: (cooking_state
+                                        .contains(ordersStoryModelItem.state))
+                                        ? TextStyle(
+                                        color: Colors.white, fontSize: 10)
+                                        : TextStyle(
+                                        color: Color(0x42424242),
+                                        fontSize: 10)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      (ordersStoryModelItem.without_delivery) ? Container() : Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: Color(0xF6F6F6F6)),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: (in_the_way
+                                    .contains(ordersStoryModelItem.state))
+                                    ? SvgPicture.asset(
+                                    'assets/svg_images/light_car.svg')
+                                    : SvgPicture.asset(
+                                    'assets/svg_images/car.svg'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text('В пути',
+                                    style: (in_the_way
+                                        .contains(ordersStoryModelItem.state))
+                                        ? TextStyle(
+                                        color: Colors.black, fontSize: 10)
+                                        : TextStyle(
+                                        color: Color(0x42424242),
+                                        fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: (take.contains(ordersStoryModelItem.state))
+                                  ? Color(0xFFFE534F)
+                                  : Color(0xF6F6F6F6)),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: (take.contains(ordersStoryModelItem.state))
+                                    ? SvgPicture.asset(
+                                    'assets/svg_images/white_ready.svg')
+                                    : SvgPicture.asset(
+                                    'assets/svg_images/ready.svg'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text('Заберите',
+                                    style: (take
+                                        .contains(ordersStoryModelItem.state))
+                                        ? TextStyle(
+                                        color: Colors.white, fontSize: 10)
+                                        : TextStyle(
+                                        color: Color(0x42424242),
+                                        fontSize: 10)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-            ) :Container()
+                ),
+              ),
+              (in_the_way.contains(ordersStoryModelItem.state) && ordersStoryModelItem.own_delivery != null && ordersStoryModelItem.own_delivery) ? Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                  child: Text('Доставку осуществляет курьер от заведения',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14
+                    ),
+                  )
+              ) :Container()
 //            Row(
 //              mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //              children: <Widget>[
@@ -1642,8 +1680,18 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
 //                ),
 //              ],
 //            )
-          ],
-        ));
+            ],
+          )),
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) {
+            return OrdersDetailsScreen(
+                ordersStoryModelItem: ordersStoryModelItem);
+          }),
+        );
+      },
+    );
   }
 }
 
@@ -1944,7 +1992,10 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           return buildChat();
         } else {
           return Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitFadingCircle(
+              color: Colors.green,
+              size: 50.0,
+            ),
           );
         }
       },

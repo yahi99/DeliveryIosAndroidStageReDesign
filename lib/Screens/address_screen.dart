@@ -8,6 +8,7 @@ import 'package:flutter_app/models/InitialAddressModel.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_app/models/order.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -83,7 +84,10 @@ class PageState extends State<PageScreen> {
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitFadingCircle(
+                        color: Colors.green,
+                        size: 50.0,
+                      ),
                     )
                   ],
                 )),
@@ -144,7 +148,7 @@ class PageState extends State<PageScreen> {
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -175,7 +179,7 @@ class PageState extends State<PageScreen> {
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -204,9 +208,10 @@ class PageState extends State<PageScreen> {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
+                      padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
                       child: Text(
                         'Отправляем ваш заказ в систему',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -214,8 +219,11 @@ class PageState extends State<PageScreen> {
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
-                    )
+                      child: SpinKitThreeBounce(
+                        color: Colors.green,
+                        size: 20.0,
+                      ),
+                    ),
                   ],
                 )),
           ),
@@ -302,7 +310,7 @@ class PageState extends State<PageScreen> {
             ),
             child: Text('Применить',
               style: TextStyle(
-                fontSize: 21
+                  fontSize: 21
               ),
             ),
           )
@@ -716,7 +724,10 @@ class PageState extends State<PageScreen> {
                           if (addressScreenKey.currentState.addressField.text.length >
                               0 || selectedPageId == 1) {
                             Center(
-                              child: CircularProgressIndicator(),
+                              child: SpinKitFadingCircle(
+                                color: Colors.green,
+                                size: 50.0,
+                              ),
                             );
                             if(selectedPaymentId != 1){
                               showAlertDialog(context);
@@ -853,7 +864,10 @@ class AddressScreenState extends State<AddressScreen>
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitFadingCircle(
+                        color: Colors.green,
+                        size: 50.0,
+                      ),
                     )
                   ],
                 )),
@@ -898,7 +912,7 @@ class AddressScreenState extends State<AddressScreen>
         decoration: BoxDecoration(
           color: Color(0xFF67C070),
           border: Border.all(
-            color: Color(0xFFE6E6E6),
+            color: Color(0xFF67C070),
           ),
           borderRadius: const BorderRadius.all(
             const Radius.circular(10.0),
@@ -942,7 +956,7 @@ class AddressScreenState extends State<AddressScreen>
                 child: Text('Применить',
                   style: TextStyle(
                       fontSize: 21,
-                    color: Colors.white
+                      color: Colors.white
                   ),
                 ),
               ),
@@ -1004,7 +1018,7 @@ class AddressScreenState extends State<AddressScreen>
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -1035,7 +1049,7 @@ class AddressScreenState extends State<AddressScreen>
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -1064,9 +1078,10 @@ class AddressScreenState extends State<AddressScreen>
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
+                      padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
                       child: Text(
                         'Отправляем ваш заказ в систему',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -1074,8 +1089,11 @@ class AddressScreenState extends State<AddressScreen>
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
-                    )
+                      child: SpinKitThreeBounce(
+                        color: Colors.green,
+                        size: 20.0,
+                      ),
+                    ),
                   ],
                 )),
           ),
@@ -1268,7 +1286,7 @@ class AddressScreenState extends State<AddressScreen>
                     child: Text('Готово',
                       style: TextStyle(
                           fontSize: 24,
-                        color: Colors.white
+                          color: Colors.white
                       ),
                     ),
                   ),
@@ -1292,47 +1310,67 @@ class AddressScreenState extends State<AddressScreen>
   Widget buildAddressesList(){
     if(myAddressesModelList != null){
       return Container(
-        height: 200,
-        child: buildAddressesListSelector()
+          height: 200,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
+                  child: Text('Ваш адрес',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF424242))),
+                ),
+              ),
+              buildAddressesListSelector(),
+            ],
+          )
       );
     }
     return Container(
       height: 200,
-      child: FutureBuilder<List<MyFavouriteAddressesModel>>(
-        future: MyFavouriteAddressesModel.getAddresses(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            myAddressesModelList = snapshot.data;
-            myAddressesModelList
-                .add(new MyFavouriteAddressesModel(tag: null));
-            return buildAddressesListSelector();
-          } else {
-            return Container();
-          }
-        },
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
+              child: Text('Ваш адрес',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF424242))),
+            ),
+          ),
+          FutureBuilder<List<MyFavouriteAddressesModel>>(
+            future: MyFavouriteAddressesModel.getAddresses(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                myAddressesModelList = snapshot.data;
+                myAddressesModelList
+                    .add(new MyFavouriteAddressesModel(tag: null));
+                return buildAddressesListSelector();
+              } else {
+                return Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.green,
+                    size: 20.0,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
 
   Widget buildAddressesListSelector(){
-    return Column(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
-            child: Text('Ваш адрес',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF424242))),
-          ),
-        ),
-        Expanded(
-          child: AddressSelector(myFavouriteAddressList: myAddressesModelList, parent:  this, addressSelectorKey: addressSelectorKey),
-        )
-      ],
+    return Expanded(
+      child: AddressSelector(myFavouriteAddressList: myAddressesModelList, parent:  this, addressSelectorKey: addressSelectorKey),
     );
   }
 
@@ -1484,21 +1522,21 @@ class AddressScreenState extends State<AddressScreen>
                               Padding(
                                 padding: const EdgeInsets.only(left: 15, top: 15),
                                 child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                    height: 20,
-                                    child: TextField(
-                                      controller: addressValueController,
-                                      enabled: false,
-                                      decoration: new InputDecoration(
-                                        border: InputBorder.none,
-                                        counterText: '',
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      height: 20,
+                                      child: TextField(
+                                        controller: addressValueController,
+                                        enabled: false,
+                                        decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          counterText: '',
+                                        ),
+                                        style: TextStyle(
+                                            fontSize: 16
+                                        ),
                                       ),
-                                      style: TextStyle(
-                                        fontSize: 16
-                                      ),
-                                    ),
-                                  )
+                                    )
                                 ),
                               )
                             ],
@@ -1550,7 +1588,7 @@ class AddressScreenState extends State<AddressScreen>
                     //   child: Divider(
                     //       height: 1.0, color: Color(0xFFEDEDED)),
                     // ),
-                       buildAddressesList(),
+                    buildAddressesList(),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 15, left: 15, bottom: 5, right: 0),
@@ -2258,7 +2296,7 @@ class TakeAwayState extends State<TakeAway>
         height: 40,
         width: 300,
         decoration: BoxDecoration(
-          color: Color(0xFFF6F6F6),
+          color: Color(0xFF67C070),
           border: Border.all(
             color: Color(0xFF67C070),
           ),
@@ -2297,14 +2335,16 @@ class TakeAwayState extends State<TakeAway>
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
-                ),
-                child: Text('Применить',
-                  style: TextStyle(
-                      fontSize: 21,
-                    color: Colors.white
+              child: InkWell(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
+                  ),
+                  child: Text('Применить',
+                    style: TextStyle(
+                        fontSize: 21,
+                        color: Colors.white
+                    ),
                   ),
                 ),
               ),
@@ -2340,7 +2380,10 @@ class TakeAwayState extends State<TakeAway>
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitFadingCircle(
+                        color: Colors.green,
+                        size: 50.0,
+                      ),
                     )
                   ],
                 )),
@@ -2401,7 +2444,7 @@ class TakeAwayState extends State<TakeAway>
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 1) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -2432,7 +2475,7 @@ class TakeAwayState extends State<TakeAway>
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.only(right: 15),
-                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/accessed_pay_circle.svg'),
+                          child: (selectedPaymentId == 0) ? SvgPicture.asset('assets/svg_images/pay_circle.svg') : SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
                         ),
                       ),
                     )
@@ -2461,9 +2504,10 @@ class TakeAwayState extends State<TakeAway>
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
+                      padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
                       child: Text(
                         'Отправляем ваш заказ в систему',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -2471,8 +2515,11 @@ class TakeAwayState extends State<TakeAway>
                       ),
                     ),
                     Center(
-                      child: CircularProgressIndicator(),
-                    )
+                      child: SpinKitThreeBounce(
+                        color: Colors.green,
+                        size: 20.0,
+                      ),
+                    ),
                   ],
                 )),
           ),
@@ -2576,7 +2623,7 @@ class TakeAwayState extends State<TakeAway>
                     child: Text('Готово',
                       style: TextStyle(
                           fontSize: 24,
-                        color: Colors.white
+                          color: Colors.white
                       ),
                     ),
                   ),
@@ -3195,7 +3242,6 @@ class TakeAwayState extends State<TakeAway>
                   ],
                 ),
               ),
-
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -3314,7 +3360,8 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                           child: Row(
                             children: <Widget>[
                               SvgPicture.asset(
-                                  'assets/svg_images/address_screen_plus.svg'),
+                                'assets/svg_images/address_screen_plus.svg',
+                              ),
                               Padding(
                                 padding:
                                 EdgeInsets.only(left: 20),
@@ -3323,7 +3370,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                                   style: TextStyle(
                                       fontSize: 17,
                                       color:
-                                      Color(0xFF424242)),
+                                      Color(0xFF67C070)),
                                 ),
                               )
                             ],
@@ -3477,49 +3524,49 @@ class DestinationPointsSelectorState extends State<DestinationPointsSelector> wi
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: ListTile(
-              contentPadding: EdgeInsets.only(right: 5, left: 15),
-              title: InkWell(
-                child: Container(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 10, bottom: 5),
-                              child: Text(
-                                element.unrestrictedValue,
-                                textAlign: TextAlign.left,
+                contentPadding: EdgeInsets.only(right: 5, left: 15),
+                title: InkWell(
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 10, bottom: 5),
+                                child: Text(
+                                  element.unrestrictedValue,
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  onTap: () async {
+                    setState(() {
+                      selectedDestinationPoint = element;
+                    });
+                  },
                 ),
-                onTap: () async {
-                  setState(() {
-                    selectedDestinationPoint = element;
-                  });
-                },
-              ),
-              leading: InkWell(
-                child: (selectedDestinationPoint == element)
-                    ? SvgPicture.asset(
-                    'assets/svg_images/address_screen_selector.svg')
-                    :
-                SvgPicture.asset(
-                    'assets/svg_images/circle.svg'),
-                onTap: ()async {
-                  setState(() {
-                    selectedDestinationPoint = element;
-                  });
-                },
-              )
+                leading: InkWell(
+                  child: (selectedDestinationPoint == element)
+                      ? SvgPicture.asset(
+                      'assets/svg_images/address_screen_selector.svg')
+                      :
+                  SvgPicture.asset(
+                      'assets/svg_images/circle.svg'),
+                  onTap: ()async {
+                    setState(() {
+                      selectedDestinationPoint = element;
+                    });
+                  },
+                )
             ),
           )
       );

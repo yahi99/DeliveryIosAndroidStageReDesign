@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/PostData/necessary_address_data_pass.dart';
 import 'package:flutter_app/models/InitialAddressModel.dart';
 import 'package:flutter_app/models/RecommendationAddressModel.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AutoCompleteField extends StatefulWidget {
@@ -213,7 +214,12 @@ class AutocompleteListState extends State<AutocompleteList> {
               return suggestionRow();
             }
           }
-          return Container(height: 0);
+          return Center(
+            child: SpinKitThreeBounce(
+              color: Colors.green,
+              size: 20.0,
+            ),
+          );
         },
       );
     }

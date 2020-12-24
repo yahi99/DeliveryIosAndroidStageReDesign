@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../Internet/check_internet.dart';
@@ -354,7 +355,15 @@ class ServiceScreenState extends State<ServiceScreen> {
                               ),
                             );
                           }
-                          return Center(child: Container());
+                          return Padding(
+                            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
+                            child: Center(
+                              child: SpinKitFadingCircle(
+                                color: Colors.green,
+                                size: 50.0,
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),

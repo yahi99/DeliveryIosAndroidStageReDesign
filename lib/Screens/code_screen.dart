@@ -10,6 +10,7 @@ import 'package:flutter_app/models/Auth.dart';
 import 'package:flutter_app/models/amplitude.dart';
 import 'package:flutter_app/models/centrifugo.dart';
 import 'package:flutter_app/models/firebase_notification_handler.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:async';
 import 'home_screen.dart';
@@ -165,7 +166,7 @@ class _CodeScreenState extends State<CodeScreen> {
                         decoration: BoxDecoration(
                           color: Color(0xFF67C070),
                           border: Border.all(
-                            color: Color(0xFFE6E6E6),
+                            color: Color(0xFF67C070),
                           ),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),
@@ -407,7 +408,10 @@ class _CodeScreenState extends State<CodeScreen> {
               );
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitFadingCircle(
+                  color: Colors.green,
+                  size: 50.0,
+                ),
               );
             }
           },

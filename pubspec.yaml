@@ -56,6 +56,8 @@ dependencies:
   transparent_image: ^1.0.0
   carousel_slider: ^2.3.1
   bubble_bottom_bar: ^1.2.0
+  flutter_spinkit: ^2.1.0
+  loading_animations: ^2.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

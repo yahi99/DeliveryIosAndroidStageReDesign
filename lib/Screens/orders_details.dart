@@ -8,6 +8,7 @@ import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/order.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,18 +47,23 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
-                    child: Text(
-                      'Отмена заказа',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF424242)),
+                    padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+                    child: Center(
+                      child: Text(
+                        'Отмена заказа',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF424242)),
+                      ),
                     ),
                   ),
                   Center(
-                    child: CircularProgressIndicator(),
-                  )
+                    child: SpinKitThreeBounce(
+                      color: Colors.green,
+                      size: 20.0,
+                    ),
+                  ),
                 ],
               )),
         );
@@ -829,14 +835,14 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     ) : (!not_cancel_state.contains(ordersStoryModelItem.state)) ?  GestureDetector(
                       child: Container(
                           height: 50,
-                          width: 300,
+                          width: 340,
                           decoration: BoxDecoration(
                             color: Color(0xFFFE534F),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Center(
                             child: Text(
-                              'Оменить заказ',
+                              'Отменить заказ',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,),
@@ -989,7 +995,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             ),
             Center(
               child: Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 20, right: 10, left: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 10),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: (!state_array.contains(ordersStoryModelItem.state)) ? GestureDetector(
@@ -1008,7 +1014,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                   fontSize: 18,),
                             ),
                           )),
-                    ) : Container(),
+                    ) : Container(height: 0,),
                   )),
             )
           ],
@@ -1038,23 +1044,28 @@ class OrderRejectScreenState extends State<OrderRejectScreen> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Container(
-              height: 150,
+              height: 100,
               width: 320,
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
-                    child: Text(
-                      'Отмена заказа',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF424242)),
+                    padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
+                    child: Center(
+                      child: Text(
+                        'Отмена заказа',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF424242)),
+                      ),
                     ),
                   ),
                   Center(
-                    child: CircularProgressIndicator(),
-                  )
+                    child: SpinKitThreeBounce(
+                      color: Colors.green,
+                      size: 20.0,
+                    ),
+                  ),
                 ],
               )),
         );
@@ -1130,7 +1141,7 @@ class OrderRejectScreenState extends State<OrderRejectScreen> {
                 child: GestureDetector(
                   child: Container(
                       height: 50,
-                      width: 300,
+                      width: 340,
                       decoration: BoxDecoration(
                         color: Color(0xFFFE534F),
                         borderRadius: BorderRadius.circular(10.0),

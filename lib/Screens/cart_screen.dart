@@ -304,7 +304,7 @@ class CartPageState extends State<CartPageScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                  color: Color(0xFFE6E6E6),
+                  color: Color(0xFF67C070),
                 ),
               ),
               child: Row(
@@ -413,16 +413,10 @@ class CartPageState extends State<CartPageScreen> {
                       ],
                     ),
                     FlatButton(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: 15,
-                        ),
-                        child: Text('Далее',
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white)),
-                      ),
+                      child: Text('Далее',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.white)),
                       color: Color(0xFF67C070),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

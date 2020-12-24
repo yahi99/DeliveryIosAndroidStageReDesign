@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/GetData/getTicketByUuid.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/PutData/sendTicketMessage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Internet/check_internet.dart';
 import '../models/TicketModel.dart';
@@ -224,7 +225,10 @@ class TicketsChatScreenState extends State<TicketsChatScreen>
           return buildChat();
         } else {
           return Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitFadingCircle(
+              color: Colors.green,
+              size: 50.0,
+            ),
           );
         }
       },

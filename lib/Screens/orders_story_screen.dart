@@ -4,6 +4,7 @@ import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'orders_details.dart';
@@ -149,19 +150,19 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        body: FutureBuilder<OrdersStoryModel>(
-            future: loadOrdersStoryModel(),
-            initialData: null,
-            builder: (BuildContext context,
-                AsyncSnapshot<OrdersStoryModel> snapshot) {
-              print(snapshot.connectionState);
-              if (snapshot.hasData) {
-                records_items = snapshot.data.ordersStoryModelItems;
-                return Column(
-                  children: [
-                    ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: 'История зазказов',),
-                    Divider(height: 1.0, color: Color(0xFFF5F5F5)),
-                    Expanded(
+        body: Column(
+          children: [
+            ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: 'История зазказов',),
+            Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+            FutureBuilder<OrdersStoryModel>(
+                future: loadOrdersStoryModel(),
+                initialData: null,
+                builder: (BuildContext context,
+                    AsyncSnapshot<OrdersStoryModel> snapshot) {
+                  print(snapshot.connectionState);
+                  if (snapshot.hasData) {
+                    records_items = snapshot.data.ordersStoryModelItems;
+                    return Expanded(
                       child: ListView(
                         children: <Widget>[
                           Column(
@@ -182,15 +183,21 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                           )
                         ],
                       ),
-                    )
-                  ],
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4),
+                      child: Center(
+                        child: SpinKitFadingCircle(
+                          color: Colors.green,
+                          size: 50.0,
+                        ),
+                      ),
+                    );
+                  }
+                }),
+          ],
+        )
       ),
     );
   }

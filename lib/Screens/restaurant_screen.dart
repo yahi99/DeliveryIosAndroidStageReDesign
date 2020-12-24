@@ -9,6 +9,7 @@ import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/amplitude.dart';
 import 'package:flutter_app/models/food.dart';
 import 'package:flutter_app/models/order.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import '../data/data.dart';
@@ -658,24 +659,24 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 //                                      builder: (context) => HomeScreen()),
 //                                      (Route<dynamic> route) => false);
                               Navigator.of(context).pushAndRemoveUntil(
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, anotherAnimation) {
-                                    return HomeScreen();
-                                  },
-                                  transitionDuration: Duration(milliseconds: 300),
-                                    transitionsBuilder:
-                                        (context, animation, anotherAnimation, child) {
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation, anotherAnimation) {
+                                        return HomeScreen();
+                                      },
+                                      transitionDuration: Duration(milliseconds: 300),
+                                      transitionsBuilder:
+                                          (context, animation, anotherAnimation, child) {
 //                                      animation = CurvedAnimation(
 //                                          curve: Curves.bounceIn, parent: animation);
-                                      return SlideTransition(
-                                        position: Tween(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset(0.0, 0.0))
-                                            .animate(animation),
-                                        child: child,
-                                      );
-                                    }
-                                ), (Route<dynamic> route) => false);
+                                        return SlideTransition(
+                                          position: Tween(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset(0.0, 0.0))
+                                              .animate(animation),
+                                          child: child,
+                                        );
+                                      }
+                                  ), (Route<dynamic> route) => false);
                             }else{
                               noConnection(context);
                             }
@@ -725,9 +726,12 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                           SvgPicture.asset('assets/svg_images/star.svg',
                             color: Colors.white,
                           ),
-                          Text('5.0',
-                            style: TextStyle(
-                              color: Colors.white
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text('5.0',
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),
                             ),
                           )
                         ],
@@ -749,11 +753,14 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                       padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/svg_images/rest_car.svg',
-                              color: Colors.white
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: SvgPicture.asset('assets/svg_images/rest_car.svg',
+                                color: Colors.white
+                            ),
                           ),
                           Text(
-                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                             style: TextStyle(
                                 color: Colors.white
                             ),
@@ -777,13 +784,16 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                       padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
                       child: Row(
                         children: [
-                          Text('Доставка',
-                            style: TextStyle(
-                                color: Colors.white
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Text('Доставка',
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),
                             ),
                           ),
                           Text(
-                              (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                             style: TextStyle(
                                 color: Colors.white
                             ),
@@ -799,7 +809,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
           _buildFoodCategoryList(),
           Expanded(
             child: ListView.builder(
-                itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
+              itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
               controller: foodScrollController,
               padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
               itemCount: menuWithTitles.length,
@@ -875,7 +885,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
               return _buildScreen();
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitFadingCircle(
+                  color: Colors.green,
+                  size: 50.0,
+                ),
               );
             }
           }),
@@ -938,8 +951,8 @@ class MenuItemTitleState extends State<MenuItemTitle>{
       padding: const EdgeInsets.only(top: 15, bottom: 10),
       child: Text(title[0].toUpperCase() + title.substring(1),
         style: TextStyle(
-            color: Color(0xFF424242),
-            fontSize: 21,
+          color: Color(0xFF424242),
+          fontSize: 21,
         ),
       ),
     );
@@ -1292,20 +1305,45 @@ class BasketButtonState extends State<BasketButton> {
         onPressed: () async {
           if (await Internet.checkConnection()) {
             if (currentUser.cartDataModel.cart.length == 0) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) =>
-                  new EmptyCartScreen(restaurant: restaurant),
-                ),
-              );
+              Navigator.of(context).push(
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, anotherAnimation) {
+                        return EmptyCartScreen(restaurant: restaurant);
+                      },
+                      transitionDuration: Duration(milliseconds: 300),
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                        return SlideTransition(
+                          position: Tween(
+                              begin: Offset(-1.0, 0.0),
+                              end: Offset(0.0, 0.0))
+                              .animate(animation),
+                          child: child,
+                        );
+                      }
+                  ));
             } else {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => new CartPageScreen(restaurant: restaurant),
-                ),
-              );
+              Navigator.of(context).push(
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, anotherAnimation) {
+                        return CartPageScreen(restaurant: restaurant);
+                      },
+                      transitionDuration: Duration(milliseconds: 300),
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                        return SlideTransition(
+                          position: Tween(
+                              begin: Offset(-1.0, 0.0),
+                              end: Offset(0.0, 0.0))
+                              .animate(animation),
+                          child: child,
+                        );
+                      }
+                  ));
             }
           } else {
             noConnection(context);
@@ -1405,8 +1443,8 @@ class ToppingsSelectorState extends State<ToppingsSelector> {
     toppingsList.forEach((element) {
       widgetsList.add(MyCheckBox(
           key: new GlobalKey<MyCheckBoxState>(),
-          topping: element,
-          title: element.name));
+        title: element.name,
+        topping: element,));
     });
     return Container(
       color: Colors.white,
@@ -1453,11 +1491,11 @@ class MyCheckBoxState extends State<MyCheckBox> {
 
   Widget build(BuildContext context) {
     return CheckboxListTile(
+      value: isSelected,
       title: Text(
         title,
         style: TextStyle(color: Color(0xff424242)),
       ),
-      value: isSelected,
       onChanged: (bool f) {
         setState(() {
           isSelected = f;
@@ -1740,8 +1778,8 @@ class MenuItemCounterState extends State<MenuItemCounter> {
                 child: Text(
                   '$counter',
                   style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white
+                      fontSize: 20.0,
+                      color: Colors.white
                   ),
                 ),
               ),
@@ -1863,7 +1901,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               decoration: BoxDecoration(
                                 color: Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
+                                    topLeft: Radius.circular(15),
                                     bottomLeft: Radius.circular(15),
                                     bottomRight: Radius.circular(15)),
                               ),
@@ -2097,7 +2135,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                             padding: EdgeInsets.only(left: 15, top: 10),
                             child: Text(
                               restaurantDataItems.name,
-                              style: TextStyle(color: Color(0xFF424242)),
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
                         )
@@ -2125,7 +2163,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                             padding: EdgeInsets.only(left: 15, top: 10),
                             child: Text(
                               'Добавки',
-                              style: TextStyle(color: Color(0xFF424242)),
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
                         )
@@ -2147,7 +2185,17 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                 ),
               )),
           Container(
-            margin: EdgeInsets.only(right: 0.0, top: 10, bottom: 12),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            decoration: (restaurantDataItems.toppings != null && restaurantDataItems.variants != null) ? BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8.0, // soften the shadow
+                  spreadRadius: 3.0, //extend the shadow
+                )
+              ],
+            ) : null,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
