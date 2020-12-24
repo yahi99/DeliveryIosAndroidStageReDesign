@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/Screens/autocolplete_field_list.dart';
+import 'package:flutter_app/Screens/cart_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
@@ -26,12 +27,14 @@ class AddAddressScreenState extends State<AddAddressScreen> {
   MyFavouriteAddressesModel myAddressesModel;
   GlobalKey<AutoCompleteFieldState> autoCompleteFieldKey = new GlobalKey();
   AddressScreenState parent;
+  TakeAwayState parent1;
 
 
   AddAddressScreenState(this.myAddressesModel, this.parent);
 
   TextEditingController nameField = new TextEditingController();
   TextEditingController commentField = new TextEditingController();
+  GlobalKey<CartPageState>cartPageKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -193,13 +196,18 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                       }
                       //await myAddressesModel.ifNoBrainsSave();
 
-
-
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => new PageScreen(restaurant: parent.restaurant, myAddressesModelList: parent.myAddressesModelList,)),
+                        new MaterialPageRoute(builder: (context) => new AddressScreen(restaurant: parent.restaurant, myAddressesModelList: parent.myAddressesModelList,)),
                       );
+//                      if(cartPageKey.currentState.cartScreenKey.currentState.){
+//
+//                      }else{
+//                        Navigator.push(context,
+//                          new MaterialPageRoute(builder: (context) => new TakeAway(restaurant: parent1.restaurant,)),
+//                        );
+//                      }
                     } else {
                       noConnection(context);
                     }

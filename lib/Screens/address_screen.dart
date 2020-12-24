@@ -3072,49 +3072,52 @@ class TakeAwayState extends State<TakeAway>
                       height: 10,
                       color: Color(0xFAFAFAFA),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 8.0, // soften the shadow
-                              spreadRadius: 3.0, //extend the shadow
-                            )
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(width: 1.0, color: Colors.grey[200])),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 10, left: 15, right: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Поем в заведении',
-                              style: TextStyle(
-                                  color: Color(0xFF3F3F3F),
-                                  fontSize: 15),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 0),
-                              child: FlutterSwitch(
-                                width: 55.0,
-                                height: 25.0,
-                                inactiveColor: Color(0xD6D6D6D6),
-                                activeColor: Colors.green,
-                                valueFontSize: 12.0,
-                                toggleSize: 18.0,
-                                value: status1,
-                                onToggle: (value) {
-                                  setState(() {
-                                    status1 = value;
-                                  });
-                                },
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15 , right: 15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 15, right: 15, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Поем в заведении',
+                                style: TextStyle(
+                                    color: Color(0xFF3F3F3F),
+                                    fontSize: 15),
                               ),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.only(right: 0),
+                                child: FlutterSwitch(
+                                  width: 55.0,
+                                  height: 25.0,
+                                  inactiveColor: Color(0xD6D6D6D6),
+                                  activeColor: Colors.green,
+                                  valueFontSize: 12.0,
+                                  toggleSize: 18.0,
+                                  value: status1,
+                                  onToggle: (value) {
+                                    setState(() {
+                                      status1 = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
