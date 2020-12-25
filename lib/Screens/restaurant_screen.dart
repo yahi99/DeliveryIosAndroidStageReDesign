@@ -282,119 +282,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       }
     });
   }
-  int _currentPage = 0;
-  bool visible;
-  int chosenItem = 0;
-  double height;
-  Image myImage;
-
-  _pageView() {
-    return Stack(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height * 0.27,
-          child: Stack(
-            children: <Widget>[
-              CarouselSlider(
-                options: CarouselOptions(height: 400.0),
-                items: [1,2,3,4,5].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.amber
-                          ),
-                          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-              Visibility(
-                visible: visible,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton(
-                    onPressed: null,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.keyboard_arrow_left,
-                      color: Colors.black,
-                      size: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        NotificationListener<DraggableScrollableNotification>(
-          // ignore: missing_return
-          onNotification: (notification) {
-            if (notification.extent == 1.0) {
-              visible = false;
-            } else {
-              visible = true;
-            }
-          },
-          child: DraggableScrollableSheet(
-              minChildSize: 0.7,
-              initialChildSize: 0.7,
-              maxChildSize: 1.0,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  child: ListView.builder(
-                      itemCount: 1,
-                      controller: scrollController,
-                      itemBuilder: (BuildContext context, index) {
-                        return _buildScreen();
-                      }),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
-                      )),
-                );
-              }),
-        ),
-      ],
-    );
-  }
-
-  _filter() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20),
-              topRight: const Radius.circular(20),
-            )),
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 420,
-            child: _buildFilterNavigationMenu(),
-            decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20),
-                )),
-          );
-        });
-  }
-
-  _buildFilterNavigationMenu() {
-    if(restaurant.product_category.length>0)
-      return categoryList;
-    else
-      return Container(height: 0);
-  }
 
   _buildFoodCategoryList() {
     if(restaurant.product_category.length>0)
@@ -403,130 +290,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       return Container(height: 0);
   }
 
-  // List<Widget> _buildRestaurantCategoriesList(List<Records> categories){
-  //   List<Widget> result = new List<Widget>();
-  //   result.add(Row(
-  //     children: [
-  //       GestureDetector(
-  //         child: Padding(
-  //           padding: const EdgeInsets.only(left: 15.0),
-  //           child: Container(
-  //             height: 50,
-  //             decoration: BoxDecoration(
-  //                 color: Color(0xFFF6F6F6),
-  //                 borderRadius: BorderRadius.circular(10)
-  //             ),
-  //             child: Padding(
-  //               padding: const EdgeInsets.all(5.0),
-  //               child: SvgPicture.asset('assets/svg_images/menu.svg'),
-  //             ),
-  //           ),
-  //         ),
-  //         onTap: () async {
-  //           if (await Internet.checkConnection()) {
-  //             _filter();
-  //           } else {
-  //             noConnection(context);
-  //           }
-  //         },
-  //       ),
-  //     ],
-  //   ));
-  //   categories.forEach((element) {
-  //     result.add(GestureDetector(
-  //       child: Padding(
-  //           padding:
-  //           EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
-  //           child: Container(
-  //             decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                 color: (element.uuid != category)
-  //                     ? Color(0xFFF6F6F6)
-  //                     : Color(0xFFFE534F)),
-  //             child: Padding(
-  //                 padding: EdgeInsets.only(left: 15, right: 15),
-  //                 child: Center(
-  //                   child: Text(
-  //                     element.name[0].toUpperCase() + element.name.substring(1),
-  //                     style: TextStyle(
-  //                         color: (element.uuid !=
-  //                             category)
-  //                             ? Color(0xFF424242)
-  //                             : Colors.white,
-  //                         fontSize: 15),
-  //                   ),
-  //                 )),
-  //           )),
-  //       onTap: () async {
-  //         if (await Internet.checkConnection()) {
-  //           setState(() {
-  //             isLoading = true;
-  //             page = 1;
-  //             category = (element.uuid == category) ? '' : element.uuid;
-  //           });
-  //         } else {
-  //           noConnection(context);
-  //         }
-  //       },
-  //     ));
-  //   });
-  //   return result;
-  // }
-  //
-  //
-  // _buildRestaurantCategories(){
-  //   if(categoryList != null){
-  //     return Container(
-  //       height: 55,
-  //       child: ListView(
-  //           scrollDirection: Axis.horizontal,
-  //           children: _buildRestaurantCategoriesList(restaurantCategories.records)
-  //       ),
-  //     );
-  //   }
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 0.0),
-  //     child: Container(
-  //       height: 55,
-  //       child: FutureBuilder<RestaurantCategories>(
-  //         future: loadRestaurantCategories(1, 12),
-  //         initialData: null,
-  //         builder: (BuildContext context, AsyncSnapshot<RestaurantCategories> snapshot){
-  //           if(snapshot.hasData){
-  //             if(snapshot.connectionState == ConnectionState.done){
-  //               restaurantCategories = snapshot.data;
-  //               return ListView(
-  //                   scrollDirection: Axis.horizontal,
-  //                   children: _buildRestaurantCategoriesList(restaurantCategories.records)
-  //               );
-  //             }
-  //           }
-  //           return Container(height: 0);
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
-  CarouselSlider carouselSlider;
-  int _current = 0;
-  List imgList = [
-    'https://images.unsplash.com/photo-1502117859338-fd9daa518a9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1554321586-92083ba0a115?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1536679545597-c2e5e1946495?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1543922596-b3bbaba80649?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1502943693086-33b5b1cfdf2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'
-  ];
+  bool visible = true;
 
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-    return result;
-  }
-
-  Widget _buildScreen() {
+  _draggableBody(){
     isLoading = false;
     // Если хавки нет
     if (restaurantDataItems.records_count == 0) {
@@ -555,8 +322,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                     transitionDuration: Duration(milliseconds: 300),
                                     transitionsBuilder:
                                         (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                       return SlideTransition(
                                         position: Tween(
                                             begin: Offset(1.0, 0.0),
@@ -626,6 +391,232 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
     return Container(
       color: Colors.white,
+      height: 400,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    this.restaurant.name,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF3F3F3F)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: SvgPicture.asset(
+                      'assets/svg_images/rest_info.svg'),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Container(
+                  height: 26,
+                  width: 51,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF67C070)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/svg_images/star.svg',
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text('5.0',
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Container(
+                  height: 26,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF67C070)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: SvgPicture.asset('assets/svg_images/rest_car.svg',
+                                color: Colors.white
+                            ),
+                          ),
+                          Text(
+                            (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 15),
+                child: Container(
+                  height: 26,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF67C070)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
+                      child: Text('Доставка 80-150 ₽',
+                        style: TextStyle(
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          _buildFoodCategoryList(),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
+              controller: foodScrollController,
+              padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
+              itemCount: menuWithTitles.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildScreen() {
+    isLoading = false;
+    // Если хавки нет
+    if (restaurantDataItems.records_count == 0) {
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 50, bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 0),
+                    child: InkWell(
+                        onTap: () async {
+                          homeScreenKey =
+                          new GlobalKey<HomeScreenState>();
+                          if(await Internet.checkConnection()){
+                            Navigator.of(context).pushAndRemoveUntil(
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation, anotherAnimation) {
+                                      return HomeScreen();
+                                    },
+                                    transitionDuration: Duration(milliseconds: 300),
+                                    transitionsBuilder:
+                                        (context, animation, anotherAnimation, child) {
+                                      return SlideTransition(
+                                        position: Tween(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset(0.0, 0.0))
+                                            .animate(animation),
+                                        child: child,
+                                      );
+                                    }
+                                ), (Route<dynamic> route) => false);
+                          }else{
+                            noConnection(context);
+                          }
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 60,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 12, bottom: 12, right: 10, left: 16),
+                              child: SvgPicture.asset(
+                                  'assets/svg_images/arrow_left.svg'),
+                            ))),
+                  ),
+                ),
+                Flexible(
+                  flex: 7,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 30),
+                      child: Text(
+                        this.restaurant.name,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
+          ),
+          _buildFoodCategoryList(),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Center(
+              child: Text('Нет товаров данной категории'),
+            ),
+          ),
+          SizedBox(height: 10.0),
+        ],
+      );
+    }
+
+
+    foodMenuItems.addAll(MenuItem.fromFoodRecordsList(restaurantDataItems.records, this));
+    foodMenuTitles.addAll(MenuItemTitle.fromCategoryList(restaurant.product_category));
+    menuWithTitles = generateMenu();
+    return  Container(
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -694,8 +685,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   child: Text(
                     this.restaurant.name,
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                         color: Color(0xFF3F3F3F)),
                   ),
                 ),
@@ -708,6 +698,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 15),
@@ -772,7 +763,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10, right: 15),
                 child: Container(
                   height: 26,
                   decoration: BoxDecoration(
@@ -781,24 +772,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   ),
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Text('Доставка',
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
-                            ),
-                          ),
-                          Text(
-                            (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                            style: TextStyle(
-                                color: Colors.white
-                            ),
-                          ),
-                        ],
+                      padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
+                      child: Text('Доставка 80-150 ₽',
+                        style: TextStyle(
+                            color: Colors.white
+                        ),
                       ),
                     ),
                   ),
@@ -817,34 +795,107 @@ class RestaurantScreenState extends State<RestaurantScreen> {
               shrinkWrap: true,
             ),
           ),
-//        Expanded(
-//          child: GridView.count(
-//            controller: foodScrollController,
-//            padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-//            crossAxisCount: 1,
-//            mainAxisSpacing: 10.0,
-//            crossAxisSpacing: 8.0,
-//            children: List.generate(menuWithTitles.length, (index){
-//              return menuWithTitles[index];
-//            }),
-//          ),
-//        ),
-//          Expanded(
-//            child: new StaggeredGridView.countBuilder(
-//              controller: foodScrollController,
-//              padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-//              crossAxisCount: 1,
-//              itemCount: menuWithTitles.length,
-//              itemBuilder: (BuildContext context, int index) => menuWithTitles[index],
-//              staggeredTileBuilder: (int index) {
-//                if(menuWithTitles[index] is MenuItemTitle)
-//                  return new StaggeredTile.count(1, 0.17);
-//                return new StaggeredTile.count(1, 1.017);
-//              },
-//              mainAxisSpacing: 10.0,
-//              crossAxisSpacing: 8.0,
-//            )
-//          ),
+          BasketButton(
+              key: basketButtonStateKey, restaurant: restaurant),
+        ],
+      ),
+    );
+
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(0),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0)),
+              child: Stack(
+                children: <Widget>[
+                  Hero(
+                      tag: restaurant.name,
+                      child: Image.network(
+                        getImage(restaurant.image),
+                        fit: BoxFit.cover,
+                        height: 170.0,
+                        width: MediaQuery.of(context).size.width,
+                      )),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 40, left: 15),
+                        child: GestureDetector(
+                          child: SvgPicture.asset(
+                              'assets/svg_images/rest_arrow_left.svg'),
+                          onTap: () async {
+                            if(await Internet.checkConnection()){
+//                              Navigator.of(context).pushAndRemoveUntil(
+//                                  MaterialPageRoute(
+//                                      builder: (context) => HomeScreen()),
+//                                      (Route<dynamic> route) => false);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation, anotherAnimation) {
+                                        return HomeScreen();
+                                      },
+                                      transitionDuration: Duration(milliseconds: 300),
+                                      transitionsBuilder:
+                                          (context, animation, anotherAnimation, child) {
+//                                      animation = CurvedAnimation(
+//                                          curve: Curves.bounceIn, parent: animation);
+                                        return SlideTransition(
+                                          position: Tween(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset(0.0, 0.0))
+                                              .animate(animation),
+                                          child: child,
+                                        );
+                                      }
+                                  ), (Route<dynamic> route) => false);
+                            }else{
+                              noConnection(context);
+                            }
+                          },
+                        ),
+                      ))
+                ],
+              )),
+          NotificationListener<DraggableScrollableNotification>(
+            // ignore: missing_return
+            onNotification: (notification) {
+              if (notification.extent == 1.0) {
+                visible = false;
+              } else {
+                visible = true;
+              }
+            },
+            child: Expanded(
+              child: DraggableScrollableSheet(
+                  minChildSize: 0.8,
+                  initialChildSize: 0.8,
+                  maxChildSize: 1.0,
+                  builder:
+                      (BuildContext context, ScrollController scrollController) {
+                    return Container(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                          itemCount: 1,
+                          controller: scrollController,
+                          itemBuilder: (BuildContext context, index) {
+                            return _draggableBody();
+                          }),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          )),
+                    );
+                  }),
+            ),
+          ),
           BasketButton(
               key: basketButtonStateKey, restaurant: restaurant),
         ],
@@ -1214,30 +1265,6 @@ class BasketButtonState extends State<BasketButton> {
 
   BasketButtonState(this.restaurant);
 
-  noConnection(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.of(context).pop(true);
-        });
-        return Center(
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            child: Container(
-              height: 50,
-              width: 100,
-              child: Center(
-                child: Text("Нет подключения к интернету"),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -1313,8 +1340,6 @@ class BasketButtonState extends State<BasketButton> {
                       transitionDuration: Duration(milliseconds: 300),
                       transitionsBuilder:
                           (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                         return SlideTransition(
                           position: Tween(
                               begin: Offset(-1.0, 0.0),
@@ -1333,8 +1358,6 @@ class BasketButtonState extends State<BasketButton> {
                       transitionDuration: Duration(milliseconds: 300),
                       transitionsBuilder:
                           (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                         return SlideTransition(
                           position: Tween(
                               begin: Offset(-1.0, 0.0),
@@ -1354,8 +1377,6 @@ class BasketButtonState extends State<BasketButton> {
   }
 
   void refresh() {
-    print('yua is arone');
-    //buttonCounterKey.currentState.refresh();
     setState(() {});
   }
 }
@@ -1526,6 +1547,41 @@ class CategoryListState extends State<CategoryList> {
   List<CategoryListItem> categoryItems;
 
   CategoryListState(this.restaurant, this.parent);
+
+  _category() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 340,
+            child: _buildCategoryBottomNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildCategoryBottomNavigationMenu() {
+    return Container(
+      child: ListView(
+          scrollDirection: Axis.vertical,
+          children: categoryItems
+      ),
+    );
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -1555,21 +1611,27 @@ class CategoryListState extends State<CategoryList> {
       padding: const EdgeInsets.only(top: 15),
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10),
-        height: 65,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 8.0, // soften the shadow
-              spreadRadius: 3.0, //extend the shadow
-            )
+        height: 70,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 5),
+              child: InkWell(
+                  child: SvgPicture.asset('assets/svg_images/menu.svg'),
+                onTap: (){
+                   // _category();
+                },
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: categoryItems
+              ),
+            ),
           ],
-        ),
-        child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: categoryItems
-        ),
+        )
       ),
     );
 
@@ -1637,9 +1699,9 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
           EdgeInsets.only(left: 11, top: 5, bottom: 5),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
                 color: (value != categoryList.currentCategory)
-                    ? Color(0xFFF6F6F6)
+                    ? Colors.white
                     : Color(0xFF67C070)),
             child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15),
@@ -2213,11 +2275,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     color: Color(0xFF000000)),),
-                              // TextSpan(text: (restaurantDataItems.weight != null && restaurantDataItems.weight_measure!= null)
-                              //     ? '  ' + restaurantDataItems.weight + " " + restaurantDataItems.weight_measure
-                              //     : '', style: TextStyle(
-                              //     fontSize: 12.0,
-                              //     color: Color(0xFFB0B0B0)),)
                             ]
                         )
                         ),

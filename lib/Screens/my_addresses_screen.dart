@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import '../models/my_addresses_model.dart';
 import '../models/my_addresses_model.dart';
 import 'add_my_address_screen.dart';
-import 'auto_complete.dart';
 import 'home_screen.dart';
 import 'dart:io' show Platform;
 
@@ -18,109 +17,9 @@ class MyAddressesScreen extends StatefulWidget {
 
 class MyAddressesScreenState extends State<MyAddressesScreen> {
   List<MyFavouriteAddressesModel> myAddressesModelList;
-  GlobalKey<AutoCompleteDemoState> autoCompleteKey = new GlobalKey();
   bool addressScreenButton = false;
   bool changeMode = false;
 
-  void _autocomplete(MyFavouriteAddressesModel myAddressesModel) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20),
-              topRight: const Radius.circular(20),
-            )),
-        context: context,
-        builder: (context) {
-          return Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: Container(
-                child: _buildAutocompleteBottomNavigationMenu(myAddressesModel),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).canvasColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(20),
-                      topRight: const Radius.circular(20),
-                    )),
-              ));
-        });
-  }
-
-  _buildAutocompleteBottomNavigationMenu(MyFavouriteAddressesModel myAddressesModel) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 7),
-                    child: Center(
-                      child: Container(
-                        width: 67,
-                        height: 7,
-                        decoration: BoxDecoration(
-                            color: Color(0xFFEBEAEF),
-                            borderRadius: BorderRadius.all(Radius.circular(11))),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: 0, right: 15),
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 15,
-                              top: 33,
-                              bottom: 0,
-                            ),
-                            child: SvgPicture.asset('assets/svg_images/mini_black_ellipse.svg'),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 3,
-                              left: 25,
-                              bottom: 5,
-                            ),
-                            child: AutoComplete(
-                              autoCompleteKey, 'Введите адрес дома',
-                              onSelected: () async {
-                                if (await Internet.checkConnection()) {
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(builder: (context) {
-                                      myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteKey
-                                          .currentState.selectedValue);
-                                      return new AddMyAddressScreen(
-                                          myAddressesModel: myAddressesModel);
-                                    }),
-                                  );
-                                } else {
-                                  noConnection(context);
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      )),
-                  Divider(
-                    color: Color(0xFFEDEDED),
-                    height: 1,
-                    thickness: 1,
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

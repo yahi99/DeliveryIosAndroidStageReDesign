@@ -372,7 +372,6 @@ class _CodeScreenState extends State<CodeScreen> {
                               necessaryDataForAuth.refresh_token =
                                   authCodeData.refresh_token;
                               NecessaryDataForAuth.saveData();
-//                                      await new FirebaseNotifications().setUpFirebase();
                               await Centrifugo.connectToServer();
                               if(necessaryDataForAuth.name == null){
                                 Navigator.push(
@@ -512,9 +511,6 @@ class ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-//    if(){
-//
-//    }
     return FlatButton(
       child: Text('Далее',
           style: TextStyle(

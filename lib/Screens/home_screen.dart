@@ -349,43 +349,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 
   bool isExpanded = false;
 
-  _buildSharesList(){
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: Container(
-        height: 110,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 8, top: 8, bottom: 8),
-              child: Container(
-                height: 100,
-                width: 130,
-                decoration: BoxDecoration(
-                  color: Color(0xFFE6E6E6),
-                  borderRadius: BorderRadius.circular(10)
-                ),
-              ),
-            ),
-            ContainerReSize(),
-            Padding(
-              padding: const EdgeInsets.only(left: 0, right: 15, top: 8, bottom: 8),
-              child: Container(
-                height: 100,
-                width: 130,
-                decoration: BoxDecoration(
-                    color: Color(0xFFE6E6E6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   List<Widget> _buildRestaurantFoodCategoriesList(Records restaurant){
     List<Widget> result = new List<Widget>();
 
@@ -509,41 +472,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.cover,
                             ))),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 168.0),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          height: 32,
-                          width: 85,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                              ),
-                              color: Colors.white.withOpacity(0.5)
-                          ),
-                          child: Center(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5.0, left: 10),
-                                  child: SvgPicture.asset(
-                                      'assets/svg_images/rest_car.svg'),
-                                ),
-                                Text(
-                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.black
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 Container(
@@ -558,6 +486,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           restaurant.name,
                           style: TextStyle(
                               fontSize: 21.0,
+                              fontWeight: FontWeight.w500,
                               color: Color(0xFF3F3F3F),),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -568,46 +497,61 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       SizedBox(
                         height: 30,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 5.0),
-                              child: Container(
-                                  padding: EdgeInsets.only(left: 8, right: 8, top: 0),
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xFF67C070)
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset('assets/svg_images/rest_star.svg',
-                                        color: Colors.white,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 3.0),
-                                        child: Text('5.0',
-                                          style: TextStyle(
-                                              color: Colors.white
-                                          ),
+                            Container(
+                                padding: EdgeInsets.only(left: 8, right: 8, top: 0),
+                                height: 25,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xFF67C070)
+                                ),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset('assets/svg_images/rest_star.svg',
+                                      color: Colors.white,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 3.0),
+                                      child: Text('5.0',
+                                        style: TextStyle(
+                                            color: Colors.white
                                         ),
-                                      )
-                                    ],
-                                  )
-                              ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5.0, left: 10),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/rest_car.svg'),
+                                ),
+                                Text(
+                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
                             Padding(
-                                padding: EdgeInsets.only(left: 5, right: 10),
-                                child: (restaurant.product_category != null) ? Container(
-                                    height: 25,
-                                    width: 230,
-                                    child: ListView(
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.horizontal,
-                                      children: _buildRestaurantFoodCategoriesList(restaurant),
-                                    )
-                                ):
-                                Container()
-                            )
+                              padding: const EdgeInsets.only(right: 15),
+                              child: Text(
+                                'от 100 руб',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  fontWeight: FontWeight.w500
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -845,15 +789,17 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     return allSideBarItems;
   }
 
+  GlobalKey<KitchenListScreenState> kitchenListKey = new GlobalKey();
+
   List<Widget> _buildRestaurantCategoriesList(List<Record> categories){
     List<Widget> result = new List<Widget>();
     result.add(Row(
       children: [
         GestureDetector(
           child: Padding(
-            padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
+            padding: const EdgeInsets.only(left: 15),
             child: Container(
-              height: 60,
+              height: 45,
               decoration: BoxDecoration(
                   color: Color(0xFFF6F6F6),
                   borderRadius: BorderRadius.circular(10)
@@ -875,15 +821,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         GestureDetector(
           child: Padding(
               padding:
-              EdgeInsets.only(left: 10, right: 5, top: 15, bottom: 15),
+              EdgeInsets.only(left: 10, right: 5,),
               child: Container(
-                height: 60,
+                height: 45,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Color(0xFFF6F6F6)),
                 child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Row(
+                    child:Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -897,7 +843,21 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           child: SvgPicture.asset('assets/svg_images/arrow_down'),
                         )
                       ],
-                    )),
+                    ),
+//                    Stack(
+//                      children: [
+//
+//                        Container(
+//                          decoration: BoxDecoration(
+//                            borderRadius: BorderRadius.circular(50),
+//                            color: Colors.white
+//                          ),
+//                          child: Text('${kitchenListKey.currentState.selectedKitchens.length}',
+//                          )
+//                        )
+//                      ],
+//                    )
+                ),
               )),
           onTap: () async {
             if (await Internet.checkConnection()) {
@@ -910,19 +870,28 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         GestureDetector(
           child: Padding(
               padding:
-              EdgeInsets.only(left: 10, right: 5, top: 15, bottom: 15),
+              EdgeInsets.only(left: 10, right: 5),
               child: Container(
+                height: 45,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Color(0xFFF6F6F6)),
                 child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: Center(
-                      child: Text(
-                        "По расстоянию",
-                        style: TextStyle(
-                            color: Color(0xFF424242),
-                            fontSize: 15),
+                      child: Row(
+                        children: [
+                          Text(
+                            "По расстоянию",
+                            style: TextStyle(
+                                color: Color(0xFF424242),
+                                fontSize: 15),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: SvgPicture.asset('assets/svg_images/arrow_down'),
+                          )
+                        ],
                       ),
                     )),
               )),
@@ -940,8 +909,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       result.add(GestureDetector(
         child: Padding(
             padding:
-            EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 15),
+            EdgeInsets.only(left: 5, right: 5),
             child: Container(
+              height: 45,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: (element.uuid != category_uuid)
@@ -981,19 +951,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   _buildRestaurantCategories(){
     if(restaurantCategories != null){
       return Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8.0, // soften the shadow
-                spreadRadius: 3.0, //extend the shadow
-              )
-            ],
-          ),
-          height: 65,
+          height: 45,
           child: ListView(
               scrollDirection: Axis.horizontal,
               children: _buildRestaurantCategoriesList(restaurantCategories.records)
@@ -1002,19 +962,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       );
     }
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 10),
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 8.0, // soften the shadow
-              spreadRadius: 3.0, //extend the shadow
-            )
-          ],
-        ),
-        height: 65,
+        height: 45,
         child: FutureBuilder<RestaurantCategories>(
           future: loadRestaurantCategories(1, 12),
           initialData: null,
@@ -1123,20 +1073,10 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           ),
                         ),
                       ),
-                      Container(
-                        child: _buildRestaurantCategories(),
-                      ),
                       Expanded(
                         child: ListView(
                           padding: EdgeInsets.zero,
                           children: <Widget>[
-//                            FlatButton(
-//                                onPressed: () async {
-//                                  print(authCodeData.client_uuid);
-//                                  await Centrifugo.connectToServer();
-//                                },
-//                                child: Text('VAH')
-//                            ),
                             FutureBuilder<List<OrderChecking>>(
                               future: OrderChecking.getActiveOrder(),
                               builder: (BuildContext context,
@@ -1170,8 +1110,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               },
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 20, top: 15),
+                              padding: const EdgeInsets.only(left: 20, top: 15, right: 20),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Акции и новинки',
                                     style: TextStyle(
@@ -1179,15 +1120,21 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                       fontWeight: FontWeight.bold
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0, left: 10),
-                                    child: Text('смотреть все',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                        decoration: TextDecoration.underline,
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 0, right: 10),
+                                        child: Text('Все',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      SvgPicture.asset('assets/svg_images/arrow_right.svg',
+                                        color: Colors.grey,
+                                      )
+                                    ],
                                   )
                                 ],
                               ),
@@ -1196,28 +1143,22 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                             SizedBox(
                               height: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Text('Рестораны',
-                                      style: TextStyle(
-                                        fontSize: 28,
-                                        color: Color(0xFF3F3F3F),
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1.2,
-                                      )),
-                                ),
-                              ],
+                            Padding(
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text('Рестораны',
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    color: Color(0xFF3F3F3F),
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  )),
+                            ),
+                            Container(
+                              child: _buildRestaurantCategories(),
                             ),
                             (records_items.isEmpty && !isLoading) ?  Center(
                               child: Container(),
-//                              child: Padding(
-//                                padding: EdgeInsets.only(top: 150),
-//                                child: Text('Нет товаров данной категории'),
-//                              ),
                             ) : _buildRestaurantsList()
                           ],
                         ),
@@ -1570,116 +1511,6 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                     ),
                   )
               ) :Container()
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//              children: <Widget>[
-//                Align(
-//                    alignment: Alignment.centerLeft,
-//                    child: GestureDetector(
-//                      child: Padding(
-//                        padding: EdgeInsets.only(
-//                            top: 10, bottom: 10, right: 30, left: 10),
-//                        child: (in_the_way.contains(ordersStoryModelItem.state))
-//                            ? Container(
-//                          decoration: BoxDecoration(
-//                              borderRadius:
-//                              BorderRadius.all(Radius.circular(11)),
-//                              border: Border.all(color: Color(0xFF45C64E)),
-//                              color: Colors.white),
-//                          child: Padding(
-//                            padding: EdgeInsets.only(
-//                                top: 5, right: 10, bottom: 5, left: 10),
-//                            child: Row(
-//                              mainAxisAlignment:
-//                              MainAxisAlignment.spaceBetween,
-//                              children: <Widget>[
-//                                SvgPicture.asset(
-//                                    'assets/svg_images/phone.svg'),
-//                                Padding(
-//                                  padding: EdgeInsets.only(left: 10),
-//                                  child: Text(
-//                                    'Позвонить',
-//                                    style: TextStyle(
-//                                        fontWeight: FontWeight.bold,
-//                                        fontSize: 14),
-//                                  ),
-//                                )
-//                              ],
-//                            ),
-//                          ),
-//                        )
-//                            : Container(),
-//                      ),
-//                      onTap: () {
-//                        showAlertDialog(context);
-//                      },
-//                    )),
-//                Align(
-//                    alignment: Alignment.centerRight,
-//                    child: GestureDetector(
-//                      child: Padding(
-//                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-//                        child: (in_the_way.contains(ordersStoryModelItem.state)) ? Container(
-//                          width: 130,
-//                          decoration: BoxDecoration(
-//                              borderRadius: BorderRadius.all(Radius.circular(11)),
-//                              color: Color(0xFF45C64E)),
-//                          child: Padding(
-//                            padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
-//                            child: Stack(
-//                              children: <Widget>[
-//                                Align(
-//                                  alignment: Alignment.topLeft,
-//                                  child: Padding(
-//                                    padding: EdgeInsets.only(left: 15),
-//                                    child: SvgPicture.asset('assets/svg_images/chat.svg'),
-//                                  ),
-//                                ),
-//                                Align(
-//                                  alignment: Alignment.topRight,
-//                                  child: Padding(
-//                                    padding: EdgeInsets.only(right: 20, top: 2),
-//                                    child: Text(
-//                                      'Чат',
-//                                      style: TextStyle(
-//                                          fontWeight: FontWeight.bold,
-//                                          fontSize: 14,
-//                                          color: Colors.white
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
-//                                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-//                                    if(snapshot.connectionState == ConnectionState.done && snapshot.data){
-//                                      return Align(
-//                                        alignment: Alignment.topRight,
-//                                        child: Padding(
-//                                          padding: EdgeInsets.only(right: 65, bottom: 2),
-//                                          child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
-//                                        ),
-//                                      );
-//                                    }
-//                                    return Container(height: 0);
-//                                  },
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                        ) : Container(),
-//                      ),
-//                      onTap: (){
-//                        Navigator.pushReplacement(
-//                          context,
-//                          new MaterialPageRoute(
-//                            builder: (context) => new ChatScreen(order_uuid: ordersStoryModelItem.uuid, key: chatKey),
-//                          ),
-//                        );
-//                      },
-//                    )
-//                ),
-//              ],
-//            )
             ],
           )),
       onTap: (){
@@ -1691,70 +1522,6 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
           }),
         );
       },
-    );
-  }
-}
-
-class RestaurantsCategory extends StatefulWidget {
-  RestaurantsCategory({Key key}) : super(key: key);
-
-  @override
-  RestaurantsCategoryState createState() {
-    return new RestaurantsCategoryState();
-  }
-}
-
-class RestaurantsCategoryState extends State<RestaurantsCategory> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                color: Color(0xF6F6F6F6)),
-            child: Padding(
-                padding:
-                EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Text(
-                  'Популярное',
-                  style: TextStyle(color: Color(0x42424242), fontSize: 15),
-                )),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                color: Color(0xF6F6F6F6)),
-            child: Padding(
-                padding:
-                EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Text(
-                  'Фаст-фуд',
-                  style: TextStyle(color: Color(0x42424242), fontSize: 15),
-                )),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                color: Color(0xF6F6F6F6)),
-            child: Padding(
-                padding:
-                EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Text(
-                  'Фаст-фуд',
-                  style: TextStyle(color: Color(0x42424242), fontSize: 15),
-                )),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -2233,47 +2000,45 @@ class ContainerReSizeState extends State<ContainerReSize>{
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
+//            Padding(
+//              padding:  (isExpanded) ? EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8) : EdgeInsets.only(left: 15, right: 8, top: 12, bottom: 12),
+//              child: GestureDetector(
+//                child: AnimatedContainer(
+//                  width: isExpanded ? 130 : 120,
+//                  duration: const Duration(seconds: 1),
+//                  child: Image(
+//                    image: AssetImage('assets/images/share_image.png'),
+//                  ),
+//                ),
+//                onTapUp: (value){
+//                  setState(() {
+//                    isExpanded = !isExpanded;
+//                  });
+//                },
+//                onTapDown: (value){
+//                  setState(() {
+//                    isExpanded = !isExpanded;
+//                  });
+//                },
+//              ),
+//            ),
             Padding(
-              padding:  (isExpanded) ? EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8) : EdgeInsets.only(left: 15, right: 8, top: 12, bottom: 12),
-              child: GestureDetector(
-                child: AnimatedContainer(
-                  width: isExpanded ? 130 : 120,
-                  duration: const Duration(seconds: 1),
-                  child: Image(
-                    image: AssetImage('assets/images/share_image.png'),
-                  ),
-                ),
-                onTapUp: (value){
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
-                onTapDown: (value){
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
-              ),
+              padding:  EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
+              child: Image(
+                image: AssetImage('assets/images/share_image.png'),
+              )
             ),
             Padding(
-              padding:  EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xFFE6E6E6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                width: 130,
-              ),
+                padding:  EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                child: Image(
+                  image: AssetImage('assets/images/share_image.png'),
+                )
             ),
             Padding(
-              padding:  EdgeInsets.only(left: 0, right: 8, top: 8, bottom: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xFFE6E6E6),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                width:130,
-              ),
+                padding:  EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                child: Image(
+                  image: AssetImage('assets/images/share_image.png'),
+                )
             ),
           ],
         ),

@@ -162,8 +162,6 @@ class TicketsChatScreenState extends State<TicketsChatScreen>
                                           GlobalKey<TicketsChatMessageScreenState>
                                           chatMessageScreenStateKey = new GlobalKey<
                                               TicketsChatMessageScreenState>();
-                                          //ticketsChatMessagesStates[message.uuid] =
-                                          //    chatMessageScreenStateKey;
                                           if(messageField.text.length != 0){
                                             chatMessageList.add(
                                                 new TicketsChatMessageScreen(

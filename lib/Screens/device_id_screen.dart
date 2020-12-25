@@ -43,11 +43,6 @@ class DeviceIdScreen extends StatelessWidget {
                 image: AssetImage('assets/images/faem.png'),
               )
             );
-            return FadeInImage(
-              fadeInCurve: Curves.bounceIn,
-              placeholder: AssetImage('assets/images/loading.gif'),
-              image: AssetImage('assets/images/logo.png'),
-            );
           }
         },
       ),

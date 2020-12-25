@@ -166,7 +166,6 @@ class CartPageState extends State<CartPageScreen> {
     var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey);
     var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey,);
     bool f = false;
-    GlobalKey<PromoCodeFieldState> promoCodeFieldKey = new GlobalKey();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -188,8 +187,6 @@ class CartPageState extends State<CartPageScreen> {
                       transitionDuration: Duration(milliseconds: 300),
                       transitionsBuilder:
                           (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                         return SlideTransition(
                           position: Tween(
                               begin: Offset(1.0, 0.0),
@@ -435,8 +432,6 @@ class CartPageState extends State<CartPageScreen> {
                                       transitionDuration: Duration(milliseconds: 300),
                                       transitionsBuilder:
                                           (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                         return SlideTransition(
                                           position: Tween(
                                               begin: Offset(-1.0, 0.0),
@@ -455,8 +450,6 @@ class CartPageState extends State<CartPageScreen> {
                                       transitionDuration: Duration(milliseconds: 300),
                                       transitionsBuilder:
                                           (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                         return SlideTransition(
                                           position: Tween(
                                               begin: Offset(-1.0, 0.0),
@@ -889,186 +882,7 @@ class CartScreenState extends State<CartScreen> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-//                Padding(
-//                  padding: const EdgeInsets.only(top: 40),
-//                  child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: <Widget>[
-//                      InkWell(
-//                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
-//                              MaterialPageRoute(
-//                                  builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-//                                  (Route<dynamic> route) => route.isFirst),
-//                          child: Container(
-//                              height: 40,
-//                              width: 60,
-//                              child: Padding(
-//                                padding: EdgeInsets.only(
-//                                    top: 12, bottom: 12, right: 25),
-//                                child: SvgPicture.asset(
-//                                    'assets/svg_images/arrow_left.svg'),
-//                              ))),
-//                      Padding(
-//                        padding: EdgeInsets.only(right: 20),
-//                        child: Text(
-//                          restaurant.name,
-//                          style: TextStyle(
-//                              fontSize: 14,
-//                              fontWeight: FontWeight.bold,
-//                              color: Color(0xFF3F3F3F)),
-//                        ),
-//                      ),
-//                      Padding(
-//                          padding: EdgeInsets.only(right: 10),
-//                          child: GestureDetector(
-//                            child: SvgPicture.asset(
-//                                'assets/svg_images/del_basket.svg'),
-//                            onTap: () {
-//                              if(Platform.isIOS){
-//                                return showDialog(
-//                                  context: context,
-//                                  builder: (BuildContext context) {
-//                                    return Container(
-//                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-//                                      child: Column(
-//                                        children: [
-//                                          Dialog(
-//                                            shape: RoundedRectangleBorder(
-//                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-//                                            child: InkWell(
-//                                              child: Container(
-//                                                height: 50,
-//                                                width: 100,
-//                                                child: Center(
-//                                                  child: Text("Очистить корзину",
-//                                                    style: TextStyle(
-//                                                        color: Color(0xFFFF3B30),
-//                                                        fontSize: 20
-//                                                    ),
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                              onTap: () {
-//                                                setState(() {
-//                                                  AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-//                                                  currentUser.cartDataModel.cart.clear();
-//                                                  currentUser.cartDataModel.saveData();
-//                                                });
-//                                                Navigator.pushReplacement(
-//                                                  context,
-//                                                  new MaterialPageRoute(
-//                                                    builder: (context) =>
-//                                                    new EmptyCartScreen(restaurant: restaurant),
-//                                                  ),
-//                                                );
-//                                              },
-//                                            ),
-//                                          ),
-//                                          Dialog(
-//                                            shape: RoundedRectangleBorder(
-//                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-//                                            child: InkWell(
-//                                              child: Container(
-//                                                height: 50,
-//                                                width: 100,
-//                                                child: Center(
-//                                                  child: Text("Отмена",
-//                                                    style: TextStyle(
-//                                                        color: Color(0xFF007AFF),
-//                                                        fontSize: 20
-//                                                    ),
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                              onTap: (){
-//                                                Navigator.pop(context);
-//                                              },
-//                                            ),
-//                                          )
-//                                        ],
-//                                      ),
-//                                    );
-//                                  },
-//                                );
-//                              }
-//                              showAlertDialog(context);
-//                            },
-//                          )),
-//                    ],
-//                  ),
-//                ),
-//                Container(
-//                  color: Color(0xFFF5F5F5),
-//                  height: 10,
-//                  width: MediaQuery.of(context).size.width,
-//                ),
                 _buildList(),
-//                Align(
-//                  alignment: Alignment.bottomCenter,
-//                  child: Padding(
-//                    padding:
-//                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
-//                    child: Row(
-//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                      children: [
-//                        Column(
-//                          children: [
-//                            totalPrices[1],
-//                            Padding(
-//                              padding: EdgeInsets.all(10),
-//                              child: Text(
-//                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-//                                style: TextStyle(
-//                                  fontSize: 18.0,
-//                                  color: Colors.black,
-//                                ),
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//                        FlatButton(
-//                          child: Padding(
-//                            padding: EdgeInsets.only(
-//                              right: 15,
-//                            ),
-//                            child: Text('Далее',
-//                                style: TextStyle(
-//                                    fontSize: 14.0,
-//                                    fontWeight: FontWeight.w600,
-//                                    color: Colors.white)),
-//                          ),
-//                          color: Color(0xFFFE534F),
-//                          splashColor: Colors.redAccent,
-//                          shape: RoundedRectangleBorder(
-//                            borderRadius: BorderRadius.circular(10),
-//                          ),
-//                          padding: EdgeInsets.only(
-//                              left: 70, top: 20, right: 70, bottom: 20),
-//                          onPressed: () async {
-//                            if (await Internet.checkConnection()) {
-//                              if (currentUser.isLoggedIn) {
-//                                Navigator.push(
-//                                  context,
-//                                  new MaterialPageRoute(
-//                                      builder: (context) =>
-//                                      new PageScreen(restaurant: restaurant)),
-//                                );
-//                              } else {
-//                                Navigator.push(
-//                                  context,
-//                                  new MaterialPageRoute(
-//                                      builder: (context) => new AuthScreen()),
-//                                );
-//                              }
-//                            } else {
-//                              noConnection(context);
-//                            }
-//                          },
-//                        )
-//                      ],
-//                    ),
-//                  ),
-//                ),
               ],
             )),
       ),
@@ -1444,78 +1258,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-//                Container(
-//                  color: Color(0xFFF5F5F5),
-//                  height: 10,
-//                  width: MediaQuery.of(context).size.width,
-//                ),
                 _buildList(),
-//                Align(
-//                  alignment: Alignment.bottomCenter,
-//                  child: Padding(
-//                    padding:
-//                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
-//                    child: Row(
-//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                      children: [
-//                        Column(
-//                          children: [
-//                            totalPrices[1],
-//                            Padding(
-//                              padding: EdgeInsets.all(10),
-//                              child: Text(
-//                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-//                                style: TextStyle(
-//                                  fontSize: 18.0,
-//                                  color: Colors.black,
-//                                ),
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//                        FlatButton(
-//                          child: Padding(
-//                            padding: EdgeInsets.only(
-//                              right: 15,
-//                            ),
-//                            child: Text('Далее',
-//                                style: TextStyle(
-//                                    fontSize: 14.0,
-//                                    fontWeight: FontWeight.w600,
-//                                    color: Colors.white)),
-//                          ),
-//                          color: Color(0xFFFE534F),
-//                          splashColor: Colors.redAccent,
-//                          shape: RoundedRectangleBorder(
-//                            borderRadius: BorderRadius.circular(10),
-//                          ),
-//                          padding: EdgeInsets.only(
-//                              left: 70, top: 20, right: 70, bottom: 20),
-//                          onPressed: () async {
-//                            if (await Internet.checkConnection()) {
-//                              if (currentUser.isLoggedIn) {
-//                                Navigator.push(
-//                                  context,
-//                                  new MaterialPageRoute(
-//                                      builder: (context) =>
-//                                      new PageScreen(restaurant: restaurant)),
-//                                );
-//                              } else {
-//                                Navigator.push(
-//                                  context,
-//                                  new MaterialPageRoute(
-//                                      builder: (context) => new AuthScreen()),
-//                                );
-//                              }
-//                            } else {
-//                              noConnection(context);
-//                            }
-//                          },
-//                        )
-//                      ],
-//                    ),
-//                  ),
-//                ),
               ],
             )),
       ),
@@ -1703,8 +1446,6 @@ class PriceFieldState extends State<PriceField> {
   }
 }
 
-
-
 // ignore: must_be_immutable
 class TotalPrice extends StatefulWidget {
   GlobalKey<TotalPriceState> key;
@@ -1791,8 +1532,6 @@ class EmptyCartScreenState extends State<EmptyCartScreen> {
                                     transitionDuration: Duration(milliseconds: 300),
                                     transitionsBuilder:
                                         (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                       return SlideTransition(
                                         position: Tween(
                                             begin: Offset(1.0, 0.0),

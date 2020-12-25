@@ -850,23 +850,12 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           )),
                       onTap: () async {
                         if (await Internet.checkConnection()) {
-//                          if(not_cancel_state.contains(ordersStoryModelItem.state)){
-//                            showNoCancelAlertDialog(context);
-//                            return;
-//                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_) {
                               return OrderRejectScreen(ordersStoryModelItem: ordersStoryModelItem,);
                             }),
                           );
-//                          showAlertDialog(context);
-//                          await loadOrderCancel(ordersStoryModelItem.uuid);
-//                          homeScreenKey = new GlobalKey();
-//                          Navigator.of(context).pushAndRemoveUntil(
-//                              MaterialPageRoute(
-//                                  builder: (context) => HomeScreen()),
-//                                  (Route<dynamic> route) => false);
                         } else {
                           noConnection(context);
                         }
@@ -1156,10 +1145,6 @@ class OrderRejectScreenState extends State<OrderRejectScreen> {
                       )),
                   onTap: () async {
                     if (await Internet.checkConnection()) {
-//                          if(not_cancel_state.contains(ordersStoryModelItem.state)){
-//                            showNoCancelAlertDialog(context);
-//                            return;
-//                          }
                       showAlertDialog(context);
                       await loadOrderCancel(ordersStoryModelItem.uuid);
                       homeScreenKey = new GlobalKey();

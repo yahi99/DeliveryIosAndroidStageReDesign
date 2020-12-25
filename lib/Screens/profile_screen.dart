@@ -54,8 +54,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                                     transitionDuration: Duration(milliseconds: 300),
                                     transitionsBuilder:
                                         (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                       return SlideTransition(
                                         position: Tween(
                                             begin: Offset(1.0, 0.0),
