@@ -396,7 +396,7 @@ class CartPageState extends State<CartPageScreen> {
                   children: [
                     Column(
                       children: [
-                        //totalPrices[1],
+                        // totalPrices[0],
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(

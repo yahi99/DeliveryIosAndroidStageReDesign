@@ -579,10 +579,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     childrenColumn.addAll(restaurantList);
     if(restaurantList.length < records_count){
       childrenColumn.add(
-          SpinKitFadingCircle(
-            color: Colors.green,
-            size: 50.0,
-          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 100),
+            child: Center(
+              child: SpinKitFadingCircle(
+                color: Colors.green,
+                size: 50.0,
+              ),
+            ),
+          )
       );
     }
     return Column(children: childrenColumn);
@@ -1759,10 +1764,10 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           return buildChat();
         } else {
           return Center(
-            child: SpinKitFadingCircle(
+              child: SpinKitFadingCircle(
               color: Colors.green,
               size: 50.0,
-            ),
+              )
           );
         }
       },

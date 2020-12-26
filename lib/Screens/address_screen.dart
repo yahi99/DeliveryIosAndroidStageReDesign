@@ -98,95 +98,7 @@ class AddressScreenState extends State<AddressScreen>
     );
   }
 
-  _promoCode() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20),
-              topRight: const Radius.circular(20),
-            )),
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 300,
-            child: _buildPromoCodeBottomNavigationMenu(),
-            decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20),
-                )),
-          );
-        });
-  }
 
-  TextEditingController promoCodeField = new TextEditingController();
-
-  _buildPromoCodeBottomNavigationMenu() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 100),
-      child: Container(
-        height: 40,
-        width: 300,
-        decoration: BoxDecoration(
-          color: Color(0xFF67C070),
-          border: Border.all(
-            color: Color(0xFF67C070),
-          ),
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(top: 0),
-                child: TextField(
-                  controller: promoCodeField,
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                  maxLength: 4,
-                  keyboardType: TextInputType.number,
-                  decoration: new InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10),),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    counterText: '',
-                    hintStyle: TextStyle(
-                        color: Color(0xFFC0BFC6),
-                        fontSize: 14
-                    ),
-                    hintText: 'Введите промокод',
-                  ),
-                )
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
-                ),
-                child: Text('Применить',
-                  style: TextStyle(
-                      fontSize: 21,
-                      color: Colors.white
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   _payment() {
     showModalBottomSheet(
@@ -1293,38 +1205,7 @@ class AddressScreenState extends State<AddressScreen>
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 10, left: 0, right: 15, bottom: 10),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: InkWell(
-                              child: Container(
-                                width: 140,
-                                height: 64,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 8.0, // soften the shadow
-                                        spreadRadius: 3.0, //extend the shadow
-                                      )
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(width: 1.0, color: Colors.grey[200])),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 10, left: 15, right: 15, bottom: 10),
-                                  child: Center(child: Text('  Введите\nпромокод')),
-                                ),
-                              ),
-                              onTap: () async {
-                                _promoCode();
-                              },
-                            ),
-                          ),
-                        ),
+                        PromoText()
                       ],
                     ),
                   ],
@@ -1436,98 +1317,6 @@ class TakeAwayState extends State<TakeAway>
 
   TakeAwayState(this.restaurant);
 
-
-  _promoCode() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20),
-              topRight: const Radius.circular(20),
-            )),
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 300,
-            child: _buildPromoCodeBottomNavigationMenu(),
-            decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20),
-                )),
-          );
-        });
-  }
-
-  TextEditingController promoCodeField = new TextEditingController();
-
-  _buildPromoCodeBottomNavigationMenu() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 100),
-      child: Container(
-        height: 40,
-        width: 300,
-        decoration: BoxDecoration(
-          color: Color(0xFF67C070),
-          border: Border.all(
-            color: Color(0xFF67C070),
-          ),
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(10.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(top: 0),
-                child: TextField(
-                  controller: promoCodeField,
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                  maxLength: 4,
-                  keyboardType: TextInputType.number,
-                  decoration: new InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10),),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    counterText: '',
-                    hintStyle: TextStyle(
-                        color: Color(0xFFC0BFC6),
-                        fontSize: 14
-                    ),
-                    hintText: 'Введите промокод',
-                  ),
-                )
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
-                  ),
-                  child: Text('Применить',
-                    style: TextStyle(
-                        fontSize: 21,
-                        color: Colors.white
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   showPaymentErrorAlertDialog(BuildContext context) {
     showDialog(
@@ -2378,38 +2167,7 @@ class TakeAwayState extends State<TakeAway>
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 10, left: 0, right: 15, bottom: 10),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: InkWell(
-                              child: Container(
-                                width: 140,
-                                height: 64,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 8.0, // soften the shadow
-                                        spreadRadius: 3.0, //extend the shadow
-                                      )
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(width: 1.0, color: Colors.grey[200])),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 10, left: 15, right: 15, bottom: 10),
-                                  child: Center(child: Text('  Введите\nпромокод')),
-                                ),
-                              ),
-                              onTap: () async {
-                                _promoCode();
-                              },
-                            ),
-                          ),
-                        ),
+                        PromoText()
                       ],
                     ),
                   ],
@@ -2836,6 +2594,160 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
               ),
             ],
           )
+      ),
+    );
+  }
+}
+
+class PromoText extends StatefulWidget {
+  PromoText({
+    this.key,
+    this.title
+  }) : super(key: key);
+  final GlobalKey<PromoTextState> key;
+  String title;
+
+  @override
+  PromoTextState createState() {
+    return new PromoTextState(title);
+  }
+}
+
+class PromoTextState extends State<PromoText>{
+
+  String title = '   Введите\nпромокод';
+  PromoTextState(title);
+
+  _promoCode() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 300,
+            child: _buildPromoCodeBottomNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  TextEditingController promoCodeField = new TextEditingController();
+
+  _buildPromoCodeBottomNavigationMenu() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 100),
+      child: Container(
+        height: 40,
+        width: 300,
+        decoration: BoxDecoration(
+          color: Color(0xFF67C070),
+          border: Border.all(
+            color: Color(0xFF67C070),
+          ),
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(10.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+                padding: EdgeInsets.only(top: 0),
+                child: TextField(
+                  controller: promoCodeField,
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                  maxLength: 4,
+                  keyboardType: TextInputType.number,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10),),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    counterText: '',
+                    hintStyle: TextStyle(
+                        color: Color(0xFFC0BFC6),
+                        fontSize: 14
+                    ),
+                    hintText: 'Введите промокод',
+                  ),
+                )
+            ),
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
+                  ),
+                  child: Text('Применить',
+                    style: TextStyle(
+                        fontSize: 21,
+                        color: Colors.white
+                    ),
+                  ),
+                ),
+            ),
+              onTap: (){
+                Navigator.pop(context);
+                setState(() {
+                  title = promoCodeField.text;
+                });
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          top: 10, left: 0, right: 15, bottom: 10),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: InkWell(
+          child: Container(
+            width: 140,
+            height: 64,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8.0, // soften the shadow
+                    spreadRadius: 3.0, //extend the shadow
+                  )
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(width: 1.0, color: Colors.grey[200])),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 10, left: 15, right: 15, bottom: 10),
+              child: Center(child: Text(title)),
+            ),
+          ),
+          onTap: () async {
+            _promoCode();
+          },
+        ),
       ),
     );
   }
