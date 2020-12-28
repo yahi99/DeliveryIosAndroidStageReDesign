@@ -74,6 +74,10 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Divider(height: 1, color: Colors.grey,),
+            ),
             FutureBuilder<List<MyFavouriteAddressesModel>>(
               future: MyFavouriteAddressesModel.getAddresses(),
               builder: (BuildContext context,
@@ -157,7 +161,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                     );
                   }
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.75,
+                    height: MediaQuery.of(context).size.height * 0.70,
                     child: Column(
                       children: <Widget>[
                         Expanded(
@@ -180,10 +184,8 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                   child: GestureDetector(
                                                       child: Row(
                                                         children: <Widget>[
-                                                          Image(
-                                                            image: AssetImage(
-                                                                'assets/images/plus_icon.png'),
-                                                          ),
+                                                          SvgPicture.asset(
+                                                              'assets/svg_images/my_addresses_plus.svg'),
                                                           Padding(
                                                             padding:
                                                             EdgeInsets.only(left: 20),

@@ -153,6 +153,7 @@ class ServiceOrdersStoryScreenState extends State<ServiceOrdersStoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Scaffold(
         body: Column(
           children: [
@@ -196,7 +197,7 @@ class ServiceOrdersStoryScreenState extends State<ServiceOrdersStoryScreen> {
                 ],
               ),
             ),
-            Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+            Divider(height: 1.0, color: Colors.grey),
             Align(
               alignment: Alignment.topLeft,
               child: Padding(

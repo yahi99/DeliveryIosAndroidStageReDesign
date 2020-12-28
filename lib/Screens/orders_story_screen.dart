@@ -152,7 +152,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
         body: Column(
           children: [
             ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: 'История зазказов',),
-            Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+            Divider(height: 1.0, color: Colors.grey),
             FutureBuilder<OrdersStoryModel>(
                 future: loadOrdersStoryModel(),
                 initialData: null,

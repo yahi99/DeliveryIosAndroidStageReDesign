@@ -112,7 +112,7 @@ class AddressScreenState extends State<AddressScreen>
         context: context,
         builder: (context) {
           return Container(
-            height: 120,
+            height: 100,
             child: _buildPaymentBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -126,7 +126,7 @@ class AddressScreenState extends State<AddressScreen>
 
   _buildPaymentBottomNavigationMenu() {
     return Container(
-      height: 120,
+      height: 100,
       child: Column(
         children: [
           InkWell(
@@ -368,7 +368,7 @@ class AddressScreenState extends State<AddressScreen>
         context: context,
         builder: (context) {
           return Container(
-            height: 250,
+            height: 270,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -382,13 +382,18 @@ class AddressScreenState extends State<AddressScreen>
 
   _buildDispatchAddressBottomNavigationMenu() {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(20),
+            topRight: const Radius.circular(20),
+          )),
       child: Column(
         children: [
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
+              padding: const EdgeInsets.only(left: 15, top: 25),
               child: Text('Адрес отправки',
                 style: TextStyle(
                     fontSize: 24,
@@ -1368,7 +1373,7 @@ class TakeAwayState extends State<TakeAway>
         context: context,
         builder: (context) {
           return Container(
-            height: 120,
+            height: 100,
             child: _buildPaymentBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -1382,7 +1387,7 @@ class TakeAwayState extends State<TakeAway>
 
   _buildPaymentBottomNavigationMenu() {
     return Container(
-      height: 120,
+      height: 100,
       child: Column(
         children: [
           InkWell(

@@ -516,6 +516,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 (context, index){
                   return Container(
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),),
@@ -1331,16 +1332,31 @@ class CategoryListState extends State<CategoryList> {
           scrollDirection: Axis.vertical,
           children: List.generate(categoryItems.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
+              padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10, right: 15),
               child: GestureDetector(
-                child: Text(categoryItems[index].value,
-                  style: (categoryItems[index].value != currentCategory) ? TextStyle() : TextStyle(fontWeight: FontWeight.bold),
+                child: Row(
+                  children: [
+                    Text(categoryItems[index].value[0].toUpperCase() + categoryItems[index].value.substring(1),
+                      style: (categoryItems[index].value != currentCategory) ? TextStyle(fontSize: 18) : TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      textAlign: TextAlign.start,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 2),
+                      child: Text(categoryItems[index].value.length.toString(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    )
+                  ],
                 ),
                 onTap: () async {
                   String value = categoryItems[index].value;
                   Navigator.pop(context);
                   if(await parent.GoToCategory(restaurant.product_category.indexOf(value)))
-                  SelectCategory(value);
+                    SelectCategory(value);
                   ScrollToSelectedCategory();
                 },
               ),
@@ -1549,21 +1565,23 @@ class MenuItemCounterState extends State<MenuItemCounter> {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.only(left: 10, bottom: 5),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Color(0xFF67C070),
-                  borderRadius: BorderRadius.circular(10)
+          child: Row(
+            children: [
+              SvgPicture.asset('assets/svg_images/rest_plus.svg'),
+              Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
+                    child: Text(
+                      '${foodRecords.price} \₽',
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
-                child: Text(
-                  '${foodRecords.price} \₽',
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              )
+            ],
           ),
         ),
       );
@@ -1571,79 +1589,45 @@ class MenuItemCounterState extends State<MenuItemCounter> {
     counter = order.quantity;
     return Padding(
         padding: EdgeInsets.only(left: 15, right: 0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(
-            padding: EdgeInsets.only(left: 0, top: 0, bottom: 0),
-            child: InkWell(
-              onTap: () {
-                if (counter != 1) {
-                  _incrementCounter_minus();
-                  // counter = restaurantDataItems.records_count;
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8)),
-                ),
-                height: 40,
-                width: 28,
-                child: Padding(
-                  padding: EdgeInsets.all(7),
-                  child: SvgPicture.asset('assets/svg_images/mini_minus.svg'),
-                ),
-              ),
-            ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          InkWell(
+            onTap: () {
+              if (counter != 1) {
+                _incrementCounter_minus();
+                // counter = restaurantDataItems.records_count;
+              }
+            },
+            child: SvgPicture.asset('assets/svg_images/rest_minus.svg'),
           ),
           Container(
             height: 30,
-            width: 70,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFF67C070)
-            ),
+            width: 30,
             child: Padding(
               padding: EdgeInsets.only(right: 10, left: 10),
               child: Center(
                 child: Text(
                   '$counter',
                   style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white
+                      fontSize: 18.0,
+                    fontWeight: FontWeight.w400
                   ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
-            child: InkWell(
-              onTap: () async {
-                if (await Internet.checkConnection()) {
-                  setState(() {
-                    _incrementCounter_plus();
-                    // counter = restaurantDataItems.records_count;
-                  });
-                } else {
-                  noConnection(context);
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                ),
-                height: 40,
-                width: 28,
-                child: Padding(
-                  padding: EdgeInsets.all(7),
-                  child: SvgPicture.asset('assets/svg_images/plus_counter.svg'),
-                ),
-              ),
-            ),
-          )
+          InkWell(
+            onTap: () async {
+              if (await Internet.checkConnection()) {
+                setState(() {
+                  _incrementCounter_plus();
+                  // counter = restaurantDataItems.records_count;
+                });
+              } else {
+                noConnection(context);
+              }
+            },
+            child: SvgPicture.asset('assets/svg_images/rest_plus.svg'),
+          ),
         ])
     );
   }
@@ -1749,7 +1733,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             child: Text(
                                               restaurantDataItems.name,
                                               style: TextStyle(
-                                                  fontSize: 16.0, color: Color(0xFF3F3F3F)),
+                                                  fontSize: 16.0, color: Color(0xFF3F3F3F), fontWeight: FontWeight.w700),
                                               textAlign: TextAlign.start,
                                             ),
                                           ),

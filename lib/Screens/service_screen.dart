@@ -89,6 +89,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                   ],
                 ),
               ),
+              Divider(height: 1.0, color: Colors.grey),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -133,7 +134,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    Divider(height: 1.0, color: Colors.grey),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -162,7 +163,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    Divider(height: 1.0, color: Colors.grey),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -191,7 +192,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    Divider(height: 1.0, color: Colors.grey),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -220,7 +221,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
+                    Divider(height: 1.0, color: Colors.grey),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -233,6 +234,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       ),
                     ),
                     Container(
+                      color: Colors.white,
                       child: FutureBuilder<TicketsList>(
                         future:
                         getTicketsByFilter(1, 0, necessaryDataForAuth.phone_number),

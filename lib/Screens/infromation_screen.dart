@@ -25,7 +25,7 @@ class InformationScreenState extends State<InformationScreen>{
                 child: Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(top:30, bottom: 0),
+                      padding: EdgeInsets.only(top:30, bottom: 10),
                       child: Container(
                           height: 50,
                           width: 60,
@@ -49,16 +49,13 @@ class InformationScreenState extends State<InformationScreen>{
                   }
                 },
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 30, left: 70, right: 15, bottom: 10),
+                child: Text('Информация',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
+              ),
             ],
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: 20, left: 30, bottom: 20, right: 15),
-              child: Text('Информация',style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
-            ),
-          ),
-          Divider(height: 1.0, color: Color(0xFFEDEDED)),
+          Divider(height: 1.0, color: Colors.grey),
           InkWell(
             child: Align(
               alignment: Alignment.centerLeft,
@@ -94,7 +91,7 @@ class InformationScreenState extends State<InformationScreen>{
               }
             },
           ),
-          Divider(height: 1.0, color: Color(0xFFEDEDED)),
+          Divider(height: 1.0, color: Colors.grey),
         ],
       ),
     );

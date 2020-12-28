@@ -738,7 +738,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
         body: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 40, bottom: 10),
+              padding: EdgeInsets.only(top: 30, bottom: 10),
               child: Row(
                 children: <Widget>[
                   Flexible(
@@ -778,7 +778,10 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 ],
               ),
             ),
-            Divider(height: 1.0, color: Color(0xFFF5F5F5)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Divider(height: 1.0, color: Colors.grey),
+            ),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
