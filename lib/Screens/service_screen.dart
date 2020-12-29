@@ -89,7 +89,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                   ],
                 ),
               ),
-              Divider(height: 1.0, color: Colors.grey),
+              Divider(height: 1.0, color: Color(0xFFB9B9B9)),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -101,7 +101,6 @@ class ServiceScreenState extends State<ServiceScreen> {
                         child: Text('Ваши вопросы',
                             style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.bold,
                                 color: Color(0xFFB9B9B9))),
                       ),
                     ),
@@ -134,7 +133,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Colors.grey),
+                    Divider(height: 1.0, color: Color(0xFFB9B9B9)),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -163,7 +162,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Colors.grey),
+                    Divider(height: 1.0, color: Color(0xFFB9B9B9)),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -192,7 +191,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         }
                       },
                     ),
-                    Divider(height: 1.0, color: Colors.grey),
+                    Divider(height: 1.0, color: Color(0xFFB9B9B9)),
                     ListTile(
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -229,7 +228,6 @@ class ServiceScreenState extends State<ServiceScreen> {
                         child: Text('Мои обращения',
                             style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.bold,
                                 color: Color(0xFFB9B9B9))),
                       ),
                     ),

@@ -555,7 +555,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 width: 51,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF67C070)
+                                    color: Color(0xFFEFEFEF)
                                 ),
                                 child: Center(
                                   child: Padding(
@@ -563,13 +563,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                     child: Row(
                                       children: [
                                         SvgPicture.asset('assets/svg_images/star.svg',
-                                          color: Colors.white,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 5),
                                           child: Text('5.0',
                                             style: TextStyle(
-                                                color: Colors.white
                                             ),
                                           ),
                                         )
@@ -585,7 +583,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 height: 26,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF67C070)
+                                    color: Color(0xFFEFEFEF)
                                 ),
                                 child: Center(
                                   child: Padding(
@@ -595,13 +593,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                         Padding(
                                           padding: const EdgeInsets.only(right: 5),
                                           child: SvgPicture.asset('assets/svg_images/rest_car.svg',
-                                              color: Colors.white
                                           ),
                                         ),
                                         Text(
                                           (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                           style: TextStyle(
-                                              color: Colors.white
                                           ),
                                         ),
                                       ],
@@ -616,14 +612,13 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 height: 26,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF67C070)
+                                    color: Color(0xFFEFEFEF)
                                 ),
                                 child: Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
                                     child: Text('Доставка 80-150 ₽',
                                       style: TextStyle(
-                                          color: Colors.white
                                       ),
                                     ),
                                   ),

@@ -349,6 +349,7 @@ class AddressScreenState extends State<AddressScreen>
   TextField entranceTextField;
   TextField officeTextField;
   GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
+  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
   bool addressScreenButton = false;
 
   String addressName = '';
@@ -446,7 +447,7 @@ class AddressScreenState extends State<AddressScreen>
   Widget buildAddressesList(){
     if(myAddressesModelList != null){
       return Container(
-          height: 200,
+          height: 220,
           child: Column(
             children: [
               Align(
@@ -816,37 +817,47 @@ class AddressScreenState extends State<AddressScreen>
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Divider(
-                          height: 1.0, color: Color(0xFFEDEDED)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Комментарий',
-                            style: TextStyle(
-                                color: Color(0xFFB0B0B0),
-                                fontSize: 13),
-                          )
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              controller: commentField,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 15),
+                                hintText: 'Оставить комментарий',
+                                hintStyle: TextStyle(
+                                    color: Color(0xFFE6E6E6)
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      'Комментарий',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15, bottom: 5),
-                        child: Container(
-                          height: 45,
-                          child: TextField(
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: commentField,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              counterText: '',
-                            ),
-                          ),
-                        )),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 10, left: 15, right: 15, bottom: 10),
@@ -1023,6 +1034,27 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                       ),
                     ),
+//                    (promoTextKey.currentState.title.length != null) ? Padding(
+//                      padding: EdgeInsets.only(
+//                          top: 15, left: 15, bottom: 5, right: 15),
+//                      child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                        children: <Widget>[
+//                          Text(
+//                            'Скидка',
+//                            style: TextStyle(
+//                                color: Colors.red,
+//                                fontSize: 14),
+//                          ),
+//                          Text(
+//                            '-150 \₽',
+//                            style: TextStyle(
+//                                color: Colors.red,
+//                                fontSize: 14),
+//                          )
+//                        ],
+//                      ),
+//                    ) : Container(),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 15, left: 15, bottom: 5, right: 15),
@@ -1210,7 +1242,7 @@ class AddressScreenState extends State<AddressScreen>
                             ),
                           ),
                         ),
-                        PromoText()
+                        PromoText(key: promoTextKey,)
                       ],
                     ),
                   ],
@@ -2086,32 +2118,47 @@ class TakeAwayState extends State<TakeAway>
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Комментарий',
-                            style: TextStyle(
-                                color: Color(0xFFB0B0B0),
-                                fontSize: 13),
-                          )
+                      padding: const EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 10),
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
+                              controller: commentField,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 15),
+                                hintText: 'Оставить комментарий',
+                                hintStyle: TextStyle(
+                                    color: Color(0xFFE6E6E6)
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      'Комментарий',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15, bottom: 5),
-                        child: Container(
-                          height: 45,
-                          child: TextField(
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: commentField,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              counterText: '',
-                            ),
-                          ),
-                        )),
                     Row(
                       children: [
                         Padding(
@@ -2285,52 +2332,66 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
     myFavouriteAddressList.forEach((element) {
       if(element.tag == null) {
         widgetsList.add(GestureDetector(
-            child: Row(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 15, left: 30, bottom: 15),
-                      child: GestureDetector(
-                          child: Row(
-                            children: <Widget>[
-                              SvgPicture.asset(
-                                'assets/svg_images/address_screen_plus.svg',
-                              ),
-                              Padding(
-                                padding:
-                                EdgeInsets.only(left: 20),
-                                child: Text(
-                                  'Добавить новый адрес',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color:
-                                      Color(0xFF67C070)),
-                                ),
-                              )
-                            ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: TextFormField(
+                      onTap: () async {
+                        if (await Internet.checkConnection()) {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) {
+                                  return new AddAddressScreen(
+                                      myAddressesModel:
+                                      element,
+                                      parent: parent
+                                  );
+                                }),
+                          );
+                        } else {
+                          noConnection(context);
+                        }
+                      },
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 15),
+                        hintText: 'Указать другой адрес',
+                        hintStyle: TextStyle(
+                            color: Color(0xFFE6E6E6)
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            'Адрес',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey
+                            ),
                           ),
-                          onTap: () async {
-                            if (await Internet.checkConnection()) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) {
-                                      return new AddAddressScreen(
-                                          myAddressesModel:
-                                          element,
-                                          parent: parent
-                                      );
-                                    }),
-                              );
-                            } else {
-                              noConnection(context);
-                            }
-                          })),
-                ),
-              ],
-            )));
+                        ),
+                      ),
+                    )
+                  ),
+                ],
+              ),
+            ),
+        )
+       );
       } else {
         widgetsList.add(
             Padding(
@@ -2635,7 +2696,7 @@ class PromoTextState extends State<PromoText>{
         context: context,
         builder: (context) {
           return Container(
-            height: 300,
+            height: 500,
             child: _buildPromoCodeBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -2651,7 +2712,7 @@ class PromoTextState extends State<PromoText>{
 
   _buildPromoCodeBottomNavigationMenu() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 100),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 300),
       child: Container(
         height: 40,
         width: 300,
@@ -2672,6 +2733,7 @@ class PromoTextState extends State<PromoText>{
                   controller: promoCodeField,
                   style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
+                  autofocus: true,
                   maxLength: 4,
                   keyboardType: TextInputType.number,
                   decoration: new InputDecoration(

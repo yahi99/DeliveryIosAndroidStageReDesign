@@ -756,11 +756,14 @@ class CartScreenState extends State<CartScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Counter(
-                            key: counterKey,
-                            priceFieldKey: priceFieldKey,
-                            order: order,
-                            totalPriceList: totalPrices,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Counter(
+                              key: counterKey,
+                              priceFieldKey: priceFieldKey,
+                              order: order,
+                              totalPriceList: totalPrices,
+                          ),
                         ),
                       ),
                     ],
@@ -768,7 +771,10 @@ class CartScreenState extends State<CartScreen> {
                   Expanded(
                     child: Align(
                         alignment: Alignment.centerRight,
-                        child: PriceField(key: priceFieldKey, order: order)
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 35),
+                          child: PriceField(key: priceFieldKey, order: order),
+                        )
                     ),
                   ),
                 ],
@@ -1132,11 +1138,14 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Counter(
-                          key: counterKey,
-                          priceFieldKey: priceFieldKey,
-                          order: order,
-                          totalPriceList: totalPrices,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Counter(
+                            key: counterKey,
+                            priceFieldKey: priceFieldKey,
+                            order: order,
+                            totalPriceList: totalPrices,
+                          ),
                         ),
                       ),
                     ],
@@ -1144,7 +1153,10 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                   Expanded(
                     child: Align(
                         alignment: Alignment.centerRight,
-                        child: PriceField(key: priceFieldKey, order: order)
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 35),
+                          child: PriceField(key: priceFieldKey, order: order),
+                        )
                     ),
                   ),
                 ],
@@ -1331,28 +1343,10 @@ class CounterState extends State<Counter> {
                 // counter = restaurantDataItems.records_count;
               }
             },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8)),
-              ),
-              height: 40,
-              width: 28,
-              child: Padding(
-                padding: EdgeInsets.all(7),
-                child: SvgPicture.asset('assets/svg_images/mini_minus.svg'),
-              ),
-            ),
+            child: SvgPicture.asset('assets/svg_images/rest_minus.svg'),
           ),
         ),
         Container(
-          height: 30,
-          width: 70,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color(0xFF67C070)
-          ),
           child: Padding(
             padding: EdgeInsets.only(right: 10, left: 10),
             child: Center(
@@ -1360,7 +1354,6 @@ class CounterState extends State<Counter> {
                 '$counter',
                 style: TextStyle(
                   fontSize: 20.0,
-                  color: Colors.white
                 ),
               ),
             ),
@@ -1379,19 +1372,7 @@ class CounterState extends State<Counter> {
                 noConnection(context);
               }
             },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8)),
-              ),
-              height: 40,
-              width: 28,
-              child: Padding(
-                padding: EdgeInsets.all(7),
-                child: SvgPicture.asset('assets/svg_images/plus_counter.svg'),
-              ),
-            ),
+            child: SvgPicture.asset('assets/svg_images/rest_plus.svg'),
           ),
         )
       ])

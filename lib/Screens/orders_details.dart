@@ -158,9 +158,12 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   Container(
                     child: Row(
                       children: [
-                        SvgPicture.asset('assets/svg_images/clock.svg'),
                         Padding(
-                          padding: EdgeInsets.only(left: 15, top: 0, right: 15),
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: SvgPicture.asset('assets/svg_images/clock.svg'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 0, top: 0, right: 15),
                           child: Text(
                             format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
                             style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),

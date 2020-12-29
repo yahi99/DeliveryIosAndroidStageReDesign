@@ -154,7 +154,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   }
 
 
-  _kitchensFilter() {
+  _kitchensFilter(GlobalKey<KitchenListScreenState> kitchenListKey) {
     showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -167,7 +167,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         builder: (context) {
           return Container(
             height: 600,
-            child: _buildKitchensFilterNavigationMenu(),
+            child: _buildKitchensFilterNavigationMenu(kitchenListKey),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
                 borderRadius: BorderRadius.only(
@@ -181,7 +181,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   bool filterSelect = false;
 
 
-  _buildKitchensFilterNavigationMenu() {
+  _buildKitchensFilterNavigationMenu(GlobalKey<KitchenListScreenState> kitchenListKey) {
     return Container(
       height: 610,
       child: Column(
@@ -493,34 +493,52 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   ],
                                 )
                             ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5.0, left: 10),
-                                  child: SvgPicture.asset(
-                                      'assets/svg_images/rest_car.svg'),
-                                ),
-                                Text(
-                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500
+                            Container(
+                              height: 25,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xFFEFEFEF)
+                              ),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5.0, left: 0),
+                                    child: SvgPicture.asset(
+                                        'assets/svg_images/rest_car.svg'),
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                  Text(
+                                    (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 15),
-                              child: Text(
-                                'от 100 руб',
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  fontWeight: FontWeight.w500
+                              child: Container(
+                                height: 25,
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xFFEFEFEF)
                                 ),
-                                overflow: TextOverflow.ellipsis,
+                                child: Center(
+                                  child: Text(
+                                    'от 100 руб',
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -798,46 +816,58 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           child: Padding(
               padding:
               EdgeInsets.only(left: 10, right: 5,),
-              child: Container(
-                height: 45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Color(0xFFF6F6F6)),
-                child: Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Кухни",
-                          style: TextStyle(
-                              color: Color(0xFF424242),
-                              fontSize: 15),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: SvgPicture.asset('assets/svg_images/arrow_down'),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color(0xFFF6F6F6)),
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Кухни",
+                                style: TextStyle(
+                                    color: Color(0xFF424242),
+                                    fontSize: 15),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: SvgPicture.asset('assets/svg_images/arrow_down'),
+                              )
+                            ],
+                          ),
                         )
-                      ],
                     ),
-//                    Stack(
-//                      children: [
-//
-//                        Container(
-//                          decoration: BoxDecoration(
-//                            borderRadius: BorderRadius.circular(50),
+                  ),
+//                  (kitchenListKey.currentState.selectedKitchens.length != 0) ? Padding(
+//                    padding: const EdgeInsets.only(left: 70, bottom: 20),
+//                    child: Container(
+//                      width: 23,
+//                        height: 23,
+//                        padding: EdgeInsets.all(5),
+//                        decoration: BoxDecoration(
+//                            borderRadius: BorderRadius.circular(20),
 //                            color: Colors.white
-//                          ),
+//                        ),
+//                        child: Center(
 //                          child: Text('${kitchenListKey.currentState.selectedKitchens.length}',
-//                          )
+//                            style: TextStyle(
+//                              fontSize: 14
+//                            ),
+//                          ),
 //                        )
-//                      ],
-//                    )
-                ),
+//                    ),
+//                  ): Container()
+                ],
               )),
           onTap: () async {
             if (await Internet.checkConnection()) {
-              _kitchensFilter();
+              _kitchensFilter(kitchenListKey);
             } else {
               noConnection(context);
             }
@@ -1029,24 +1059,51 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   },
                   child: Column(
                     children: <Widget>[
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 5, top: 30),
-                          child: InkWell(
-                            child: Container(
-                                height: 40,
-                                width: 60,
-                                child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 20, bottom: 4, left: 5),
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/menu.svg')
-                                )),
-                            onTap: () {
-                              _scaffoldKey.currentState.openDrawer();
-                            },
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50, left: 20, right: 15, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 0, top: 0),
+                              child: InkWell(
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/home_menu.svg',
+                                  color: Colors.black,
+                                ),
+                                onTap: () {
+                                  _scaffoldKey.currentState.openDrawer();
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: 250,
+                              height: 38,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Color(0xFF09B44D)
+                              ),
+                              child: Center(
+                                child: Text('Хаджи Мамсурова,42',
+                                  style: TextStyle(
+                                     color: Colors.white,
+                                    fontSize: 13
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 0, top: 0),
+                              child: InkWell(
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/search.svg',
+                                  color: Colors.black,),
+                                onTap: () {
+                                  _scaffoldKey.currentState.openDrawer();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(

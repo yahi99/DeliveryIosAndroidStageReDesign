@@ -72,7 +72,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 5.0),
+                                padding: const EdgeInsets.only(bottom: 2.0),
                                 child: SvgPicture.asset('assets/svg_images/clock.svg'),
                               ),
                               Text(
