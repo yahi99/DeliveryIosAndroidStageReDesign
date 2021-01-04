@@ -203,26 +203,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           KitchenListScreen(key: kitchenListKey),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: FlatButton(
-                child: Text('Применить',
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.white)),
-                color: Color(0xFF67C070),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
-                onPressed: () async {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          )
+
         ],
       ),
     );
@@ -1098,9 +1079,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 child: SvgPicture.asset(
                                     'assets/svg_images/search.svg',
                                   color: Colors.black,),
-                                onTap: () {
-                                  _scaffoldKey.currentState.openDrawer();
-                                },
                               ),
                             ),
                           ],
@@ -2142,61 +2120,94 @@ class KitchenListScreenState extends State<KitchenListScreen>{
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: EdgeInsets.only(bottom: 0, left: 8, right: 8, top: 0),
-      height: 490,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: List.generate(12,(index){
-          return InkWell(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 5, right: 5, bottom: 10),
-              child: (!selectedKitchens[index]) ? Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 9.0, right: 10),
-                      child: SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(titles[index],
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.only(bottom: 0, left: 8, right: 8, top: 0),
+          height: 490,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: List.generate(12,(index){
+              return InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0, left: 5, right: 5, bottom: 10),
+                  child: (!selectedKitchens[index]) ? Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 9.0, right: 10),
+                          child: SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              ) : Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 9.0, right: 10),
-                      child: SvgPicture.asset('assets/svg_images/kitchen_selected.svg'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(titles[index],
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(titles[index],
-                        style: TextStyle(
-                            fontSize: 18
+                  ) : Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 9.0, right: 10),
+                          child: SvgPicture.asset('assets/svg_images/kitchen_selected.svg'),
                         ),
-                      ),
-                    )
-                  ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(titles[index],
+                            style: TextStyle(
+                                fontSize: 18
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
+                onTap: (){
+                  setState(() {
+                    selectedKitchens[index] = !selectedKitchens[index];
+                  });
+                },
+              );
+            }),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: FlatButton(
+              child: Text('Применить',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white)),
+              color: (haveSelectedItems()) ? Color(0xFF67C070) : Color(0xF3F3F3F3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
+              padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
+              onPressed: () async {
+                Navigator.pop(context);
+              },
             ),
-            onTap: (){
-              setState(() {
-                selectedKitchens[index] = !selectedKitchens[index];
-              });
-            },
-          );
-        }),
-      ),
+          ),
+        )
+      ],
     );
+  }
+
+  bool haveSelectedItems(){
+    try{
+      var selectedItem = selectedKitchens.firstWhere((element) => element);
+      return true;
+    }catch(e){
+      return false;
+    }
   }
 }
 

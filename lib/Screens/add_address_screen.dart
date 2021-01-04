@@ -117,11 +117,11 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                       }
                       myAddressesModel.name = nameField.text;
                       myAddressesModel.description = commentField.text;
-                      if(myAddressesModel.tag == null) {
-                        myAddressesModel.tag = "";
-                        parent.myAddressesModelList
-                            .add(new MyFavouriteAddressesModel(tag: null));
-                      }
+                      // if(myAddressesModel.tag == null) {
+                      //   myAddressesModel.tag = "";
+                      //   parent.myAddressesModelList
+                      //       .add(new MyFavouriteAddressesModel(tag: null));
+                      // }
                       //await myAddressesModel.ifNoBrainsSave();
 
                       Navigator.pop(context);

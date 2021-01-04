@@ -1025,102 +1025,116 @@ class BasketButtonState extends State<BasketButton> {
     }
     return Padding(
       padding: EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
-      child: FlatButton(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Flexible(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF67C070),
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      (restaurant.order_preparation_time_second != null)? '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )),
-            Flexible(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 15,
-                  ),
-                  child: Text('Корзина',
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
-                )),
-            Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFF67C070),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Center(
+              child: Text('До бесплатной доставки 250\₽',
+                style: TextStyle(
+                  fontSize: 12
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: new ButtonCounter(
-                    key: buttonCounterKey,
-                  ),
-                ))
-          ],
-        ),
-        color: Color(0xFF67C070),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-        onPressed: () async {
-          if (await Internet.checkConnection()) {
-            if (currentUser.cartDataModel.cart.length == 0) {
-              Navigator.of(context).push(
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, anotherAnimation) {
-                        return EmptyCartScreen(restaurant: restaurant);
-                      },
-                      transitionDuration: Duration(milliseconds: 300),
-                      transitionsBuilder:
-                          (context, animation, anotherAnimation, child) {
-                        return SlideTransition(
-                          position: Tween(
-                              begin: Offset(-1.0, 0.0),
-                              end: Offset(0.0, 0.0))
-                              .animate(animation),
-                          child: child,
-                        );
-                      }
-                  ));
-            } else {
-              Navigator.of(context).push(
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, anotherAnimation) {
-                        return CartPageScreen(restaurant: restaurant);
-                      },
-                      transitionDuration: Duration(milliseconds: 300),
-                      transitionsBuilder:
-                          (context, animation, anotherAnimation, child) {
-                        return SlideTransition(
-                          position: Tween(
-                              begin: Offset(-1.0, 0.0),
-                              end: Offset(0.0, 0.0))
-                              .animate(animation),
-                          child: child,
-                        );
-                      }
-                  ));
-            }
-          } else {
-            noConnection(context);
-          }
-        },
+              ),
+            ),
+          ),
+          FlatButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                    flex: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF67C070),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          (restaurant.order_preparation_time_second != null)? '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )),
+                Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: 15,
+                      ),
+                      child: Text('Корзина',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                    )),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFF67C070),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: new ButtonCounter(
+                        key: buttonCounterKey,
+                      ),
+                    ))
+              ],
+            ),
+            color: Color(0xFF67C070),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+            onPressed: () async {
+              if (await Internet.checkConnection()) {
+                if (currentUser.cartDataModel.cart.length == 0) {
+                  Navigator.of(context).push(
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation, anotherAnimation) {
+                            return EmptyCartScreen(restaurant: restaurant);
+                          },
+                          transitionDuration: Duration(milliseconds: 300),
+                          transitionsBuilder:
+                              (context, animation, anotherAnimation, child) {
+                            return SlideTransition(
+                              position: Tween(
+                                  begin: Offset(-1.0, 0.0),
+                                  end: Offset(0.0, 0.0))
+                                  .animate(animation),
+                              child: child,
+                            );
+                          }
+                      ));
+                } else {
+                  Navigator.of(context).push(
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation, anotherAnimation) {
+                            return CartPageScreen(restaurant: restaurant);
+                          },
+                          transitionDuration: Duration(milliseconds: 300),
+                          transitionsBuilder:
+                              (context, animation, anotherAnimation, child) {
+                            return SlideTransition(
+                              position: Tween(
+                                  begin: Offset(-1.0, 0.0),
+                                  end: Offset(0.0, 0.0))
+                                  .animate(animation),
+                              child: child,
+                            );
+                          }
+                      ));
+                }
+              } else {
+                noConnection(context);
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -2038,13 +2052,14 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                   height: 4.0,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 5),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
-                          padding: EdgeInsets.only(right: 0),
+                          padding: EdgeInsets.only(right: 15),
                           child: Counter(
                               key: parent.counterKey,
                               priceFieldKey: priceFieldKey
@@ -2054,7 +2069,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 8, right: 5, bottom: 0),
+                          padding: EdgeInsets.only(left: 15, right: 5, bottom: 0),
                           child: FlatButton(
                             child: Text(
                               "Добавить",

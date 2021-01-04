@@ -227,7 +227,7 @@ class CartPageState extends State<CartPageScreen> {
                                 builder: (BuildContext context) {
                                   return Container(
                                     padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                                    child: Column(
+                                    child: Stack(
                                       children: [
                                         Dialog(
                                           shape: RoundedRectangleBorder(
@@ -261,25 +261,28 @@ class CartPageState extends State<CartPageScreen> {
                                             },
                                           ),
                                         ),
-                                        Dialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                          child: InkWell(
-                                            child: Container(
-                                              height: 50,
-                                              width: 100,
-                                              child: Center(
-                                                child: Text("Отмена",
-                                                  style: TextStyle(
-                                                      color: Color(0xFF007AFF),
-                                                      fontSize: 20
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 120),
+                                          child: Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                            child: InkWell(
+                                              child: Container(
+                                                height: 50,
+                                                width: 100,
+                                                child: Center(
+                                                  child: Text("Отмена",
+                                                    style: TextStyle(
+                                                        color: Color(0xFF007AFF),
+                                                        fontSize: 20
+                                                    ),
                                                   ),
                                                 ),
                                               ),
+                                              onTap: (){
+                                                Navigator.pop(context);
+                                              },
                                             ),
-                                            onTap: (){
-                                              Navigator.pop(context);
-                                            },
                                           ),
                                         )
                                       ],
@@ -288,7 +291,6 @@ class CartPageState extends State<CartPageScreen> {
                                 },
                               );
                             }
-                            showAlertDialog(context);
                           },
                         )),
                   ],

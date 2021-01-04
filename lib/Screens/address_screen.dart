@@ -467,7 +467,7 @@ class AddressScreenState extends State<AddressScreen>
       );
     }
     return Container(
-      height: 200,
+      height: 220,
       child: Column(
         children: [
           Align(
@@ -1034,27 +1034,27 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                       ),
                     ),
-//                    (promoTextKey.currentState.title.length != null) ? Padding(
-//                      padding: EdgeInsets.only(
-//                          top: 15, left: 15, bottom: 5, right: 15),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                        children: <Widget>[
-//                          Text(
-//                            'Скидка',
-//                            style: TextStyle(
-//                                color: Colors.red,
-//                                fontSize: 14),
-//                          ),
-//                          Text(
-//                            '-150 \₽',
-//                            style: TextStyle(
-//                                color: Colors.red,
-//                                fontSize: 14),
-//                          )
-//                        ],
-//                      ),
-//                    ) : Container(),
+                   (promoTextKey.currentState!= null && promoTextKey.currentState.title.length != null) ? Padding(
+                     padding: EdgeInsets.only(
+                         top: 15, left: 15, bottom: 5, right: 15),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: <Widget>[
+                         Text(
+                           'Скидка',
+                           style: TextStyle(
+                               color: Colors.red,
+                               fontSize: 14),
+                         ),
+                         Text(
+                           '-150 \₽',
+                           style: TextStyle(
+                               color: Colors.red,
+                               fontSize: 14),
+                         )
+                       ],
+                     ),
+                   ) : Container(),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 15, left: 15, bottom: 5, right: 15),
@@ -1288,6 +1288,7 @@ class AddressScreenState extends State<AddressScreen>
                             if(selectedPaymentId != 1){
                               showAlertDialog(context);
                             }
+                            print(addressSelectorKey.currentState.myFavouriteAddressesModel.address.unrestrictedValue);
                             createOrder = new CreateOrder(
                               address: addressSelectorKey.currentState.myFavouriteAddressesModel.address,
                               restaurantAddress: selectedAddress,
@@ -1730,6 +1731,7 @@ class TakeAwayState extends State<TakeAway>
   final maxLines = 1;
   TextEditingController phoneNumberController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
+  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
 
   bool f = false;
 
@@ -2159,6 +2161,27 @@ class TakeAwayState extends State<TakeAway>
                         ],
                       ),
                     ),
+                    (promoTextKey.currentState!= null && promoTextKey.currentState.title.length != null) ? Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, left: 15, bottom: 5, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Скидка',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14),
+                          ),
+                          Text(
+                            '-150 \₽',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14),
+                          )
+                        ],
+                      ),
+                    ) : Container(),
                     Row(
                       children: [
                         Padding(
@@ -2219,7 +2242,7 @@ class TakeAwayState extends State<TakeAway>
                             ),
                           ),
                         ),
-                        PromoText()
+                        PromoText(key: promoTextKey,)
                       ],
                     ),
                   ],
@@ -2317,12 +2340,18 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
   MyFavouriteAddressesModel myFavouriteAddressesModel = null;
   List<MyFavouriteAddressesModel> myFavouriteAddressList;
   AddressScreenState parent;
+  TextEditingController notFavouriteAddressController = new TextEditingController();
 
   AddressSelectorState(this.myFavouriteAddressList, this.parent);
 
   void initState() {
     if(myFavouriteAddressList.length > 0){
       myFavouriteAddressesModel = myFavouriteAddressList[0];
+      if(myFavouriteAddressList.last.address != null && myFavouriteAddressList.last.tag == null){
+        myFavouriteAddressesModel = myFavouriteAddressList.last;
+        notFavouriteAddressController.text = myFavouriteAddressList.last.address.street + ' ' +
+        myFavouriteAddressList.last.address.house;
+      }
     }
   }
 
@@ -2357,6 +2386,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                         }
                       },
                       readOnly: true,
+                      controller: notFavouriteAddressController,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(left: 15),
                         hintText: 'Указать другой адрес',
@@ -2432,8 +2462,9 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                       onTap: () async {
                         setState(() {
                           myFavouriteAddressesModel = element;
+                          notFavouriteAddressController.text = '';
+                          myFavouriteAddressList.last.address = null;
                         });
-                        print('chegokogo' + element.address.unrestrictedValue);
                       },
                     ),
                   ),
