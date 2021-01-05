@@ -35,20 +35,42 @@ class AddressScreen extends StatefulWidget {
 
 class AddressScreenState extends State<AddressScreen>
     with AutomaticKeepAliveClientMixin {
-  String address = 'Адрес доставки';
-  String office;
-  String floor;
-  String comment;
-  String delivery;
+
   InitialAddressModel selectedAddress; // Последний выбранный адрес
   final Records restaurant;
   GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
   GlobalKey();
   CreateOrder createOrder;
+  GlobalKey<CartPageState> cartPageKey = GlobalKey();
+
+  List<MyFavouriteAddressesModel> myAddressesModelList;
+
+  String cash_image = 'assets/svg_images/dollar_bills.svg';
+  String card_image = 'assets/svg_images/visa.svg';
+  String cash = 'Наличными';
+  String card = 'Картой';
+  int selectedPaymentId = 0;
+
+
+  bool status1 = false;
+  bool status2 = false;
+  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
+  TextEditingController commentField = new TextEditingController();
+  TextEditingController officeField = new TextEditingController();
+  TextEditingController intercomField = new TextEditingController();
+  TextEditingController entranceField = new TextEditingController();
+  TextEditingController floorField = new TextEditingController();
+  GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
+  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
+
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController addressValueController;
+
+  MyFavouriteAddressesModel addedAddress;
+
 
   AddressScreenState(this.restaurant, this.addedAddress, {this.myAddressesModelList});
-
-  bool f = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -97,8 +119,6 @@ class AddressScreenState extends State<AddressScreen>
       },
     );
   }
-
-
 
   _payment() {
     showModalBottomSheet(
@@ -269,20 +289,6 @@ class AddressScreenState extends State<AddressScreen>
     });
   }
 
-
-  int selectedPageId = 0;
-  GlobalKey<TakeAwayState> takeAwayScreenKey = new GlobalKey<TakeAwayState>();
-  GlobalKey<AddressScreenState> addressScreenKey = new GlobalKey<AddressScreenState>();
-
-  List<MyFavouriteAddressesModel> myAddressesModelList;
-  MyFavouriteAddressesModel myAddressesModel;
-
-  String cash_image = 'assets/svg_images/dollar_bills.svg';
-  String card_image = 'assets/svg_images/visa.svg';
-  String cash = 'Наличными';
-  String card = 'Картой';
-  int selectedPaymentId = 0;
-
   _cardPayment(double totalPrice){
     Navigator.of(context).push(
         MaterialPageRoute(
@@ -333,29 +339,6 @@ class AddressScreenState extends State<AddressScreen>
             ))
     );
   }
-
-  bool status1 = false;
-  bool status2 = false;
-  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
-  final maxLines = 1;
-  TextEditingController commentField = new TextEditingController();
-  TextEditingController officeField = new TextEditingController();
-  TextEditingController intercomField = new TextEditingController();
-  TextEditingController entranceField = new TextEditingController();
-  TextEditingController floorField = new TextEditingController();
-  TextEditingController addressField = new TextEditingController();
-  TextField floorTextField;
-  TextField intercomTextField;
-  TextField entranceTextField;
-  TextField officeTextField;
-  GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
-  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
-  bool addressScreenButton = false;
-
-  String addressName = '';
-  int deliveryPrice = 0;
-
-  MyFavouriteAddressesModel addedAddress;
 
   void _dispatchAddress() {
     showModalBottomSheet(
@@ -416,7 +399,7 @@ class AddressScreenState extends State<AddressScreen>
                   width: 340,
                   height: 60,
                   decoration: BoxDecoration(
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
@@ -441,8 +424,6 @@ class AddressScreenState extends State<AddressScreen>
       ),
     );
   }
-
-
 
   Widget buildAddressesList(){
     if(myAddressesModelList != null){
@@ -515,10 +496,6 @@ class AddressScreenState extends State<AddressScreen>
   dispose() {
     super.dispose();
   }
-
-  TextEditingController phoneNumberController = new TextEditingController();
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController addressValueController;
 
   @override
   Widget build(BuildContext context) {
@@ -605,7 +582,137 @@ class AddressScreenState extends State<AddressScreen>
               ),
               Expanded(
                 child: ListView(
+                  padding: EdgeInsets.zero,
                   children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, left: 12, right: 12, bottom: 15),
+                      child: (status2) ? Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'Заказ другому человеку',
+                                      style: TextStyle(
+                                          color: Color(0xFF3F3F3F),
+                                          fontSize: 15),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 0),
+                                      child: FlutterSwitch(
+                                        width: 55.0,
+                                        height: 25.0,
+                                        inactiveColor: Color(0xD6D6D6D6),
+                                        activeColor: Colors.green,
+                                        valueFontSize: 12.0,
+                                        toggleSize: 18.0,
+                                        value: status2,
+                                        onToggle: (value) {
+                                          setState(() {
+                                            status2 = value;
+                                          });
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: TextField(
+                                  controller: phoneNumberController,
+                                  decoration: new InputDecoration(
+                                    hintText: 'Номер телефона получателя',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey
+                                    ),
+                                    border: InputBorder.none,
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              Divider(color: Colors.grey,),
+                              Container(
+                                child: TextField(
+                                  controller: nameController,
+                                  decoration: new InputDecoration(
+                                    hintText: 'Имя получателя',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey
+                                    ),
+                                    border: InputBorder.none,
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              Divider(color: Colors.grey,),
+                            ],
+                          ),
+                        ),
+                      ) : Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8.0, // soften the shadow
+                                spreadRadius: 3.0, //extend the shadow
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Заказ другому человеку',
+                                style: TextStyle(
+                                    color: Color(0xFF3F3F3F),
+                                    fontSize: 15),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 0),
+                                child: FlutterSwitch(
+                                  width: 55.0,
+                                  height: 25.0,
+                                  inactiveColor: Color(0xD6D6D6D6),
+                                  activeColor: Colors.green,
+                                  valueFontSize: 12.0,
+                                  toggleSize: 18.0,
+                                  value: status2,
+                                  onToggle: (value) {
+                                    setState(() {
+                                      status2 = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -858,140 +965,7 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10, left: 15, right: 15, bottom: 10),
-                      child: (status2) ? Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
-                              )
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(width: 1.0, color: Colors.grey[200])),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Заказ другому человеку',
-                                      style: TextStyle(
-                                          color: Color(0xFF3F3F3F),
-                                          fontSize: 15),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 0),
-                                      child: FlutterSwitch(
-                                        width: 55.0,
-                                        height: 25.0,
-                                        inactiveColor: Color(0xD6D6D6D6),
-                                        activeColor: Colors.green,
-                                        valueFontSize: 12.0,
-                                        toggleSize: 18.0,
-                                        value: status2,
-                                        onToggle: (value) {
-                                          setState(() {
-                                            status2 = value;
-                                          });
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: TextField(
-                                  controller: phoneNumberController,
-                                  decoration: new InputDecoration(
-                                    hintText: 'Номер телефона получателя',
-                                    hintStyle: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey
-                                    ),
-                                    border: InputBorder.none,
-                                    counterText: '',
-                                  ),
-                                ),
-                              ),
-                              Divider(color: Colors.grey,),
-                              Container(
-                                child: TextField(
-                                  controller: nameController,
-                                  decoration: new InputDecoration(
-                                    hintText: 'Имя получателя',
-                                    hintStyle: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey
-                                    ),
-                                    border: InputBorder.none,
-                                    counterText: '',
-                                  ),
-                                ),
-                              ),
-                              Divider(color: Colors.grey,),
-                            ],
-                          ),
-                        ),
-                      ) : Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
-                              )
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(width: 1.0, color: Colors.grey[200])),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Заказ другому человеку',
-                                style: TextStyle(
-                                    color: Color(0xFF3F3F3F),
-                                    fontSize: 15),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 0),
-                                child: FlutterSwitch(
-                                  width: 55.0,
-                                  height: 25.0,
-                                  inactiveColor: Color(0xD6D6D6D6),
-                                  activeColor: Colors.green,
-                                  valueFontSize: 12.0,
-                                  toggleSize: 18.0,
-                                  value: status2,
-                                  onToggle: (value) {
-                                    setState(() {
-                                      status2 = value;
-                                    });
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Divider(
-                          height: 1.0, color: Color(0xFFEDEDED)),
-                    ),
+
                     Padding(
                       padding: EdgeInsets.only(
                           top: 15, left: 15, bottom: 5, right: 15),
@@ -1019,14 +993,29 @@ class AddressScreenState extends State<AddressScreen>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            'Доставка',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14),
+                          Container(
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Доставка',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    '30-50 мин.',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Text(
-                            '30-50 мин.',
+                            '150 \₽',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14),
@@ -1275,9 +1264,8 @@ class AddressScreenState extends State<AddressScreen>
                         child: Text('Заказать',
                             style: TextStyle(
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
                                 color: Colors.white)),
-                        color: Color(0xFF67C070),
+                        color: Color(0xFF09B44D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -1306,7 +1294,6 @@ class AddressScreenState extends State<AddressScreen>
                               _cardPayment(totalPrice);
                               return;
                             }
-                            print('Payment');
                             await createOrder.sendData();
                             currentUser.cartDataModel.cart.clear();
                             currentUser.cartDataModel.saveData();
@@ -1342,15 +1329,28 @@ class TakeAwayState extends State<TakeAway>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  String address = 'Адрес доставки';
-  String office;
-  String floor;
   String comment;
-  String delivery;
   final Records restaurant;
-  String name = '';
-  bool _color;
   bool status1 = false;
+
+  String cash_image = 'assets/svg_images/dollar_bills.svg';
+  String card_image = 'assets/svg_images/visa.svg';
+  String cash = 'Наличными';
+  String card = 'Картой';
+  int selectedPaymentId = 0;
+  bool status2 = false;
+
+  CreateOrderTakeAway createOrderTakeAway;
+  TextEditingController addressValueController;
+  InitialAddressModel selectedAddress;
+
+  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
+  GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
+  GlobalKey<DestinationPointsSelectorState>();
+  TextEditingController commentField = new TextEditingController();
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
 
 
   TakeAwayState(this.restaurant);
@@ -1617,7 +1617,7 @@ class TakeAwayState extends State<TakeAway>
                   width: 340,
                   height: 60,
                   decoration: BoxDecoration(
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
@@ -1644,21 +1644,6 @@ class TakeAwayState extends State<TakeAway>
   }
 
 
-  int selectedPageId = 0;
-  GlobalKey<TakeAwayState> takeAwayScreenKey = new GlobalKey<TakeAwayState>();
-  GlobalKey<AddressScreenState> addressScreenKey = new GlobalKey<AddressScreenState>();
-
-  List<MyFavouriteAddressesModel> myAddressesModelList;
-  MyFavouriteAddressesModel myAddressesModel;
-
-  String cash_image = 'assets/svg_images/dollar_bills.svg';
-  String card_image = 'assets/svg_images/visa.svg';
-  String cash = 'Наличными';
-  String card = 'Картой';
-  int selectedPaymentId = 0;
-  bool status2 = false;
-
-  CreateOrderTakeAway createOrderTakeAway;
   _cardPayment(double totalPrice){
     Navigator.of(context).push(
         MaterialPageRoute(
@@ -1710,8 +1695,6 @@ class TakeAwayState extends State<TakeAway>
             ))
     );
   }
-  TextEditingController addressValueController;
-  InitialAddressModel selectedAddress;
 
   @override
   void initState() {
@@ -1720,20 +1703,7 @@ class TakeAwayState extends State<TakeAway>
     selectedAddress = restaurant.destination_points[0];
   }
 
-  String title = 'Наличными';
-  String image = 'assets/svg_images/dollar_bills.svg';
 
-  GlobalKey<FormState> _foodItemFormKey = GlobalKey();
-  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
-  GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
-  GlobalKey<DestinationPointsSelectorState>();
-  TextEditingController commentField = new TextEditingController();
-  final maxLines = 1;
-  TextEditingController phoneNumberController = new TextEditingController();
-  TextEditingController nameController = new TextEditingController();
-  GlobalKey<PromoTextState> promoTextKey = new GlobalKey();
-
-  bool f = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1805,99 +1775,16 @@ class TakeAwayState extends State<TakeAway>
               ),
               Expanded(
                 child: ListView(
+                  padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, bottom: 15),
-                        child: Text('Адрес отправки',
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
-                        child: Container(
-                          height: 64,
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 8.0, // soften the shadow
-                                  spreadRadius: 3.0, //extend the shadow
-                                )
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(width: 1.0, color: Colors.grey[200])),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('С какого адреса вам отправить?',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFFB8B8B8)
-                                      ),
-                                    ),
-                                    Text('Изменить',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15, top: 15),
-                                child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      height: 20,
-                                      child: TextField(
-                                        controller: addressValueController,
-                                        enabled: false,
-                                        decoration: new InputDecoration(
-                                          border: InputBorder.none,
-                                          counterText: '',
-                                        ),
-                                        style: TextStyle(
-                                            fontSize: 16
-                                        ),
-                                      ),
-                                    )
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      onTap: (){
-                        _dispatchAddress();
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        height: 1,
-                        color: Color(0xFFF5F5F5),
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 10, left: 15, right: 15, bottom: 10),
+                          top: 10, left: 12, right: 12, bottom: 15),
                       child: (status2) ? Container(
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
+                                color: Colors.black26,
                                 blurRadius: 8.0, // soften the shadow
                                 spreadRadius: 3.0, //extend the shadow
                               )
@@ -2017,6 +1904,90 @@ class TakeAwayState extends State<TakeAway>
                             ],
                           ),
                         ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, bottom: 15),
+                        child: Text('Адрес отправки',
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Container(
+                          height: 64,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 8.0, // soften the shadow
+                                  spreadRadius: 3.0, //extend the shadow
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(width: 1.0, color: Colors.grey[200])),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('С какого адреса вам отправить?',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFB8B8B8)
+                                      ),
+                                    ),
+                                    Text('Изменить',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 15),
+                                child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      height: 20,
+                                      child: TextField(
+                                        controller: addressValueController,
+                                        enabled: false,
+                                        decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          counterText: '',
+                                        ),
+                                        style: TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: (){
+                        _dispatchAddress();
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Divider(
+                        height: 1,
+                        color: Color(0xFFF5F5F5),
                       ),
                     ),
                     Padding(
@@ -2275,9 +2246,8 @@ class TakeAwayState extends State<TakeAway>
                         child: Text('Заказать',
                             style: TextStyle(
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
                                 color: Colors.white)),
-                        color: Color(0xFF67C070),
+                        color: Color(0xFF09B44D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -2673,7 +2643,7 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                         'Продолжить',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -2713,6 +2683,7 @@ class PromoText extends StatefulWidget {
 class PromoTextState extends State<PromoText>{
 
   String title = '   Введите\nпромокод';
+  TextEditingController promoCodeField = new TextEditingController();
   PromoTextState(title);
 
   _promoCode() {
@@ -2739,8 +2710,6 @@ class PromoTextState extends State<PromoText>{
         });
   }
 
-  TextEditingController promoCodeField = new TextEditingController();
-
   _buildPromoCodeBottomNavigationMenu() {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 300),
@@ -2748,9 +2717,9 @@ class PromoTextState extends State<PromoText>{
         height: 40,
         width: 300,
         decoration: BoxDecoration(
-          color: Color(0xFF67C070),
+          color: Color(0xFF09B44D),
           border: Border.all(
-            color: Color(0xFF67C070),
+            color: Color(0xFF09B44D),
           ),
           borderRadius: const BorderRadius.all(
             const Radius.circular(10.0),

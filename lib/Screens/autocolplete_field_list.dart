@@ -193,6 +193,7 @@ class AutocompleteListState extends State<AutocompleteList> {
                 if(parent.onSelected != null){
                   await parent.onSelected();
                 }
+                FocusScope.of(context).requestFocus(new FocusNode());
               },
             );
           })

@@ -45,9 +45,9 @@ class _CodeScreenState extends State<CodeScreen> {
         code3.controller.text +
         code4.controller.text;
     if (code.length > 0 &&
-        buttonStateKey.currentState.color != Color(0xFF67C070)) {
+        buttonStateKey.currentState.color != Color(0xFF09B44D)) {
       buttonStateKey.currentState.setState(() {
-        buttonStateKey.currentState.color = Color(0xFF67C070);
+        buttonStateKey.currentState.color = Color(0xFF09B44D);
       });
     } else if (code.length == 0 &&
         buttonStateKey.currentState.color != Color(0xFFF3F3F3)) {
@@ -164,9 +164,9 @@ class _CodeScreenState extends State<CodeScreen> {
                         height: 130,
                         width: 300,
                         decoration: BoxDecoration(
-                          color: Color(0xFF67C070),
+                          color: Color(0xFF09B44D),
                           border: Border.all(
-                            color: Color(0xFF67C070),
+                            color: Color(0xFF09B44D),
                           ),
                           borderRadius: const BorderRadius.all(
                             const Radius.circular(10.0),
@@ -215,7 +215,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFF67C070)),
+                                                    color: Color(0xFF09B44D)),
                                               ),
                                               counterText: '',
                                             ),
@@ -243,7 +243,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFF67C070)),
+                                                    color: Color(0xFF09B44D)),
                                               ),
                                               counterText: '',
                                             ),
@@ -274,7 +274,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                               enabledBorder:
                                               UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Color(0xFF67C070)),
+                                                    color: Color(0xFF09B44D)),
                                               ),
                                               counterText: '',
                                             ),
@@ -312,7 +312,7 @@ class _CodeScreenState extends State<CodeScreen> {
                                           decoration: new InputDecoration(
                                             enabledBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Color(0xFF67C070)),
+                                                  color: Color(0xFF09B44D)),
                                             ),
                                             counterText: '',
                                           ),
@@ -514,8 +514,7 @@ class ButtonState extends State<Button> {
     return FlatButton(
       child: Text('Далее',
           style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
+              fontSize: 18.0,
               color: Colors.white)),
       color: color,
       splashColor: Colors.grey,

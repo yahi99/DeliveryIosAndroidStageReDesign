@@ -303,7 +303,7 @@ class CartPageState extends State<CartPageScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                  color: Color(0xFF67C070),
+                  color: Color(0xFF09B44D),
                 ),
               ),
               child: Row(
@@ -318,7 +318,7 @@ class CartPageState extends State<CartPageScreen> {
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
-                          color: (selectedPageId == 0) ? Color(0xFF67C070) : Colors.white,
+                          color: (selectedPageId == 0) ? Color(0xFF09B44D) : Colors.white,
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -351,7 +351,7 @@ class CartPageState extends State<CartPageScreen> {
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
-                          color: (selectedPageId == 1) ? Color(0xFF67C070) : Colors.white,
+                          color: (selectedPageId == 1) ? Color(0xFF09B44D) : Colors.white,
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -414,9 +414,9 @@ class CartPageState extends State<CartPageScreen> {
                     FlatButton(
                       child: Text('Далее',
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 18.0,
                               color: Colors.white)),
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -1608,7 +1608,7 @@ class EmptyCartScreenState extends State<EmptyCartScreen> {
                         'Вернуться на главную',
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

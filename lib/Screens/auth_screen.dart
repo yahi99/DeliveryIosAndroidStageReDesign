@@ -70,9 +70,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: 91,
                   width: 300,
                   decoration: BoxDecoration(
-                    color: Color(0xFF67C070),
+                    color: Color(0xFF09B44D),
                     border: Border.all(
-                      color: Color(0xFF67C070),
+                      color: Color(0xFF09B44D),
                     ),
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(10.0),
@@ -110,7 +110,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               filled: true,
                               fillColor: Colors.white,
                               counterText: '',
-                              contentPadding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.22),
+                              contentPadding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.18),
                               hintStyle: TextStyle(
                                 color: Color(0xFFC0BFC6),
                               ),
@@ -126,10 +126,10 @@ class _AuthScreenState extends State<AuthScreen> {
                               currentUser.phone = value;
                               if (value.length > 0 &&
                                   buttonStateKey.currentState.color !=
-                                      Color(0xFF67C070)) {
+                                      Color(0xFF09B44D)) {
                                 buttonStateKey.currentState.setState(() {
                                   buttonStateKey.currentState.color =
-                                      Color(0xFF67C070);
+                                      Color(0xFF09B44D);
                                 });
                               } else if (value.length == 0 &&
                                   buttonStateKey.currentState.color !=
@@ -247,8 +247,7 @@ class ButtonState extends State<Button> {
     return FlatButton(
       child: Text('Далее',
           style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
+              fontSize: 18.0,
               color: Colors.white)),
       color: color,
       splashColor: Colors.grey,

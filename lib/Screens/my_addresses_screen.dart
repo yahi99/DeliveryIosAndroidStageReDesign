@@ -94,70 +94,13 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                     addressScreenButton = false;
                   }
                   if(myAddressesModelList.isEmpty){
-                    return Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 30, bottom: 0, right: 15),
-                          child: Row(
-                            children: <Widget>[
-                              InkWell(
-                                child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                        height: 40,
-                                        width: 60,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 12, bottom: 12, right: 10),
-                                          child: SvgPicture.asset(
-                                              'assets/svg_images/arrow_left.svg'),
-                                        )
-                                    )
-                                ),
-                                onTap: () {
-                                  homeScreenKey = new GlobalKey<HomeScreenState>();
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()),
-                                          (Route<dynamic> route) => false);
-                                },
-                              ),
-                            ],
-                          ),
+                    return Padding(
+                      padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35),
+                      child: Center(
+                        child: Text('У вас еще нет ни одного\nсохранённого адреса',
+                          textAlign: TextAlign.center,
                         ),
-                        Center(
-                          child: Text('У вас еще нет ни одного\nсохранённого адреса',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
-                            child: FlatButton(
-                              child: Text('Добавить адрес',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.white)),
-                              color: Color(0xFFE6E6E6),
-                              splashColor: Colors.grey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
-                              onPressed: () async {
-                                if (await Internet.checkConnection()) {
-                                  setState(() {
-                                    addressScreenButton = true;
-                                  });
-                                } else {
-                                  noConnection(context);
-                                }
-                              },
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
                     );
                   }
                   return Container(
@@ -485,7 +428,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                         style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white)),
-                    color: Color(0xFF67C070),
+                    color: Color(0xFF09B44D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

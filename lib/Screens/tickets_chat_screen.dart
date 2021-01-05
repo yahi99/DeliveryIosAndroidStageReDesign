@@ -295,10 +295,10 @@ class TicketsChatMessageScreenState extends State<TicketsChatMessageScreen> {
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFF67C070),
+                          color: Color(0xFF09B44D),
                           borderRadius: BorderRadius.circular(17.0),
                           border: Border.all(
-                              width: 1.0, color: Color(0xFF67C070))),
+                              width: 1.0, color: Color(0xFF09B44D))),
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(

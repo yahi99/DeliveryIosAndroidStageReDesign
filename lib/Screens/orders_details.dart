@@ -801,7 +801,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           height: 50,
                           width: 300,
                           decoration: BoxDecoration(
-                            color: Color(0xFF50B561),
+                            color: Color(0xFF09B44D),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Center(
@@ -878,7 +878,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               decoration: BoxDecoration(
                                   borderRadius:
                                   BorderRadius.all(Radius.circular(11)),
-                                  color: Color(0xFF50B561)),
+                                  color: Color(0xFF09B44D)),
                               child: Padding(
                                 padding: EdgeInsets.only(
                                     top: 5, right: 10, bottom: 5, left: 10),

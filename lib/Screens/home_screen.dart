@@ -138,7 +138,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white)),
-              color: Color(0xFF67C070),
+              color: Color(0xFF09B44D),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -284,7 +284,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white)),
-              color: Color(0xFF67C070),
+              color: Color(0xFF09B44D),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -456,7 +456,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 height: 25,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF67C070)
+                                    color: Color(0xFF09B44D)
                                 ),
                                 child: Row(
                                   children: [
@@ -596,7 +596,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           padding: EdgeInsets.only(top: 0),
           child: InkWell(
             child: Container(
-              color: Color(0xFF67C070),
+              color: Color(0xFF09B44D),
               child: ListTile(
                 title: Text(
                   necessaryDataForAuth.name ?? ' ',
@@ -772,7 +772,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       children: [
         GestureDetector(
           child: Padding(
-            padding: const EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.only(left: 20),
             child: Container(
               height: 45,
               decoration: BoxDecoration(
@@ -903,7 +903,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: (element.uuid != category_uuid)
                       ? Color(0xFFF6F6F6)
-                      : Color(0xFF67C070)),
+                      : Color(0xFF09B44D)),
               child: Padding(
                   padding: EdgeInsets.only(left: 15, right: 15),
                   child: Center(
@@ -1041,12 +1041,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top: 50, left: 20, right: 15, bottom: 10),
+                        padding: const EdgeInsets.only(top: 50, left: 16, right: 15, bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(bottom: 0, top: 0),
+                              padding: EdgeInsets.only(left: 8, top: 0),
                               child: InkWell(
                                 child: SvgPicture.asset(
                                     'assets/svg_images/home_menu.svg',
@@ -1121,7 +1121,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               },
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 20, top: 15, right: 20),
+                              padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -1279,12 +1279,12 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     print(ordersStoryModelItem.state);
     return InkWell(
       child: Container(
-          width: 320,
+          width: 340,
           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
+                  color: Colors.black26,
                   blurRadius: 8.0, // soften the shadow
                   spreadRadius: 3.0, //extend the shadow
                 )
@@ -1375,7 +1375,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: (processing
                                   .contains(ordersStoryModelItem.state))
-                                  ? Color(0xFF4DC3E9)
+                                  ? Color(0xFF09B44D)
                                   : Color(0xF6F6F6F6)),
                           child: Column(
                             children: <Widget>[
@@ -1403,6 +1403,12 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ),
                       ),
+                      Center(
+                        child: SpinKitThreeBounce(
+                          color: Colors.green,
+                          size: 20.0,
+                        ),
+                      ),
                       Padding(
                         padding: (ordersStoryModelItem.without_delivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
                         child: Container(
@@ -1412,7 +1418,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: (cooking_state
                                   .contains(ordersStoryModelItem.state))
-                                  ? Color(0xFF51ca64)
+                                  ? Color(0xFF09B44D)
                                   : Color(0xF6F6F6F6)),
                           child: Column(
                             children: <Widget>[
@@ -1440,6 +1446,12 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ),
                       ),
+                      Center(
+                        child: SpinKitThreeBounce(
+                          color: Colors.green,
+                          size: 20.0,
+                        ),
+                      ),
                       (ordersStoryModelItem.without_delivery) ? Container() : Padding(
                         padding: EdgeInsets.only(right: 5),
                         child: Container(
@@ -1447,7 +1459,10 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: Color(0xF6F6F6F6)),
+                              color: (cooking_state
+                                  .contains(ordersStoryModelItem.state))
+                                  ? Color(0xFF09B44D)
+                                  : Color(0xF6F6F6F6)),
                           child: Column(
                             children: <Widget>[
                               Padding(
@@ -1474,41 +1489,41 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 5),
-                        child: Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: (take.contains(ordersStoryModelItem.state))
-                                  ? Color(0xFFFE534F)
-                                  : Color(0xF6F6F6F6)),
-                          child: Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(top: 10),
-                                child: (take.contains(ordersStoryModelItem.state))
-                                    ? SvgPicture.asset(
-                                    'assets/svg_images/white_ready.svg')
-                                    : SvgPicture.asset(
-                                    'assets/svg_images/ready.svg'),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Text('Заберите',
-                                    style: (take
-                                        .contains(ordersStoryModelItem.state))
-                                        ? TextStyle(
-                                        color: Colors.white, fontSize: 10)
-                                        : TextStyle(
-                                        color: Color(0x42424242),
-                                        fontSize: 10)),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(right: 5),
+                      //   child: Container(
+                      //     height: 70,
+                      //     width: 70,
+                      //     decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //         color: (take.contains(ordersStoryModelItem.state))
+                      //             ? Color(0xFFFE534F)
+                      //             : Color(0xF6F6F6F6)),
+                      //     child: Column(
+                      //       children: <Widget>[
+                      //         Padding(
+                      //           padding: EdgeInsets.only(top: 10),
+                      //           child: (take.contains(ordersStoryModelItem.state))
+                      //               ? SvgPicture.asset(
+                      //               'assets/svg_images/white_ready.svg')
+                      //               : SvgPicture.asset(
+                      //               'assets/svg_images/ready.svg'),
+                      //         ),
+                      //         Padding(
+                      //           padding: EdgeInsets.only(top: 5),
+                      //           child: Text('Заберите',
+                      //               style: (take
+                      //                   .contains(ordersStoryModelItem.state))
+                      //                   ? TextStyle(
+                      //                   color: Colors.white, fontSize: 10)
+                      //                   : TextStyle(
+                      //                   color: Color(0x42424242),
+                      //                   fontSize: 10)),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -1860,10 +1875,10 @@ class ChatMessageScreenState extends State<ChatMessageScreen> with WidgetsBindin
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFF67C070),
+                          color: Color(0xFF09B44D),
                           borderRadius: BorderRadius.circular(17.0),
                           border: Border.all(
-                              width: 1.0, color: Color(0xFF67C070))),
+                              width: 1.0, color: Color(0xFF09B44D))),
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
@@ -1937,7 +1952,7 @@ class QuickMessageScreenState extends State<QuickMessageScreen> with WidgetsBind
                     ],
                     color: (quickMessage.messages[index] != quickTextMessage)
                         ? Colors.white
-                        : Color(0xFF67C070)),
+                        : Color(0xFF09B44D)),
                 child: Padding(
                     padding: EdgeInsets.only(
                       left: 15,
@@ -2034,7 +2049,7 @@ class ContainerReSizeState extends State<ContainerReSize>{
 //              ),
 //            ),
             Padding(
-              padding:  EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
+              padding:  EdgeInsets.only(left: 22, right: 8, top: 8, bottom: 8),
               child: Image(
                 image: AssetImage('assets/images/share_image.png'),
               )
@@ -2186,7 +2201,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white)),
-              color: (haveSelectedItems()) ? Color(0xFF67C070) : Color(0xF3F3F3F3),
+              color: (haveSelectedItems()) ? Color(0xFF09B44D) : Color(0xF3F3F3F3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

@@ -121,7 +121,7 @@ class NameScreenState extends State<NameScreen> {
                                 bottom: 20),
                             child: Button(
                               key: buttonStateKey,
-                              color: Color(0xFF67C070),
+                              color: Color(0xFF09B44D),
                               onTap: () async {
                                 if (await Internet.checkConnection()) {
                                   necessaryDataForAuth.name = nameFieldController.text;
@@ -176,8 +176,7 @@ class ButtonState extends State<Button> {
     return FlatButton(
       child: Text('Далее',
           style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
+              fontSize: 18.0,
               color: Colors.white)),
       color: color,
       shape: RoundedRectangleBorder(
