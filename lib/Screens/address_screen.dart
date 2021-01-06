@@ -938,6 +938,11 @@ class AddressScreenState extends State<AddressScreen>
                                 hintStyle: TextStyle(
                                     color: Color(0xFFE6E6E6)
                                 ),
+                                enabledBorder:  OutlineInputBorder(
+                                  // width: 0.0 produces a thin "hairline" border
+                                  borderSide: BorderSide(color: Colors.black26),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10)),
                               ),
@@ -2374,6 +2379,11 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                         hintText: 'Указать другой адрес',
                         hintStyle: TextStyle(
                             color: Color(0xFFE6E6E6)
+                        ),
+                        enabledBorder:  OutlineInputBorder(
+                          // width: 0.0 produces a thin "hairline" border
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: (notFavouriteAddressController.text != '') ? BorderSide(color: Color(0xFF09B44D)) : BorderSide(color: Colors.black26),
                         ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
