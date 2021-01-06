@@ -373,8 +373,8 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 10),
             child: Divider(color: Color(0xFFEEEEEE), height: 1,),
           ),
-          Align(
-            alignment: Alignment.center,
+          Padding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
             child: Center(
               child: Text('Нет товаров данной категории'),
             ),
@@ -416,238 +416,243 @@ class RestaurantScreenState extends State<RestaurantScreen> {
         }
       }
     });
-    return CustomScrollView(
-      controller: sliverScrollController,
-      slivers: [
-        SliverAppBar(
-          expandedHeight: 175.0,
-          floating: true,
-          pinned: true,
-          snap: true,
-          backgroundColor: Colors.white,
-          leading: Padding(
-            padding: const EdgeInsets.all(20),
-            child: InkWell(child: SliverImage(key: sliverImageKey, image: null,),
-              onTap: () async {
-                homeScreenKey =
-                new GlobalKey<HomeScreenState>();
-                if(await Internet.checkConnection()){
-                  Navigator.of(context).pushAndRemoveUntil(
-                      PageRouteBuilder(
-                          pageBuilder: (context, animation, anotherAnimation) {
-                            return HomeScreen();
-                          },
-                          transitionDuration: Duration(milliseconds: 300),
-                          transitionsBuilder:
-                              (context, animation, anotherAnimation, child) {
-                            return SlideTransition(
-                              position: Tween(
-                                  begin: Offset(1.0, 0.0),
-                                  end: Offset(0.0, 0.0))
-                                  .animate(animation),
-                              child: child,
-                            );
-                          }
-                      ), (Route<dynamic> route) => false);
-                }else{
-                  noConnection(context);
-                }
-              },
-            )
-          ),
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-              title: SliverText(title: Text('', style: TextStyle(fontSize: 18),),key: sliverTextKey,),
-              background: ClipRRect(
-                  child: Stack(
-                    children: <Widget>[
-                      Hero(
-                          tag: restaurant.name,
-                          child: Image.network(
-                            getImage(restaurant.image),
-                            fit: BoxFit.cover,
-                            height: 200.0,
-                            width: MediaQuery.of(context).size.width,
-                          )),
-                      Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 40, left: 15),
-                            child: GestureDetector(
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/rest_arrow_left.svg'),
-                              onTap: () async {
-                                if(await Internet.checkConnection()){
+    return Container(
+      child: CustomScrollView(
+        controller: sliverScrollController,
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 180.0,
+            floating: true,
+            pinned: true,
+            snap: true,
+            backgroundColor: Colors.white,
+            leading: Padding(
+              padding: const EdgeInsets.all(20),
+              child: InkWell(child: SliverImage(key: sliverImageKey, image: null,),
+                onTap: () async {
+                  homeScreenKey =
+                  new GlobalKey<HomeScreenState>();
+                  if(await Internet.checkConnection()){
+                    Navigator.of(context).pushAndRemoveUntil(
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation, anotherAnimation) {
+                              return HomeScreen();
+                            },
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder:
+                                (context, animation, anotherAnimation, child) {
+                              return SlideTransition(
+                                position: Tween(
+                                    begin: Offset(1.0, 0.0),
+                                    end: Offset(0.0, 0.0))
+                                    .animate(animation),
+                                child: child,
+                              );
+                            }
+                        ), (Route<dynamic> route) => false);
+                  }else{
+                    noConnection(context);
+                  }
+                },
+              )
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+                title: SliverText(title: Text('', style: TextStyle(fontSize: 18),),key: sliverTextKey,),
+                background: ClipRRect(
+                    child: Stack(
+                      children: <Widget>[
+                        Hero(
+                            tag: restaurant.name,
+                            child: Image.network(
+                              getImage(restaurant.image),
+                              fit: BoxFit.cover,
+                              height: 200.0,
+                              width: MediaQuery.of(context).size.width,
+                            )),
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 40, left: 15),
+                              child: GestureDetector(
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/rest_arrow_left.svg'),
+                                onTap: () async {
+                                  if(await Internet.checkConnection()){
 //                              Navigator.of(context).pushAndRemoveUntil(
 //                                  MaterialPageRoute(
 //                                      builder: (context) => HomeScreen()),
 //                                      (Route<dynamic> route) => false);
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      PageRouteBuilder(
-                                          pageBuilder: (context, animation, anotherAnimation) {
-                                            return HomeScreen();
-                                          },
-                                          transitionDuration: Duration(milliseconds: 300),
-                                          transitionsBuilder:
-                                              (context, animation, anotherAnimation, child) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        PageRouteBuilder(
+                                            pageBuilder: (context, animation, anotherAnimation) {
+                                              return HomeScreen();
+                                            },
+                                            transitionDuration: Duration(milliseconds: 300),
+                                            transitionsBuilder:
+                                                (context, animation, anotherAnimation, child) {
 //                                      animation = CurvedAnimation(
 //                                          curve: Curves.bounceIn, parent: animation);
-                                            return SlideTransition(
-                                              position: Tween(
-                                                  begin: Offset(1.0, 0.0),
-                                                  end: Offset(0.0, 0.0))
-                                                  .animate(animation),
-                                              child: child,
-                                            );
-                                          }
-                                      ), (Route<dynamic> route) => false);
-                                }else{
-                                  noConnection(context);
-                                }
-                              },
-                            ),
-                          ))
-                    ],
-                  )),
+                                              return SlideTransition(
+                                                position: Tween(
+                                                    begin: Offset(1.0, 0.0),
+                                                    end: Offset(0.0, 0.0))
+                                                    .animate(animation),
+                                                child: child,
+                                              );
+                                            }
+                                        ), (Route<dynamic> route) => false);
+                                  }else{
+                                    noConnection(context);
+                                  }
+                                },
+                              ),
+                            ))
+                      ],
+                    )),
+            ),
           ),
-        ),
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-                (context, index){
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),),
-                    ),
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                          child: Row(
+          SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (context, index){
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),),
+                      ),
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    this.restaurant.name,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xFF3F3F3F)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/rest_info.svg'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 15),
-                                child: Text(
-                                  this.restaurant.name,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Color(0xFF3F3F3F)),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: SvgPicture.asset(
-                                    'assets/svg_images/rest_info.svg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Container(
-                                height: 26,
-                                width: 51,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFFEFEFEF)
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset('assets/svg_images/star.svg',
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 5),
-                                          child: Text('5.0',
-                                            style: TextStyle(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Container(
+                                  height: 26,
+                                  width: 51,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color(0xFFEFEFEF)
+                                  ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset('assets/svg_images/star.svg',
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5),
+                                            child: Text('5.0',
+                                              style: TextStyle(
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                height: 26,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFFEFEFEF)
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5),
-                                          child: SvgPicture.asset('assets/svg_images/rest_car.svg',
-                                          ),
-                                        ),
-                                        Text(
-                                          (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                          style: TextStyle(
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 15),
-                              child: Container(
-                                height: 26,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFFEFEFEF)
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
-                                    child: Text('Доставка 80-150 ₽',
-                                      style: TextStyle(
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        _buildFoodCategoryList(),
-                        Expanded(
-                          child: ListView.builder(
-                            itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
-                            controller: foodScrollController,
-                            padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-                            itemCount: menuWithTitles.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  height: 26,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color(0xFFEFEFEF)
+                                  ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left:8, right: 8, top: 5, bottom: 5),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5),
+                                            child: SvgPicture.asset('assets/svg_images/rest_car.svg',
+                                            ),
+                                          ),
+                                          Text(
+                                            (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                            style: TextStyle(
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10, right: 15),
+                                child: Container(
+                                  height: 26,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color(0xFFEFEFEF)
+                                  ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
+                                      child: Text('Доставка 80-150 ₽',
+                                        style: TextStyle(
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        BasketButton(
-                            key: basketButtonStateKey, restaurant: restaurant),
-                      ],
-                    ),
-                  );
-                },
-              childCount: 1,
-            ),
-        )
-      ],
+                          _buildFoodCategoryList(),
+                          Expanded(
+                            child: ListView.builder(
+                              itemBuilder:(BuildContext context, int index) => menuWithTitles[index],
+                              controller: foodScrollController,
+                              padding: EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
+                              itemCount: menuWithTitles.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                            ),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(bottom: 15),
+                            child: BasketButton(
+                                key: basketButtonStateKey, restaurant: restaurant),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                childCount: 1,
+              ),
+          )
+        ],
+      ),
     );
   }
 
@@ -857,7 +862,7 @@ class CounterState extends State<Counter> {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 0),
+      padding: EdgeInsets.only(left: 0, right: 0),
       child: Container(
         width: 122,
         height: 58,
@@ -1023,114 +1028,128 @@ class BasketButtonState extends State<BasketButton> {
                 restaurant.uuid)) {
       return Container();
     }
-    return Padding(
-      padding: EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 115,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4.0, // soften the shadow
+            spreadRadius: 1.0, //extend the shadow
+          )
+        ],
+      ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(top: 15, bottom: 5),
             child: Center(
-              child: Text('До бесплатной доставки 250\₽',
+              child: Text('До бесплатной доставки осталось 250\₽',
                 style: TextStyle(
-                  fontSize: 12
+                    fontSize: 12
                 ),
               ),
             ),
           ),
-          FlatButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                    flex: 1,
-                    child: Container(
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: FlatButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                      flex: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF09B44D),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            (restaurant.order_preparation_time_second != null)? '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )),
+                  Flexible(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: 15,
+                        ),
+                        child: Text('Корзина',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.white)),
+                      )),
+                  Container(
                       decoration: BoxDecoration(
                         color: Color(0xFF09B44D),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(10),
-                        child: Text(
-                          (restaurant.order_preparation_time_second != null)? '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                          ),
+                        child: new ButtonCounter(
+                          key: buttonCounterKey,
                         ),
-                      ),
-                    )),
-                Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        right: 15,
-                      ),
-                      child: Text('Корзина',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.white)),
-                    )),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF09B44D),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: new ButtonCounter(
-                        key: buttonCounterKey,
-                      ),
-                    ))
-              ],
-            ),
-            color: Color(0xFF09B44D),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-            onPressed: () async {
-              if (await Internet.checkConnection()) {
-                if (currentUser.cartDataModel.cart.length == 0) {
-                  Navigator.of(context).push(
-                      PageRouteBuilder(
-                          pageBuilder: (context, animation, anotherAnimation) {
-                            return EmptyCartScreen(restaurant: restaurant);
-                          },
-                          transitionDuration: Duration(milliseconds: 300),
-                          transitionsBuilder:
-                              (context, animation, anotherAnimation, child) {
-                            return SlideTransition(
-                              position: Tween(
-                                  begin: Offset(-1.0, 0.0),
-                                  end: Offset(0.0, 0.0))
-                                  .animate(animation),
-                              child: child,
-                            );
-                          }
-                      ));
+                      ))
+                ],
+              ),
+              color: Color(0xFF09B44D),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+              onPressed: () async {
+                if (await Internet.checkConnection()) {
+                  if (currentUser.cartDataModel.cart.length == 0) {
+                    Navigator.of(context).push(
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation, anotherAnimation) {
+                              return EmptyCartScreen(restaurant: restaurant);
+                            },
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder:
+                                (context, animation, anotherAnimation, child) {
+                              return SlideTransition(
+                                position: Tween(
+                                    begin: Offset(-1.0, 0.0),
+                                    end: Offset(0.0, 0.0))
+                                    .animate(animation),
+                                child: child,
+                              );
+                            }
+                        ));
+                  } else {
+                    Navigator.of(context).push(
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation, anotherAnimation) {
+                              return CartPageScreen(restaurant: restaurant);
+                            },
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder:
+                                (context, animation, anotherAnimation, child) {
+                              return SlideTransition(
+                                position: Tween(
+                                    begin: Offset(-1.0, 0.0),
+                                    end: Offset(0.0, 0.0))
+                                    .animate(animation),
+                                child: child,
+                              );
+                            }
+                        ));
+                  }
                 } else {
-                  Navigator.of(context).push(
-                      PageRouteBuilder(
-                          pageBuilder: (context, animation, anotherAnimation) {
-                            return CartPageScreen(restaurant: restaurant);
-                          },
-                          transitionDuration: Duration(milliseconds: 300),
-                          transitionsBuilder:
-                              (context, animation, anotherAnimation, child) {
-                            return SlideTransition(
-                              position: Tween(
-                                  begin: Offset(-1.0, 0.0),
-                                  end: Offset(0.0, 0.0))
-                                  .animate(animation),
-                              child: child,
-                            );
-                          }
-                      ));
+                  noConnection(context);
                 }
-              } else {
-                noConnection(context);
-              }
-            },
+              },
+            ),
           ),
         ],
       ),
@@ -1273,10 +1292,22 @@ class MyCheckBoxState extends State<MyCheckBox> {
 
   Widget build(BuildContext context) {
     return CheckboxListTile(
+      controlAffinity: ListTileControlAffinity.leading,
       value: isSelected,
-      title: Text(
-        title,
-        style: TextStyle(color: Color(0xff424242)),
+      title: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(color: Color(0xff424242), fontSize: 14),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: Text(
+              '+ ${topping.price} \₽',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ),
+        ],
       ),
       onChanged: (bool f) {
         setState(() {
@@ -1612,7 +1643,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
           ),
           Container(
             height: 30,
-            width: 30,
+            width: 50,
             child: Padding(
               padding: EdgeInsets.only(right: 10, left: 10),
               child: Center(
@@ -1707,8 +1738,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
-                        blurRadius: 8.0, // soften the shadow
-                        spreadRadius: 3.0, //extend the shadow
+                        blurRadius: 4.0, // soften the shadow
+                        spreadRadius: 1.0, //extend the shadow
                       )
                     ],
                     color: Colors.white,
@@ -2017,8 +2048,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               boxShadow: [
                 BoxShadow(
                   color: Colors.black12,
-                  blurRadius: 8.0, // soften the shadow
-                  spreadRadius: 3.0, //extend the shadow
+                  blurRadius: 4.0, // soften the shadow
+                  spreadRadius: 1.0, //extend the shadow
                 )
               ],
             ) : null,
@@ -2030,7 +2061,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Expanded(child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 10),
+                      padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
                       child: Container(
                         child: RichText(text:
                         TextSpan(
@@ -2045,7 +2076,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       ),
                     )),
                     Padding(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(right: 20),
                       child: PriceField(key: priceFieldKey, restaurantDataItems: restaurantDataItems),
                     )
                   ],
@@ -2061,7 +2092,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
-                          padding: EdgeInsets.only(right: 15),
+                          padding: EdgeInsets.only(right: 5, left: 15),
                           child: Counter(
                               key: parent.counterKey,
                               priceFieldKey: priceFieldKey
@@ -2071,7 +2102,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 15, right: 5, bottom: 0),
+                          padding: EdgeInsets.only(left: 8, right: 15, bottom: 0),
                           child: FlatButton(
                             child: Text(
                               "Добавить",
@@ -2083,7 +2114,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: EdgeInsets.only(
-                                left: 70, top: 20, right: 70, bottom: 20),
+                                left: 80, top: 20, right: 80, bottom: 20),
                             onPressed: () async {
                               if (await Internet.checkConnection()) {
                                 FoodRecords foodOrder =

@@ -37,91 +37,6 @@ class CartPageState extends State<CartPageScreen> {
     initialPage: 0,
   );
 
-  showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Container(
-                height: 202,
-                width: 300,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
-                      child: Text(
-                        'Вы действительно хотите\nотчистить корзину?',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF424242)),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Center(
-                              child: Text(
-                                'Очистить',
-                                style: TextStyle(
-                                    color: Color(0xFFFF0600),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                          currentUser.cartDataModel.cart.clear();
-                          currentUser.cartDataModel.saveData();
-                        });
-                        Navigator.pushReplacement(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (context) =>
-                            new EmptyCartScreen(restaurant: restaurant),
-                          ),
-                        );
-                      },
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Center(
-                              child: Text(
-                                'Отмена',
-                                style: TextStyle(
-                                    fontSize: 17, color: Color(0xFF424242)),
-                              ),
-                            )),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                )),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void dispose() {
     _controller.dispose();
@@ -298,7 +213,7 @@ class CartPageState extends State<CartPageScreen> {
               ),
             ),
             Container(
-              width: 348,
+              width: 380,
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
@@ -314,7 +229,7 @@ class CartPageState extends State<CartPageScreen> {
                           right: 0),
                       child: Container(
                         height: 40,
-                        width: 173,
+                        width: 188,
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
@@ -322,11 +237,13 @@ class CartPageState extends State<CartPageScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 40, right: 40, top: 10),
-                          child: Text(
-                            'Доставка',
-                            style: TextStyle(
-                                color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                              left: 0, right: 0, top: 0),
+                          child: Center(
+                            child: Text(
+                              'Доставка',
+                              style: TextStyle(
+                                  color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                            ),
                           ),
                         ),
                       ),
@@ -334,7 +251,7 @@ class CartPageState extends State<CartPageScreen> {
                     onTap: () async {
                       if (await Internet.checkConnection()) {
                         _controller.animateToPage(0,
-                            duration: Duration(seconds: 1),
+                            duration: Duration(seconds: 3),
                             curve: Curves.elasticOut);
                       } else {
                         noConnection(context);
@@ -347,7 +264,7 @@ class CartPageState extends State<CartPageScreen> {
                           right: 0),
                       child: Container(
                         height: 40,
-                        width: 173,
+                        width: 190,
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
@@ -355,11 +272,13 @@ class CartPageState extends State<CartPageScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 40, right: 40, top: 10),
-                          child: Text(
-                            'Самовывоз',
-                            style: TextStyle(
-                                color: (selectedPageId == 1) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                              left: 0, right: 0, top: 0),
+                          child: Center(
+                            child: Text(
+                              'Самовывоз',
+                              style: TextStyle(
+                                  color: (selectedPageId == 1) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                            ),
                           ),
                         ),
                       ),
@@ -367,7 +286,7 @@ class CartPageState extends State<CartPageScreen> {
                     onTap: () async {
                       if (await Internet.checkConnection()) {
                         _controller.animateToPage(1,
-                            duration: Duration(seconds: 1),
+                            duration: Duration(seconds: 3),
                             curve: Curves.elasticOut);
                       } else {
                         noConnection(context);
@@ -390,91 +309,104 @@ class CartPageState extends State<CartPageScreen> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        // totalPrices[0],
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.black,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      spreadRadius: 1
+                    )
+                  ]
+                ),
+                child: Padding(
+                  padding:
+                  EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          // totalPrices[0],
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    FlatButton(
-                      child: Text('Далее',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.white)),
-                      color: Color(0xFF09B44D),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        ],
                       ),
-                      padding: EdgeInsets.only(
-                          left: 70, top: 20, right: 70, bottom: 20),
-                      onPressed: () async {
-                        if (await Internet.checkConnection()) {
-                          if (currentUser.isLoggedIn) {
-                            if(selectedPageId == 0){
-                              Navigator.of(context).push(
-                                  PageRouteBuilder(
-                                      pageBuilder: (context, animation, anotherAnimation) {
-                                        return AddressScreen(restaurant: restaurant);
-                                      },
-                                      transitionDuration: Duration(milliseconds: 300),
-                                      transitionsBuilder:
-                                          (context, animation, anotherAnimation, child) {
-                                        return SlideTransition(
-                                          position: Tween(
-                                              begin: Offset(-1.0, 0.0),
-                                              end: Offset(0.0, 0.0))
-                                              .animate(animation),
-                                          child: child,
-                                        );
-                                      }
-                                  ));
-                            }else{
-                              Navigator.of(context).push(
-                                  PageRouteBuilder(
-                                      pageBuilder: (context, animation, anotherAnimation) {
-                                        return TakeAway(restaurant: restaurant);
-                                      },
-                                      transitionDuration: Duration(milliseconds: 300),
-                                      transitionsBuilder:
-                                          (context, animation, anotherAnimation, child) {
-                                        return SlideTransition(
-                                          position: Tween(
-                                              begin: Offset(-1.0, 0.0),
-                                              end: Offset(0.0, 0.0))
-                                              .animate(animation),
-                                          child: child,
-                                        );
-                                      }
-                                  ));
+                      FlatButton(
+                        child: Text('Далее',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.white)),
+                        color: Color(0xFF09B44D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.only(
+                            left: 70, top: 20, right: 70, bottom: 20),
+                        onPressed: () async {
+                          if (await Internet.checkConnection()) {
+                            if (currentUser.isLoggedIn) {
+                              if(selectedPageId == 0){
+                                Navigator.of(context).push(
+                                    PageRouteBuilder(
+                                        pageBuilder: (context, animation, anotherAnimation) {
+                                          return AddressScreen(restaurant: restaurant);
+                                        },
+                                        transitionDuration: Duration(milliseconds: 300),
+                                        transitionsBuilder:
+                                            (context, animation, anotherAnimation, child) {
+                                          return SlideTransition(
+                                            position: Tween(
+                                                begin: Offset(-1.0, 0.0),
+                                                end: Offset(0.0, 0.0))
+                                                .animate(animation),
+                                            child: child,
+                                          );
+                                        }
+                                    ));
+                              }else{
+                                Navigator.of(context).push(
+                                    PageRouteBuilder(
+                                        pageBuilder: (context, animation, anotherAnimation) {
+                                          return TakeAway(restaurant: restaurant);
+                                        },
+                                        transitionDuration: Duration(milliseconds: 300),
+                                        transitionsBuilder:
+                                            (context, animation, anotherAnimation, child) {
+                                          return SlideTransition(
+                                            position: Tween(
+                                                begin: Offset(-1.0, 0.0),
+                                                end: Offset(0.0, 0.0))
+                                                .animate(animation),
+                                            child: child,
+                                          );
+                                        }
+                                    ));
+                              }
+                            } else {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new AuthScreen()),
+                              );
                             }
                           } else {
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => new AuthScreen()),
-                            );
+                            noConnection(context);
                           }
-                        } else {
-                          noConnection(context);
-                        }
-                      },
-                    )
-                  ],
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -554,45 +486,54 @@ class CartScreenState extends State<CartScreen> {
             );
           }
           return Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: Column(
                 children: <Widget>[
                   Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Text(
-                              'Доставка',
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Color(0xFF000000)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0, top: 5),
-                              child: Text(
-                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              Text(
+                                'Доставка',
                                 style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.black,
+                                    fontSize: 18.0,
+                                    color: Color(0xFF000000)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0, top: 5),
+                                child: Text(
+                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '150',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: Color(0xFF000000)),
-                        ),
-                      ],
+                            ],
+                          ),
+                          Text(
+                            '150',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Color(0xFF000000)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(bottom: 20, top: 20),
+                    child: Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -606,14 +547,24 @@ class CartScreenState extends State<CartScreen> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20, top: 20),
+                    child: Divider(
+                       height: 1,
+                      color: Colors.grey,
+                    ),
+                  ) ,
                   SizedBox(height: 80.0)
                 ],
               ));
         },
         separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            height: 1.0,
-            color: Color(0xFFF5F5F5),
+          return Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: Divider(
+              height: 1.0,
+              color: Colors.grey,
+            ),
           );
         },
       ),
@@ -631,159 +582,107 @@ class CartScreenState extends State<CartScreen> {
     GlobalKey<PriceFieldState> priceFieldKey =
     new GlobalKey<PriceFieldState>();
     return Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              child: Row(
-                children: <Widget>[
-                   Padding(
-                     padding: const EdgeInsets.only(left: 8.0),
-                     child: ClipRRect(
-                         borderRadius: BorderRadius.only(
-                             bottomLeft: Radius.circular(10),
-                             topLeft: Radius.circular(10),
-                             topRight: Radius.circular(10),
-                             bottomRight: Radius.circular(10)),
-                         child: Image.network(
-                           getImage(order.food.image),
-                           fit: BoxFit.cover,
-                           height: 70,
-                           width: 70,
-                         ),),
-                   ),
-                  Column(
-                    children: [
-                      (order.food.variants == null || order.food.toppings == null ||
-                          order.food.variants == null && order.food.toppings == null) ? Container(
-                        child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0, top: 27),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    order.food.name,
-                                    style: TextStyle(
-                                        decoration: TextDecoration.none,
-                                        fontSize: 14.0,
-                                        color: Color(0xFF000000)),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                (order.food.variants != null)
-                                    ? Align(
-                                  alignment: Alignment.topLeft,
-                                      child: Text(
-                                  order.food.variants[0].name,
-                                  style: TextStyle(
-                                        decoration: TextDecoration.none,
-                                        fontSize: 10.0,
-                                        color: Colors.grey),
-                                  textAlign: TextAlign.start,
-                                ),
-                                    ) : Text(''),
-                                (order.food.toppings != null)
-                                    ? Column(
-                                  children: List.generate(
-                                      order.food.toppings.length,
-                                          (index) => Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          order.food.toppings[index]
-                                              .name,
-                                          style: TextStyle(
-                                              decoration:
-                                              TextDecoration.none,
-                                              fontSize: 10.0,
-                                              color: Colors.grey),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      )),
-                                )
-                                    : Text(''),
-                              ],
-                            )
-                        )
-                      ) : Padding(
-                          padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  order.food.name,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                      fontSize: 14.0,
-                                      color: Color(0xFF000000)),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              (order.food.variants != null)
-                                  ? Align(
-                                alignment: Alignment.topLeft,
-                                    child: Text(
-                                order.food.variants[0].name,
-                                style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                      fontSize: 10.0,
-                                      color: Colors.grey),
-                                textAlign: TextAlign.start,
-                              ),
-                                  ) : Text(''),
-                              (order.food.toppings != null)
-                                  ? Column(
-                                children: List.generate(
-                                    order.food.toppings.length,
-                                        (index) => Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        order.food.toppings[index]
-                                            .name,
-                                        style: TextStyle(
-                                            decoration:
-                                            TextDecoration.none,
-                                            fontSize: 10.0,
-                                            color: Colors.grey),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    )),
-                              )
-                                  : Text(''),
-                            ],
-                          )
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: Counter(
-                              key: counterKey,
-                              priceFieldKey: priceFieldKey,
-                              order: order,
-                              totalPriceList: totalPrices,
-                          ),
-                        ),
-                      ),
-                    ],
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+              child: Image.network(
+                getImage(order.food.image),
+                fit: BoxFit.cover,
+                height: 70,
+                width: 70,
+              ),),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 100),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    order.food.name,
+                    style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 14.0,
+                        color: Color(0xFF000000)),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Expanded(
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 35),
-                          child: PriceField(key: priceFieldKey, order: order),
-                        )
-                    ),
+                ),
+                (order.food.variants != null)
+                    ? Align(
+                  alignment: Alignment.topLeft,
+                      child: Text(
+                  order.food.variants[0].name,
+                  style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 10.0,
+                        color: Colors.grey),
+                  textAlign: TextAlign.start,
+                ),
+                    ) : Text(''),
+                (order.food.toppings != null)
+                    ? Align(
+                  alignment: Alignment.topLeft,
+                      child: Column(
+                  children: List.generate(
+                        order.food.toppings.length,
+                            (index) => Text(
+                              order.food.toppings[index]
+                                  .name,
+                              style: TextStyle(
+                                  decoration:
+                                  TextDecoration.none,
+                                  fontSize: 10.0,
+                                  color: Colors.grey),
+                              textAlign: TextAlign.start,
+                            )),
+                ),
+                    )
+                    : Text(''),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15, top: 5),
+                  child: Counter(
+                    key: counterKey,
+                    priceFieldKey: priceFieldKey,
+                    order: order,
+                    totalPriceList: totalPrices,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ));
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Column(
+              children: [
+                PriceField(key: priceFieldKey, order: order),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: GestureDetector(
+                    child: SvgPicture.asset(
+                        'assets/svg_images/del_basket.svg'),
+                    onTap: () {
+                      // setState(() {
+                      //   currentUser.cartDataModel.cart.remove(0);
+                      //   currentUser.cartDataModel.saveData();
+                      // });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   showAlertDialog(BuildContext context) {
@@ -988,6 +887,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                       totalPrices[0]
                     ],
                   ),
+
                   SizedBox(height: 80.0)
                 ],
               ));
@@ -995,7 +895,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
         separatorBuilder: (BuildContext context, int index) {
           return Divider(
             height: 1.0,
-            color: Color(0xFFF5F5F5),
+            color: Colors.grey,
           );
         },
       ),
@@ -1013,152 +913,99 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
     GlobalKey<PriceFieldState> priceFieldKey =
     new GlobalKey<PriceFieldState>();
     return Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+        child: Stack(
           children: [
-            Container(
-              child: Row(
-                children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+                child: Image.network(
+                  getImage(order.food.image),
+                  fit: BoxFit.cover,
+                  height: 70,
+                  width: 70,
+                ),),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 100),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      order.food.name,
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: 14.0,
+                          color: Color(0xFF000000)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  (order.food.variants != null)
+                      ? Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      order.food.variants[0].name,
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: 10.0,
+                          color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ) : Text(''),
+                  (order.food.toppings != null)
+                      ? Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: List.generate(
+                          order.food.toppings.length,
+                              (index) => Text(
+                            order.food.toppings[index]
+                                .name,
+                            style: TextStyle(
+                                decoration:
+                                TextDecoration.none,
+                                fontSize: 10.0,
+                                color: Colors.grey),
+                            textAlign: TextAlign.start,
+                          )),
+                    ),
+                  )
+                      : Text(''),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
-                      child: Image.network(
-                        getImage(order.food.image),
-                        fit: BoxFit.cover,
-                        height: 70,
-                        width: 70,
-                      ),),
+                    padding: const EdgeInsets.only(bottom: 15, top: 5),
+                    child: Counter(
+                      key: counterKey,
+                      priceFieldKey: priceFieldKey,
+                      order: order,
+                      totalPriceList: totalPrices,
+                    ),
                   ),
-                  Column(
-                    children: [
-                      (order.food.variants == null || order.food.toppings == null ||
-                          order.food.variants == null && order.food.toppings == null) ? Container(
-                          child: Padding(
-                              padding: const EdgeInsets.only(left: 15.0, top: 27),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      order.food.name,
-                                      style: TextStyle(
-                                          decoration: TextDecoration.none,
-                                          fontSize: 14.0,
-                                          color: Color(0xFF000000)),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  (order.food.variants != null)
-                                      ? Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      order.food.variants[0].name,
-                                      style: TextStyle(
-                                          decoration: TextDecoration.none,
-                                          fontSize: 10.0,
-                                          color: Colors.grey),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ) : Text(''),
-                                  (order.food.toppings != null)
-                                      ? Column(
-                                    children: List.generate(
-                                        order.food.toppings.length,
-                                            (index) => Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            order.food.toppings[index]
-                                                .name,
-                                            style: TextStyle(
-                                                decoration:
-                                                TextDecoration.none,
-                                                fontSize: 10.0,
-                                                color: Colors.grey),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        )),
-                                  )
-                                      : Text(''),
-                                ],
-                              )
-                          )
-                      ) : Padding(
-                          padding: const EdgeInsets.only(left: 15.0, top: 15, bottom: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  order.food.name,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                      fontSize: 14.0,
-                                      color: Color(0xFF000000)),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              (order.food.variants != null)
-                                  ? Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  order.food.variants[0].name,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                      fontSize: 10.0,
-                                      color: Colors.grey),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ) : Text(''),
-                              (order.food.toppings != null)
-                                  ? Column(
-                                children: List.generate(
-                                    order.food.toppings.length,
-                                        (index) => Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        order.food.toppings[index]
-                                            .name,
-                                        style: TextStyle(
-                                            decoration:
-                                            TextDecoration.none,
-                                            fontSize: 10.0,
-                                            color: Colors.grey),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    )),
-                              )
-                                  : Text(''),
-                            ],
-                          )
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: Counter(
-                            key: counterKey,
-                            priceFieldKey: priceFieldKey,
-                            order: order,
-                            totalPriceList: totalPrices,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 35),
-                          child: PriceField(key: priceFieldKey, order: order),
-                        )
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Column(
+                children: [
+                  PriceField(key: priceFieldKey, order: order),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: GestureDetector(
+                      child: SvgPicture.asset(
+                          'assets/svg_images/del_basket.svg'),
+                      onTap: () {
+                        // setState(() {
+                        //   currentUser.cartDataModel.cart.remove(0);
+                        //   currentUser.cartDataModel.saveData();
+                        // });
+                      },
                     ),
                   ),
                 ],
@@ -1333,12 +1180,9 @@ class CounterState extends State<Counter> {
 
   Widget build(BuildContext context) {
     counter = order.quantity;
-    return Padding(
-      padding: EdgeInsets.only(left: 15, right: 0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(
-          padding: EdgeInsets.only(left: 0, top: 0, bottom: 0),
-          child: InkWell(
+    return Row(
+        children: [
+          InkWell(
             onTap: () {
               if (counter != 1) {
                 _incrementCounter_minus();
@@ -1347,23 +1191,20 @@ class CounterState extends State<Counter> {
             },
             child: SvgPicture.asset('assets/svg_images/rest_minus.svg'),
           ),
-        ),
-        Container(
-          child: Padding(
-            padding: EdgeInsets.only(right: 10, left: 10),
-            child: Center(
-              child: Text(
-                '$counter',
-                style: TextStyle(
-                  fontSize: 20.0,
+          Container(
+            child: Padding(
+              padding: EdgeInsets.only(right: 15, left: 15),
+              child: Center(
+                child: Text(
+                  '$counter',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
-          child: InkWell(
+          InkWell(
             onTap: () async {
               if (await Internet.checkConnection()) {
                 setState(() {
@@ -1376,9 +1217,7 @@ class CounterState extends State<Counter> {
             },
             child: SvgPicture.asset('assets/svg_images/rest_plus.svg'),
           ),
-        )
-      ])
-    );
+        ]);
   }
 
   void refresh() {
@@ -1412,7 +1251,7 @@ class PriceFieldState extends State<PriceField> {
       totalPrice += toppingsCost;
     }
     return Padding(
-      padding: EdgeInsets.only(right: 15),
+      padding: EdgeInsets.only(right: 0),
       child: Text('${(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null) ?
       (order.quantity * (order.food.price + order.food.variants[0].price) + toppingsCost).toStringAsFixed(0) :
       (order.quantity * order.food.price + toppingsCost).toStringAsFixed(0)} \₽',

@@ -352,7 +352,7 @@ class AddressScreenState extends State<AddressScreen>
         context: context,
         builder: (context) {
           return Container(
-            height: 270,
+            height: 300,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -377,7 +377,7 @@ class AddressScreenState extends State<AddressScreen>
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, top: 25),
+              padding: const EdgeInsets.only(left: 15, top: 30, bottom: 35),
               child: Text('Адрес отправки',
                 style: TextStyle(
                     fontSize: 24,
@@ -396,7 +396,7 @@ class AddressScreenState extends State<AddressScreen>
               padding: const EdgeInsets.only(left:15, right: 15, top: 15),
               child: InkWell(
                 child: Container(
-                  width: 340,
+                  width: 380,
                   height: 60,
                   decoration: BoxDecoration(
                       color: Color(0xFF09B44D),
@@ -591,12 +591,12 @@ class AddressScreenState extends State<AddressScreen>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                color: Colors.black12,
+                                blurRadius: 2.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
-                            color: Colors.white,
+                            color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(width: 1.0, color: Colors.grey[200])),
                         child: Padding(
@@ -672,11 +672,11 @@ class AddressScreenState extends State<AddressScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                blurRadius: 2.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
-                            color: Colors.white,
+                            color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(width: 1.0, color: Colors.grey[200])),
                         child: Padding(
@@ -733,8 +733,8 @@ class AddressScreenState extends State<AddressScreen>
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black12,
-                                  blurRadius: 8.0, // soften the shadow
-                                  spreadRadius: 3.0, //extend the shadow
+                                  blurRadius: 4.0, // soften the shadow
+                                  spreadRadius: 1.0, //extend the shadow
                                 )
                               ],
                               color: Colors.white,
@@ -946,7 +946,7 @@ class AddressScreenState extends State<AddressScreen>
                           Align(
                               alignment: Alignment.topLeft,
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 20),
                                 child: Container(
                                   color: Colors.white,
                                   child: Padding(
@@ -968,12 +968,12 @@ class AddressScreenState extends State<AddressScreen>
 
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 15, left: 17, bottom: 5, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'Стомость',
+                            'Стоимость',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14),
@@ -989,7 +989,7 @@ class AddressScreenState extends State<AddressScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 17, left: 15, bottom: 5, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -1025,7 +1025,7 @@ class AddressScreenState extends State<AddressScreen>
                     ),
                    (promoTextKey.currentState!= null && promoTextKey.currentState.title.length != null) ? Padding(
                      padding: EdgeInsets.only(
-                         top: 15, left: 15, bottom: 5, right: 15),
+                         top: 15, left: 17, bottom: 5, right: 17),
                      child: Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: <Widget>[
@@ -1046,7 +1046,7 @@ class AddressScreenState extends State<AddressScreen>
                    ) : Container(),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 15, left: 17, bottom: 5, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -1065,10 +1065,59 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                       ),
                     ),
-                    Container(
-                      height: 10,
-                      color: Color(0xFAFAFAFA),
-                    ),
+                    // Container(
+                    //   height: 10,
+                    //   color: Color(0xFAFAFAFA),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(
+                    //       top: 10, left: 15, right: 15, bottom: 10),
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //         boxShadow: [
+                    //           BoxShadow(
+                    //             color: Colors.black12,
+                    //             blurRadius: 4.0, // soften the shadow
+                    //             spreadRadius: 1.0, //extend the shadow
+                    //           )
+                    //         ],
+                    //         color: Colors.white,
+                    //         borderRadius: BorderRadius.circular(10.0),
+                    //         border: Border.all(width: 1.0, color: Colors.grey[200])),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(10.0),
+                    //       child: Row(
+                    //         mainAxisAlignment:
+                    //         MainAxisAlignment.spaceBetween,
+                    //         children: <Widget>[
+                    //           Text(
+                    //             'До двери',
+                    //             style: TextStyle(
+                    //                 color: Color(0xFF3F3F3F),
+                    //                 fontSize: 15),
+                    //           ),
+                    //           Padding(
+                    //             padding: EdgeInsets.only(right: 0),
+                    //             child: FlutterSwitch(
+                    //               width: 55.0,
+                    //               height: 25.0,
+                    //               inactiveColor: Color(0xD6D6D6D6),
+                    //               activeColor: Colors.green,
+                    //               valueFontSize: 12.0,
+                    //               toggleSize: 18.0,
+                    //               value: status1,
+                    //               onToggle: (value) {
+                    //                 setState(() {
+                    //                   status1 = value;
+                    //                 });
+                    //               },
+                    //             ),
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 10, left: 15, right: 15, bottom: 10),
@@ -1077,57 +1126,8 @@ class AddressScreenState extends State<AddressScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
-                              )
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(width: 1.0, color: Colors.grey[200])),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'До двери',
-                                style: TextStyle(
-                                    color: Color(0xFF3F3F3F),
-                                    fontSize: 15),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 0),
-                                child: FlutterSwitch(
-                                  width: 55.0,
-                                  height: 25.0,
-                                  inactiveColor: Color(0xD6D6D6D6),
-                                  activeColor: Colors.green,
-                                  valueFontSize: 12.0,
-                                  toggleSize: 18.0,
-                                  value: status1,
-                                  onToggle: (value) {
-                                    setState(() {
-                                      status1 = value;
-                                    });
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: 10, left: 15, right: 15, bottom: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                blurRadius: 4.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
                             color: Colors.white,
@@ -1171,142 +1171,159 @@ class AddressScreenState extends State<AddressScreen>
                       height: 10,
                       color: Color(0xFAFAFAFA),
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 10, left: 15, right: 15, bottom: 10),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: GestureDetector(
-                              child: Container(
-                                width: 167,
-                                height: 64,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 8.0, // soften the shadow
-                                        spreadRadius: 3.0, //extend the shadow
-                                      )
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(width: 1.0, color: Colors.grey[200])),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 10, left: 15, right: 15, bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Способ оплаты",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFFB8B8B8)),
-                                          ),
-                                          Text(
-                                            (selectedPaymentId == 1) ? card : cash,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: SvgPicture.asset(
-                                            'assets/svg_images/arrow_down.svg'),
-                                      ),
-                                    ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 10, left: 15, right: 15, bottom: 10),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: GestureDetector(
+                                child: Container(
+                                  width: 185,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 4.0, // soften the shadow
+                                          spreadRadius: 1.0, //extend the shadow
+                                        )
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(width: 1.0, color: Colors.grey[200])),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 10, left: 15, right: 20, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Способ оплаты",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFFB8B8B8)),
+                                            ),
+                                            Text(
+                                              (selectedPaymentId == 1) ? card : cash,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: SvgPicture.asset(
+                                              'assets/svg_images/arrow_down.svg'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                onTap: () async {
+                                  _payment();
+                                },
                               ),
-                              onTap: () async {
-                                _payment();
-                              },
                             ),
                           ),
-                        ),
-                        PromoText(key: promoTextKey,)
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 0),
+                            child: PromoText(key: promoTextKey,),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                              '${(totalPrice).toStringAsFixed(0)} \₽',
+                child: Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4.0, // soften the shadow
+                          spreadRadius: 1.0, //extend the shadow
+                        )
+                      ],
+                      color: Colors.white,),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                                '${(totalPrice).toStringAsFixed(0)} \₽',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.black)),
+                            Text(
+                              '~30-50 мин.',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        FlatButton(
+                          child: Text('Заказать',
                               style: TextStyle(
                                   fontSize: 18.0,
-                                  color: Colors.black)),
-                          Text(
-                            '~30-50 мин.',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
-                            ),
+                                  color: Colors.white)),
+                          color: Color(0xFF09B44D),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ],
-                      ),
-                      FlatButton(
-                        child: Text('Заказать',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white)),
-                        color: Color(0xFF09B44D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.only(
-                            left: 60, top: 20, right: 60, bottom: 20),
-                        onPressed: () async {
-                          if (await Internet.checkConnection()) {
-                            if(selectedPaymentId != 1){
-                              showAlertDialog(context);
+                          padding: EdgeInsets.only(
+                              left: 60, top: 20, right: 60, bottom: 20),
+                          onPressed: () async {
+                            if (await Internet.checkConnection()) {
+                              if(selectedPaymentId != 1){
+                                showAlertDialog(context);
+                              }
+                              print(addressSelectorKey.currentState.myFavouriteAddressesModel.address.unrestrictedValue);
+                              createOrder = new CreateOrder(
+                                address: addressSelectorKey.currentState.myFavouriteAddressesModel.address,
+                                restaurantAddress: selectedAddress,
+                                office: officeField.text,
+                                floor: floorField.text,
+                                entrance: entranceField.text,
+                                intercom: intercomField.text,
+                                comment: commentField.text,
+                                cartDataModel: currentUser.cartDataModel,
+                                restaurant: restaurant,
+                                payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
+                                door_to_door: status1,
+                              );
+                              if(selectedPaymentId == 1){
+                                _cardPayment(totalPrice);
+                                return;
+                              }
+                              await createOrder.sendData();
+                              currentUser.cartDataModel.cart.clear();
+                              currentUser.cartDataModel.saveData();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
+                                      (Route<dynamic> route) => false);
+                            } else {
+                              noConnection(context);
                             }
-                            print(addressSelectorKey.currentState.myFavouriteAddressesModel.address.unrestrictedValue);
-                            createOrder = new CreateOrder(
-                              address: addressSelectorKey.currentState.myFavouriteAddressesModel.address,
-                              restaurantAddress: selectedAddress,
-                              office: officeField.text,
-                              floor: floorField.text,
-                              entrance: entranceField.text,
-                              intercom: intercomField.text,
-                              comment: commentField.text,
-                              cartDataModel: currentUser.cartDataModel,
-                              restaurant: restaurant,
-                              payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
-                              door_to_door: status1,
-                            );
-                            if(selectedPaymentId == 1){
-                              _cardPayment(totalPrice);
-                              return;
-                            }
-                            await createOrder.sendData();
-                            currentUser.cartDataModel.cart.clear();
-                            currentUser.cartDataModel.saveData();
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
-                                    (Route<dynamic> route) => false);
-                          } else {
-                            noConnection(context);
-                          }
-                        },
-                      )
-                    ],
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -1575,7 +1592,7 @@ class TakeAwayState extends State<TakeAway>
         context: context,
         builder: (context) {
           return Container(
-            height: 250,
+            height: 285,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -1595,7 +1612,7 @@ class TakeAwayState extends State<TakeAway>
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
+              padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15),
               child: Text('Адрес отправки',
                 style: TextStyle(
                     fontSize: 24,
@@ -1611,7 +1628,7 @@ class TakeAwayState extends State<TakeAway>
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(left:15, right: 15, top: 15),
+              padding: const EdgeInsets.only(left:0, right: 0, top: 15, bottom: 0),
               child: InkWell(
                 child: Container(
                   width: 340,
@@ -1784,12 +1801,12 @@ class TakeAwayState extends State<TakeAway>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                color: Colors.black12,
+                                blurRadius: 2.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
-                            color: Colors.white,
+                            color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(width: 1.0, color: Colors.grey[200])),
                         child: Padding(
@@ -1865,11 +1882,11 @@ class TakeAwayState extends State<TakeAway>
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                blurRadius: 2.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
-                            color: Colors.white,
+                            color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(width: 1.0, color: Colors.grey[200])),
                         child: Padding(
@@ -1927,8 +1944,8 @@ class TakeAwayState extends State<TakeAway>
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black12,
-                                  blurRadius: 8.0, // soften the shadow
-                                  spreadRadius: 3.0, //extend the shadow
+                                  blurRadius: 4.0, // soften the shadow
+                                  spreadRadius: 1.0, //extend the shadow
                                 )
                               ],
                               color: Colors.white,
@@ -1984,25 +2001,13 @@ class TakeAwayState extends State<TakeAway>
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        height: 1,
-                        color: Color(0xFFF5F5F5),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Divider(
-                          height: 1.0, color: Color(0xFFEDEDED)),
-                    ),
-                    Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 15, left: 17, bottom: 5, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'Стомость',
+                            'Стоимость',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14),
@@ -2018,7 +2023,7 @@ class TakeAwayState extends State<TakeAway>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 15, left: 17, bottom: 10, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -2037,10 +2042,6 @@ class TakeAwayState extends State<TakeAway>
                         ],
                       ),
                     ),
-                    Container(
-                      height: 10,
-                      color: Color(0xFAFAFAFA),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15 , right: 15),
                       child: Container(
@@ -2048,11 +2049,11 @@ class TakeAwayState extends State<TakeAway>
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
-                                blurRadius: 8.0, // soften the shadow
-                                spreadRadius: 3.0, //extend the shadow
+                                blurRadius: 2.0, // soften the shadow
+                                spreadRadius: 1.0, //extend the shadow
                               )
                             ],
-                            color: Colors.white,
+                            color: Color(0xFFF6F6F6),
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(width: 1.0, color: Colors.grey[200])),
                         child: Padding(
@@ -2113,7 +2114,7 @@ class TakeAwayState extends State<TakeAway>
                           Align(
                               alignment: Alignment.topLeft,
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 20),
                                 child: Container(
                                   color: Colors.white,
                                   child: Padding(
@@ -2134,7 +2135,7 @@ class TakeAwayState extends State<TakeAway>
                     ),
                     (promoTextKey.currentState!= null && promoTextKey.currentState.title.length != null) ? Padding(
                       padding: EdgeInsets.only(
-                          top: 15, left: 15, bottom: 5, right: 15),
+                          top: 15, left: 17, bottom: 5, right: 17),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -2162,14 +2163,14 @@ class TakeAwayState extends State<TakeAway>
                             alignment: Alignment.bottomLeft,
                             child: GestureDetector(
                               child: Container(
-                                width: 167,
+                                width: 185,
                                 height: 64,
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black12,
-                                        blurRadius: 8.0, // soften the shadow
-                                        spreadRadius: 3.0, //extend the shadow
+                                        blurRadius: 4.0, // soften the shadow
+                                        spreadRadius: 1.0, //extend the shadow
                                       )
                                     ],
                                     color: Colors.white,
@@ -2221,68 +2222,79 @@ class TakeAwayState extends State<TakeAway>
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                              '${(totalPrice).toStringAsFixed(0)} \₽',
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black)),
-                          Text(
-                            '~30-50 мин.',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      FlatButton(
-                        child: Text('Заказать',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white)),
-                        color: Color(0xFF09B44D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.only(
-                            left: 60, top: 20, right: 60, bottom: 20),
-                        onPressed: () async {
-                          if (await Internet.checkConnection()) {
-                            if(selectedPaymentId != 1){
-                              showAlertDialog(context);
-                            }
-                            createOrderTakeAway =
-                            new CreateOrderTakeAway(
-                                comment: (status1) ? "Поем в заведении" : comment,
-                                cartDataModel: currentUser.cartDataModel,
-                                restaurantAddress: selectedAddress,
-                                without_delivery: true,
-                                restaurant: restaurant);
-                            if(selectedPaymentId == 1){
-                              _cardPayment(totalPrice);
-                              return;
-                            }
-                            await createOrderTakeAway.sendData();
-                            currentUser.cartDataModel.cart.clear();
-                            currentUser.cartDataModel.saveData();
-//                            homeScreenKey = new GlobalKey<HomeScreenState>();
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
-                                    (Route<dynamic> route) => false);
-                          } else {
-                            noConnection(context);
-                          }
-                        },
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0, // soften the shadow
+                        spreadRadius: 1.0, //extend the shadow
                       )
                     ],
+                    color: Colors.white,),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                                '${(totalPrice).toStringAsFixed(0)} \₽',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.black)),
+                            Text(
+                              '~30-50 мин.',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        FlatButton(
+                          child: Text('Заказать',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white)),
+                          color: Color(0xFF09B44D),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.only(
+                              left: 60, top: 20, right: 60, bottom: 20),
+                          onPressed: () async {
+                            if (await Internet.checkConnection()) {
+                              if(selectedPaymentId != 1){
+                                showAlertDialog(context);
+                              }
+                              createOrderTakeAway =
+                              new CreateOrderTakeAway(
+                                  comment: (status1) ? "Поем в заведении" : comment,
+                                  cartDataModel: currentUser.cartDataModel,
+                                  restaurantAddress: selectedAddress,
+                                  without_delivery: true,
+                                  restaurant: restaurant);
+                              if(selectedPaymentId == 1){
+                                _cardPayment(totalPrice);
+                                return;
+                              }
+                              await createOrderTakeAway.sendData();
+                              currentUser.cartDataModel.cart.clear();
+                              currentUser.cartDataModel.saveData();
+//                            homeScreenKey = new GlobalKey<HomeScreenState>();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
+                                      (Route<dynamic> route) => false);
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -2371,7 +2383,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                   Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Container(
                         color: Colors.white,
                         child: Padding(
@@ -2682,7 +2694,7 @@ class PromoText extends StatefulWidget {
 
 class PromoTextState extends State<PromoText>{
 
-  String title = '   Введите\nпромокод';
+  String title = '  Введите\nпромокод';
   TextEditingController promoCodeField = new TextEditingController();
   PromoTextState(title);
 
@@ -2712,7 +2724,7 @@ class PromoTextState extends State<PromoText>{
 
   _buildPromoCodeBottomNavigationMenu() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 80, bottom: 300),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 60, bottom: 315),
       child: Container(
         height: 40,
         width: 300,
@@ -2787,19 +2799,19 @@ class PromoTextState extends State<PromoText>{
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: 10, left: 0, right: 15, bottom: 10),
+          top: 10, left: 0, right: 0, bottom: 10),
       child: Align(
         alignment: Alignment.bottomLeft,
         child: InkWell(
           child: Container(
-            width: 140,
+            width: 185,
             height: 64,
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12,
-                    blurRadius: 8.0, // soften the shadow
-                    spreadRadius: 3.0, //extend the shadow
+                    blurRadius: 4.0, // soften the shadow
+                    spreadRadius: 1.0, //extend the shadow
                   )
                 ],
                 color: Colors.white,
@@ -2808,7 +2820,20 @@ class PromoTextState extends State<PromoText>{
             child: Padding(
               padding: EdgeInsets.only(
                   top: 10, left: 15, right: 15, bottom: 10),
-              child: Center(child: Text(title)),
+              child: Column(
+                children: [
+                  (promoCodeField.text != '') ? Text('Промокод применен',
+                    style: TextStyle(
+                        color: Color(0xFFB8B8B8), fontSize: 12),) : Container(),
+                  (promoCodeField.text != '') ? Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        child: Text(title),
+                      )
+                  ) : Text(title)
+                ],
+              ),
             ),
           ),
           onTap: () async {

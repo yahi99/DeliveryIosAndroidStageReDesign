@@ -343,8 +343,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12,
-                    blurRadius: 8.0, // soften the shadow
-                    spreadRadius: 3.0, //extend the shadow
+                    blurRadius: 4.0, // soften the shadow
+                    spreadRadius: 1.0, //extend the shadow
                   )
                 ],
                 color: Colors.white,
@@ -1176,11 +1176,14 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       ),
                       (currentUser.cartDataModel.cart != null &&
                           currentUser.cartDataModel.cart.length != 0)
-                          ? BasketButton(
+                          ? Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: BasketButton(
                         key: basketButtonStateKey,
                         restaurant:
                         currentUser.cartDataModel.cart[0].restaurant,
-                      )
+                      ),
+                          )
                           : Visibility(
                         child: Container(height: 80),
                         visible: false,
@@ -1279,14 +1282,14 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     print(ordersStoryModelItem.state);
     return InkWell(
       child: Container(
-          width: 340,
+          width: 350,
           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 8.0, // soften the shadow
-                  spreadRadius: 3.0, //extend the shadow
+                  color: Colors.black12,
+                  blurRadius: 4.0, // soften the shadow
+                  spreadRadius: 1.0, //extend the shadow
                 )
               ],
               color: Colors.white,
@@ -1327,14 +1330,22 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                                 borderRadius:
                                 BorderRadius.all(Radius.circular(10)),
                                 color: Color(0xF6F6F6F6)),
-                            child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10, right: 10, top: 7, bottom: 0),
-                                child: Text(
-                                  'Заказ',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 13),
-                                )),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: SvgPicture.asset('assets/svg_images/i.svg'),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 10, right: 10, top: 7, bottom: 5),
+                                    child: Text(
+                                      'Заказ',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 13),
+                                    )),
+                              ],
+                            ),
                           ),
                           onTap: () {
                             Navigator.push(
@@ -1373,41 +1384,43 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: (processing
-                                  .contains(ordersStoryModelItem.state))
-                                  ? Color(0xFF09B44D)
-                                  : Color(0xF6F6F6F6)),
+                              color: Color(0xFF09B44D)),
                           child: Column(
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
-                                child: (processing
-                                    .contains(ordersStoryModelItem.state))
-                                    ? SvgPicture.asset(
-                                    'assets/svg_images/white_clock.svg')
-                                    : SvgPicture.asset(
-                                    'assets/svg_images/clock.svg'),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/white_clock.svg'),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
                                 child: Text('Обработка',
-                                    style: (processing
-                                        .contains(ordersStoryModelItem.state))
-                                        ? TextStyle(
-                                        color: Colors.white, fontSize: 10)
-                                        : TextStyle(
-                                        color: Color(0x42424242),
-                                        fontSize: 10)),
+                                    style: TextStyle(color: Colors.white, fontSize: 10)),
                               )
                             ],
                           ),
                         ),
                       ),
-                      Center(
+                      (processing.contains(ordersStoryModelItem.state)) ? Center(
                         child: SpinKitThreeBounce(
                           color: Colors.green,
                           size: 20.0,
                         ),
+                      ) : Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: (ordersStoryModelItem.without_delivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
@@ -1446,11 +1459,27 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ),
                       ),
-                      Center(
+                      (cooking_state
+                          .contains(ordersStoryModelItem.state)) ? Center(
                         child: SpinKitThreeBounce(
                           color: Colors.green,
                           size: 20.0,
                         ),
+                      ) : Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                          ),
+                        ],
                       ),
                       (ordersStoryModelItem.without_delivery) ? Container() : Padding(
                         padding: EdgeInsets.only(right: 5),
@@ -1459,7 +1488,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: (cooking_state
+                              color: (in_the_way
                                   .contains(ordersStoryModelItem.state))
                                   ? Color(0xFF09B44D)
                                   : Color(0xF6F6F6F6)),
@@ -1946,8 +1975,8 @@ class QuickMessageScreenState extends State<QuickMessageScreen> with WidgetsBind
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
-                        blurRadius: 5.0, // soften the shadow
-                        spreadRadius: 2.0, //extend the shadow
+                        blurRadius: 4.0, // soften the shadow
+                        spreadRadius: 1.0, //extend the shadow
                       )
                     ],
                     color: (quickMessage.messages[index] != quickTextMessage)

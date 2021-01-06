@@ -124,7 +124,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                 ticketModel: new TicketModel(
-                                    title: '[ЕДА] Ошибка в заказе', description: ''),
+                                    title: 'Ошибка в заказе', description: ''),
                               ),
                             ),
                           );
@@ -154,7 +154,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: '[ЕДА] Ошибка стоимости', description: '')),
+                                      title: 'Ошибка стоимости', description: '')),
                             ),
                           );
                         } else {
@@ -183,7 +183,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: '[ЕДА] Ошибка программмы', description: '')),
+                                      title: 'Ошибка программмы', description: '')),
                             ),
                           );
                         } else {
@@ -212,7 +212,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: '[ЕДА] Другая причина', description: '')),
+                                      title: 'Другая причина', description: '')),
                             ),
                           );
                         } else {
@@ -267,8 +267,8 @@ class ServiceScreenState extends State<ServiceScreen> {
                                             boxShadow: [
                                               BoxShadow(
                                                 color: Colors.black12,
-                                                blurRadius: 8.0, // soften the shadow
-                                                spreadRadius: 3.0, //extend the shadow
+                                                blurRadius: 4.0, // soften the shadow
+                                                spreadRadius: 1.0, //extend the shadow
                                               )
                                             ],
                                             color: Colors.white,

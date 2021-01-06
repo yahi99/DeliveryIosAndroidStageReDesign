@@ -34,8 +34,8 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12,
-                    blurRadius: 8.0, // soften the shadow
-                    spreadRadius: 3.0, //extend the shadow
+                    blurRadius: 4.0, // soften the shadow
+                    spreadRadius: 1.0, //extend the shadow
                   )
                 ],
                 color: Colors.white,
