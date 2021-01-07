@@ -52,7 +52,8 @@ class CartPageState extends State<CartPageScreen> {
   int selectedPageId = 0;
   GlobalKey<CartTakeAwayScreenState> cartTakeAwayScreenKey = new GlobalKey<CartTakeAwayScreenState>();
   GlobalKey<CartScreenState> cartScreenKey = new GlobalKey<CartScreenState>();
-  List<TotalPrice> totalPrices;
+  //GlobalKey<TotalPriceState> totalPriceKey = new GlobalKey();
+  TotalPrice totalPriceWidget = new TotalPrice(key: new GlobalKey(),);
 
   int selectedPaymentId = 0;
 
@@ -77,9 +78,8 @@ class CartPageState extends State<CartPageScreen> {
           }
         }
     );
-    print('suka');
-    var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey);
-    var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey,);
+    var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey, parent: this,);
+    var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey, parent: this,);
     bool f = false;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -329,7 +329,7 @@ class CartPageState extends State<CartPageScreen> {
                     children: [
                       Column(
                         children: [
-                          // totalPrices[0],
+                          totalPriceWidget,
                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
@@ -418,11 +418,12 @@ class CartPageState extends State<CartPageScreen> {
 }
 
 class CartScreen extends StatefulWidget {
-  CartScreen({Key key, this.restaurant}) : super(key: key);
+  CartScreen({Key key, this.restaurant, this.parent}) : super(key: key);
   final Records restaurant;
+  CartPageState parent;
 
   @override
-  CartScreenState createState() => CartScreenState(restaurant);
+  CartScreenState createState() => CartScreenState(restaurant, parent);
 }
 
 class CartScreenState extends State<CartScreen> {
@@ -431,6 +432,7 @@ class CartScreenState extends State<CartScreen> {
   String description;
   String price;
   String discount;
+  CartPageState parent;
   final Records restaurant;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
   GlobalKey<TotalPriceState> totalPriceKey;
@@ -439,7 +441,7 @@ class CartScreenState extends State<CartScreen> {
   bool delete = false;
 
 
-  CartScreenState(this.restaurant);
+  CartScreenState(this.restaurant, this.parent);
 
   _buildList() {
     return Expanded(
@@ -464,6 +466,11 @@ class CartScreenState extends State<CartScreen> {
                   'uuid': currentUser.cartDataModel.cart[index].food.uuid
                 });
                 setState(() {
+                  if(parent.totalPriceWidget.key.currentState != null){
+                    parent.totalPriceWidget.key.currentState.setState(() {
+
+                    });
+                  }
                   currentUser.cartDataModel.cart.removeAt(index);
                   currentUser.cartDataModel.saveData();
                 });
@@ -529,7 +536,7 @@ class CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.only(bottom: 20, top: 20),
                     child: Divider(
                       height: 1,
-                      color: Colors.grey,
+                      color: Color(0xFFE6E6E6),
                     ),
                   ),
                   Padding(
@@ -551,7 +558,7 @@ class CartScreenState extends State<CartScreen> {
                     padding: const EdgeInsets.only(bottom: 20, top: 20),
                     child: Divider(
                        height: 1,
-                      color: Colors.grey,
+                      color: Color(0xFFE6E6E6),
                     ),
                   ) ,
                   SizedBox(height: 80.0)
@@ -563,7 +570,7 @@ class CartScreenState extends State<CartScreen> {
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: Divider(
               height: 1.0,
-              color: Colors.grey,
+              color: Color(0xFFE6E6E6),
             ),
           );
         },
@@ -775,6 +782,7 @@ class CartScreenState extends State<CartScreen> {
     totalPrices = new List<TotalPrice>();
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
+    totalPrices.add(parent.totalPriceWidget);
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pushAndRemoveUntil(
@@ -798,11 +806,12 @@ class CartScreenState extends State<CartScreen> {
 }
 
 class CartTakeAwayScreen extends StatefulWidget {
-  CartTakeAwayScreen({Key key, this.restaurant}) : super(key: key);
+  CartTakeAwayScreen({Key key, this.restaurant, this.parent}) : super(key: key);
   final Records restaurant;
+  CartPageState parent;
 
   @override
-  CartTakeAwayScreenState createState() => CartTakeAwayScreenState(restaurant);
+  CartTakeAwayScreenState createState() => CartTakeAwayScreenState(restaurant, parent);
 }
 
 class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
@@ -811,6 +820,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
   String description;
   String price;
   String discount;
+  CartPageState parent;
   final Records restaurant;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
   GlobalKey<TotalPriceState> totalPriceKey;
@@ -819,7 +829,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
   bool delete = false;
 
 
-  CartTakeAwayScreenState(this.restaurant);
+  CartTakeAwayScreenState(this.restaurant, this.parent);
 
   _buildList() {
     return Expanded(
@@ -844,6 +854,11 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                   'uuid': currentUser.cartDataModel.cart[index].food.uuid
                 });
                 setState(() {
+                  if(parent.totalPriceWidget.key.currentState != null){
+                    parent.totalPriceWidget.key.currentState.setState(() {
+
+                    });
+                  }
                   currentUser.cartDataModel.cart.removeAt(index);
                   currentUser.cartDataModel.saveData();
                 });
@@ -869,7 +884,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
-                  Text('Заберите заказ на ${restaurant.destination_points[index].street + " " + restaurant.destination_points[index].house}, через 25 минут',
+                  Text('Заберите заказ на ${restaurant.destination_points[0].street + " " + restaurant.destination_points[0].house}, через 25 минут',
                     style: TextStyle(
                       fontSize: 14
                     ),
@@ -895,7 +910,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
         separatorBuilder: (BuildContext context, int index) {
           return Divider(
             height: 1.0,
-            color: Colors.grey,
+            color: Color(0xFFE6E6E6),
           );
         },
       ),
@@ -1105,6 +1120,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
     totalPrices = new List<TotalPrice>();
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
+    totalPrices.add(parent.totalPriceWidget);
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pushAndRemoveUntil(

@@ -4,6 +4,7 @@ import 'package:centrifuge/centrifuge.dart' as centrifuge;
 import 'package:flutter/material.dart';
 import 'package:flutter_app/GetData/centrifugo.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
+import 'package:flutter_app/Screens/completed_order_screen.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'dart:convert' as convert;
@@ -53,6 +54,12 @@ class Centrifugo{
       homeScreenKey.currentState.orderList.removeWhere((element) => element.ordersStoryModelItem.uuid == order_uuid);
       if(homeScreenKey.currentState.orderList.length == 0)
         homeScreenKey.currentState.setState(() { });
+      Navigator.push(
+        homeScreenKey.currentContext,
+        MaterialPageRoute(builder: (_) {
+          return CompletedOrderScreen();
+        }),
+      );
     }
     if(orderCheckingStates.containsKey(order_uuid)) {
       if(orderCheckingStates[order_uuid].currentState != null) {

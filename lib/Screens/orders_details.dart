@@ -28,7 +28,35 @@ class OrdersDetailsScreen extends StatefulWidget {
 
 class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
   final OrdersStoryModelItem ordersStoryModelItem;
+  var processing = ['waiting_for_confirmation'
+  ];
+  var cooking_state = [
+    'cooking',
+    'offer_offered',
+    'smart_distribution',
+    'finding_driver',
+    'offer_rejected',
+    'order_start',
+    'on_place',
+    'transferred_to_store',
+    'order_accepted'
+  ];
   var in_the_way = ['on_the_way'];
+
+  Map<String,String> statusIcons = {
+    'cooking':'assets/svg_images/bell.svg',
+    'offer_offered':'assets/svg_images/bell.svg',
+    'smart_distribution':'assets/svg_images/bell.svg',
+    'finding_driver':'assets/svg_images/bell.svg',
+    'offer_rejected':'assets/svg_images/bell.svg',
+    'order_start':'assets/svg_images/bell.svg',
+    'on_place':'assets/svg_images/bell.svg',
+    'transferred_to_store':'assets/svg_images/bell.svg',
+    'order_accepted':'assets/svg_images/bell.svg',
+    'on_the_way':'assets/svg_images/car.svg',
+    'waiting_for_confirmation':'assets/svg_images/state_clock.svg',
+  };
+
 
   OrdersDetailsScreenState(this.ordersStoryModelItem);
 
@@ -185,19 +213,19 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         child: SvgPicture.asset('assets/svg_images/delivered.svg'),
                       )
                     ],
-                  ) : Flexible(
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Text(ordersStoryModelItem.state_title,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14
-                          ),
+                  ) : Row(
+                    children: [
+                      Text(ordersStoryModelItem.state_title,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14
                         ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 5),
+                        child: SvgPicture.asset(statusIcons[ordersStoryModelItem.state]),
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -269,7 +297,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           child: SvgPicture.asset('assets/svg_images/message_icon.svg'),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 20, top: 2, left: 80),
+                          padding: EdgeInsets.only(right: 20, top: 3, left: 80),
                           child: Text(
                             'Чат с водителем',
                             style: TextStyle(

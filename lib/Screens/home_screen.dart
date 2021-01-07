@@ -13,6 +13,7 @@ import 'package:flutter_app/PostData/RestarurantCategories.dart';
 import 'package:flutter_app/PostData/chat.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/PostData/restaurant_data_pass.dart';
+import 'package:flutter_app/Screens/completed_order_screen.dart';
 import 'package:flutter_app/Screens/orders_details.dart';
 import 'package:flutter_app/Screens/profile_screen.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
@@ -54,6 +55,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   Amplitude analytics;
   final String apiKey = 'e0a9f43456e45fc41f68e3d8a149d18d';
   RestaurantCategories restaurantCategories;
+  var take = ['order_payment'];
+  OrdersStoryModelItem ordersStoryModelItem;
 
   @override
   void initState() {
@@ -1099,15 +1102,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   orderList = snapshot.data;
                                   return (currentUser.isLoggedIn)
                                       ? Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: Container(
-                                    height: 230,
-                                    child: ListView(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Container(
+                                      height: 230,
+                                      child: ListView(
                                         children: snapshot.data,
                                         scrollDirection: Axis.horizontal,
+                                      ),
                                     ),
-                                  ),
-                                      ) : Container(
+                                  ) : Container(
                                     height: 0,
                                   );
                                 } else {
@@ -1366,7 +1369,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                 alignment: Alignment.centerLeft,
                 child: (in_the_way
                     .contains(ordersStoryModelItem.state)) ? Padding(
-                  padding: EdgeInsets.only(right: 170, bottom: 8),
+                  padding: EdgeInsets.only(right: 170, bottom: 8, left: 10),
                   child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.reg_number,
                     style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
                 ) : Container(height: 0),
@@ -1384,18 +1387,28 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: Color(0xFF09B44D)),
+                              color: (processing
+                                  .contains(ordersStoryModelItem.state))
+                                  ? Color(0xFF09B44D)
+                                  : Color(0xF6F6F6F6)),
                           child: Column(
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: SvgPicture.asset(
-                                    'assets/svg_images/white_clock.svg'),
+                                  (processing.contains(ordersStoryModelItem.state)) ? 'assets/svg_images/white_clock.svg' :
+                                'assets/svg_images/state_clock.svg', color: (processing.contains(ordersStoryModelItem.state))? Colors.white : Colors.grey,),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
                                 child: Text('Обработка',
-                                    style: TextStyle(color: Colors.white, fontSize: 10)),
+                                    style: (processing
+                                        .contains(ordersStoryModelItem.state))
+                                        ? TextStyle(
+                                        color: Colors.white, fontSize: 10)
+                                        : TextStyle(
+                                        color: Color(0x42424242),
+                                        fontSize: 10)),
                               )
                             ],
                           ),
@@ -1509,7 +1522,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                                     style: (in_the_way
                                         .contains(ordersStoryModelItem.state))
                                         ? TextStyle(
-                                        color: Colors.black, fontSize: 10)
+                                        color: Colors.white, fontSize: 10)
                                         : TextStyle(
                                         color: Color(0x42424242),
                                         fontSize: 10)),
@@ -1795,32 +1808,35 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       print(chatMessageList.length);
       return buildChat();
     }
-    return FutureBuilder<ChatHistoryModel>(
-      future: Chat.loadChatHistory(order_uuid, 'driver'),
-      builder:
-          (BuildContext context, AsyncSnapshot<ChatHistoryModel> snapshot) {
-        print('tututuwapatututuwapa ' + order_uuid);
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          chatMessagesStates.clear();
-          chatMessageList = new List<ChatMessageScreen>();
-          snapshot.data.chatMessageList.forEach((element) {
-            GlobalKey<ChatMessageScreenState> chatMessageScreenStateKey =
-            new GlobalKey<ChatMessageScreenState>();
-            chatMessagesStates[element.uuid] = chatMessageScreenStateKey;
-            chatMessageList.add(new ChatMessageScreen(
-                chatMessage: element, key: chatMessageScreenStateKey));
-          });
-          return buildChat();
-        } else {
-          return Center(
-              child: SpinKitFadingCircle(
-              color: Colors.green,
-              size: 50.0,
-              )
-          );
-        }
-      },
+    return Container(
+      color: Colors.white,
+      child: FutureBuilder<ChatHistoryModel>(
+        future: Chat.loadChatHistory(order_uuid, 'driver'),
+        builder:
+            (BuildContext context, AsyncSnapshot<ChatHistoryModel> snapshot) {
+          print('tututuwapatututuwapa ' + order_uuid);
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data != null) {
+            chatMessagesStates.clear();
+            chatMessageList = new List<ChatMessageScreen>();
+            snapshot.data.chatMessageList.forEach((element) {
+              GlobalKey<ChatMessageScreenState> chatMessageScreenStateKey =
+              new GlobalKey<ChatMessageScreenState>();
+              chatMessagesStates[element.uuid] = chatMessageScreenStateKey;
+              chatMessageList.add(new ChatMessageScreen(
+                  chatMessage: element, key: chatMessageScreenStateKey));
+            });
+            return buildChat();
+          } else {
+            return Center(
+                child: SpinKitFadingCircle(
+                color: Colors.green,
+                size: 50.0,
+                )
+            );
+          }
+        },
+      ),
     );
   }
 }
