@@ -31,6 +31,13 @@ class CartPageScreen extends StatefulWidget {
 class CartPageState extends State<CartPageScreen> {
   final Records restaurant;
 
+  int selectedPageId = 0;
+  GlobalKey<CartTakeAwayScreenState> cartTakeAwayScreenKey = new GlobalKey<CartTakeAwayScreenState>();
+  GlobalKey<CartScreenState> cartScreenKey = new GlobalKey<CartScreenState>();
+  TotalPrice totalPriceWidget = new TotalPrice(key: new GlobalKey(),);
+
+  int selectedPaymentId = 0;
+
   CartPageState(this.restaurant);
 
   PageController _controller = PageController(
@@ -46,16 +53,6 @@ class CartPageState extends State<CartPageScreen> {
   void initState() {
     super.initState();
   }
-
-
-
-  int selectedPageId = 0;
-  GlobalKey<CartTakeAwayScreenState> cartTakeAwayScreenKey = new GlobalKey<CartTakeAwayScreenState>();
-  GlobalKey<CartScreenState> cartScreenKey = new GlobalKey<CartScreenState>();
-  //GlobalKey<TotalPriceState> totalPriceKey = new GlobalKey();
-  TotalPrice totalPriceWidget = new TotalPrice(key: new GlobalKey(),);
-
-  int selectedPaymentId = 0;
 
 
   @override
@@ -80,7 +77,6 @@ class CartPageState extends State<CartPageScreen> {
     );
     var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey, parent: this,);
     var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey, parent: this,);
-    bool f = false;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(

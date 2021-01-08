@@ -57,6 +57,10 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   RestaurantCategories restaurantCategories;
   var take = ['order_payment'];
   OrdersStoryModelItem ordersStoryModelItem;
+  bool firstSelected = false;
+  bool filterSelect = false;
+  bool isExpanded = false;
+  GlobalKey<KitchenListScreenState> kitchenListKey = new GlobalKey();
 
   @override
   void initState() {
@@ -113,7 +117,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         });
   }
 
-  bool firstSelected = false;
 
   _buildFilterNavigationMenu() {
     return Container(
@@ -180,8 +183,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           );
         });
   }
-
-  bool filterSelect = false;
 
 
   _buildKitchensFilterNavigationMenu(GlobalKey<KitchenListScreenState> kitchenListKey) {
@@ -302,36 +303,10 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     );
   }
 
-  bool isExpanded = false;
-
-  List<Widget> _buildRestaurantFoodCategoriesList(Records restaurant){
-    List<Widget> result = new List<Widget>();
-
-    restaurant.product_category.forEach((element) {
-      result.add(Padding(
-        padding: const EdgeInsets.only(right: 5.0),
-        child: Container(
-          padding: EdgeInsets.only(left: 8, right: 8, top: 0),
-          height: 25,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color(0xFFE6E6E6)
-          ),
-          child: Center(child: Text('#' + element[0].toUpperCase() + element.substring(1))),
-        ),
-      ));
-    });
-    return result;
-  }
-
-
 
   _buildRestaurantsList() {
     DateTime now = DateTime.now();
     int currentTime = now.hour*60+now.minute;
-    print((currentTime/60).toString() + 'KANTENT');
-    print((now.hour).toString() + 'KANTENT');
-    print((now.minute).toString() + 'KANTENT');
     int dayNumber  = now.weekday-1;
     List<Widget> restaurantList = [];
     records_items.forEach((Records restaurant) {
@@ -767,7 +742,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     return allSideBarItems;
   }
 
-  GlobalKey<KitchenListScreenState> kitchenListKey = new GlobalKey();
 
   List<Widget> _buildRestaurantCategoriesList(List<Record> categories){
     List<Widget> result = new List<Widget>();
@@ -1281,7 +1255,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     if (!OrderChecking.state_array.contains(ordersStoryModelItem.state)) {
       return Container();
     }
-    print('ALO RABOTAI SUKA' + '' + ordersStoryModelItem.own_delivery.toString());
+    print(ordersStoryModelItem.own_delivery.toString());
     print(ordersStoryModelItem.state);
     return InkWell(
       child: Container(
@@ -2071,28 +2045,6 @@ class ContainerReSizeState extends State<ContainerReSize>{
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-//            Padding(
-//              padding:  (isExpanded) ? EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8) : EdgeInsets.only(left: 15, right: 8, top: 12, bottom: 12),
-//              child: GestureDetector(
-//                child: AnimatedContainer(
-//                  width: isExpanded ? 130 : 120,
-//                  duration: const Duration(seconds: 1),
-//                  child: Image(
-//                    image: AssetImage('assets/images/share_image.png'),
-//                  ),
-//                ),
-//                onTapUp: (value){
-//                  setState(() {
-//                    isExpanded = !isExpanded;
-//                  });
-//                },
-//                onTapDown: (value){
-//                  setState(() {
-//                    isExpanded = !isExpanded;
-//                  });
-//                },
-//              ),
-//            ),
             Padding(
               padding:  EdgeInsets.only(left: 22, right: 8, top: 8, bottom: 8),
               child: Image(

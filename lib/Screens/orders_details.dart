@@ -28,6 +28,9 @@ class OrdersDetailsScreen extends StatefulWidget {
 
 class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
   final OrdersStoryModelItem ordersStoryModelItem;
+  GlobalKey<CartItemsQuantityState> cartItemsQuantityKey = new GlobalKey();
+
+  bool status1 = false;
   var processing = ['waiting_for_confirmation'
   ];
   var cooking_state = [
@@ -60,7 +63,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
 
   OrdersDetailsScreenState(this.ordersStoryModelItem);
 
-  GlobalKey<CartItemsQuantityState> cartItemsQuantityKey = new GlobalKey();
 
   showAlertDialog(BuildContext context) {
     showDialog(
@@ -638,7 +640,6 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     );
   }
 
-  bool status1 = false;
 
   @override
   Widget build(BuildContext context) {

@@ -473,7 +473,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                           child: Image.network(
                             getImage(restaurant.image),
                             fit: BoxFit.cover,
-                            height: 200.0,
+                            height: 230.0,
                             width: MediaQuery.of(context).size.width,
                           )),
                       Align(
@@ -485,10 +485,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                   'assets/svg_images/rest_arrow_left.svg'),
                               onTap: () async {
                                 if(await Internet.checkConnection()){
-//                              Navigator.of(context).pushAndRemoveUntil(
-//                                  MaterialPageRoute(
-//                                      builder: (context) => HomeScreen()),
-//                                      (Route<dynamic> route) => false);
                                   Navigator.of(context).pushAndRemoveUntil(
                                       PageRouteBuilder(
                                           pageBuilder: (context, animation, anotherAnimation) {
@@ -497,8 +493,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                           transitionDuration: Duration(milliseconds: 300),
                                           transitionsBuilder:
                                               (context, animation, anotherAnimation, child) {
-//                                      animation = CurvedAnimation(
-//                                          curve: Curves.bounceIn, parent: animation);
                                             return SlideTransition(
                                               position: Tween(
                                                   begin: Offset(1.0, 0.0),
@@ -673,7 +667,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                         child: Image.network(
                           getImage(restaurant.image),
                           fit: BoxFit.cover,
-                          height: 220.0,
+                          height: 230.0,
                           width: MediaQuery.of(context).size.width,
                         )),
                     Align(
@@ -711,8 +705,95 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   ],
                 )),
             CustomScrollView(
-              anchor: 0.3,
-              slivers: <Widget>[
+              anchor: 0.01,
+              controller: sliverScrollController,
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 140.0,
+                  floating: true,
+                  pinned: true,
+                  snap: true,
+                  backgroundColor: Colors.white,
+                  leading: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: InkWell(child: SliverImage(key: sliverImageKey, image: null,),
+                        onTap: () async {
+                          homeScreenKey =
+                          new GlobalKey<HomeScreenState>();
+                          if(await Internet.checkConnection()){
+                            Navigator.of(context).pushAndRemoveUntil(
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation, anotherAnimation) {
+                                      return HomeScreen();
+                                    },
+                                    transitionDuration: Duration(milliseconds: 300),
+                                    transitionsBuilder:
+                                        (context, animation, anotherAnimation, child) {
+                                      return SlideTransition(
+                                        position: Tween(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset(0.0, 0.0))
+                                            .animate(animation),
+                                        child: child,
+                                      );
+                                    }
+                                ), (Route<dynamic> route) => false);
+                          }else{
+                            noConnection(context);
+                          }
+                        },
+                      )
+                  ),
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: SliverText(title: Text('', style: TextStyle(fontSize: 18),),key: sliverTextKey,),
+                    background: ClipRRect(
+                        child: Stack(
+                          children: <Widget>[
+                            Hero(
+                                tag: restaurant.name,
+                                child: Image.network(
+                                  getImage(restaurant.image),
+                                  fit: BoxFit.cover,
+                                  height: 230.0,
+                                  width: MediaQuery.of(context).size.width,
+                                )),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 40, left: 15),
+                                  child: GestureDetector(
+                                    child: SvgPicture.asset(
+                                        'assets/svg_images/rest_arrow_left.svg'),
+                                    onTap: () async {
+                                      if(await Internet.checkConnection()){
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                            PageRouteBuilder(
+                                                pageBuilder: (context, animation, anotherAnimation) {
+                                                  return HomeScreen();
+                                                },
+                                                transitionDuration: Duration(milliseconds: 300),
+                                                transitionsBuilder:
+                                                    (context, animation, anotherAnimation, child) {
+                                                  return SlideTransition(
+                                                    position: Tween(
+                                                        begin: Offset(1.0, 0.0),
+                                                        end: Offset(0.0, 0.0))
+                                                        .animate(animation),
+                                                    child: child,
+                                                  );
+                                                }
+                                            ), (Route<dynamic> route) => false);
+                                      }else{
+                                        noConnection(context);
+                                      }
+                                    },
+                                  ),
+                                ))
+                          ],
+                        )),
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, index){
@@ -851,13 +932,26 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                     },
                     childCount: 1,
                   ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index){
+                      return Container(
+                        height: 100,
+                        color: Colors.white,
+                        child: Text('dsfsdfsdf'),
+                      );
+                    },
+                    childCount: 1,
+                  ),
                 )
               ],
-            ),
+            )
           ],
         ),
       ),
     );
+
   }
 
   List<Widget> generateMenu() {
@@ -1541,6 +1635,7 @@ class CategoryListState extends State<CategoryList> {
   final RestaurantScreenState parent;
   String currentCategory;
   List<CategoryListItem> categoryItems;
+  bool firstStart;
 
   CategoryListState(this.restaurant, this.parent);
 
@@ -1619,6 +1714,7 @@ class CategoryListState extends State<CategoryList> {
     super.initState();
     categoryItems = new List<CategoryListItem>();
     currentCategory = (restaurant.product_category.length > 0) ? restaurant.product_category[0] : '';
+    firstStart = true;
   }
   @override
   Widget build(BuildContext context) {
@@ -1634,9 +1730,13 @@ class CategoryListState extends State<CategoryList> {
       });
     }
     // Скроллинг к выбранной категории после билда скрина
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ScrollToSelectedCategory();
-    });
+    if(!firstStart){
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ScrollToSelectedCategory();
+      });
+    }else{
+      firstStart = false;
+    }
 
     return  Padding(
       padding: const EdgeInsets.only(top: 15),

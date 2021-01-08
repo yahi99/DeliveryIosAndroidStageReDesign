@@ -448,7 +448,7 @@ class AddressScreenState extends State<AddressScreen>
       );
     }
     return Container(
-      height: 220,
+      height: 130,
       child: Column(
         children: [
           Align(
@@ -2347,72 +2347,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
     List<Widget> widgetsList = new List<Widget>();
     myFavouriteAddressList.forEach((element) {
       if(element.tag == null) {
-        widgetsList.add(GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-              child: Stack(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: TextFormField(
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) {
-                                  return new AddAddressScreen(
-                                      myAddressesModel:
-                                      element,
-                                      parent: parent
-                                  );
-                                }),
-                          );
-                        } else {
-                          noConnection(context);
-                        }
-                      },
-                      readOnly: true,
-                      controller: notFavouriteAddressController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 15),
-                        hintText: 'Указать другой адрес',
-                        hintStyle: TextStyle(
-                            color: Color(0xFFE6E6E6)
-                        ),
-                        enabledBorder:  OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: (notFavouriteAddressController.text != '') ? BorderSide(color: Color(0xFF09B44D)) : BorderSide(color: Colors.black26),
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Адрес',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ),
-                ],
-              ),
-            ),
-        )
+        widgetsList.add(Container()
        );
       } else {
         widgetsList.add(
@@ -2498,10 +2433,80 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
       color: Colors.white,
       child: ScrollConfiguration(
         behavior: new ScrollBehavior(),
-        child: SingleChildScrollView(
-          child: Column(
-            children: widgetsList,
-          ),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: widgetsList
+              ),
+            ),
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: TextFormField(
+                        onTap: () async {
+                          if (await Internet.checkConnection()) {
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) {
+                                    return new AddAddressScreen(
+                                        myAddressesModel:
+                                        myFavouriteAddressList.last,
+                                        parent: parent
+                                    );
+                                  }),
+                            );
+                          } else {
+                            noConnection(context);
+                          }
+                        },
+                        readOnly: true,
+                        controller: notFavouriteAddressController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 15),
+                          hintText: 'Указать другой адрес',
+                          hintStyle: TextStyle(
+                              color: Color(0xFFE6E6E6)
+                          ),
+                          enabledBorder:  OutlineInputBorder(
+                            // width: 0.0 produces a thin "hairline" border
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: (notFavouriteAddressController.text != '') ? BorderSide(color: Color(0xFF09B44D)) : BorderSide(color: Colors.black26),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.all(5),
+                              child: Text(
+                                'Адрес',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

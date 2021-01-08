@@ -39,7 +39,6 @@ class AutoCompleteFieldState extends State<AutoCompleteField> with AutomaticKeep
 
   Widget build(BuildContext context) {
     return Container(
-//      height: 500,
       child: Column(
         children: [
           Padding(

@@ -117,25 +117,11 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                       }
                       myAddressesModel.name = nameField.text;
                       myAddressesModel.description = commentField.text;
-                      // if(myAddressesModel.tag == null) {
-                      //   myAddressesModel.tag = "";
-                      //   parent.myAddressesModelList
-                      //       .add(new MyFavouriteAddressesModel(tag: null));
-                      // }
-                      //await myAddressesModel.ifNoBrainsSave();
-
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.push(context,
                         new MaterialPageRoute(builder: (context) => new AddressScreen(restaurant: parent.restaurant, myAddressesModelList: parent.myAddressesModelList,)),
                       );
-//                      if(cartPageKey.currentState.cartScreenKey.currentState.){
-//
-//                      }else{
-//                        Navigator.push(context,
-//                          new MaterialPageRoute(builder: (context) => new TakeAway(restaurant: parent1.restaurant,)),
-//                        );
-//                      }
                     } else {
                       noConnection(context);
                     }
