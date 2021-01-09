@@ -244,14 +244,14 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   Text(
                     'Адрес заведения',
                     style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF3F3F3F),),
+                      fontSize: 14,
+                      color: Color(0xFF3F3F3F),),
                   ),
                   Text(
                     'Адрес доставки',
                     style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF3F3F3F),),
+                      fontSize: 14,
+                      color: Color(0xFF3F3F3F),),
                   ),
                 ],
               ),
@@ -281,50 +281,50 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 ),
               ),
             ),
-        (in_the_way.contains(ordersStoryModelItem.state)) ? GestureDetector(
+            (in_the_way.contains(ordersStoryModelItem.state)) ? GestureDetector(
               child: Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-                child: Container(
-                  width: 310,
-                  height: 42,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color(0xFFF6F6F6)),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
-                    child: Stack(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 45, top: 5),
-                          child: SvgPicture.asset('assets/svg_images/message_icon.svg'),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 20, top: 3, left: 80),
-                          child: Text(
-                            'Чат с водителем',
-                            style: TextStyle(
-                              fontSize: 18,
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                  child: Container(
+                    width: 310,
+                    height: 42,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color(0xFFF6F6F6)),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 5, right: 10, bottom: 5, left: 10),
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 45, top: 5),
+                            child: SvgPicture.asset('assets/svg_images/message_icon.svg'),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 20, top: 3, left: 80),
+                            child: Text(
+                              'Чат с водителем',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                        FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.done && snapshot.data){
-                              return Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 189, bottom: 0),
-                                  child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
-                                ),
-                              );
-                            }
-                            return Container(height: 0);
-                          },
-                        ),
-                      ],
+                          FutureBuilder(future: ordersStoryModelItem.hasNewMessage(),
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if(snapshot.connectionState == ConnectionState.done && snapshot.data){
+                                return Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 189, bottom: 0),
+                                    child: SvgPicture.asset('assets/svg_images/chat_circle.svg'),
+                                  ),
+                                );
+                              }
+                              return Container(height: 0);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
               ),
               onTap: (){
                 Navigator.pushReplacement(
@@ -355,100 +355,100 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
       result.add(Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 10, left: 15),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
-                    child: Image.network(
-                      getImage(product.image),
-                      fit: BoxFit.cover,
-                      height: 70,
-                      width: 70,
-                    ),),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 100),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          product.name,
-                          style: TextStyle(
-                              decoration: TextDecoration.none,
-                              fontSize: 14.0,
-                              color: Color(0xFF000000)),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      (product.selectedVariant != null)
-                          ? Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          product.selectedVariant.name,
-                          style: TextStyle(
-                              decoration: TextDecoration.none,
-                              fontSize: 10.0,
-                              color: Colors.grey),
-                          textAlign: TextAlign.start,
-                        ),
-                      ) : Text(''),
-                      (product.toppings != null)
-                          ? Align(
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          children: List.generate(
-                              product.toppings.length,
-                                  (index) => Text(
-                                product.toppings[index]
-                                    .name,
-                                style: TextStyle(
-                                    decoration:
-                                    TextDecoration.none,
-                                    fontSize: 10.0,
-                                    color: Colors.grey),
-                                textAlign: TextAlign.start,
-                              )),
-                        ),
-                      )
-                          : Text(''),
-                    ],
+              padding: EdgeInsets.only(top: 10, bottom: 10, left: 15),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                      child: Image.network(
+                        getImage(product.image),
+                        fit: BoxFit.cover,
+                        height: 70,
+                        width: 70,
+                      ),),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Text(
-                          '${(product.selectedVariant != null  && product.selectedVariant.price != null) ?
-                          (product.number * (product.price + product.selectedVariant.price) + toppingsCost).toStringAsFixed(0) :
-                          (product.number * product.price + toppingsCost).toStringAsFixed(0)} \₽',
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 18),
+                  Padding(
+                    padding: EdgeInsets.only(left: 100),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            product.name,
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                fontSize: 14.0,
+                                color: Color(0xFF000000)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                        child: Text(
-                          '${product.number}шт',
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 18),
-                        ),
-                      ),
-                    ],
+                        (product.selectedVariant != null)
+                            ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            product.selectedVariant.name,
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                fontSize: 10.0,
+                                color: Colors.grey),
+                            textAlign: TextAlign.start,
+                          ),
+                        ) : Text(''),
+                        (product.toppings != null)
+                            ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            children: List.generate(
+                                product.toppings.length,
+                                    (index) => Text(
+                                  product.toppings[index]
+                                      .name,
+                                  style: TextStyle(
+                                      decoration:
+                                      TextDecoration.none,
+                                      fontSize: 10.0,
+                                      color: Colors.grey),
+                                  textAlign: TextAlign.start,
+                                )),
+                          ),
+                        )
+                            : Text(''),
+                      ],
+                    ),
                   ),
-                )
-              ],
-            )
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Text(
+                            '${(product.selectedVariant != null  && product.selectedVariant.price != null) ?
+                            (product.number * (product.price + product.selectedVariant.price) + toppingsCost).toStringAsFixed(0) :
+                            (product.number * product.price + toppingsCost).toStringAsFixed(0)} \₽',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 18),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                          child: Text(
+                            '${product.number}шт',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 18),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
           ),
           Padding(
             padding: EdgeInsets.only(left: 10, right: 10),
@@ -759,8 +759,8 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                             child: Text(
                               'Повторить заказ',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,),
+                                color: Colors.white,
+                                fontSize: 18,),
                             ),
                           )),
                       onTap: () async {
@@ -801,8 +801,8 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                             child: Text(
                               'Отменить заказ',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,),
+                                color: Colors.white,
+                                fontSize: 18,),
                             ),
                           )),
                       onTap: () async {
@@ -831,17 +831,17 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                   BorderRadius.all(Radius.circular(11)),
                                   color: Color(0xFF09B44D)),
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 5, right: 10, bottom: 5, left: 10),
-                                child:  Center(
-                                  child: Text(
-                                    'Позвонить',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                    color: Colors.white
+                                  padding: EdgeInsets.only(
+                                      top: 5, right: 10, bottom: 5, left: 10),
+                                  child:  Center(
+                                    child: Text(
+                                      'Позвонить',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white
+                                      ),
                                     ),
-                                  ),
-                                )
+                                  )
                               ),
                             )
                                 : Container(),
@@ -856,56 +856,56 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                     child: Column(
                                       children: [
                                         Dialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                          child: Container(
-                                            height: 220,
-                                            child: Column(
-                                              children: [
-                                                Text('Кому вы хотите позвонить?',
-                                                  style: TextStyle(
-                                                      fontSize: 20
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                            child: Container(
+                                              height: 220,
+                                              child: Column(
+                                                children: [
+                                                  Text('Кому вы хотите позвонить?',
+                                                    style: TextStyle(
+                                                        fontSize: 20
+                                                    ),
                                                   ),
-                                                ),
-                                                Divider(color: Colors.grey,),
-                                                InkWell(
-                                                  child: Container(
-                                                    height: 50,
-                                                    width: 100,
-                                                    child: Center(
-                                                      child: Text("В заведение",
-                                                        style: TextStyle(
-                                                            color: Color(0xFF007AFF),
-                                                            fontSize: 20
+                                                  Divider(color: Colors.grey,),
+                                                  InkWell(
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 100,
+                                                      child: Center(
+                                                        child: Text("В заведение",
+                                                          style: TextStyle(
+                                                              color: Color(0xFF007AFF),
+                                                              fontSize: 20
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
+                                                    onTap: () {
+                                                      launch("tel://" + ordersStoryModelItem.store.phone);
+                                                    },
                                                   ),
-                                                  onTap: () {
-                                                    launch("tel://" + ordersStoryModelItem.store.phone);
-                                                  },
-                                                ),
-                                                Divider(color: Colors.grey,),
-                                                InkWell(
-                                                  child: Container(
-                                                    height: 50,
-                                                    width: 100,
-                                                    child: Center(
-                                                      child: Text("Водителю",
-                                                        style: TextStyle(
-                                                            color: Color(0xFF007AFF),
-                                                            fontSize: 20
+                                                  Divider(color: Colors.grey,),
+                                                  InkWell(
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 100,
+                                                      child: Center(
+                                                        child: Text("Водителю",
+                                                          style: TextStyle(
+                                                              color: Color(0xFF007AFF),
+                                                              fontSize: 20
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
+                                                    onTap: () {
+                                                      launch("tel://" + ordersStoryModelItem.driver.phone);
+                                                    },
                                                   ),
-                                                  onTap: () {
-                                                    launch("tel://" + ordersStoryModelItem.driver.phone);
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                                ],
+                                              ),
+                                            )
                                         ),
                                         Dialog(
                                           shape: RoundedRectangleBorder(
@@ -956,8 +956,8 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                             child: Text(
                               'Удалить данные о заказе',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,),
+                                color: Colors.white,
+                                fontSize: 18,),
                             ),
                           )),
                     ) : Container(height: 0,),
@@ -1022,103 +1022,103 @@ class OrderRejectScreenState extends State<OrderRejectScreen> {
   Widget build(BuildContext context) {
     double toppingsCost = 0;
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                      height: 50,
-                      width: 60,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 12, bottom: 12, right: 15),
-                        child: Center(
-                          child:SvgPicture.asset(
-                              'assets/svg_images/arrow_left.svg'),
-                        ),
-                      )
-                  ),
-                  onTap: () async {
-                    Navigator.pop(context);
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.35),
-                  child: Text('Отмена заказа',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10),
-            child: Text('Почему вы решили отменить заказ?',style: TextStyle(fontSize: 18, color: Color(0xFF424242))),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: List.generate(5,(index){
-                return Padding(
-                  padding: const EdgeInsets.only(top: 30.0, left: 15, right: 15),
-                  child: Container(
-                    width: 345,
-                    height: 56,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFFE6E6E6)
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  InkWell(
+                    child: Container(
+                        height: 50,
+                        width: 60,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 12, bottom: 12, right: 15),
+                          child: Center(
+                            child:SvgPicture.asset(
+                                'assets/svg_images/arrow_left.svg'),
+                          ),
+                        )
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Align(alignment: Alignment.centerLeft,child: Text('Заказал случайно', textAlign: TextAlign.start,)),
-                    )
+                    onTap: () async {
+                      Navigator.pop(context);
+                    },
                   ),
-                );
-              }),
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: GestureDetector(
-                  child: Container(
-                      height: 50,
-                      width: 340,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFE534F),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Оменить заказ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,),
-                        ),
-                      )),
-                  onTap: () async {
-                    if (await Internet.checkConnection()) {
-                      showAlertDialog(context);
-                      await loadOrderCancel(ordersStoryModelItem.uuid);
-                      homeScreenKey = new GlobalKey();
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()),
-                              (Route<dynamic> route) => false);
-                    } else {
-                      noConnection(context);
-                    }
-                  },
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.35),
+                    child: Text('Отмена заказа',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
+                  )
+                ],
               ),
             ),
-          )
-        ],
-      )
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10),
+              child: Text('Почему вы решили отменить заказ?',style: TextStyle(fontSize: 18, color: Color(0xFF424242))),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: List.generate(5,(index){
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 30.0, left: 15, right: 15),
+                    child: Container(
+                        width: 345,
+                        height: 56,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xFFE6E6E6)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Align(alignment: Alignment.centerLeft,child: Text('Заказал случайно', textAlign: TextAlign.start,)),
+                        )
+                    ),
+                  );
+                }),
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: GestureDetector(
+                    child: Container(
+                        height: 50,
+                        width: 340,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFE534F),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Оменить заказ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,),
+                          ),
+                        )),
+                    onTap: () async {
+                      if (await Internet.checkConnection()) {
+                        showAlertDialog(context);
+                        await loadOrderCancel(ordersStoryModelItem.uuid);
+                        homeScreenKey = new GlobalKey();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                                (Route<dynamic> route) => false);
+                      } else {
+                        noConnection(context);
+                      }
+                    },
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
     );
   }
 }

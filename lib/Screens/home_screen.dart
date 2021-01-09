@@ -129,9 +129,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: Text(
                 'Отобразить сначала',
                 style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
+                    color: Color(0xFF000000),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -415,9 +415,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         child: Text(
                           restaurant.name,
                           style: TextStyle(
-                              fontSize: 21.0,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF3F3F3F),),
+                            fontSize: 21.0,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF3F3F3F),),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -957,25 +957,25 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         drawer: ClipRRect(
           borderRadius: BorderRadius.only(topRight: Radius.circular(15)),
           child: Drawer(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 60),
-                  child: Center(
-                    child: Image(
-                      height: 97,
-                      width: 142,
-                      image: AssetImage('assets/images/faem.png'),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: Center(
+                      child: Image(
+                        height: 97,
+                        width: 142,
+                        image: AssetImage('assets/images/faem.png'),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: getSideBarItems(currentUser.isLoggedIn),
+                  Expanded(
+                    child: ListView(
+                      children: getSideBarItems(currentUser.isLoggedIn),
+                    ),
                   ),
-                ),
-              ],
-            )
+                ],
+              )
           ),
         ),
         body: FutureBuilder<DeliveryResponseData>(
@@ -1026,7 +1026,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               padding: EdgeInsets.only(left: 8, top: 0),
                               child: InkWell(
                                 child: SvgPicture.asset(
-                                    'assets/svg_images/home_menu.svg',
+                                  'assets/svg_images/home_menu.svg',
                                   color: Colors.black,
                                 ),
                                 onTap: () {
@@ -1038,14 +1038,14 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               width: 250,
                               height: 38,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Color(0xFF09B44D)
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Color(0xFF09B44D)
                               ),
                               child: Center(
                                 child: Text('Хаджи Мамсурова,42',
                                   style: TextStyle(
-                                     color: Colors.white,
-                                    fontSize: 13
+                                      color: Colors.white,
+                                      fontSize: 13
                                   ),
                                 ),
                               ),
@@ -1054,7 +1054,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               padding: EdgeInsets.only(bottom: 0, top: 0),
                               child: InkWell(
                                 child: SvgPicture.asset(
-                                    'assets/svg_images/search.svg',
+                                  'assets/svg_images/search.svg',
                                   color: Colors.black,),
                               ),
                             ),
@@ -1104,8 +1104,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 children: [
                                   Text('Акции и новинки',
                                     style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold
                                     ),
                                   ),
                                   Row(
@@ -1154,13 +1154,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       (currentUser.cartDataModel.cart != null &&
                           currentUser.cartDataModel.cart.length != 0)
                           ? Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: BasketButton(
-                        key: basketButtonStateKey,
-                        restaurant:
-                        currentUser.cartDataModel.cart[0].restaurant,
-                      ),
-                          )
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: BasketButton(
+                          key: basketButtonStateKey,
+                          restaurant:
+                          currentUser.cartDataModel.cart[0].restaurant,
+                        ),
+                      )
                           : Visibility(
                         child: Container(height: 80),
                         visible: false,
@@ -1371,7 +1371,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                                 padding: EdgeInsets.only(top: 10),
                                 child: SvgPicture.asset(
                                   (processing.contains(ordersStoryModelItem.state)) ? 'assets/svg_images/white_clock.svg' :
-                                'assets/svg_images/state_clock.svg', color: (processing.contains(ordersStoryModelItem.state))? Colors.white : Colors.grey,),
+                                  'assets/svg_images/state_clock.svg', color: (processing.contains(ordersStoryModelItem.state))? Colors.white : Colors.grey,),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
@@ -1804,8 +1804,8 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           } else {
             return Center(
                 child: SpinKitFadingCircle(
-                color: Colors.green,
-                size: 50.0,
+                  color: Colors.green,
+                  size: 50.0,
                 )
             );
           }
@@ -2046,10 +2046,10 @@ class ContainerReSizeState extends State<ContainerReSize>{
           scrollDirection: Axis.horizontal,
           children: [
             Padding(
-              padding:  EdgeInsets.only(left: 22, right: 8, top: 8, bottom: 8),
-              child: Image(
-                image: AssetImage('assets/images/share_image.png'),
-              )
+                padding:  EdgeInsets.only(left: 22, right: 8, top: 8, bottom: 8),
+                child: Image(
+                  image: AssetImage('assets/images/share_image.png'),
+                )
             ),
             Padding(
                 padding:  EdgeInsets.only(right: 8, top: 8, bottom: 8),
@@ -2253,49 +2253,49 @@ class FilterListScreenState extends State<FilterListScreen>{
   Widget build(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.only(),
-      height: 280,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: List.generate(5,(index){
-          return InkWell(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
-              child: (!selectedKitchens[index]) ? Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(titles[index],
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18
+        padding: EdgeInsets.only(),
+        height: 280,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: List.generate(5,(index){
+            return InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
+                child: (!selectedKitchens[index]) ? Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(titles[index],
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18
+                        ),
                       ),
-                    ),
-                    SvgPicture.asset('assets/svg_images/circle.svg'),
-                  ],
-                ),
-              ) : Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(titles[index],
-                      style: TextStyle(
-                          fontSize: 18
+                      SvgPicture.asset('assets/svg_images/circle.svg'),
+                    ],
+                  ),
+                ) : Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(titles[index],
+                        style: TextStyle(
+                            fontSize: 18
+                        ),
                       ),
-                    ),
-                    SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
-                  ],
+                      SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            onTap: (){
-              setState(() {
-                selectedKitchens[index] = !selectedKitchens[index];
-              });
-            },
-          );
-        }),
-      )
+              onTap: (){
+                setState(() {
+                  selectedKitchens[index] = !selectedKitchens[index];
+                });
+              },
+            );
+          }),
+        )
     );
   }
 }
