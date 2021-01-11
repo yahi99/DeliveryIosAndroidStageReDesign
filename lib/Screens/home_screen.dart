@@ -21,6 +21,7 @@ import 'package:flutter_app/Screens/restaurant_screen.dart';
 import 'package:flutter_app/Screens/service_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ChatHistoryModel.dart';
+import 'package:flutter_app/models/InitData.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_app/models/QuickMessagesModel.dart';
 import 'package:flutter_app/models/RestaurantCategoriesModel.dart';
@@ -1208,10 +1209,9 @@ class OrderChecking extends StatefulWidget {
 
   static Future<List<OrderChecking>> getActiveOrder() async {
     List<OrderChecking> activeOrderList = new List<OrderChecking>();
-    getInitData();
-    OrdersStoryModel ordersStoryModel = await loadOrdersStoryModel();
+    InitData initData = await getInitData();
     orderCheckingStates.clear();
-    ordersStoryModel.ordersStoryModelItems
+    initData.ordersData
         .forEach((OrdersStoryModelItem element) {
       if (state_array.contains(element.state)) {
         print(element.uuid);
@@ -1257,8 +1257,6 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
     if (!OrderChecking.state_array.contains(ordersStoryModelItem.state)) {
       return Container();
     }
-    print(ordersStoryModelItem.own_delivery.toString());
-    print(ordersStoryModelItem.state);
     return InkWell(
       child: Container(
           width: 350,
@@ -1287,8 +1285,8 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         child: Align(
                           child: Text(
                             'Ваш заказ из ' +
-                                (ordersStoryModelItem.store != null
-                                    ? ordersStoryModelItem.store.name
+                                (ordersStoryModelItem.productsData.store != null
+                                    ? ordersStoryModelItem.productsData.store.name
                                     : 'Пусто'),
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
@@ -1346,7 +1344,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                 child: (in_the_way
                     .contains(ordersStoryModelItem.state)) ? Padding(
                   padding: EdgeInsets.only(right: 170, bottom: 8, left: 10),
-                  child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.reg_number,
+                  child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.regNumber,
                     style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
                 ) : Container(height: 0),
               ),
@@ -1412,7 +1410,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         ],
                       ),
                       Padding(
-                        padding: (ordersStoryModelItem.without_delivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
+                        padding: (ordersStoryModelItem.withoutDelivery) ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 5),
                         child: Container(
                           height: 70,
                           width: 70,
@@ -1470,7 +1468,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ],
                       ),
-                      (ordersStoryModelItem.without_delivery) ? Container() : Padding(
+                      (ordersStoryModelItem.withoutDelivery) ? Container() : Padding(
                         padding: EdgeInsets.only(right: 5),
                         child: Container(
                           height: 70,
@@ -1546,7 +1544,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                   ),
                 ),
               ),
-              (in_the_way.contains(ordersStoryModelItem.state) && ordersStoryModelItem.own_delivery != null && ordersStoryModelItem.own_delivery) ? Padding(
+              (in_the_way.contains(ordersStoryModelItem.state) && ordersStoryModelItem.ownDelivery != null && ordersStoryModelItem.ownDelivery) ? Padding(
                   padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
                   child: Text('Доставку осуществляет курьер от заведения',
                     style: TextStyle(

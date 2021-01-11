@@ -75,17 +75,17 @@ class FoodRecords{
     );
   }
 
-  factory FoodRecords.fromFoodRecordsStory(FoodRecordsStory foodItem){
+  factory FoodRecords.fromFoodRecordsStory(Product foodItem){
     return FoodRecords(
       uuid: foodItem.uuid,
       weight:foodItem.weight,
-      weight_measure: foodItem.weight_measure,
+      weight_measure: foodItem.weightMeasure,
       name: foodItem.name,
       comment: foodItem.comment,
       available: foodItem.available,
       price: foodItem.price,
       image: foodItem.image,
-      store_uuid: foodItem.store_uuid,
+      store_uuid: foodItem.storeUuid,
       toppings: foodItem.toppings,
       category: null,
       variants: [foodItem.selectedVariant],

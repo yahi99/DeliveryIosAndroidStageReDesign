@@ -138,7 +138,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     double totalPrice = ordersStoryModelItem.tariff.totalPrice.toDouble();
     var format = new DateFormat('  HH:mm    dd.MM.yyyy');
     List<Widget> result = new List<Widget>();
-    if(ordersStoryModelItem.products == null){
+    if(ordersStoryModelItem.productsData.products == null){
       return List<Container>();
     }
     result.add(Padding(
@@ -165,13 +165,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    (ordersStoryModelItem.store != null)
-                        ? ordersStoryModelItem.store.name
+                    (ordersStoryModelItem.productsData.store != null)
+                        ? ordersStoryModelItem.productsData.store.name
                         : 'Пусто',
                     style: TextStyle(fontSize: 18, color: Color(0xFF000000)),
                   ),
                   Text(
-                    '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
+                    '${ordersStoryModelItem.tariff.totalPrice + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
@@ -195,14 +195,14 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 0, top: 0, right: 15),
                           child: Text(
-                            format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
+                            format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.createdAtUnix * 1000)),
                             style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  (ordersStoryModelItem.state_title == "Завершен") ? Row(
+                  (ordersStoryModelItem.stateTitle == "Завершен") ? Row(
                     children: [
                       Text('Доставлен',
                         style: TextStyle(
@@ -217,7 +217,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     ],
                   ) : Row(
                     children: [
-                      Text(ordersStoryModelItem.state_title,
+                      Text(ordersStoryModelItem.stateTitle,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14
@@ -264,13 +264,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        (ordersStoryModelItem.store != null)
+                        (ordersStoryModelItem.productsData.store != null)
                             ? ordersStoryModelItem.routes[0].unrestrictedValue
                             : 'Пусто',
                         style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
                       ),
                       Text(
-                        (ordersStoryModelItem.store != null && ordersStoryModelItem.routes.length > 1)
+                        (ordersStoryModelItem.productsData.store != null && ordersStoryModelItem.routes.length > 1)
                             ?  ordersStoryModelItem.routes[1].unrestrictedValue
                             : 'Пусто',
                         style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0),),
@@ -339,7 +339,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
         ),
       ),
     ));
-    ordersStoryModelItem.products.forEach((product) {
+    ordersStoryModelItem.productsData.products.forEach((product) {
       if(product.selectedVariant != null && product.selectedVariant.price != null){
         totalPrice += product.number * (product.price + product.selectedVariant.price);
       }else{
@@ -458,7 +458,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
       ));
     });
     double own_delivery_price = totalPrice - ordersStoryModelItem.tariff.totalPrice;
-    (ordersStoryModelItem.own_delivery != null && ordersStoryModelItem.own_delivery) ? result.add(Column(
+    (ordersStoryModelItem.ownDelivery != null && ordersStoryModelItem.ownDelivery) ? result.add(Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -601,7 +601,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         ),
                       ),
                       onTap: () {
-                        launch("tel://" + ordersStoryModelItem.store.phone);
+                        launch("tel://" + ordersStoryModelItem.productsData.store.phone);
                       },
                     ),
                     Divider(
@@ -765,10 +765,10 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           )),
                       onTap: () async {
                         if (await Internet.checkConnection()) {
-                          Records restaurant = ordersStoryModelItem.store;
+                          Records restaurant = ordersStoryModelItem.productsData.store;
                           currentUser.cartDataModel.cart.clear();
-                          ordersStoryModelItem.products
-                              .forEach((FoodRecordsStory element) {
+                          ordersStoryModelItem.productsData.products
+                              .forEach((Product element) {
                             FoodRecords foodItem =
                             FoodRecords.fromFoodRecordsStory(element);
                             Order order = new Order(
@@ -782,7 +782,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           Navigator.push(
                             context,
                             new MaterialPageRoute(builder: (context) {
-                              return new CartScreen(restaurant: restaurant);
+                              return new CartPageScreen(restaurant: restaurant);
                             }),
                           );
                         } else {
@@ -882,7 +882,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                       ),
                                                     ),
                                                     onTap: () {
-                                                      launch("tel://" + ordersStoryModelItem.store.phone);
+                                                      launch("tel://" + ordersStoryModelItem.productsData.store.phone);
                                                     },
                                                   ),
                                                   Divider(color: Colors.grey,),

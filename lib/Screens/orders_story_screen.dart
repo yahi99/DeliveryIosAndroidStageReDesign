@@ -50,11 +50,11 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(ordersStoryModelItem.store.name,
+                      Text(ordersStoryModelItem.productsData.store.name,
                           textAlign: TextAlign.start,
                           style: TextStyle(fontSize: 18, color: Color(0xFF000000))),
                       Text(
-                        '${ordersStoryModelItem.price + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
+                        '${ordersStoryModelItem.tariff.totalPrice + ordersStoryModelItem.tariff.productsPrice - ordersStoryModelItem.tariff.bonusPayment} \₽',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -76,13 +76,13 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                               child: SvgPicture.asset('assets/svg_images/clock.svg'),
                             ),
                             Text(
-                              format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.created_at_unix * 1000)),
+                              format.format(DateTime.fromMillisecondsSinceEpoch( ordersStoryModelItem.createdAtUnix * 1000)),
                               style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
                             ),
                           ],
                         ),
                       ),
-                      (ordersStoryModelItem.state_title == "Завершен") ? Row(
+                      (ordersStoryModelItem.stateTitle == "Завершен") ? Row(
                         children: [
                           Text('Доставлен',
                             style: TextStyle(
@@ -96,7 +96,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                           )
                         ],
                       ) : Container(
-                        child: Text(ordersStoryModelItem.state_title,
+                        child: Text(ordersStoryModelItem.stateTitle,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 14
@@ -120,7 +120,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
       return Container();
     }else{
       records_items.forEach((OrdersStoryModelItem ordersStoryModelItem) {
-        if(ordersStoryModelItem.products!= null && ordersStoryModelItem.products.length > 0){
+        if(ordersStoryModelItem.productsData!= null && ordersStoryModelItem.productsData.products!= null && ordersStoryModelItem.productsData.products.length > 0){
           restaurantList.add(
             InkWell(
                 child: column(ordersStoryModelItem),
