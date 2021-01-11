@@ -142,7 +142,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
       return List<Container>();
     }
     result.add(Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10, top: 10),
+      padding: const EdgeInsets.only(left: 15.0, right: 14, bottom: 10, top: 10),
       child: Container(
         height: (in_the_way.contains(ordersStoryModelItem.state)) ? 230 : 190,
         padding: EdgeInsets.only(right: 10, left: 15),

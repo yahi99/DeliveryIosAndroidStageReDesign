@@ -448,7 +448,7 @@ class AddressScreenState extends State<AddressScreen>
       );
     }
     return Container(
-      height: 130,
+      height: 160,
       child: Column(
         children: [
           Align(
@@ -1177,7 +1177,7 @@ class AddressScreenState extends State<AddressScreen>
                       color: Color(0xFAFAFAFA),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
+                      padding: const EdgeInsets.only(bottom: 30, right: 15),
                       child: Row(
                         children: [
                           Padding(
@@ -1187,7 +1187,7 @@ class AddressScreenState extends State<AddressScreen>
                               alignment: Alignment.bottomLeft,
                               child: GestureDetector(
                                 child: Container(
-                                  width: 185,
+                                  width: 160,
                                   height: 64,
                                   decoration: BoxDecoration(
                                       boxShadow: [
@@ -2442,7 +2442,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
             ),
             GestureDetector(
               child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+                padding: const EdgeInsets.only(top: 0, left: 15, right: 15),
                 child: Stack(
                   children: [
                     Container(

@@ -686,7 +686,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                               ),
                             ),
                             Padding(
-                              padding:  EdgeInsets.only(bottom: 15),
+                              padding:  EdgeInsets.only(bottom: 0),
                               child: BasketButton(
                                   key: basketButtonStateKey, restaurant: restaurant),
                             ),
@@ -2545,7 +2545,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 8, right: 15, bottom: 0),
+                          padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
                           child: FlatButton(
                             child: Text(
                               "Добавить",
@@ -2557,7 +2557,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: EdgeInsets.only(
-                                left: 80, top: 20, right: 80, bottom: 20),
+                                left: 70, top: 20, right: 70, bottom: 20),
                             onPressed: () async {
                               if (await Internet.checkConnection()) {
                                 FoodRecords foodOrder =

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter_app/PostData/chat.dart';
+import 'package:flutter_app/models/ChatHistoryModel.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 
 InitData initDataFromJson(String str) => InitData.fromJson(json.decode(str));
@@ -212,6 +214,18 @@ class OrdersDatum {
     "state": state,
     "state_title": stateTitle,
   };
+
+  Future<bool> hasNewMessage() async{
+    bool result = false;
+    ChatHistoryModel chatHistory = await Chat.loadChatHistory(uuid, 'driver');
+    chatHistory.chatMessageList.forEach((message) {
+      if(message.to == 'client' && !message.ack){
+        result = true;
+        return;
+      }
+    });
+    return result;
+  }
 }
 
 class Client {

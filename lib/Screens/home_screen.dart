@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/GetData/centrifugo.dart';
 import 'package:flutter_app/GetData/getImage.dart';
+import 'package:flutter_app/GetData/getInitData.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
 import 'package:flutter_app/GetData/getTicketByFilter.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
@@ -1207,6 +1208,7 @@ class OrderChecking extends StatefulWidget {
 
   static Future<List<OrderChecking>> getActiveOrder() async {
     List<OrderChecking> activeOrderList = new List<OrderChecking>();
+    getInitData();
     OrdersStoryModel ordersStoryModel = await loadOrdersStoryModel();
     orderCheckingStates.clear();
     ordersStoryModel.ordersStoryModelItems
