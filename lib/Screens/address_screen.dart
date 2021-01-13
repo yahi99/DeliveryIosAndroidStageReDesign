@@ -591,9 +591,9 @@ class AddressScreenState extends State<AddressScreen>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 2.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Color(0xFFF6F6F6),
@@ -671,9 +671,9 @@ class AddressScreenState extends State<AddressScreen>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 2.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Color(0xFFF6F6F6),
@@ -732,9 +732,9 @@ class AddressScreenState extends State<AddressScreen>
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4.0, // soften the shadow
-                                  spreadRadius: 1.0, //extend the shadow
+                                    color: Colors.black12,
+                                    blurRadius: 2.0,
+                                    offset: Offset(0.0, 1)
                                 )
                               ],
                               color: Colors.white,
@@ -1130,9 +1130,9 @@ class AddressScreenState extends State<AddressScreen>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Colors.white,
@@ -1172,10 +1172,6 @@ class AddressScreenState extends State<AddressScreen>
                         ),
                       ),
                     ),
-                    Container(
-                      height: 10,
-                      color: Color(0xFAFAFAFA),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 30, right: 15),
                       child: Row(
@@ -1192,9 +1188,9 @@ class AddressScreenState extends State<AddressScreen>
                                   decoration: BoxDecoration(
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black12,
-                                          blurRadius: 4.0, // soften the shadow
-                                          spreadRadius: 1.0, //extend the shadow
+                                            color: Colors.black12,
+                                            blurRadius: 2.0,
+                                            offset: Offset(0.0, 1)
                                         )
                                       ],
                                       color: Colors.white,
@@ -1254,9 +1250,9 @@ class AddressScreenState extends State<AddressScreen>
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4.0, // soften the shadow
-                          spreadRadius: 1.0, //extend the shadow
+                            color: Colors.black12,
+                            blurRadius: 2.0,
+                            offset: Offset(0.0, 1)
                         )
                       ],
                       color: Colors.white,),
@@ -1806,9 +1802,9 @@ class TakeAwayState extends State<TakeAway>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 2.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Color(0xFFF6F6F6),
@@ -1886,9 +1882,9 @@ class TakeAwayState extends State<TakeAway>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 2.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Color(0xFFF6F6F6),
@@ -1948,9 +1944,9 @@ class TakeAwayState extends State<TakeAway>
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4.0, // soften the shadow
-                                  spreadRadius: 1.0, //extend the shadow
+                                    color: Colors.black12,
+                                    blurRadius: 2.0,
+                                    offset: Offset(0.0, 1)
                                 )
                               ],
                               color: Colors.white,
@@ -2053,9 +2049,9 @@ class TakeAwayState extends State<TakeAway>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 2.0, // soften the shadow
-                                spreadRadius: 1.0, //extend the shadow
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  offset: Offset(0.0, 1)
                               )
                             ],
                             color: Color(0xFFF6F6F6),
@@ -2173,9 +2169,9 @@ class TakeAwayState extends State<TakeAway>
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 4.0, // soften the shadow
-                                        spreadRadius: 1.0, //extend the shadow
+                                          color: Colors.black12,
+                                          blurRadius: 2.0,
+                                          offset: Offset(0.0, 1)
                                       )
                                     ],
                                     color: Colors.white,
@@ -2231,9 +2227,9 @@ class TakeAwayState extends State<TakeAway>
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4.0, // soften the shadow
-                        spreadRadius: 1.0, //extend the shadow
+                          color: Colors.black12,
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1)
                       )
                     ],
                     color: Colors.white,),
@@ -2786,13 +2782,17 @@ class PromoTextState extends State<PromoText>{
               child: Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Container(
+                  width: 280,
+                  height: 30,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
                   ),
-                  child: Text('Применить',
-                    style: TextStyle(
-                        fontSize: 21,
-                        color: Colors.white
+                  child: Center(
+                    child: Text('Применить',
+                      style: TextStyle(
+                          fontSize: 21,
+                          color: Colors.white
+                      ),
                     ),
                   ),
                 ),
@@ -2824,9 +2824,9 @@ class PromoTextState extends State<PromoText>{
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4.0, // soften the shadow
-                    spreadRadius: 1.0, //extend the shadow
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1)
                   )
                 ],
                 color: Colors.white,

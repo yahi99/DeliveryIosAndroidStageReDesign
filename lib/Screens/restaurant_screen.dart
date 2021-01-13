@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/PostData/restaurant_items_data_pass.dart';
@@ -253,6 +254,41 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   }
 
 
+  _restInfo() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 420,
+            child: _buildRestInfoNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+
+  _buildRestInfoNavigationMenu() {
+    return Container(
+      child: Column(
+        children: [
+          Text(restaurant.name)
+        ],
+      ),
+    );
+  }
+
 
   Widget foodList(String s) {
     return Text(s, style: TextStyle(fontSize: 15.0, color: Color(0x99999999)));
@@ -393,7 +429,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     GlobalKey<SliverImageState>sliverImageKey = new GlobalKey();
     ScrollController sliverScrollController = new ScrollController();
     sliverScrollController.addListener(() {
-      print(sliverScrollController.offset);
       if(sliverTextKey.currentState != null && sliverScrollController.offset > 89){
         sliverTextKey.currentState.setState(() {
           sliverTextKey.currentState.title =  new Text(this.restaurant.name, style: TextStyle(color: Colors.black),);
@@ -580,10 +615,15 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                           color: Color(0xFF3F3F3F)),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/rest_info.svg'),
+                                  InkWell(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: SvgPicture.asset(
+                                          'assets/svg_images/rest_info.svg'),
+                                    ),
+                                    onTap: (){
+                                      _restInfo();
+                                    },
                                   ),
                                 ],
                               ),
@@ -681,11 +721,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 shrinkWrap: true,
                               ),
                             ),
-                            Padding(
-                              padding:  EdgeInsets.only(bottom: 0),
-                              child: BasketButton(
-                                  key: basketButtonStateKey, restaurant: restaurant),
-                            ),
                           ],
                         ),
                       );
@@ -694,6 +729,14 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   ),
                 ),
               ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding:  EdgeInsets.only(bottom: 0),
+                child: BasketButton(
+                    key: basketButtonStateKey, restaurant: restaurant),
+              ),
             )
           ],
         ),
@@ -1336,6 +1379,7 @@ class VariantsSelectorState extends State<VariantsSelector> {
 
   @override
   void initState() {
+
     if(variantsList.length > 0){
       selectedVariant = variantsList[0];
     }
@@ -2047,7 +2091,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               !available ||
               !(currentTime >= work_beginning && currentTime < work_ending)){
             return Container(
-              height: 260,
+              height: 330,
               child: parent._dayOff(food, menuItemCounterKey),
               decoration: BoxDecoration(
                   color: Theme.of(context).canvasColor,
@@ -2059,7 +2103,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           }else{
             if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){
               return Container(
-                height: 483,
+                height: 553,
                 child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -2071,7 +2115,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             }
             if(food.comment != "" && food.comment != null){
               return Container(
-                height: 350,
+                height: 420,
                 child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -2082,7 +2126,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
               );
             }if(food.variants == null || food.toppings == null){
               return Container(
-                height: 290,
+                height: 360,
                 child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -2094,7 +2138,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             }
             else{
               return Container(
-                height: 570,
+                height: 640,
                 child: _buildBottomNavigationMenu(food, menuItemCounterKey),
                 decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
@@ -2164,6 +2208,17 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                 )),
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20, bottom: 20, left: 16),
+                    child: Text(restaurantDataItems.name,
+                      style: TextStyle(
+                        fontSize: 24
+                      ),
+                    ),
+                  ),
+                ),
                 (restaurantDataItems.comment != "" &&
                     restaurantDataItems.comment != null)
                     ? Padding(

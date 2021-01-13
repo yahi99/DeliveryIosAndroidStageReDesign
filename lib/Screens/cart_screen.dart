@@ -208,88 +208,91 @@ class CartPageState extends State<CartPageScreen> {
                 ),
               ),
             ),
-            Container(
-              width: 380,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(
-                  color: Color(0xFF09B44D),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: 380,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: Color(0xFF09B44D),
+                  ),
                 ),
-              ),
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 0,
-                          right: 0),
-                      child: Container(
-                        height: 40,
-                        width: 188,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
-                          color: (selectedPageId == 0) ? Color(0xFF09B44D) : Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 0, right: 0, top: 0),
-                          child: Center(
-                            child: Text(
-                              'Доставка',
-                              style: TextStyle(
-                                  color: (selectedPageId == 0) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                child: Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0,
+                            right: 0),
+                        child: Container(
+                          height: 40,
+                          width: 188,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+                            color: (selectedPageId == 0) ? Color(0xFF09B44D) : Colors.white,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 0, right: 0, top: 0),
+                            child: Center(
+                              child: Text(
+                                'Доставка',
+                                style: TextStyle(
+                                    color: (selectedPageId == 0) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      onTap: () async {
+                        if (await Internet.checkConnection()) {
+                          _controller.animateToPage(0,
+                              duration: Duration(seconds: 3),
+                              curve: Curves.elasticOut);
+                        } else {
+                          noConnection(context);
+                        }
+                      },
                     ),
-                    onTap: () async {
-                      if (await Internet.checkConnection()) {
-                        _controller.animateToPage(0,
-                            duration: Duration(seconds: 3),
-                            curve: Curves.elasticOut);
-                      } else {
-                        noConnection(context);
-                      }
-                    },
-                  ),
-                  GestureDetector(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 0,
-                          right: 0),
-                      child: Container(
-                        height: 40,
-                        width: 190,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
-                          color: (selectedPageId == 1) ? Color(0xFF09B44D) : Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 0, right: 0, top: 0),
-                          child: Center(
-                            child: Text(
-                              'Самовывоз',
-                              style: TextStyle(
-                                  color: (selectedPageId == 1) ? Colors.white : Color(0xFF999999), fontSize: 15),
+                    GestureDetector(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0,
+                            right: 0),
+                        child: Container(
+                          height: 40,
+                          width: 190,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
+                            color: (selectedPageId == 1) ? Color(0xFF09B44D) : Colors.white,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 0, right: 0, top: 0),
+                            child: Center(
+                              child: Text(
+                                'Самовывоз',
+                                style: TextStyle(
+                                    color: (selectedPageId == 1) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      onTap: () async {
+                        if (await Internet.checkConnection()) {
+                          _controller.animateToPage(1,
+                              duration: Duration(seconds: 3),
+                              curve: Curves.elasticOut);
+                        } else {
+                          noConnection(context);
+                        }
+                      },
                     ),
-                    onTap: () async {
-                      if (await Internet.checkConnection()) {
-                        _controller.animateToPage(1,
-                            duration: Duration(seconds: 3),
-                            curve: Curves.elasticOut);
-                      } else {
-                        noConnection(context);
-                      }
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -452,10 +455,10 @@ class CartScreenState extends State<CartScreen> {
               background: Container(
                 alignment: AlignmentDirectional.centerEnd,
                 color: Colors.red,
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: SvgPicture.asset('assets/svg_images/del_basket.svg'),
+                )
               ),
               onDismissed: (direction) {
                 AmplitudeAnalytics.analytics.logEvent('remove_from_cart ', eventProperties: {
@@ -564,10 +567,7 @@ class CartScreenState extends State<CartScreen> {
         separatorBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Divider(
-              height: 1.0,
-              color: Color(0xFFE6E6E6),
-            ),
+            child: Container()
           );
         },
       ),
@@ -608,15 +608,18 @@ class CartScreenState extends State<CartScreen> {
             padding: EdgeInsets.only(left: 100),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    order.food.name,
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 14.0,
-                        color: Color(0xFF000000)),
-                    overflow: TextOverflow.ellipsis,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      order.food.name,
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: 14.0,
+                          color: Color(0xFF000000)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 (order.food.variants != null)
@@ -651,7 +654,9 @@ class CartScreenState extends State<CartScreen> {
                     )
                     : Text(''),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15, top: 5),
+                  padding: EdgeInsets.only(bottom: (order.food.variants == null && order.food.toppings == null)
+                      ? 0 : 15, top: (order.food.variants == null && order.food.toppings == null)
+                      ? 0 : 10),
                   child: Counter(
                     key: counterKey,
                     priceFieldKey: priceFieldKey,
@@ -674,9 +679,23 @@ class CartScreenState extends State<CartScreen> {
                         'assets/svg_images/del_basket.svg'),
                     onTap: () {
                       // setState(() {
-                      //   currentUser.cartDataModel.cart.remove(0);
+                      //   if(parent.totalPriceWidget.key.currentState != null){
+                      //     parent.totalPriceWidget.key.currentState.setState(() {
+                      //
+                      //     });
+                      //   }
+                      //   currentUser.cartDataModel.cart.removeAt(index);
                       //   currentUser.cartDataModel.saveData();
                       // });
+                      // if (currentUser.cartDataModel.cart.length == 0) {
+                      //   Navigator.pushReplacement(
+                      //     context,
+                      //     new MaterialPageRoute(
+                      //       builder: (context) =>
+                      //       new EmptyCartScreen(restaurant: restaurant),
+                      //     ),
+                      //   );
+                      // }
                     },
                   ),
                 ),
@@ -947,15 +966,18 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
               padding: EdgeInsets.only(left: 100),
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      order.food.name,
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 14.0,
-                          color: Color(0xFF000000)),
-                      overflow: TextOverflow.ellipsis,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        order.food.name,
+                        style: TextStyle(
+                            decoration: TextDecoration.none,
+                            fontSize: 14.0,
+                            color: Color(0xFF000000)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   (order.food.variants != null)
@@ -990,7 +1012,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                   )
                       : Text(''),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15, top: 5),
+                    padding: const EdgeInsets.only(bottom: 15, top: 10),
                     child: Counter(
                       key: counterKey,
                       priceFieldKey: priceFieldKey,
@@ -1313,11 +1335,14 @@ class TotalPriceState extends State<TotalPrice> {
           }
         }
     );
-    return Text(
-        '${totalPrice.toStringAsFixed(0)} \₽',
-        style: TextStyle(
-            fontSize: 18.0,
-            color: Colors.black));
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Text(
+          '${totalPrice.toStringAsFixed(0)} \₽',
+          style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black)),
+    );
   }
 }
 

@@ -144,7 +144,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     result.add(Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 14, bottom: 10, top: 10),
       child: Container(
-        height: (in_the_way.contains(ordersStoryModelItem.state)) ? 230 : 190,
+        height: (in_the_way.contains(ordersStoryModelItem.state)) ? 250 : 190,
         padding: EdgeInsets.only(right: 10, left: 15),
         decoration: BoxDecoration(
             boxShadow: [
@@ -261,31 +261,46 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0, bottom: 10, right: 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        (ordersStoryModelItem.productsData.store != null)
-                            ? ordersStoryModelItem.routes[0].unrestrictedValue
-                            : 'Пусто',
-                        style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          (ordersStoryModelItem.productsData.store != null)
+                              ? ordersStoryModelItem.routes[0].unrestrictedValue
+                              : 'Пусто',
+                          style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                        ),
                       ),
-                      Text(
-                        (ordersStoryModelItem.productsData.store != null && ordersStoryModelItem.routes.length > 1)
-                            ?  ordersStoryModelItem.routes[1].unrestrictedValue
-                            : 'Пусто',
-                        style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0),),
-                        textAlign: TextAlign.start,
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            (ordersStoryModelItem.productsData.store != null && ordersStoryModelItem.routes.length > 1)
+                                ?  ordersStoryModelItem.routes[1].unrestrictedValue
+                                : 'Пусто',
+                            style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0),),
+                          ),
+                        ),
                       )
                     ],
                   ),
                 ),
               ),
             ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: (in_the_way
+                  .contains(ordersStoryModelItem.state)) ? Padding(
+                padding: EdgeInsets.only(right: 0, bottom: 5, left: 10),
+                child: Text('Курьер на' + ' ' + ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.regNumber,
+                  style: TextStyle(color: Color(0xFF000000), fontSize: 14, fontWeight: FontWeight.w500)),
+              ) : Container(height: 0),
+            ),
             (in_the_way.contains(ordersStoryModelItem.state)) ? GestureDetector(
               child: Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
                   child: Container(
-                    width: 310,
+                    width: MediaQuery.of(context).size.width,
                     height: 42,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -295,13 +310,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                       child: Stack(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(left: 45, top: 5),
+                            padding: EdgeInsets.only(left: 75, top: 5),
                             child: SvgPicture.asset('assets/svg_images/message_icon.svg'),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: 20, top: 3, left: 80),
+                            padding: EdgeInsets.only(right: 20, top: 3, left: 110),
                             child: Text(
-                              'Чат с водителем',
+                              'Чат с курьером',
                               style: TextStyle(
                                 fontSize: 18,
                               ),
@@ -822,7 +837,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         child: GestureDetector(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                top: 10, bottom: 10, right: 30, left: 10),
+                                top: 10, bottom: 10, right: 5, left: 5),
                             child: (in_the_way.contains(ordersStoryModelItem.state))
                                 ? Container(
                               height: 40,
@@ -832,7 +847,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                   color: Color(0xFF09B44D)),
                               child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: 5, right: 10, bottom: 5, left: 10),
+                                      top: 5, right: 0, bottom: 5, left: 0),
                                   child:  Center(
                                     child: Text(
                                       'Позвонить',
@@ -852,7 +867,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5),
                                     child: Column(
                                       children: [
                                         Dialog(
@@ -862,32 +877,39 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                               height: 220,
                                               child: Column(
                                                 children: [
-                                                  Text('Кому вы хотите позвонить?',
-                                                    style: TextStyle(
-                                                        fontSize: 20
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 15, bottom: 15),
+                                                    child: Text('Кому вы хотите позвонить?',
+                                                      style: TextStyle(
+                                                          fontSize: 20
+                                                      ),
                                                     ),
                                                   ),
                                                   Divider(color: Colors.grey,),
-                                                  InkWell(
-                                                    child: Container(
-                                                      height: 50,
-                                                      width: 100,
-                                                      child: Center(
-                                                        child: Text("В заведение",
-                                                          style: TextStyle(
-                                                              color: Color(0xFF007AFF),
-                                                              fontSize: 20
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                                    child: InkWell(
+                                                      child: Container(
+                                                        height: 50,
+                                                        width: 140,
+                                                        child: Center(
+                                                          child: Text("В заведение",
+                                                            style: TextStyle(
+                                                                color: Color(0xFF007AFF),
+                                                                fontSize: 20
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
+                                                      onTap: () {
+                                                        launch("tel://" + ordersStoryModelItem.productsData.store.phone);
+                                                      },
                                                     ),
-                                                    onTap: () {
-                                                      launch("tel://" + ordersStoryModelItem.productsData.store.phone);
-                                                    },
                                                   ),
                                                   Divider(color: Colors.grey,),
                                                   InkWell(
                                                     child: Container(
+                                                      padding: EdgeInsets.only(top: 10),
                                                       height: 50,
                                                       width: 100,
                                                       child: Center(
@@ -907,25 +929,27 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                               ),
                                             )
                                         ),
-                                        Dialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                          child: InkWell(
-                                            child: Container(
-                                              height: 50,
-                                              width: 100,
-                                              child: Center(
-                                                child: Text("Отмена",
-                                                  style: TextStyle(
-                                                      color: Color(0xFFDC634A),
-                                                      fontSize: 20
+                                        Container(
+                                          child: Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                            child: InkWell(
+                                              child: Container(
+                                                height: 50,
+                                                width: 100,
+                                                child: Center(
+                                                  child: Text("Отмена",
+                                                    style: TextStyle(
+                                                        color: Color(0xFFDC634A),
+                                                        fontSize: 20
+                                                    ),
                                                   ),
                                                 ),
                                               ),
+                                              onTap: (){
+                                                Navigator.pop(context);
+                                              },
                                             ),
-                                            onTap: (){
-                                              Navigator.pop(context);
-                                            },
                                           ),
                                         )
                                       ],

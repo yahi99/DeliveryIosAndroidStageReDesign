@@ -1156,7 +1156,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       (currentUser.cartDataModel.cart != null &&
                           currentUser.cartDataModel.cart.length != 0)
                           ? Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                        padding: const EdgeInsets.only(bottom: 0),
                         child: BasketButton(
                           key: basketButtonStateKey,
                           restaurant:
@@ -1355,7 +1355,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(right: 5),
+                        padding: EdgeInsets.only(right: 5, left: 5),
                         child: Container(
                           height: 70,
                           width: 70,
@@ -1397,15 +1397,15 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                         ],
                       ),
@@ -1456,20 +1456,20 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: SvgPicture.asset('assets/svg_images/ellipse.svg'),
+                            child: SvgPicture.asset('assets/svg_images/ellipse.svg', color: Color(0xFF09B44D),),
                           ),
                         ],
                       ),
                       (ordersStoryModelItem.withoutDelivery) ? Container() : Padding(
-                        padding: EdgeInsets.only(right: 5),
+                        padding: EdgeInsets.only(left: 5),
                         child: Container(
                           height: 70,
                           width: 70,

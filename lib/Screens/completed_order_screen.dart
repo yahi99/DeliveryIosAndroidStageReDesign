@@ -47,47 +47,54 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 173),
-              child: Align(
-                alignment: Alignment.topCenter,
-                  child: Estimate()),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 220),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 222,
-                  width: 339,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(width: 1.0, color: Colors.grey[200])),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 100,
-                    textCapitalization: TextCapitalization.sentences,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 14),
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                      hintText: 'Оставьте свой отзыв',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16
+            Container(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Estimate()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 222,
+                        width: 339,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1.0, color: Colors.grey[200])),
+                        child: TextField(
+                          minLines: 1,
+                          maxLines: 100,
+                          textCapitalization: TextCapitalization.sentences,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 14),
+                          keyboardType: TextInputType.text,
+                          decoration: new InputDecoration(
+                            hintText: 'Оставьте свой отзыв',
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16
+                            ),
+                            contentPadding: EdgeInsets.all(15),
+                            border: InputBorder.none,
+                            counterText: '',
+                          ),
+                        ),
                       ),
-                      contentPadding: EdgeInsets.all(15),
-                      border: InputBorder.none,
-                      counterText: '',
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.only(left: 0, top: 20, bottom: 100),
+                padding: EdgeInsets.only(left: 0, top: 20, bottom: 20),
                 child: FlatButton(
                   child: Text(
                     "Оценить заказ",

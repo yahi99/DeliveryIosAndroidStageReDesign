@@ -74,10 +74,14 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                     Container(
                       height: 30,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 0, left: 0, right: 20),
+                        padding: EdgeInsets.only(top: 0, left: 0, right: 0),
                         child: TextField(
                           textCapitalization: TextCapitalization.sentences,
                           controller: nameField,
+                          onEditingComplete: (){
+                            myAddressesModel.name = nameField.text;
+                            FocusScope.of(context).unfocus();
+                          },
                           decoration: new InputDecoration(
                             border: InputBorder.none,
                             counterText: '',
