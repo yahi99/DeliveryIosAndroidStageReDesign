@@ -688,7 +688,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                              padding: const EdgeInsets.only(top: 20.0, bottom: 10),
                               child: Row(
                                 children: [
                                   Padding(
