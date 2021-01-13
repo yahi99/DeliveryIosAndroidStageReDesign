@@ -211,7 +211,7 @@ class CartPageState extends State<CartPageScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Container(
-                width: 380,
+                width: 350,
                 height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -227,7 +227,7 @@ class CartPageState extends State<CartPageScreen> {
                             right: 0),
                         child: Container(
                           height: 40,
-                          width: 188,
+                          width: 176,
                           decoration: BoxDecoration(
                             borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
@@ -262,7 +262,7 @@ class CartPageState extends State<CartPageScreen> {
                             right: 0),
                         child: Container(
                           height: 40,
-                          width: 190,
+                          width: 172,
                           decoration: BoxDecoration(
                             borderRadius:
                             BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
@@ -487,7 +487,7 @@ class CartScreenState extends State<CartScreen> {
               child: Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: _buildCartItem(order),
+                child: _buildCartItem(order, index),
               ),
             );
           }
@@ -574,7 +574,7 @@ class CartScreenState extends State<CartScreen> {
     );
   }
 
-  _buildCartItem(Order order) {
+  _buildCartItem(Order order, int index) {
     double toppingsCost = 0;
     if(order.food.toppings != null){
       order.food.toppings.forEach((element) {
@@ -677,25 +677,25 @@ class CartScreenState extends State<CartScreen> {
                   child: GestureDetector(
                     child: SvgPicture.asset(
                         'assets/svg_images/del_basket.svg'),
-                    onTap: () { 
-                      // setState(() {
-                      //   if(parent.totalPriceWidget.key.currentState != null){
-                      //     parent.totalPriceWidget.key.currentState.setState(() {
-                      //
-                      //     });
-                      //   }
-                      //   currentUser.cartDataModel.cart.removeAt(index);
-                      //   currentUser.cartDataModel.saveData();
-                      // });
-                      // if (currentUser.cartDataModel.cart.length == 0) {
-                      //   Navigator.pushReplacement(
-                      //     context,
-                      //     new MaterialPageRoute(
-                      //       builder: (context) =>
-                      //       new EmptyCartScreen(restaurant: restaurant),
-                      //     ),
-                      //   );
-                      // }
+                    onTap: () {
+                      setState(() {
+                        if(parent.totalPriceWidget.key.currentState != null){
+                          parent.totalPriceWidget.key.currentState.setState(() {
+
+                          });
+                        }
+                        currentUser.cartDataModel.cart.removeAt(index);
+                        currentUser.cartDataModel.saveData();
+                      });
+                      if (currentUser.cartDataModel.cart.length == 0) {
+                        Navigator.pushReplacement(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (context) =>
+                            new EmptyCartScreen(restaurant: restaurant),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),

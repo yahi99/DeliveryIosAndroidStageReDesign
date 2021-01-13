@@ -890,7 +890,7 @@ class AddressScreenState extends State<AddressScreen>
                             ),
                           ),
                           Container(
-                            width: 60,
+                            width: 80,
                             child: Column(
                               children: <Widget>[
                                 Row(
@@ -2819,7 +2819,7 @@ class PromoTextState extends State<PromoText>{
         alignment: Alignment.bottomLeft,
         child: InkWell(
           child: Container(
-            width: 185,
+            width: 160,
             height: 64,
             decoration: BoxDecoration(
                 boxShadow: [
@@ -2843,7 +2843,7 @@ class PromoTextState extends State<PromoText>{
                   (promoCodeField.text != '') ? Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        padding: const EdgeInsets.only(left: 3, top: 10),
                         child: Text(title),
                       )
                   ) : Text(title)

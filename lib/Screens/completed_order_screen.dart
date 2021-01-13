@@ -24,31 +24,33 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
     // TODO: implement build
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: Stack(
+        body: Column(
           children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 110),
-                child: Column(
-                  children: [
-                    Text(
-                      'Спасибо за заказ!',
-                      style: TextStyle(color: Color(0xFF424242), fontSize: 24),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 33),
-                      child: Text(
-                        'Оставьте свой отзыв, это поможет\nсделать приложение лучше! ',
-                        style: TextStyle(color: Color(0xFF424242), fontSize: 18), textAlign: TextAlign.center,
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Спасибо за заказ!',
+                        style: TextStyle(color: Color(0xFF424242), fontSize: 24),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text(
+                          'Оставьте свой отзыв, это поможет\nсделать приложение лучше! ',
+                          style: TextStyle(color: Color(0xFF424242), fontSize: 18), textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
               child: Column(
                 children: [
                   Padding(
@@ -58,7 +60,7 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                         child: Estimate()),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 0),
+                    padding: const EdgeInsets.only(top: 15),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -91,33 +93,35 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(left: 0, top: 20, bottom: 20),
-                child: FlatButton(
-                  child: Text(
-                    "Оценить заказ",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 0, top: 20, bottom: 20),
+                  child: FlatButton(
+                    child: Text(
+                      "Оценить заказ",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    color: Color(0xFF09B44D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding:
+                    EdgeInsets.only(left: 110, top: 20, right: 110, bottom: 20),
+                    onPressed: () async {
+                      if (await Internet.checkConnection()) {
+                        Navigator.pushReplacement(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (context) => new HomeScreen(),
+                          ),
+                        );
+                      } else {
+                        noConnection(context);
+                      }
+                    },
                   ),
-                  color: Color(0xFF09B44D),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding:
-                  EdgeInsets.only(left: 110, top: 20, right: 110, bottom: 20),
-                  onPressed: () async {
-                    if (await Internet.checkConnection()) {
-                      Navigator.pushReplacement(
-                        context,
-                        new MaterialPageRoute(
-                          builder: (context) => new HomeScreen(),
-                        ),
-                      );
-                    } else {
-                      noConnection(context);
-                    }
-                  },
                 ),
               ),
             ),
@@ -148,7 +152,7 @@ class EstimateState extends State<Estimate>{
 
     return Container(
         padding: EdgeInsets.only(),
-        height: 280,
+        height: 60,
         child: ListView(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,

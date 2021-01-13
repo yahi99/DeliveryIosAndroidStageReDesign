@@ -60,6 +60,20 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     'waiting_for_confirmation':'assets/svg_images/state_clock.svg',
   };
 
+  Map<String,String> statusTitles = {
+    'cooking':'Готовится',
+    'offer_offered':'Готовится',
+    'smart_distribution':'Готовится',
+    'finding_driver':'Готовится',
+    'offer_rejected':'Готовится',
+    'order_start':'Готовится',
+    'on_place':'Готовится',
+    'transferred_to_store':'Готовится',
+    'order_accepted':'Готовится',
+    'on_the_way':'В пути',
+    'waiting_for_confirmation':'Обработка',
+  };
+
 
   OrdersDetailsScreenState(this.ordersStoryModelItem);
 
@@ -144,7 +158,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     result.add(Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 14, bottom: 10, top: 10),
       child: Container(
-        height: (in_the_way.contains(ordersStoryModelItem.state)) ? 250 : 190,
+        height: (in_the_way.contains(ordersStoryModelItem.state)) ? 270 : 190,
         padding: EdgeInsets.only(right: 10, left: 15),
         decoration: BoxDecoration(
             boxShadow: [
@@ -217,7 +231,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                     ],
                   ) : Row(
                     children: [
-                      Text(ordersStoryModelItem.stateTitle,
+                      Text(statusTitles[ordersStoryModelItem.state],
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14
@@ -259,19 +273,23 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             Flexible(
               child: Container(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 10, right: 10),
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10, right: 0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          (ordersStoryModelItem.productsData.store != null)
-                              ? ordersStoryModelItem.routes[0].unrestrictedValue
-                              : 'Пусто',
-                          style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            (ordersStoryModelItem.productsData.store != null)
+                                ? ordersStoryModelItem.routes[0].unrestrictedValue
+                                : 'Пусто',
+                            style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0)),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Text(
@@ -279,6 +297,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                 ?  ordersStoryModelItem.routes[1].unrestrictedValue
                                 : 'Пусто',
                             style: TextStyle(fontSize: 12, color: Color(0xFFB0B0B0),),
+                            textAlign: TextAlign.start,
                           ),
                         ),
                       )
@@ -291,7 +310,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               alignment: Alignment.centerLeft,
               child: (in_the_way
                   .contains(ordersStoryModelItem.state)) ? Padding(
-                padding: EdgeInsets.only(right: 0, bottom: 5, left: 10),
+                padding: EdgeInsets.only(right: 0, bottom: 5, left: 0),
                 child: Text('Курьер на' + ' ' + ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.regNumber,
                   style: TextStyle(color: Color(0xFF000000), fontSize: 14, fontWeight: FontWeight.w500)),
               ) : Container(height: 0),
@@ -867,14 +886,14 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5),
+                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.48),
                                     child: Column(
                                       children: [
                                         Dialog(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
                                             child: Container(
-                                              height: 220,
+                                              height: 180,
                                               child: Column(
                                                 children: [
                                                   Padding(
@@ -890,7 +909,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                                                     child: InkWell(
                                                       child: Container(
-                                                        height: 50,
+                                                        height: 30,
                                                         width: 140,
                                                         child: Center(
                                                           child: Text("В заведение",
@@ -909,8 +928,8 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                   Divider(color: Colors.grey,),
                                                   InkWell(
                                                     child: Container(
-                                                      padding: EdgeInsets.only(top: 10),
-                                                      height: 50,
+                                                      padding: EdgeInsets.only(top: 8),
+                                                      height: 30,
                                                       width: 100,
                                                       child: Center(
                                                         child: Text("Водителю",
@@ -935,7 +954,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
                                             child: InkWell(
                                               child: Container(
-                                                height: 50,
+                                                height: 40,
                                                 width: 100,
                                                 child: Center(
                                                   child: Text("Отмена",

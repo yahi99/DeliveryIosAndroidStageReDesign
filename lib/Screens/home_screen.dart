@@ -1361,27 +1361,19 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: (processing
-                                  .contains(ordersStoryModelItem.state))
-                                  ? Color(0xFF09B44D)
-                                  : Color(0xF6F6F6F6)),
+                              color: Color(0xFF09B44D)),
                           child: Column(
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: SvgPicture.asset(
-                                  (processing.contains(ordersStoryModelItem.state)) ? 'assets/svg_images/white_clock.svg' :
-                                  'assets/svg_images/state_clock.svg', color: (processing.contains(ordersStoryModelItem.state))? Colors.white : Colors.grey,),
+                                  'assets/svg_images/white_clock.svg'),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
                                 child: Text('Обработка',
-                                    style: (processing
-                                        .contains(ordersStoryModelItem.state))
-                                        ? TextStyle(
-                                        color: Colors.white, fontSize: 10)
-                                        : TextStyle(
-                                        color: Color(0x42424242),
+                                    style: TextStyle(
+                                        color: Colors.white,
                                         fontSize: 10)),
                               )
                             ],
@@ -1417,7 +1409,8 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: (cooking_state
-                                  .contains(ordersStoryModelItem.state))
+                                  .contains(ordersStoryModelItem.state) ||
+                              in_the_way.contains(ordersStoryModelItem.state))
                                   ? Color(0xFF09B44D)
                                   : Color(0xF6F6F6F6)),
                           child: Column(
