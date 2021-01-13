@@ -677,7 +677,7 @@ class CartScreenState extends State<CartScreen> {
                   child: GestureDetector(
                     child: SvgPicture.asset(
                         'assets/svg_images/del_basket.svg'),
-                    onTap: () {
+                    onTap: () { 
                       // setState(() {
                       //   if(parent.totalPriceWidget.key.currentState != null){
                       //     parent.totalPriceWidget.key.currentState.setState(() {
