@@ -558,7 +558,12 @@ class CartScreenState extends State<CartScreen> {
                 }
               },
               direction: DismissDirection.endToStart,
-              child: Container(
+              child: (order.food.toppings == null && order.food.variants == null)? Container(
+                height: 113,
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: _buildCartItem(order, index),
+              ): Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 child: _buildCartItem(order, index),
@@ -710,7 +715,7 @@ class CartScreenState extends State<CartScreen> {
                         color: Colors.grey),
                   textAlign: TextAlign.start,
                 ),
-                    ) : Text(''),
+                    ) : Container(height: 0,),
                 (order.food.toppings != null)
                     ? Align(
                   alignment: Alignment.topLeft,
@@ -729,11 +734,10 @@ class CartScreenState extends State<CartScreen> {
                             )),
                 ),
                     )
-                    : Text(''),
+                    : Container(height: 0,),
                 Padding(
-                  padding: EdgeInsets.only(bottom: (order.food.variants == null && order.food.toppings == null)
-                      ? 0 : 15, top: (order.food.variants == null && order.food.toppings == null)
-                      ? 0 : 10),
+                  padding: EdgeInsets.only(bottom: 15, top: (order.food.toppings == null
+                      && order.food.variants == null) ? 23 : 10),
                   child: Counter(
                     key: counterKey,
                     priceFieldKey: priceFieldKey,
@@ -750,7 +754,8 @@ class CartScreenState extends State<CartScreen> {
               children: [
                 PriceField(key: priceFieldKey, order: order),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.only(top: 30, left: (order.food.toppings != null
+                      || order.food.variants != null) ? 25 : 0),
                   child: GestureDetector(
                     child: SvgPicture.asset(
                         'assets/svg_images/del_basket.svg'),

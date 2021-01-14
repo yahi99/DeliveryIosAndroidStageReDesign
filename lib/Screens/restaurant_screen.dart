@@ -6,16 +6,10 @@ import 'package:flutter_app/PostData/restaurant_items_data_pass.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
-import 'package:flutter_app/models/amplitude.dart';
-import 'package:flutter_app/models/food.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import '../data/data.dart';
-import '../models/RestaurantDataItems.dart';
-import '../models/RestaurantDataItems.dart';
 import '../models/RestaurantDataItems.dart';
 import 'cart_screen.dart';
 import 'home_screen.dart';
@@ -382,7 +376,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   @override
   void initState() {
     super.initState();
-
     // Инициализируем список категорий
     categoryList = new CategoryList(key: new GlobalKey<CategoryListState>(), restaurant: restaurant, parent: this);
 
@@ -961,6 +954,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     if(restaurantDataItems != null){
       return _buildScreen();
     }
@@ -1477,31 +1471,59 @@ class VariantsSelectorState extends State<VariantsSelector> {
     List<Widget> widgetsList = new List<Widget>();
     variantsList.forEach((element) {
       widgetsList.add(
-        Padding(
-          padding:  EdgeInsets.only(left: 2),
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: GestureDetector(
-              child: Text(
-                element.name,
-                style: TextStyle(color: Color(0xFF424242)),
-              ),onTap: (){
+          GestureDetector(
+            child: Padding(
+              padding:  EdgeInsets.only(top: 13, bottom: 22 , left: 15),
+              child: Row(
+                children: [
+                  (selectedVariant == element) ? SvgPicture.asset('assets/svg_images/checked_rest_circle.svg')
+                      : SvgPicture.asset('assets/svg_images/rest_circle.svg'),
+                  Padding(
+                    padding: EdgeInsets.only(left: 18),
+                    child: Text(element.name,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            onTap: (){
               setState(() {
                 selectedVariant = element;
               });
             },
-            ),
-            leading: Radio(
-              value: element,
-              groupValue: selectedVariant,
-              onChanged: (Variants value) {
-                setState(() {
-                  selectedVariant = value;
-                });
-              },
-            ),
-          ),
-        ),
+          )
+        // Padding(
+        //   padding:  EdgeInsets.only(left: 2),
+        //   child: ListTile(
+        //     contentPadding: EdgeInsets.zero,
+        //     title: GestureDetector(
+        //       child: Padding(
+        //         padding: const EdgeInsets.only(right: 30),
+        //         child: Text(
+        //           element.name,
+        //           style: TextStyle(color: Color(0xFF424242)),
+        //         ),
+        //       ),onTap: (){
+        //       setState(() {
+        //         selectedVariant = element;
+        //       });
+        //     },
+        //     ),
+        //     leading: Radio(
+        //       value: element,
+        //       groupValue: selectedVariant,
+        //       onChanged: (Variants value) {
+        //         setState(() {
+        //           selectedVariant = value;
+        //         });
+        //       },
+        //     ),
+        //   ),
+        // ),
       );
     });
     return Container(
@@ -1584,26 +1606,59 @@ class MyCheckBoxState extends State<MyCheckBox> {
   MyCheckBoxState(this.topping, this.title);
 
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6),
-      child: CheckboxListTile(
-        contentPadding: EdgeInsets.zero,
-        controlAffinity: ListTileControlAffinity.leading,
-        value: isSelected,
-        title: Row(
+    return InkWell(
+      child: Padding(
+        padding:  EdgeInsets.only(left: 15, top: 12, bottom: 17),
+        child: Row(
           children: [
-            Text(
-              title,
-              style: TextStyle(color: Color(0xff424242), fontSize: 14),
+            (isSelected) ? SvgPicture.asset('assets/svg_images/kitchen_selected.svg') :
+            SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
+            Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                title,
+                style: TextStyle(color: Color(0xff424242), fontSize: 14),
+              ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 8.0),
+              padding: EdgeInsets.only(left: 12.0),
               child: Text(
                 '+ ${topping.price} \₽',
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ),
           ],
+        ),
+      ),
+      onTap: (){
+        setState(() {
+          isSelected = !isSelected;
+        });
+      },
+    );
+    return Padding(
+      padding: const EdgeInsets.only(left: 6),
+      child: CheckboxListTile(
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        value: isSelected,
+        title: Padding(
+          padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.6),
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: TextStyle(color: Color(0xff424242), fontSize: 14),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Text(
+                  '+ ${topping.price} \₽',
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
         ),
         onChanged: (bool f) {
           setState(() {
@@ -2293,10 +2348,13 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                             ? Padding(
                           padding:
                           EdgeInsets.only(left: 15, top: 20, bottom: 10),
-                          child: Text(
-                            restaurantDataItems.comment,
-                            style: TextStyle(
-                                color: Color(0xFFB0B0B0), fontSize: 13),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              restaurantDataItems.comment,
+                              style: TextStyle(
+                                  color: Color(0xFFB0B0B0), fontSize: 13),
+                            ),
                           ),
                         )
                             : Container(
@@ -2362,156 +2420,159 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: (restaurantDataItems.toppings != null && restaurantDataItems.variants != null) ? BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4.0, // soften the shadow
-                          spreadRadius: 1.0, //extend the shadow
-                        )
-                      ],
-                    ) : null,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
-                              child: Container(
-                                child: RichText(text:
-                                TextSpan(
-                                    children: <TextSpan>[
-                                      TextSpan(text: restaurantDataItems.name,
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Color(0xFF000000)),),
-                                    ]
-                                )
-                                ),
-                              ),
-                            )),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: PriceField(key: priceFieldKey, restaurantDataItems: restaurantDataItems),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Padding(
+                    padding: EdgeInsets.only(top: 14),
+                    child: Container(
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: (restaurantDataItems.toppings != null && restaurantDataItems.variants != null) ? BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4.0, // soften the shadow
+                            spreadRadius: 1.0, //extend the shadow
+                          )
+                        ],
+                      ) : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 5, left: 15),
-                                  child: Counter(
-                                      key: parent.counterKey,
-                                      priceFieldKey: priceFieldKey
+                              Expanded(child: Padding(
+                                padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
+                                child: Container(
+                                  child: RichText(text:
+                                  TextSpan(
+                                      children: <TextSpan>[
+                                        TextSpan(text: restaurantDataItems.name,
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Color(0xFF000000)),),
+                                      ]
+                                  )
                                   ),
                                 ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
-                                  child: FlatButton(
-                                    child: Text(
-                                      "Добавить",
-                                      style:
-                                      TextStyle(color: Colors.white, fontSize: 18),
-                                    ),
-                                    color: Color(0xFF09B44D),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    padding: EdgeInsets.only(
-                                        left: 60, top: 20, right: 60, bottom: 20),
-                                    onPressed: () async {
-                                      if (await Internet.checkConnection()) {
-                                        FoodRecords foodOrder =
-                                        FoodRecords.fromFoodRecords(
-                                            restaurantDataItems);
-                                        if (variantsSelectorStateKey.currentState !=
-                                            null) {
-                                          if (variantsSelectorStateKey
-                                              .currentState.selectedVariant !=
-                                              null) {
-                                            foodOrder.variants = [
-                                              variantsSelectorStateKey
-                                                  .currentState.selectedVariant
-                                            ];
-                                          } else {
-                                            foodOrder.variants = null;
-                                          }
-                                          print(foodOrder.variants);
-                                        }
-                                        if (toppingsSelectorStateKey.currentState !=
-                                            null) {
-                                          List<Toppings> toppingsList =
-                                          toppingsSelectorStateKey.currentState
-                                              .getSelectedToppings();
-                                          if (toppingsList.length != null) {
-                                            foodOrder.toppings = toppingsList;
-                                          } else {
-                                            foodOrder.toppings = null;
-                                          }
-                                          foodOrder.toppings.forEach((element) {
-                                            print(element.name);
-                                          });
-                                        }
-                                        if (currentUser.cartDataModel.cart.length > 0 &&
-                                            parent.restaurant.uuid !=
-                                                currentUser.cartDataModel.cart[0]
-                                                    .restaurant.uuid) {
-                                          parent.showCartClearDialog(
-                                              context,
-                                              new Order(
-                                                  food: foodOrder,
-                                                  quantity:
-                                                  parent.counterKey.currentState.counter,
-                                                  restaurant: parent.restaurant,
-                                                  date: DateTime.now().toString()),
-                                              menuItemCounterKey);
-                                        } else {
-                                          currentUser.cartDataModel.addItem(new Order(
-                                              food: foodOrder,
-                                              quantity: parent.counterKey.currentState.counter,
-                                              restaurant: parent.restaurant,
-                                              date: DateTime.now().toString()));
-                                          currentUser.cartDataModel.saveData();
-                                          Navigator.pop(context);
-                                          Padding(
-                                            padding: EdgeInsets.only(bottom: 0),
-                                            child: parent.showAlertDialog(context),
-                                          );
-                                          parent.basketButtonStateKey.currentState.refresh();
-                                          //menuItemCounterKey.currentState.refresh();
-                                          setState(() {
-
-                                          });
-                                          parent.counterKey.currentState.refresh();
-                                        }
-                                      } else {
-                                        noConnection(context);
-                                      }
-                                    },
-                                  ),
-                                ),
+                              )),
+                              Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: PriceField(key: priceFieldKey, restaurantDataItems: restaurantDataItems),
                               )
                             ],
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 4.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 5, left: 15),
+                                    child: Counter(
+                                        key: parent.counterKey,
+                                        priceFieldKey: priceFieldKey
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
+                                    child: FlatButton(
+                                      child: Text(
+                                        "Добавить",
+                                        style:
+                                        TextStyle(color: Colors.white, fontSize: 18),
+                                      ),
+                                      color: Color(0xFF09B44D),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.only(
+                                          left: 60, top: 20, right: 60, bottom: 20),
+                                      onPressed: () async {
+                                        if (await Internet.checkConnection()) {
+                                          FoodRecords foodOrder =
+                                          FoodRecords.fromFoodRecords(
+                                              restaurantDataItems);
+                                          if (variantsSelectorStateKey.currentState !=
+                                              null) {
+                                            if (variantsSelectorStateKey
+                                                .currentState.selectedVariant !=
+                                                null) {
+                                              foodOrder.variants = [
+                                                variantsSelectorStateKey
+                                                    .currentState.selectedVariant
+                                              ];
+                                            } else {
+                                              foodOrder.variants = null;
+                                            }
+                                            print(foodOrder.variants);
+                                          }
+                                          if (toppingsSelectorStateKey.currentState !=
+                                              null) {
+                                            List<Toppings> toppingsList =
+                                            toppingsSelectorStateKey.currentState
+                                                .getSelectedToppings();
+                                            if (toppingsList.length != null) {
+                                              foodOrder.toppings = toppingsList;
+                                            } else {
+                                              foodOrder.toppings = null;
+                                            }
+                                            foodOrder.toppings.forEach((element) {
+                                              print(element.name);
+                                            });
+                                          }
+                                          if (currentUser.cartDataModel.cart.length > 0 &&
+                                              parent.restaurant.uuid !=
+                                                  currentUser.cartDataModel.cart[0]
+                                                      .restaurant.uuid) {
+                                            parent.showCartClearDialog(
+                                                context,
+                                                new Order(
+                                                    food: foodOrder,
+                                                    quantity:
+                                                    parent.counterKey.currentState.counter,
+                                                    restaurant: parent.restaurant,
+                                                    date: DateTime.now().toString()),
+                                                menuItemCounterKey);
+                                          } else {
+                                            currentUser.cartDataModel.addItem(new Order(
+                                                food: foodOrder,
+                                                quantity: parent.counterKey.currentState.counter,
+                                                restaurant: parent.restaurant,
+                                                date: DateTime.now().toString()));
+                                            currentUser.cartDataModel.saveData();
+                                            Navigator.pop(context);
+                                            Padding(
+                                              padding: EdgeInsets.only(bottom: 0),
+                                              child: parent.showAlertDialog(context),
+                                            );
+                                            parent.basketButtonStateKey.currentState.refresh();
+                                            //menuItemCounterKey.currentState.refresh();
+                                            setState(() {
+
+                                            });
+                                            parent.counterKey.currentState.refresh();
+                                          }
+                                        } else {
+                                          noConnection(context);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -2555,11 +2616,11 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
 
   double getBottomSheetContainerHeight(FoodRecords food){
     if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){
-      return 400;
+      return 404;
     }else if(food.comment != "" && food.comment != null){
-      return 260;
+      return 273;
     }else if(food.variants == null || food.toppings == null){
-      return 200;
+      return 211;
     }else{
       return 475;
     }

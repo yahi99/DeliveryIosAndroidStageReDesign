@@ -25,6 +25,12 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     super.initState();
+    controller.afterChange = (String previous, String next){
+      if(next.length > previous.length){
+        controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+      }
+      return false;
+    };
     controller.beforeChange = (String previous, String next) {
       if(controller.text == '8') {
         controller.updateText('+7 ');
