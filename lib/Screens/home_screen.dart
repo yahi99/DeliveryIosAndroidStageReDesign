@@ -107,7 +107,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         context: context,
         builder: (context) {
           return Container(
-            height: 420,
+            height: 430,
             child: _buildFilterNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -139,23 +139,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
           ),
           FilterListScreen(),
-          Padding(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
-            child: FlatButton(
-              child: Text('Готово',
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white)),
-              color: Color(0xFF09B44D),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
-          )
         ],
       ),
     );
@@ -1419,7 +1402,8 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: (cooking_state
-                                    .contains(ordersStoryModelItem.state))
+                                    .contains(ordersStoryModelItem.state) ||
+                                    in_the_way.contains(ordersStoryModelItem.state))
                                     ? SvgPicture.asset(
                                     'assets/svg_images/white_bell.svg')
                                     : SvgPicture.asset(
@@ -1429,7 +1413,8 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                                 padding: EdgeInsets.only(top: 5),
                                 child: Text('Готовится',
                                     style: (cooking_state
-                                        .contains(ordersStoryModelItem.state))
+                                        .contains(ordersStoryModelItem.state) ||
+                                        in_the_way.contains(ordersStoryModelItem.state))
                                         ? TextStyle(
                                         color: Colors.white, fontSize: 10)
                                         : TextStyle(
@@ -2232,7 +2217,7 @@ class FilterListScreenState extends State<FilterListScreen>{
 
   FilterListScreenState();
 
-  List<bool> selectedKitchens = List.generate(5, (index) => false);
+  List<bool> selectedFilterItem = List.generate(5, (index) => false);
 
   List<String> titles = [
     'Доверюсь вам',
@@ -2248,48 +2233,81 @@ class FilterListScreenState extends State<FilterListScreen>{
 
     return Container(
         padding: EdgeInsets.only(),
-        height: 280,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: List.generate(5,(index){
-            return InkWell(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
-                child: (!selectedKitchens[index]) ? Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(titles[index],
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18
+        height: 370,
+        child: Column(
+          children: [
+            Container(
+              height: 280,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: List.generate(5,(index){
+                  return InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
+                      child: (!selectedFilterItem[index]) ? Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(titles[index],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18
+                              ),
+                            ),
+                            SvgPicture.asset('assets/svg_images/circle.svg'),
+                          ],
+                        ),
+                      ) : Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(titles[index],
+                              style: TextStyle(
+                                  fontSize: 18
+                              ),
+                            ),
+                            SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
+                          ],
                         ),
                       ),
-                      SvgPicture.asset('assets/svg_images/circle.svg'),
-                    ],
-                  ),
-                ) : Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(titles[index],
-                        style: TextStyle(
-                            fontSize: 18
-                        ),
-                      ),
-                      SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
-                    ],
-                  ),
-                ),
+                    ),
+                    onTap: (){
+                      setState(() {
+                        selectedFilterItem[index] = !selectedFilterItem[index];
+                      });
+                    },
+                  );
+                }),
               ),
-              onTap: (){
-                setState(() {
-                  selectedKitchens[index] = !selectedKitchens[index];
-                });
-              },
-            );
-          }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 10),
+              child: FlatButton(
+                child: Text('Готово',
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white)),
+                color: (haveSelectedItems()) ? Color(0xFF09B44D) : Color(0xF3F3F3F3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.only(left: 140, top: 20, right: 140, bottom: 20),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+            )
+          ],
         )
     );
+  }
+
+  bool haveSelectedItems(){
+    try{
+      var selectedItem = selectedFilterItem.firstWhere((element) => element);
+      return true;
+    }catch(e){
+      return false;
+    }
   }
 }

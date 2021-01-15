@@ -49,8 +49,36 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   GlobalKey<FormState> _foodItemFormKey = GlobalKey();
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
 
+  ScrollController sliverScrollController = new ScrollController();
+
 
   RestaurantScreenState(this.restaurant, this.category);
+
+  Brightness _themeBrightness = Brightness.light;
+
+
+  void swapThemeBrightness(){
+    if (_themeBrightness == Brightness.light) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ));
+      setState(() {
+        _themeBrightness = Brightness.dark;
+      });
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarDividerColor: Colors.white,
+      ));
+      setState(() {
+        _themeBrightness = Brightness.light;
+      });
+    }
+  }
 
 
   _dayOff(FoodRecords restaurantDataItems,
@@ -376,6 +404,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   @override
   void initState() {
     super.initState();
+
     // Инициализируем список категорий
     categoryList = new CategoryList(key: new GlobalKey<CategoryListState>(), restaurant: restaurant, parent: this);
 
@@ -403,8 +432,9 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       return Container(height: 0);
   }
 
-
-
+  bool get _isAppBarExpanded {
+    return sliverScrollController.hasClients && sliverScrollController.offset > 90;
+  }
 
   Widget _buildScreen() {
     isLoading = false;
@@ -497,14 +527,12 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       );
     }
 
-
     foodMenuItems.addAll(MenuItem.fromFoodRecordsList(restaurantDataItems.records, this));
     foodMenuTitles.addAll(MenuItemTitle.fromCategoryList(restaurant.product_category));
     menuWithTitles = generateMenu();
     List<Widget> sliverChildren = getSliverChildren();
     GlobalKey<SliverTextState>sliverTextKey = new GlobalKey();
     GlobalKey<SliverImageState>sliverImageKey = new GlobalKey();
-    ScrollController sliverScrollController = new ScrollController();
     sliverScrollController.addListener(() {
       if(sliverTextKey.currentState != null && sliverScrollController.offset > 89){
         sliverTextKey.currentState.setState(() {
@@ -583,11 +611,12 @@ class RestaurantScreenState extends State<RestaurantScreen> {
               controller: sliverScrollController,
               slivers: [
                 SliverAppBar(
-                  brightness: MediaQuery.of(context).platformBrightness,
+                  brightness: _isAppBarExpanded ? Brightness.dark : Brightness.light,
                   expandedHeight: 140.0,
                   floating: true,
                   pinned: true,
                   snap: false,
+                  stretch: true,
                   backgroundColor: Colors.white,
                   leading: Padding(
                       padding: const EdgeInsets.all(20),
@@ -622,49 +651,52 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     title: SliverText(title: Text('', style: TextStyle(fontSize: 18),),key: sliverTextKey,),
-                    background: ClipRRect(
-                        child: Stack(
-                          children: <Widget>[
-                            Image.network(
-                              getImage(restaurant.image),
-                              fit: BoxFit.cover,
-                              height: 230.0,
-                              width: MediaQuery.of(context).size.width,
-                            ),
-                            Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 40, left: 15),
-                                  child: GestureDetector(
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/rest_arrow_left.svg'),
-                                    onTap: () async {
-                                      if(await Internet.checkConnection()){
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                            PageRouteBuilder(
-                                                pageBuilder: (context, animation, anotherAnimation) {
-                                                  return HomeScreen();
-                                                },
-                                                transitionDuration: Duration(milliseconds: 300),
-                                                transitionsBuilder:
-                                                    (context, animation, anotherAnimation, child) {
-                                                  return SlideTransition(
-                                                    position: Tween(
-                                                        begin: Offset(1.0, 0.0),
-                                                        end: Offset(0.0, 0.0))
-                                                        .animate(animation),
-                                                    child: child,
-                                                  );
-                                                }
-                                            ), (Route<dynamic> route) => false);
-                                      }else{
-                                        noConnection(context);
-                                      }
-                                    },
-                                  ),
-                                ))
-                          ],
-                        )),
+                    background: AnnotatedRegion<SystemUiOverlayStyle>(
+                      value: _isAppBarExpanded ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+                      child: ClipRRect(
+                          child: Stack(
+                            children: <Widget>[
+                              Image.network(
+                                getImage(restaurant.image),
+                                fit: BoxFit.cover,
+                                height: 230.0,
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 40, left: 15),
+                                    child: GestureDetector(
+                                      child: SvgPicture.asset(
+                                          'assets/svg_images/rest_arrow_left.svg'),
+                                      onTap: () async {
+                                        if(await Internet.checkConnection()){
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              PageRouteBuilder(
+                                                  pageBuilder: (context, animation, anotherAnimation) {
+                                                    return HomeScreen();
+                                                  },
+                                                  transitionDuration: Duration(milliseconds: 300),
+                                                  transitionsBuilder:
+                                                      (context, animation, anotherAnimation, child) {
+                                                    return SlideTransition(
+                                                      position: Tween(
+                                                          begin: Offset(1.0, 0.0),
+                                                          end: Offset(0.0, 0.0))
+                                                          .animate(animation),
+                                                      child: child,
+                                                    );
+                                                  }
+                                              ), (Route<dynamic> route) => false);
+                                        }else{
+                                          noConnection(context);
+                                        }
+                                      },
+                                    ),
+                                  ))
+                            ],
+                          )),
+                    ),
                   ),
                 ),
                 SliverList(
@@ -960,6 +992,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     }
     return Scaffold(
       key: _scaffoldStateKey,
+
       body: FutureBuilder<RestaurantDataItems>(
           future: loadAllRestaurantItems(restaurant),
           initialData: null,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/data/data.dart';
@@ -52,6 +53,10 @@ class CartPageState extends State<CartPageScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.black, // Color for Android
+        statusBarBrightness: Brightness.dark // Dark == white status bar -- for IOS.
+    ));
   }
 
 
@@ -77,104 +82,75 @@ class CartPageState extends State<CartPageScreen> {
     );
     var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey, parent: this,);
     var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey, parent: this,);
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 15),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                        onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, anotherAnimation) {
-                        return RestaurantScreen(restaurant: restaurant,);
-                      },
-                      transitionDuration: Duration(milliseconds: 300),
-                      transitionsBuilder:
-                          (context, animation, anotherAnimation, child) {
-                        return SlideTransition(
-                          position: Tween(
-                              begin: Offset(1.0, 0.0),
-                              end: Offset(0.0, 0.0))
-                              .animate(animation),
-                          child: child,
-                        );
-                      }
-                  ), (Route<dynamic> route) => false),
-                        child: Container(
-                            height: 40,
-                            width: 60,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 12, bottom: 12, right: 25),
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/arrow_left.svg'),
-                            ))),
-                    Padding(
-                      padding: EdgeInsets.only(right: 20),
-                      child: Text(
-                        'Корзина',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF3F3F3F)),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light
+      ),
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 40, bottom: 15),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      InkWell(
+                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation, anotherAnimation) {
+                                    return RestaurantScreen(restaurant: restaurant,);
+                                  },
+                                  transitionDuration: Duration(milliseconds: 300),
+                                  transitionsBuilder:
+                                      (context, animation, anotherAnimation, child) {
+                                    return SlideTransition(
+                                      position: Tween(
+                                          begin: Offset(1.0, 0.0),
+                                          end: Offset(0.0, 0.0))
+                                          .animate(animation),
+                                      child: child,
+                                    );
+                                  }
+                              ), (Route<dynamic> route) => false),
+                          child: Container(
+                              height: 40,
+                              width: 60,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 12, bottom: 12, right: 25),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_left.svg'),
+                              ))),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Text(
+                          'Корзина',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3F3F3F)),
+                        ),
                       ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          child: SvgPicture.asset(
-                              'assets/svg_images/del_basket.svg'),
-                          onTap: () {
-                            if(Platform.isIOS){
-                              return showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                                    child: Stack(
-                                      children: [
-                                        Dialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                          child: InkWell(
-                                            child: Container(
-                                              height: 50,
-                                              width: 100,
-                                              child: Center(
-                                                child: Text("Очистить корзину",
-                                                  style: TextStyle(
-                                                      color: Color(0xFFFF3B30),
-                                                      fontSize: 20
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              setState(() {
-                                                AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                                                currentUser.cartDataModel.cart.clear();
-                                                currentUser.cartDataModel.saveData();
-                                              });
-                                              Navigator.pushReplacement(
-                                                context,
-                                                new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  new EmptyCartScreen(restaurant: restaurant),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 120),
-                                          child: Dialog(
+                      Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: GestureDetector(
+                            child: SvgPicture.asset(
+                                'assets/svg_images/del_basket.svg'),
+                            onTap: () {
+                              if(Platform.isIOS){
+                                return showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                                      child: Stack(
+                                        children: [
+                                          Dialog(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
                                             child: InkWell(
@@ -182,237 +158,272 @@ class CartPageState extends State<CartPageScreen> {
                                                 height: 50,
                                                 width: 100,
                                                 child: Center(
-                                                  child: Text("Отмена",
+                                                  child: Text("Очистить корзину",
                                                     style: TextStyle(
-                                                        color: Color(0xFF007AFF),
+                                                        color: Color(0xFFFF3B30),
                                                         fontSize: 20
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              onTap: (){
-                                                Navigator.pop(context);
+                                              onTap: () {
+                                                setState(() {
+                                                  AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
+                                                  currentUser.cartDataModel.cart.clear();
+                                                  currentUser.cartDataModel.saveData();
+                                                });
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    new EmptyCartScreen(restaurant: restaurant),
+                                                  ),
+                                                );
                                               },
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                        )),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Container(
-                width: 350,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: Color(0xFF09B44D),
-                  ),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0,
-                            right: 0),
-                        child: Container(
-                          height: 40,
-                          width: 176,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
-                            color: (selectedPageId == 0) ? Color(0xFF09B44D) : Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 0, right: 0, top: 0),
-                            child: Center(
-                              child: Text(
-                                'Доставка',
-                                style: TextStyle(
-                                    color: (selectedPageId == 0) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          _controller.animateToPage(0,
-                              duration: Duration(seconds: 3),
-                              curve: Curves.elasticOut);
-                        } else {
-                          noConnection(context);
-                        }
-                      },
-                    ),
-                    GestureDetector(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0,
-                            right: 0),
-                        child: Container(
-                          height: 40,
-                          width: 172,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
-                            color: (selectedPageId == 1) ? Color(0xFF09B44D) : Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 0, right: 0, top: 0),
-                            child: Center(
-                              child: Text(
-                                'Самовывоз',
-                                style: TextStyle(
-                                    color: (selectedPageId == 1) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          _controller.animateToPage(1,
-                              duration: Duration(seconds: 3),
-                              curve: Curves.elasticOut);
-                        } else {
-                          noConnection(context);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: PageView(
-                controller: _controller,
-                children: [cartScreen, cartTakeAwayScreen],
-                onPageChanged: (int pageId) {
-                  setState(() {
-                    selectedPageId = pageId;
-                  });
-                },
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      spreadRadius: 1
-                    )
-                  ]
-                ),
-                child: Padding(
-                  padding:
-                  EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Column(
-                          children: [
-                            totalPriceWidget,
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      FlatButton(
-                        child: Text('Далее',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white)),
-                        color: Color(0xFF09B44D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.only(
-                            left: 70, top: 20, right: 70, bottom: 20),
-                        onPressed: () async {
-                          if (await Internet.checkConnection()) {
-                            if (currentUser.isLoggedIn) {
-                              if(selectedPageId == 0){
-                                Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                        pageBuilder: (context, animation, anotherAnimation) {
-                                          return AddressScreen(restaurant: restaurant);
-                                        },
-                                        transitionDuration: Duration(milliseconds: 300),
-                                        transitionsBuilder:
-                                            (context, animation, anotherAnimation, child) {
-                                          return SlideTransition(
-                                            position: Tween(
-                                                begin: Offset(-1.0, 0.0),
-                                                end: Offset(0.0, 0.0))
-                                                .animate(animation),
-                                            child: child,
-                                          );
-                                        }
-                                    ));
-                              }else{
-                                Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                        pageBuilder: (context, animation, anotherAnimation) {
-                                          return TakeAway(restaurant: restaurant);
-                                        },
-                                        transitionDuration: Duration(milliseconds: 300),
-                                        transitionsBuilder:
-                                            (context, animation, anotherAnimation, child) {
-                                          return SlideTransition(
-                                            position: Tween(
-                                                begin: Offset(-1.0, 0.0),
-                                                end: Offset(0.0, 0.0))
-                                                .animate(animation),
-                                            child: child,
-                                          );
-                                        }
-                                    ));
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 120),
+                                            child: Dialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                              child: InkWell(
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 100,
+                                                  child: Center(
+                                                    child: Text("Отмена",
+                                                      style: TextStyle(
+                                                          color: Color(0xFF007AFF),
+                                                          fontSize: 20
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                onTap: (){
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                               }
-                            } else {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new AuthScreen()),
-                              );
-                            }
-                          } else {
-                            noConnection(context);
-                          }
-                        },
-                      )
+                            },
+                          )),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Container(
+                  width: 350,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: Color(0xFF09B44D),
+                    ),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 0,
+                              right: 0),
+                          child: Container(
+                            height: 40,
+                            width: 176,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+                              color: (selectedPageId == 0) ? Color(0xFF09B44D) : Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 0, right: 0, top: 0),
+                              child: Center(
+                                child: Text(
+                                  'Доставка',
+                                  style: TextStyle(
+                                      color: (selectedPageId == 0) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () async {
+                          if (await Internet.checkConnection()) {
+                            _controller.animateToPage(0,
+                                duration: Duration(seconds: 3),
+                                curve: Curves.elasticOut);
+                          } else {
+                            noConnection(context);
+                          }
+                        },
+                      ),
+                      GestureDetector(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 0,
+                              right: 0),
+                          child: Container(
+                            height: 40,
+                            width: 172,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
+                              color: (selectedPageId == 1) ? Color(0xFF09B44D) : Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 0, right: 0, top: 0),
+                              child: Center(
+                                child: Text(
+                                  'Самовывоз',
+                                  style: TextStyle(
+                                      color: (selectedPageId == 1) ? Colors.white : Color(0xFF09B44D), fontSize: 15),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () async {
+                          if (await Internet.checkConnection()) {
+                            _controller.animateToPage(1,
+                                duration: Duration(seconds: 3),
+                                curve: Curves.elasticOut);
+                          } else {
+                            noConnection(context);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: PageView(
+                  controller: _controller,
+                  children: [cartScreen, cartTakeAwayScreen],
+                  onPageChanged: (int pageId) {
+                    setState(() {
+                      selectedPageId = pageId;
+                    });
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 1
+                        )
+                      ]
+                  ),
+                  child: Padding(
+                    padding:
+                    EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Column(
+                            children: [
+                              totalPriceWidget,
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        FlatButton(
+                          child: Text('Далее',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white)),
+                          color: Color(0xFF09B44D),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.only(
+                              left: 70, top: 20, right: 70, bottom: 20),
+                          onPressed: () async {
+                            if (await Internet.checkConnection()) {
+                              if (currentUser.isLoggedIn) {
+                                if(selectedPageId == 0){
+                                  Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                          pageBuilder: (context, animation, anotherAnimation) {
+                                            return AddressScreen(restaurant: restaurant);
+                                          },
+                                          transitionDuration: Duration(milliseconds: 300),
+                                          transitionsBuilder:
+                                              (context, animation, anotherAnimation, child) {
+                                            return SlideTransition(
+                                              position: Tween(
+                                                  begin: Offset(-1.0, 0.0),
+                                                  end: Offset(0.0, 0.0))
+                                                  .animate(animation),
+                                              child: child,
+                                            );
+                                          }
+                                      ));
+                                }else{
+                                  Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                          pageBuilder: (context, animation, anotherAnimation) {
+                                            return TakeAway(restaurant: restaurant);
+                                          },
+                                          transitionDuration: Duration(milliseconds: 300),
+                                          transitionsBuilder:
+                                              (context, animation, anotherAnimation, child) {
+                                            return SlideTransition(
+                                              position: Tween(
+                                                  begin: Offset(-1.0, 0.0),
+                                                  end: Offset(0.0, 0.0))
+                                                  .animate(animation),
+                                              child: child,
+                                            );
+                                          }
+                                      ));
+                                }
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new AuthScreen()),
+                                );
+                              }
+                            } else {
+                              noConnection(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
