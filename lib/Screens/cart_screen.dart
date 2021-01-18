@@ -758,7 +758,7 @@ class CartScreenState extends State<CartScreen> {
           Align(
             alignment: Alignment.topRight,
             child: Column(
-              children: [
+              children: [ 
                 PriceField(key: priceFieldKey, order: order),
                 Padding(
                   padding: EdgeInsets.only(top: 25, left: (order.food.toppings != null
