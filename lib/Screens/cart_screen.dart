@@ -770,7 +770,7 @@ class CartScreenState extends State<CartScreen> {
                   child: GestureDetector(
                     child: SvgPicture.asset(
                         'assets/svg_images/del_basket.svg'),
-                    onTap: () {
+                    onTap: () { 
                       if(Platform.isIOS){
                         return showDialog(
                           context: context,
