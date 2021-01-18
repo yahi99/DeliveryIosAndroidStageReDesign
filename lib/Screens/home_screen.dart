@@ -31,6 +31,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../models/my_addresses_model.dart';
+import 'address_screen.dart';
 import 'auth_screen.dart';
 import 'device_id_screen.dart';
 import 'infromation_screen.dart';
@@ -63,6 +65,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   bool filterSelect = false;
   bool isExpanded = false;
   GlobalKey<KitchenListScreenState> kitchenListKey = new GlobalKey();
+  GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
+  GlobalKey();
+  Records restaurant;
+  List<MyFavouriteAddressesModel> myAddressesModelList;
+  GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
+  AddressScreenState homeScreenState;
+
 
   @override
   void initState() {
@@ -935,9 +944,96 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     );
   }
 
+  void _dispatchAddress() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20),
+            )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 300,
+            child: _buildDispatchAddressBottomNavigationMenu(),
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                )),
+          );
+        });
+  }
+
+  _buildDispatchAddressBottomNavigationMenu() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(20),
+            topRight: const Radius.circular(20),
+          )),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 30, bottom: 35),
+              child: Text('Мои адреса',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(left:15, right: 15, top: 15, bottom: 15),
+                child: InkWell(
+                  child: Container(
+                    width: 380,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: Color(0xFF09B44D),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Center(
+                      child: Text('Готово',
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: (){
+                    // addressValueController.text = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.street + ' ' +
+                    //     destinationPointsSelectorStateKey.currentState.selectedDestinationPoint.house;
+                    // selectedAddress = destinationPointsSelectorStateKey.currentState.selectedDestinationPoint;
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarBrightness: Brightness.light
+      ),
       child: Scaffold(
         key: _scaffoldKey,
         drawer: ClipRRect(
@@ -1020,21 +1116,26 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 },
                               ),
                             ),
-                            Container(
-                              width: 250,
-                              height: 38,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(0xFF09B44D)
-                              ),
-                              child: Center(
-                                child: Text('Хаджи Мамсурова,42',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13
+                            GestureDetector(
+                              child: Container(
+                                width: 250,
+                                height: 38,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xFF09B44D)
+                                ),
+                                child: Center(
+                                  child: Text('Хаджи Мамсурова,42',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13
+                                    ),
                                   ),
                                 ),
                               ),
+                              onTap: (){
+                                _dispatchAddress();
+                              },
                             ),
                             Padding(
                               padding: EdgeInsets.only(bottom: 0, top: 0),
@@ -2254,7 +2355,7 @@ class FilterListScreenState extends State<FilterListScreen>{
                                   fontSize: 18
                               ),
                             ),
-                            SvgPicture.asset('assets/svg_images/circle.svg'),
+                            SvgPicture.asset('assets/svg_images/home_unselected_item.svg'),
                           ],
                         ),
                       ) : Container(
@@ -2266,7 +2367,7 @@ class FilterListScreenState extends State<FilterListScreen>{
                                   fontSize: 18
                               ),
                             ),
-                            SvgPicture.asset('assets/svg_images/address_screen_selector.svg'),
+                            SvgPicture.asset('assets/svg_images/home_selected_item.svg'),
                           ],
                         ),
                       ),

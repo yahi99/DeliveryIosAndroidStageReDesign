@@ -610,7 +610,8 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   floating: false,
                   pinned: true,
                   snap: false,
-                  stretch: false,
+                  stretch: true,
+                  elevation: 0,
                   backgroundColor: Colors.white,
                   leading: Padding(
                       padding: const EdgeInsets.all(20),
@@ -1657,7 +1658,7 @@ class CategoryListState extends State<CategoryList> {
           scrollDirection: Axis.vertical,
           children: List.generate(categoryItems.length, (index) {
             return Padding(
-              padding: const EdgeInsets.only(left: 20, top: 30, bottom: 0, right: 0),
+              padding: const EdgeInsets.only(left: 20, top: 20, bottom: 15, right: 0),
               child: GestureDetector(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -1728,6 +1729,16 @@ class CategoryListState extends State<CategoryList> {
     return  Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Container(
+        // decoration: BoxDecoration(
+        //   color: Colors.white,
+        //   boxShadow: [
+        //     BoxShadow(
+        //         color: Colors.black54,
+        //         blurRadius: 2.0,
+        //         offset: Offset(0.0, 0.75)
+        //     )
+        //   ],
+        // ),
         padding: EdgeInsets.only(top: 10, bottom: 10),
         height: 70,
         child: Row(
@@ -2409,7 +2420,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                 ),
                               )),
                               Padding(
-                                padding: EdgeInsets.only(right: 20),
+                                padding: EdgeInsets.only(right: 20, top: 8),
                                 child: PriceField(key: priceFieldKey, restaurantDataItems: restaurantDataItems),
                               )
                             ],
