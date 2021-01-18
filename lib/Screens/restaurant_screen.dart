@@ -2447,7 +2447,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       padding: EdgeInsets.only(
-                                          left: 60, top: 20, right: 60, bottom: 20),
+                                          left: 55, top: 20, right: 55, bottom: 20),
                                       onPressed: () async {
                                         if (await Internet.checkConnection()) {
                                           FoodRecords foodOrder =

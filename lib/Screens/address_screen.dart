@@ -1179,7 +1179,7 @@ class AddressScreenState extends State<AddressScreen>
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 30, right: 15),
+                        padding: const EdgeInsets.only(bottom: 30, right: 10),
                         child: Row(
                           children: [
                             Padding(
@@ -2167,68 +2167,71 @@ class TakeAwayState extends State<TakeAway>
                           ],
                         ),
                       ) : Container(),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 10, left: 15, right: 15, bottom: 10),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: GestureDetector(
-                                child: Container(
-                                  width: 185,
-                                  height: 64,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 2.0,
-                                            offset: Offset(0.0, 1)
-                                        )
-                                      ],
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(width: 1.0, color: Colors.grey[200])),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 10, left: 15, right: 15, bottom: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "Способ оплаты",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xFFB8B8B8)),
-                                            ),
-                                            Text(
-                                              (selectedPaymentId == 1) ? card : cash,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: SvgPicture.asset(
-                                              'assets/svg_images/arrow_down.svg'),
-                                        ),
-                                      ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 10, left: 15, right: 15, bottom: 10),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: GestureDetector(
+                                  child: Container(
+                                    width: 160,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black12,
+                                              blurRadius: 2.0,
+                                              offset: Offset(0.0, 1)
+                                          )
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        border: Border.all(width: 1.0, color: Colors.grey[200])),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 10, left: 15, right: 15, bottom: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "Способ оплаты",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFFB8B8B8)),
+                                              ),
+                                              Text(
+                                                (selectedPaymentId == 1) ? card : cash,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: SvgPicture.asset(
+                                                'assets/svg_images/arrow_down.svg'),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                  onTap: () async {
+                                    _payment();
+                                  },
                                 ),
-                                onTap: () async {
-                                  _payment();
-                                },
                               ),
                             ),
-                          ),
-                          PromoText(key: promoTextKey,)
-                        ],
+                            PromoText(key: promoTextKey,)
+                          ],
+                        ),
                       ),
                     ],
                   ),
