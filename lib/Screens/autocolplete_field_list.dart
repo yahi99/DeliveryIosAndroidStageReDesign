@@ -243,7 +243,7 @@ class CrossState extends State<Cross> {
     super.initState();
     controller.addListener(() {
       setState(() {
-        
+
       });
     });
   }
