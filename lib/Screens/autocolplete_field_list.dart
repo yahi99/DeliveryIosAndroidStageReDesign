@@ -144,7 +144,7 @@ class AutocompleteListState extends State<AutocompleteList> {
           children: List.generate(suggestions.length, (index){
             return GestureDetector(
               child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 10),
+                padding: const EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 0),
                 child: Container(
                   child: Column(
                     children: [
@@ -166,7 +166,10 @@ class AutocompleteListState extends State<AutocompleteList> {
                           ),
                         ),
                       ),
-                      Divider(color: Colors.grey,)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Divider(color: Colors.grey,),
+                      )
                     ],
                   ),
                 )

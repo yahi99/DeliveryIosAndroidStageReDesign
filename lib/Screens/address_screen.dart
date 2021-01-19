@@ -976,10 +976,13 @@ class AddressScreenState extends State<AddressScreen>
                           ],
                         ),
                       ),
-
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, left: 15, right: 15),
+                        child: Divider(color: Colors.grey),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(
-                            top: 15, left: 17, bottom: 5, right: 17),
+                            top: 5, left: 17, bottom: 5, right: 17),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -1075,6 +1078,10 @@ class AddressScreenState extends State<AddressScreen>
                             )
                           ],
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Divider(color: Colors.grey),
                       ),
                       // Container(
                       //   height: 10,
@@ -1263,7 +1270,7 @@ class AddressScreenState extends State<AddressScreen>
                         ],
                         color: Colors.white,),
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 10),
+                      padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -2559,52 +2566,42 @@ class DestinationPointsSelectorState extends State<DestinationPointsSelector> wi
     destinationPointsList.forEach((element) {
       widgetsList.add(
           Padding(
-            padding: EdgeInsets.only(right: 0),
-            child: ListTile(
-                contentPadding: EdgeInsets.only(right: 5, left: 15),
-                title: InkWell(
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: Container(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 10, bottom: 5),
-                                child: Text(
-                                  element.unrestrictedValue,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
+            padding: EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
+            child: InkWell(
+              child: Container(
+                child: Row(
+                  children: [
+                    (selectedDestinationPoint == element)
+                        ? SvgPicture.asset(
+                        'assets/svg_images/address_screen_selector.svg')
+                        :
+                    SvgPicture.asset(
+                        'assets/svg_images/circle.svg'),
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 0, bottom: 5),
+                            child: Text(
+                              element.unrestrictedValue,
+                              textAlign: TextAlign.left,
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  onTap: () async {
-                    setState(() {
-                      selectedDestinationPoint = element;
-                    });
-                  },
+                  ],
                 ),
-                leading: InkWell(
-                  child: (selectedDestinationPoint == element)
-                      ? SvgPicture.asset(
-                      'assets/svg_images/address_screen_selector.svg')
-                      :
-                  SvgPicture.asset(
-                      'assets/svg_images/circle.svg'),
-                  onTap: ()async {
-                    setState(() {
-                      selectedDestinationPoint = element;
-                    });
-                  },
-                )
-            ),
+              ),
+              onTap: () async {
+                setState(() {
+                  selectedDestinationPoint = element;
+                });
+              },
+            )
           )
       );
     });
