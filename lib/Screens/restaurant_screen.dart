@@ -611,7 +611,6 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   pinned: true,
                   snap: false,
                   stretch: true,
-                  elevation: 0,
                   backgroundColor: Colors.white,
                   leading: Padding(
                       padding: const EdgeInsets.all(20),

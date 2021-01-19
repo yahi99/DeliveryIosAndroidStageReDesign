@@ -641,24 +641,27 @@ class AddressScreenState extends State<AddressScreen>
                                   ),
                                 ),
                                 Container(
+                                  height: 30,
                                   child: TextField(
                                     controller: phoneNumberController,
                                     decoration: new InputDecoration(
                                       hintText: 'Номер телефона получателя',
+                                      contentPadding: EdgeInsets.only(top: 5),
                                       hintStyle: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey
                                       ),
                                       border: InputBorder.none,
-                                      counterText: '',
                                     ),
                                   ),
                                 ),
                                 Divider(color: Colors.grey,),
                                 Container(
+                                  height: 30,
                                   child: TextField(
                                     controller: nameController,
                                     decoration: new InputDecoration(
+                                      contentPadding: EdgeInsets.only(top: 5),
                                       hintText: 'Имя получателя',
                                       hintStyle: TextStyle(
                                           fontSize: 14,
@@ -1865,9 +1868,11 @@ class TakeAwayState extends State<TakeAway>
                                   ),
                                 ),
                                 Container(
+                                  height: 30,
                                   child: TextField(
                                     controller: phoneNumberController,
                                     decoration: new InputDecoration(
+                                      contentPadding: EdgeInsets.only(top: 5),
                                       hintText: 'Номер телефона получателя',
                                       hintStyle: TextStyle(
                                           fontSize: 14,
@@ -1880,9 +1885,11 @@ class TakeAwayState extends State<TakeAway>
                                 ),
                                 Divider(color: Colors.grey,),
                                 Container(
+                                  height: 30,
                                   child: TextField(
                                     controller: nameController,
                                     decoration: new InputDecoration(
+                                      contentPadding: EdgeInsets.only(top: 5),
                                       hintText: 'Имя получателя',
                                       hintStyle: TextStyle(
                                           fontSize: 14,

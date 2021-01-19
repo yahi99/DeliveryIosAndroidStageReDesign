@@ -39,50 +39,62 @@ class AutoCompleteFieldState extends State<AutoCompleteField> with AutomaticKeep
 
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: Container(
-              padding: EdgeInsets.only(right: 10),
-              height: 50,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4.0, // soften the shadow
-                      spreadRadius: 1.0, //extend the shadow
-                    )
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(width: 1.0, color: Colors.grey[200])),
+          Container(
               child: Row(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    child: TextField(
-                      controller: controller,
-                      focusNode: node,
-                      decoration: new InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 10, right: 5),
-                        border: InputBorder.none,
-                        counterText: '',
+                  Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(top: 15),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: TextField(
+                          controller: controller,
+                          focusNode: node,
+                          decoration: new InputDecoration(
+                            suffix: Padding(
+                              padding: const EdgeInsets.only(right:8.0, top: 3),
+                              child: Cross(controller, autocompleteList),
+                            ),
+                            contentPadding: EdgeInsets.only(left: 10, right: 5, bottom: 10),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onChanged: (text) async {
+                            var temp = await findAddress(text);
+                            if(temp != null && autocompleteList.autoCompleteListKey.currentState != null){
+                              autocompleteList.autoCompleteListKey.currentState.setState(() {
+                                autocompleteList.autoCompleteListKey.currentState.suggestions = temp;
+                              });
+                            }
+                          },
+                        ),
                       ),
-                      onChanged: (text) async {
-                        var temp = await findAddress(text);
-                        if(temp != null && autocompleteList.autoCompleteListKey.currentState != null){
-                          autocompleteList.autoCompleteListKey.currentState.setState(() {
-                            autocompleteList.autoCompleteListKey.currentState.suggestions = temp;
-                          });
-                        }
-                      },
-                    ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  'Адрес',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      ),
+                    ],
                   ),
-                  Cross(controller, autocompleteList)
                 ],
               )
-            ),
           ),
           autocompleteList
         ],
@@ -138,14 +150,17 @@ class AutocompleteListState extends State<AutocompleteList> {
 
   Widget suggestionRow(){
     return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
       height: MediaQuery.of(context).size.height * 0.65,
       child: ListView(
         padding: EdgeInsets.zero,
           children: List.generate(suggestions.length, (index){
-            return GestureDetector(
+            return InkWell(
               child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 0),
+                padding: const EdgeInsets.only(left: 5, top: 10, right: 15, bottom: 0),
                 child: Container(
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
                       Align(

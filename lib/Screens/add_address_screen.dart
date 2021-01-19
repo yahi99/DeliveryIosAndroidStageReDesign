@@ -42,6 +42,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
     commentField.text = myAddressesModel.description;
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
@@ -74,14 +75,14 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 padding: EdgeInsets.only(top: 80, left: 20),
                 child: Column(
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Text('Адрес',
-                            style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.only(top: 10, bottom: 10),
+                    //     child: Text('Адрес',
+                    //         style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
+                    //   ),
+                    // ),
                     AutoCompleteField(autoCompleteFieldKey, onSelected: (){
                       myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteFieldKey.currentState.selectedValue);
                       return;

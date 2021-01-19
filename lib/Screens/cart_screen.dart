@@ -137,7 +137,7 @@ class CartPageState extends State<CartPageScreen> {
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.only(right: 10),
+                          padding: EdgeInsets.only(right: 13),
                           child: GestureDetector(
                             child: SvgPicture.asset(
                                 'assets/svg_images/del_basket.svg'),
@@ -258,9 +258,7 @@ class CartPageState extends State<CartPageScreen> {
                         ),
                         onTap: () async {
                           if (await Internet.checkConnection()) {
-                            _controller.animateToPage(0,
-                                duration: Duration(seconds: 3),
-                                curve: Curves.elasticOut);
+                            _controller.jumpToPage(0);
                           } else {
                             noConnection(context);
                           }
@@ -293,9 +291,7 @@ class CartPageState extends State<CartPageScreen> {
                         ),
                         onTap: () async {
                           if (await Internet.checkConnection()) {
-                            _controller.animateToPage(1,
-                                duration: Duration(seconds: 3),
-                                curve: Curves.elasticOut);
+                            _controller.jumpToPage(1);
                           } else {
                             noConnection(context);
                           }
@@ -612,7 +608,7 @@ class CartScreenState extends State<CartScreen> {
                             ],
                           ),
                           Text(
-                            '150',
+                            '150 \₽',
                             style: TextStyle(
                                 fontSize: 18.0,
                                 color: Color(0xFF000000)),
@@ -698,7 +694,7 @@ class CartScreenState extends State<CartScreen> {
               ),),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 100),
+            padding: EdgeInsets.only(left: 85),
             child: Column(
               children: [
                 Padding(
@@ -765,12 +761,12 @@ class CartScreenState extends State<CartScreen> {
               children: [
                 PriceField(key: priceFieldKey, order: order),
                 Padding(
-                  padding: EdgeInsets.only(top: 30, left: (order.food.toppings != null
-                      || order.food.variants != null) ? 25 : 0),
+                  padding: EdgeInsets.only(top:getBasketButtonHeight(order.food), left: (order.food.toppings != null
+                      || order.food.variants != null) ? 30 : 0),
                   child: GestureDetector(
                     child: SvgPicture.asset(
                         'assets/svg_images/del_basket.svg'),
-                    onTap: () { 
+                    onTap: () {
                       if(Platform.isIOS){
                         return showDialog(
                           context: context,
@@ -785,7 +781,7 @@ class CartScreenState extends State<CartScreen> {
                                     child: InkWell(
                                       child: Container(
                                         height: 50,
-                                        width: 100,
+                                        width: 700,
                                         child: Center(
                                           child: Text("Удалить",
                                             style: TextStyle(
@@ -826,7 +822,7 @@ class CartScreenState extends State<CartScreen> {
                                       child: InkWell(
                                         child: Container(
                                           height: 50,
-                                          width: 100,
+                                          width: 700,
                                           child: Center(
                                             child: Text("Отмена",
                                               style: TextStyle(
@@ -970,6 +966,16 @@ class CartScreenState extends State<CartScreen> {
       ),
     );
   }
+
+  double getBasketButtonHeight(FoodRecords food){
+    if(food.variants == null && food.toppings == null){
+      return 25;
+    }else if(food.variants != null && food.toppings == null){
+      return 30;
+    }else{
+      return 50;
+    }
+  }
 }
 
 class CartTakeAwayScreen extends StatefulWidget {
@@ -1040,10 +1046,15 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                 }
               },
               direction: DismissDirection.endToStart,
-              child: Container(
+              child: (order.food.toppings == null && order.food.variants == null)? Container(
+                height: 113,
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: _buildCartItem(order),
+                child: _buildCartItem(order, index),
+              ): Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: _buildCartItem(order, index),
               ),
             );
           }
@@ -1084,7 +1095,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
     );
   }
 
-  _buildCartItem(Order order) {
+  _buildCartItem(Order order, int index) {
     double toppingsCost = 0;
     if(order.food.toppings != null){
       order.food.toppings.forEach((element) {
@@ -1095,109 +1106,185 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
     GlobalKey<PriceFieldState> priceFieldKey =
     new GlobalKey<PriceFieldState>();
     return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10)),
-                child: Image.network(
-                  getImage(order.food.image),
-                  fit: BoxFit.cover,
-                  height: 70,
-                  width: 70,
-                ),),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 100),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        order.food.name,
-                        style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontSize: 14.0,
-                            color: Color(0xFF000000)),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  (order.food.variants != null)
-                      ? Align(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+              child: Image.network(
+                getImage(order.food.image),
+                fit: BoxFit.cover,
+                height: 70,
+                width: 70,
+              ),),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 85),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      order.food.variants[0].name,
+                      order.food.name,
                       style: TextStyle(
                           decoration: TextDecoration.none,
-                          fontSize: 10.0,
-                          color: Colors.grey),
-                      textAlign: TextAlign.start,
-                    ),
-                  ) : Text(''),
-                  (order.food.toppings != null)
-                      ? Align(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      children: List.generate(
-                          order.food.toppings.length,
-                              (index) => Text(
-                            order.food.toppings[index]
-                                .name,
-                            style: TextStyle(
-                                decoration:
-                                TextDecoration.none,
-                                fontSize: 10.0,
-                                color: Colors.grey),
-                            textAlign: TextAlign.start,
-                          )),
-                    ),
-                  )
-                      : Text(''),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15, top: 10),
-                    child: Counter(
-                      key: counterKey,
-                      priceFieldKey: priceFieldKey,
-                      order: order,
-                      totalPriceList: totalPrices,
+                          fontSize: 14.0,
+                          color: Color(0xFF000000)),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Column(
-                children: [
-                  PriceField(key: priceFieldKey, order: order),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: GestureDetector(
-                      child: SvgPicture.asset(
-                          'assets/svg_images/del_basket.svg'),
-                      onTap: () {
-                        // setState(() {
-                        //   currentUser.cartDataModel.cart.remove(0);
-                        //   currentUser.cartDataModel.saveData();
-                        // });
-                      },
-                    ),
+                ),
+                (order.food.variants != null)
+                    ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    order.food.variants[0].name,
+                    style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 10.0,
+                        color: Colors.grey),
+                    textAlign: TextAlign.start,
                   ),
-                ],
-              ),
+                ) : Container(height: 0,),
+                (order.food.toppings != null)
+                    ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    children: List.generate(
+                        order.food.toppings.length,
+                            (index) => Text(
+                          order.food.toppings[index]
+                              .name,
+                          style: TextStyle(
+                              decoration:
+                              TextDecoration.none,
+                              fontSize: 10.0,
+                              color: Colors.grey),
+                          textAlign: TextAlign.start,
+                        )),
+                  ),
+                )
+                    : Container(height: 0,),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 15, top: (order.food.toppings == null
+                      && order.food.variants == null) ? 23 : 10),
+                  child: Counter(
+                    key: counterKey,
+                    priceFieldKey: priceFieldKey,
+                    order: order,
+                    totalPriceList: totalPrices,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ));
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Column(
+              children: [
+                PriceField(key: priceFieldKey, order: order),
+                Padding(
+                  padding: EdgeInsets.only(top: 30, left: (order.food.toppings != null
+                      || order.food.variants != null) ? 25 : 0),
+                  child: GestureDetector(
+                    child: SvgPicture.asset(
+                        'assets/svg_images/del_basket.svg'),
+                    onTap: () {
+                      if(Platform.isIOS){
+                        return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                              child: Stack(
+                                children: [
+                                  Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                    child: InkWell(
+                                      child: Container(
+                                        height: 50,
+                                        width: 700,
+                                        child: Center(
+                                          child: Text("Удалить",
+                                            style: TextStyle(
+                                                color: Color(0xFFFF3B30),
+                                                fontSize: 20
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          if(parent.totalPriceWidget.key.currentState != null){
+                                            parent.totalPriceWidget.key.currentState.setState(() {
+
+                                            });
+                                          }
+                                          currentUser.cartDataModel.cart.removeAt(index);
+                                          currentUser.cartDataModel.saveData();
+                                        });
+                                        Navigator.pop(context);
+                                        if (currentUser.cartDataModel.cart.length == 0) {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                              builder: (context) =>
+                                              new EmptyCartScreen(restaurant: restaurant),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 120),
+                                    child: Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                      child: InkWell(
+                                        child: Container(
+                                          height: 50,
+                                          width: 700,
+                                          child: Center(
+                                            child: Text("Отмена",
+                                              style: TextStyle(
+                                                  color: Color(0xFF007AFF),
+                                                  fontSize: 20
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   showAlertDialog(BuildContext context) {
@@ -1437,7 +1524,7 @@ class PriceFieldState extends State<PriceField> {
       totalPrice += toppingsCost;
     }
     return Padding(
-      padding: EdgeInsets.only(right: 0),
+      padding: EdgeInsets.only(left: 20),
       child: Text('${(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null) ?
       (order.quantity * (order.food.price + order.food.variants[0].price) + toppingsCost).toStringAsFixed(0) :
       (order.quantity * order.food.price + toppingsCost).toStringAsFixed(0)} \₽',

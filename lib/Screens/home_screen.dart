@@ -1176,10 +1176,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   );
                                 } else {
                                   orderList = null;
-                                  return Center(
-                                    child: Container(
-                                      height: 0,
-                                    ),
+                                  return Container(
+                                    height: 0,
                                   );
                                 }
                               },
@@ -1360,12 +1358,12 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
           child: Column(
             children: <Widget>[
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Align(
                           child: Text(
@@ -1380,11 +1378,8 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           ),
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 10, left: 20, top: 0),
+                      Padding(
+                        padding: EdgeInsets.only(right: 10, left: 20, bottom: 0),
                         child: InkWell(
                           child: Container(
                             height: 30,
@@ -1395,7 +1390,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                             child: Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(left: 7, top: 7, bottom: 5),
                                   child: SvgPicture.asset('assets/svg_images/i.svg'),
                                 ),
                                 Padding(
@@ -1420,19 +1415,19 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           },
                         ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: (in_the_way
-                    .contains(ordersStoryModelItem.state)) ? Padding(
-                  padding: EdgeInsets.only(right: 170, bottom: 8, left: 10),
-                  child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.regNumber,
-                    style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
-                ) : Container(height: 0),
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: (in_the_way
+              //       .contains(ordersStoryModelItem.state)) ? Padding(
+              //     padding: EdgeInsets.only(right: 170, bottom: 8, left: 10),
+              //     child: Text(ordersStoryModelItem.driver.color + ' ' + ordersStoryModelItem.driver.car + ' ' + ordersStoryModelItem.driver.regNumber,
+              //       style: TextStyle(color: Color(0xFF000000), fontSize: 16),),
+              //   ) : Container(height: 0),
+              // ),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 5, right: 10, bottom: 10),
@@ -1450,7 +1445,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           child: Column(
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(top: 15),
                                 child: SvgPicture.asset(
                                   'assets/svg_images/white_clock.svg'),
                               ),
@@ -1501,7 +1496,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           child: Column(
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(top: 15),
                                 child: (cooking_state
                                     .contains(ordersStoryModelItem.state) ||
                                     in_the_way.contains(ordersStoryModelItem.state))
@@ -1562,7 +1557,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                           child: Column(
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(top: 15),
+                                padding: EdgeInsets.only(top: 18),
                                 child: (in_the_way
                                     .contains(ordersStoryModelItem.state))
                                     ? SvgPicture.asset(
@@ -2222,7 +2217,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
             children: List.generate(12,(index){
               return InkWell(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, left: 5, right: 5, bottom: 10),
+                  padding: const EdgeInsets.only(top: 10.0, left: 8, right: 5, bottom: 10),
                   child: (!selectedKitchens[index]) ? Container(
                     child: Row(
                       children: [

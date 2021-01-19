@@ -1,0 +1,58 @@
+{
+  "sidebar": [
+    {
+      "authorization_title": "Авторизоваться",
+      "orders_story_title": "История заказов",
+      "my_addresses_title": "Мои адреса",
+      "service_title": "Слкжба поддержки",
+      "info_title": "Информация",
+      "exit_title": "Выход"
+    }
+  ],
+  "home_screen": [
+    {
+      "order_state_widget": [
+        {
+          "order_desc": "Ваш заказ из",
+          "order": "Заказ"
+        },
+        {
+          "order_state_titles": [
+            {
+              "waiting_for_confirmation": "Обработка",
+              "cooking": "Готовится",
+              "on_the_way": "В пути"
+            }
+          ]
+        }
+      ],
+      "shares": [
+        {
+          "shares_title": "Акции и новинки",
+          "shares_desc": "Все"
+        }
+      ],
+      "restaurants": "Рестораны",
+      "filters_titles": [
+        {
+          "kitchens_title" : "Кухни",
+          "distance_title" : "По расстоянию"
+        }
+      ]
+    }
+  ],
+  "restaurant_screen": [
+    {
+      "cart_title":"Корзина",
+      "cart_desc":"До бесплатной доставки осталось",
+      "delivery": "Доставка",
+      "time_value": "мин"
+    }
+  ],
+  "cart_screen": [
+
+  ],
+  "order_confirmation_screen": [
+
+  ]
+}
