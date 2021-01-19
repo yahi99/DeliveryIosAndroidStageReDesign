@@ -152,7 +152,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
     double totalPrice = ordersStoryModelItem.tariff.totalPrice.toDouble();
     var format = new DateFormat('  HH:mm    dd.MM.yyyy');
     List<Widget> result = new List<Widget>();
-    if(ordersStoryModelItem.productsData.products == null){
+    if(ordersStoryModelItem.productsData == null || ordersStoryModelItem.productsData.products == null){
       return List<Container>();
     }
     result.add(Padding(

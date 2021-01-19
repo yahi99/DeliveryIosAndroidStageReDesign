@@ -19,9 +19,6 @@ class OrdersStoryModel{
   }
 }
 
-
-//String ordersStoryModelItemToJson(List<OrdersStoryModelItem> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class OrdersStoryModelItem {
   OrdersStoryModelItem({
     this.uuid,
@@ -91,7 +88,7 @@ class OrdersStoryModelItem {
   OrdersStoryModelItemPromotion promotion;
   int arrivalTime;
   ProductsData productsData;
-  OrdersStoryModelItemPaymentType paymentType;
+  String paymentType;
   PaymentMeta paymentMeta;
   DateTime estimatedDeliveryTime;
   bool counterOrderMarker;
@@ -157,7 +154,7 @@ class OrdersStoryModelItem {
       promotion: OrdersStoryModelItemPromotion.fromJson(json["promotion"]),
       arrivalTime: json["arrival_time"],
       productsData: pd,
-      paymentType: ordersStoryModelItemPaymentTypeValues.map[json["payment_type"]],
+      paymentType: json["payment_type"],
       paymentMeta: PaymentMeta.fromJson(json["payment_meta"]),
       estimatedDeliveryTime: DateTime.parse(json["estimated_delivery_time"]),
       counterOrderMarker: json["counter_order_marker"],
@@ -176,50 +173,6 @@ class OrdersStoryModelItem {
       stateTitle: json["state_title"],
     );
   }
-
-  // Map<String, dynamic> toJson() => {
-  //   "uuid": uuid,
-  //   "comment": comment == null ? null : comment,
-  //   "routes": List<dynamic>.from(routes.map((x) => x.toJson())),
-  //   "route_way_data": routeWayData.toJson(),
-  //   "features": features,
-  //   "tariff": tariff.toJson(),
-  //   "phone_line": phoneLine.toJson(),
-  //   "fixed_price": fixedPrice,
-  //   "service": service.toJson(),
-  //   "increased_fare": increasedFare,
-  //   "driver": driver.toJson(),
-  //   "client": client.toJson(),
-  //   "source": sourceValues.reverse[source],
-  //   "driver_rating": driverRating.toJson(),
-  //   "client_rating": clientRating.toJson(),
-  //   "is_optional": isOptional,
-  //   "without_delivery": withoutDelivery,
-  //   "own_delivery": ownDelivery,
-  //   "order_start": orderStart.toIso8601String(),
-  //   "cancel_time": cancelTime.toIso8601String(),
-  //   "distribution_by_taxi_park": distributionByTaxiPark,
-  //   "promotion": promotion.toJson(),
-  //   "arrival_time": arrivalTime,
-  //   "products_data": productsData == null ? null : productsData.toJson(),
-  //   "payment_type": ordersStoryModelItemPaymentTypeValues.reverse[paymentType],
-  //   "payment_meta": paymentMeta.toJson(),
-  //   "estimated_delivery_time": estimatedDeliveryTime.toIso8601String(),
-  //   "counter_order_marker": counterOrderMarker,
-  //   "taxi_park_data": taxiParkData.toJson(),
-  //   "taxi_park_uuid": taxiParkUuid == null ? null : taxiParkUuid,
-  //   "id": id,
-  //   "client_uuid": clientUuid,
-  //   "service_uuid": serviceUuid,
-  //   "callback_phone": phoneValues.reverse[callbackPhone],
-  //   "features_uuids": featuresUuids,
-  //   "created_at": createdAt.toIso8601String(),
-  //   "created_at_unix": createdAtUnix,
-  //   "updated_at": updatedAt.toIso8601String(),
-  //   "visibility": visibility,
-  //   "state": stateValues.reverse[state],
-  //   "state_title": stateTitleValues.reverse[stateTitle],
-  // };
 
   Future<bool> hasNewMessage() async{
     bool result = false;
@@ -414,18 +367,18 @@ class Driver {
   });
 
   String uuid;
-  DriverName name;
-  List<PaymentTypeElement> paymentTypes;
+  String name;
+  List<String> paymentTypes;
   String phone;
   String comment;
-  StateName stateName;
+  String stateName;
   String car;
   int balance;
   int cardBalance;
-  int karma;
+  double karma;
   String color;
   DriverTariff tariff;
-  List<Tag> tag;
+  List<String> tag;
   List<Service> availableServices;
   List<AvailableFeature> availableFeatures;
   int alias;
@@ -442,18 +395,18 @@ class Driver {
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
     uuid: json["uuid"],
-    name: driverNameValues.map[json["name"]],
-    paymentTypes: json["payment_types"] == null ? null : List<PaymentTypeElement>.from(json["payment_types"].map((x) => paymentTypeElementValues.map[x])),
+    name: json["name"],
+    paymentTypes: json["payment_types"] == null ? null : List<String>.from(json["payment_types"].map((x) => x)),
     phone: json["phone"],
     comment: json["comment"],
-    stateName: stateNameValues.map[json["state_name"]],
+    stateName: json["state_name"],
     car: json["car"],
     balance: json["balance"],
     cardBalance: json["card_balance"],
-    karma: json["karma"],
+    karma: json["karma"] * 1.0,
     color: json["color"],
     tariff: DriverTariff.fromJson(json["tariff"]),
-    tag: json["tag"] == null ? null : List<Tag>.from(json["tag"].map((x) => tagValues.map[x])),
+    tag: json["tag"] == null ? null : List<String>.from(json["tag"].map((x) => x)),
     availableServices: json["available_services"] == null ? null : List<Service>.from(json["available_services"].map((x) => Service.fromJson(x))),
     availableFeatures: json["available_features"] == null ? null : List<AvailableFeature>.from(json["available_features"].map((x) => AvailableFeature.fromJson(x))),
     alias: json["alias"],
@@ -471,18 +424,18 @@ class Driver {
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
-    "name": driverNameValues.reverse[name],
-    "payment_types": paymentTypes == null ? null : List<dynamic>.from(paymentTypes.map((x) => paymentTypeElementValues.reverse[x])),
+    "name": name,
+    "payment_types": paymentTypes == null ? null : List<dynamic>.from(paymentTypes.map((x) => x)),
     "phone": phone,
     "comment": comment,
-    "state_name": stateNameValues.reverse[stateName],
+    "state_name": stateName,
     "car": car,
     "balance": balance,
     "card_balance": cardBalance,
     "karma": karma,
     "color": color,
     "tariff": tariff.toJson(),
-    "tag": tag == null ? null : List<dynamic>.from(tag.map((x) => tagValues.reverse[x])),
+    "tag": tag == null ? null : List<dynamic>.from(tag.map((x) => x)),
     "available_services": availableServices == null ? null : List<dynamic>.from(availableServices.map((x) => x.toJson())),
     "available_features": availableFeatures == null ? null : List<dynamic>.from(availableFeatures.map((x) => x.toJson())),
     "alias": alias,
@@ -510,63 +463,30 @@ class AvailableFeature {
   });
 
   String uuid;
-  AvailableFeatureName name;
-  AvailableFeatureComment comment;
+  String name;
+  String comment;
   int price;
-  List<Tag> tag;
+  List<String> tag;
   List<String> servicesUuid;
 
   factory AvailableFeature.fromJson(Map<String, dynamic> json) => AvailableFeature(
     uuid: json["uuid"],
-    name: availableFeatureNameValues.map[json["name"]],
-    comment: availableFeatureCommentValues.map[json["comment"]],
+    name: json["name"],
+    comment: json["comment"],
     price: json["price"],
-    tag: List<Tag>.from(json["tag"].map((x) => tagValues.map[x])),
+    tag: List<String>.from(json["tag"].map((x) => x)),
     servicesUuid: List<String>.from(json["services_uuid"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
-    "name": availableFeatureNameValues.reverse[name],
-    "comment": availableFeatureCommentValues.reverse[comment],
+    "name": name,
+    "comment": comment,
     "price": price,
-    "tag": List<dynamic>.from(tag.map((x) => tagValues.reverse[x])),
+    "tag": List<dynamic>.from(tag.map((x) => x)),
     "services_uuid": List<dynamic>.from(servicesUuid.map((x) => x)),
   };
 }
-
-enum AvailableFeatureComment { EFVE, EMPTY, COMMENT_FOR_FEATURE_966, COMMENT_FOR_FEATURE_631 }
-
-final availableFeatureCommentValues = EnumValues({
-  "comment for feature #631": AvailableFeatureComment.COMMENT_FOR_FEATURE_631,
-  "comment for feature #966": AvailableFeatureComment.COMMENT_FOR_FEATURE_966,
-  "efve": AvailableFeatureComment.EFVE,
-  "": AvailableFeatureComment.EMPTY
-});
-
-enum AvailableFeatureName { EMPTY, NAME, PURPLE, FLUFFY, TENTACLED }
-
-final availableFeatureNameValues = EnumValues({
-  "Детское кресло": AvailableFeatureName.EMPTY,
-  "Пустой багажник": AvailableFeatureName.FLUFFY,
-  "До двери": AvailableFeatureName.NAME,
-  "Некурящий": AvailableFeatureName.PURPLE,
-  "Перевозка животных": AvailableFeatureName.TENTACLED
-});
-
-enum Tag { BABY_CHAIR, DOOR_TO_DOOR, NON_SMOKER, EMPTY_TRUNK, TRANSPORTATION_OF_ANIMALS, DELIVERY, COMFORT, STANDART, DEBUG }
-
-final tagValues = EnumValues({
-  "baby_chair": Tag.BABY_CHAIR,
-  "comfort": Tag.COMFORT,
-  "debug": Tag.DEBUG,
-  "delivery": Tag.DELIVERY,
-  "door_to_door": Tag.DOOR_TO_DOOR,
-  "empty_trunk": Tag.EMPTY_TRUNK,
-  "non_smoker": Tag.NON_SMOKER,
-  "standart": Tag.STANDART,
-  "transportation_of_animals": Tag.TRANSPORTATION_OF_ANIMALS
-});
 
 class Service {
   Service({
@@ -587,11 +507,11 @@ class Service {
   double priceCoefficient;
   bool freight;
   bool productDelivery;
-  ServiceComment comment;
+  String comment;
   int maxBonusPaymentPercent;
   String image;
   ImagesSet imagesSet;
-  List<Tag> tag;
+  List<String> tag;
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
     uuid: json["uuid"],
@@ -599,11 +519,11 @@ class Service {
     priceCoefficient: json["price_coefficient"].toDouble(),
     freight: json["freight"],
     productDelivery: json["product_delivery"],
-    comment: serviceCommentValues.map[json["comment"]],
+    comment: json["comment"],
     maxBonusPaymentPercent: json["max_bonus_payment_percent"],
     image: json["image"],
     imagesSet: ImagesSet.fromJson(json["images_set"]),
-    tag: List<Tag>.from(json["tag"].map((x) => tagValues.map[x])),
+    tag: List<String>.from(json["tag"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -612,22 +532,13 @@ class Service {
     "price_coefficient": priceCoefficient,
     "freight": freight,
     "product_delivery": productDelivery,
-    "comment": serviceCommentValues.reverse[comment],
+    "comment": comment,
     "max_bonus_payment_percent": maxBonusPaymentPercent,
     "image": image,
     "images_set": imagesSet.toJson(),
-    "tag": List<dynamic>.from(tag.map((x) => tagValues.reverse[x])),
+    "tag": List<dynamic>.from(tag.map((x) => x)),
   };
 }
-
-enum ServiceComment { EMPTY, MM, COMMENT, PURPLE }
-
-final serviceCommentValues = EnumValues({
-  "золотая середина, для прагматичных": ServiceComment.COMMENT,
-  "Доставка легковых грузов": ServiceComment.EMPTY,
-  "для тех кто привык к комфортуmm.": ServiceComment.MM,
-  "дебаж меня полностью": ServiceComment.PURPLE
-});
 
 class ImagesSet {
   ImagesSet({
@@ -666,8 +577,8 @@ class Group {
   });
 
   String uuid;
-  GroupName name;
-  Description description;
+  String name;
+  String description;
   int distributionWeight;
   List<String> servicesUuid;
   List<String> tag;
@@ -676,8 +587,8 @@ class Group {
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
     uuid: json["uuid"],
-    name: groupNameValues.map[json["name"]],
-    description: descriptionValues.map[json["description"]],
+    name: json["name"],
+    description: json["description"],
     distributionWeight: json["distribution_weight"],
     servicesUuid: json["services_uuid"] == null ? null : List<String>.from(json["services_uuid"].map((x) => x)),
     tag: json["tag"] == null ? null : List<String>.from(json["tag"].map((x) => x)),
@@ -687,8 +598,8 @@ class Group {
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
-    "name": groupNameValues.reverse[name],
-    "description": descriptionValues.reverse[description],
+    "name": name,
+    "description": description,
     "distribution_weight": distributionWeight,
     "services_uuid": servicesUuid == null ? null : List<dynamic>.from(servicesUuid.map((x) => x)),
     "tag": tag == null ? null : List<dynamic>.from(tag.map((x) => x)),
@@ -696,22 +607,6 @@ class Group {
     "default_tariff_offline_uuid": defaultTariffOfflineUuid,
   };
 }
-
-enum Description { DEFAUL_DRIVER_GROUP, EMPTY }
-
-final descriptionValues = EnumValues({
-  "defaul_driver_group": Description.DEFAUL_DRIVER_GROUP,
-  "": Description.EMPTY
-});
-
-enum GroupName { EMPTY, NAME, THE_3, THE_15 }
-
-final groupNameValues = EnumValues({
-  "Стандарт": GroupName.EMPTY,
-  "": GroupName.NAME,
-  "Базовый 15%": GroupName.THE_15,
-  "3%": GroupName.THE_3
-});
 
 class Meta {
   Meta({
@@ -737,22 +632,6 @@ class Meta {
   };
 }
 
-enum DriverName { EMPTY, NAME, PURPLE, FLUFFY }
-
-final driverNameValues = EnumValues({
-  "Алек Воробьев": DriverName.EMPTY,
-  "Раф": DriverName.FLUFFY,
-  "": DriverName.NAME,
-  "Тестовый": DriverName.PURPLE
-});
-
-enum PaymentTypeElement { CASH, CARD, ONLINE_TRANSFER }
-
-final paymentTypeElementValues = EnumValues({
-  "card": PaymentTypeElement.CARD,
-  "cash": PaymentTypeElement.CASH,
-  "online_transfer": PaymentTypeElement.ONLINE_TRANSFER
-});
 
 class DriverPromotion {
   DriverPromotion({
@@ -782,15 +661,6 @@ class DriverPromotion {
   };
 }
 
-enum StateName { CONSIDERING, EMPTY, WORKING, OFFLINE }
-
-final stateNameValues = EnumValues({
-  "considering": StateName.CONSIDERING,
-  "": StateName.EMPTY,
-  "offline": StateName.OFFLINE,
-  "working": StateName.WORKING
-});
-
 class DriverTariff {
   DriverTariff({
     this.uuid,
@@ -814,11 +684,11 @@ class DriverTariff {
   List<String> driversGroupsUuid;
   bool tariffDefault;
   bool isSecret;
-  TariffType tariffType;
-  GroupName name;
-  TariffComment comment;
-  TariffColor color;
-  RejExp rejExp;
+  String tariffType;
+  String name;
+  String comment;
+  String color;
+  String rejExp;
   String commExp;
   int period;
   int periodPrice;
@@ -830,11 +700,11 @@ class DriverTariff {
     driversGroupsUuid: json["drivers_groups_uuid"] == null ? null : List<String>.from(json["drivers_groups_uuid"].map((x) => x)),
     tariffDefault: json["default"],
     isSecret: json["is_secret"],
-    tariffType: tariffTypeValues.map[json["tariff_type"]],
-    name: groupNameValues.map[json["name"]],
-    comment: tariffCommentValues.map[json["comment"]],
-    color: tariffColorValues.map[json["color"]],
-    rejExp: rejExpValues.map[json["rej_exp"]],
+    tariffType: json["tariff_type"],
+    name: json["name"],
+    comment: json["comment"],
+    color: json["color"],
+    rejExp: json["rej_exp"],
     commExp: json["comm_exp"],
     period: json["period"],
     periodPrice: json["period_price"],
@@ -847,11 +717,11 @@ class DriverTariff {
     "drivers_groups_uuid": driversGroupsUuid == null ? null : List<dynamic>.from(driversGroupsUuid.map((x) => x)),
     "default": tariffDefault,
     "is_secret": isSecret,
-    "tariff_type": tariffTypeValues.reverse[tariffType],
-    "name": groupNameValues.reverse[name],
-    "comment": tariffCommentValues.reverse[comment],
-    "color": tariffColorValues.reverse[color],
-    "rej_exp": rejExpValues.reverse[rejExp],
+    "tariff_type": tariffType,
+    "name": name,
+    "comment": comment,
+    "color": color,
+    "rej_exp": rejExp,
     "comm_exp": commExp,
     "period": period,
     "period_price": periodPrice,
@@ -859,36 +729,6 @@ class DriverTariff {
   };
 }
 
-enum TariffColor { THE_2_FBF52, EMPTY, THE_9802_AF }
-
-final tariffColorValues = EnumValues({
-  "": TariffColor.EMPTY,
-  "#2FBF52": TariffColor.THE_2_FBF52,
-  "#9802AF": TariffColor.THE_9802_AF
-});
-
-enum TariffComment { EMPTY, COMMENT }
-
-final tariffCommentValues = EnumValues({
-  "": TariffComment.COMMENT,
-  "Стандартный тариф": TariffComment.EMPTY
-});
-
-enum RejExp { DRIVER_BALANCE_ORDER_PRICE_003, EMPTY, DRIVER_BALANCE_2, DRIVER_BALANCE_5 }
-
-final rejExpValues = EnumValues({
-  "DriverBalance-2": RejExp.DRIVER_BALANCE_2,
-  "DriverBalance-5": RejExp.DRIVER_BALANCE_5,
-  "DriverBalance - OrderPrice*0.03": RejExp.DRIVER_BALANCE_ORDER_PRICE_003,
-  "": RejExp.EMPTY
-});
-
-enum TariffType { PERCENT, EMPTY }
-
-final tariffTypeValues = EnumValues({
-  "": TariffType.EMPTY,
-  "percent": TariffType.PERCENT
-});
 
 class TaxiParkData {
   TaxiParkData({
@@ -978,13 +818,6 @@ class PaymentMeta {
   };
 }
 
-enum OrdersStoryModelItemPaymentType { CASH, EMPTY, CARD }
-
-final ordersStoryModelItemPaymentTypeValues = EnumValues({
-  "card": OrdersStoryModelItemPaymentType.CARD,
-  "cash": OrdersStoryModelItemPaymentType.CASH,
-  "": OrdersStoryModelItemPaymentType.EMPTY
-});
 
 class PhoneLine {
   PhoneLine({
@@ -996,37 +829,24 @@ class PhoneLine {
 
   String uuid;
   String serviceUuid;
-  PhoneLineName name;
-  PhoneLineComment comment;
+  String name;
+  String comment;
 
   factory PhoneLine.fromJson(Map<String, dynamic> json) => PhoneLine(
     uuid: json["uuid"],
     serviceUuid: json["service_uuid"],
-    name: phoneLineNameValues.map[json["name"]],
-    comment: phoneLineCommentValues.map[json["comment"]],
+    name: json["name"],
+    comment: json["comment"],
   );
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
     "service_uuid": serviceUuid,
-    "name": phoneLineNameValues.reverse[name],
-    "comment": phoneLineCommentValues.reverse[comment],
+    "name": name,
+    "comment": comment,
   };
 }
 
-enum PhoneLineComment { REER, EMPTY }
-
-final phoneLineCommentValues = EnumValues({
-  "": PhoneLineComment.EMPTY,
-  "reer": PhoneLineComment.REER
-});
-
-enum PhoneLineName { THE_78672333333, EMPTY }
-
-final phoneLineNameValues = EnumValues({
-  "": PhoneLineName.EMPTY,
-  "78672333333": PhoneLineName.THE_78672333333
-});
 
 class ProductsData {
   ProductsData({
@@ -1051,7 +871,7 @@ class ProductsData {
 
 
     return ProductsData(
-      store: Records.fromJson(json['store']),
+      store: (json['store'] == null) ? null : Records.fromJson(json['store']),
       preparationTime: json["preparation_time"],
       confirmationTime: json["confirmation_time"],
       buyout: json["buyout"],
@@ -1061,15 +881,6 @@ class ProductsData {
 
     );
    }
-
-  // Map<String, dynamic> toJson() => {
-  //   "store": store.toJson(),
-  //   "preparation_time": preparationTime,
-  //   "confirmation_time": confirmationTime,
-  //   "buyout": buyout,
-  //   "order_number_in_store": orderNumberInStore,
-  //   "products": List<dynamic>.from(products.map((x) => x.toJson())),
-  // };
 }
 
 class Product {
@@ -1128,22 +939,6 @@ class Product {
       selectedVariant: Variants.fromJson(json['selected_variant']),
     );
   }
-
-  // Map<String, dynamic> toJson() => {
-  //   "uuid": uuid,
-  //   "weight": weight,
-  //   "weight_measure": weightMeasure,
-  //   "name": name,
-  //   "comment": comment,
-  //   "available": available,
-  //   "visible": visible,
-  //   "price": price,
-  //   "image": image,
-  //   "store_uuid": storeUuid,
-  //   "toppings": toppings,
-  //   "number": number,
-  //   "selected_variant": selectedVariant,
-  // };
 }
 
 
@@ -1259,18 +1054,18 @@ class RouteFromDriverToClient {
   });
 
   Geometry geometry;
-  RouteFromDriverToClientType type;
+  String type;
   Properties properties;
 
   factory RouteFromDriverToClient.fromJson(Map<String, dynamic> json) => RouteFromDriverToClient(
     geometry: Geometry.fromJson(json["geometry"]),
-    type: routeFromDriverToClientTypeValues.map[json["type"]],
+    type: json["type"],
     properties: Properties.fromJson(json["properties"]),
   );
 
   Map<String, dynamic> toJson() => {
     "geometry": geometry.toJson(),
-    "type": routeFromDriverToClientTypeValues.reverse[type],
+    "type": type,
     "properties": properties.toJson(),
   };
 }
@@ -1282,25 +1077,19 @@ class Geometry {
   });
 
   List<List<double>> coordinates;
-  GeometryType type;
+  String type;
 
   factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
     coordinates: json["coordinates"] == null ? null : List<List<double>>.from(json["coordinates"].map((x) => List<double>.from(x.map((x) => x.toDouble())))),
-    type: geometryTypeValues.map[json["type"]],
+    type: json["type"],
   );
 
   Map<String, dynamic> toJson() => {
     "coordinates": coordinates == null ? null : List<dynamic>.from(coordinates.map((x) => List<dynamic>.from(x.map((x) => x)))),
-    "type": geometryTypeValues.reverse[type],
+    "type": type,
   };
 }
 
-enum GeometryType { LINE_STRING, EMPTY }
-
-final geometryTypeValues = EnumValues({
-  "": GeometryType.EMPTY,
-  "LineString": GeometryType.LINE_STRING
-});
 
 class Properties {
   Properties({
@@ -1321,55 +1110,6 @@ class Properties {
     "distance": distance,
   };
 }
-
-enum RouteFromDriverToClientType { FEATURE, EMPTY }
-
-final routeFromDriverToClientTypeValues = EnumValues({
-  "": RouteFromDriverToClientType.EMPTY,
-  "Feature": RouteFromDriverToClientType.FEATURE
-});
-
-
-enum City { EMPTY }
-
-final cityValues = EnumValues({
-  "Владикавказ": City.EMPTY
-});
-
-enum PointType { ADDRESS, EMPTY, PUBLIC_PLACE }
-
-final pointTypeValues = EnumValues({
-  "address": PointType.ADDRESS,
-  "": PointType.EMPTY,
-  "public_place": PointType.PUBLIC_PLACE
-});
-
-enum Street { EMPTY, STREET, PURPLE, FLUFFY, TENTACLED }
-
-final streetValues = EnumValues({
-  "Хаджи Мамсурова": Street.EMPTY,
-  "Леваневского": Street.FLUFFY,
-  "Ватутина": Street.PURPLE,
-  "Максима Горького": Street.STREET,
-  "Владикавказская": Street.TENTACLED
-});
-
-enum RouteType { EMPTY, TYPE }
-
-final routeTypeValues = EnumValues({
-  "": RouteType.EMPTY,
-  "Общественное место": RouteType.TYPE
-});
-
-enum Value { THE_46, THE_124, EMPTY, VALUE, PURPLE }
-
-final valueValues = EnumValues({
-  "СОГУ - Северо-Осетинский Государственный университет": Value.EMPTY,
-  "Хиба": Value.PURPLE,
-  "Максима Горького 124": Value.THE_124,
-  "Хаджи Мамсурова 46": Value.THE_46,
-  "Олд скул бургер": Value.VALUE
-});
 
 class OrdersStoryModelItemTariff {
   OrdersStoryModelItemTariff({
@@ -1398,20 +1138,20 @@ class OrdersStoryModelItemTariff {
     this.precalculated,
   });
 
-  PurpleName name;
+  String name;
   int totalPrice;
   int fixedPrice;
   int productsPrice;
   int guaranteedDriverIncome;
   int guaranteedDriverIncomeForDelivery;
   int supplementToGuaranteedIncome;
-  TariffCalcType tariffCalcType;
+  String tariffCalcType;
   int orderTripTime;
   int orderCompleateDist;
   int orderStartTime;
   int minPaymentWithTime;
-  Currency currency;
-  TariffPaymentType paymentType;
+  String currency;
+  String paymentType;
   int maxBonusPayment;
   int bonusPayment;
   List<Item> items;
@@ -1423,20 +1163,20 @@ class OrdersStoryModelItemTariff {
   String precalculated;
 
   factory OrdersStoryModelItemTariff.fromJson(Map<String, dynamic> json) => OrdersStoryModelItemTariff(
-    name: purpleNameValues.map[json["name"]],
+    name: json["name"],
     totalPrice: json["total_price"],
     fixedPrice: json["fixed_price"],
     productsPrice: json["products_price"],
     guaranteedDriverIncome: json["guaranteed_driver_income"],
     guaranteedDriverIncomeForDelivery: json["guaranteed_driver_income_for_delivery"],
     supplementToGuaranteedIncome: json["supplement_to_guaranteed_income"],
-    tariffCalcType: tariffCalcTypeValues.map[json["tariff_calc_type"]],
+    tariffCalcType: json["tariff_calc_type"],
     orderTripTime: json["order_trip_time"],
     orderCompleateDist: json["order_compleate_dist"],
     orderStartTime: json["order_start_time"],
     minPaymentWithTime: json["min_payment_with_time"],
-    currency: currencyValues.map[json["currency"]],
-    paymentType: tariffPaymentTypeValues.map[json["payment_type"]],
+    currency: json["currency"],
+    paymentType: json["payment_type"],
     maxBonusPayment: json["max_bonus_payment"],
     bonusPayment: json["bonus_payment"],
     items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
@@ -1449,20 +1189,20 @@ class OrdersStoryModelItemTariff {
   );
 
   Map<String, dynamic> toJson() => {
-    "name": purpleNameValues.reverse[name],
+    "name": name,
     "total_price": totalPrice,
     "fixed_price": fixedPrice,
     "products_price": productsPrice,
     "guaranteed_driver_income": guaranteedDriverIncome,
     "guaranteed_driver_income_for_delivery": guaranteedDriverIncomeForDelivery,
     "supplement_to_guaranteed_income": supplementToGuaranteedIncome,
-    "tariff_calc_type": tariffCalcTypeValues.reverse[tariffCalcType],
+    "tariff_calc_type": tariffCalcType,
     "order_trip_time": orderTripTime,
     "order_compleate_dist": orderCompleateDist,
     "order_start_time": orderStartTime,
     "min_payment_with_time": minPaymentWithTime,
-    "currency": currencyValues.reverse[currency],
-    "payment_type": tariffPaymentTypeValues.reverse[paymentType],
+    "currency": currency,
+    "payment_type": paymentType,
     "max_bonus_payment": maxBonusPayment,
     "bonus_payment": bonusPayment,
     "items": List<dynamic>.from(items.map((x) => x.toJson())),
@@ -1475,12 +1215,6 @@ class OrdersStoryModelItemTariff {
   };
 }
 
-enum Currency { EMPTY, CURRENCY }
-
-final currencyValues = EnumValues({
-  "": Currency.CURRENCY,
-  "руб": Currency.EMPTY
-});
 
 class Item {
   Item({
@@ -1500,40 +1234,4 @@ class Item {
     "name": name,
     "price": price,
   };
-}
-
-enum PurpleName { EMPTY, NAME }
-
-final purpleNameValues = EnumValues({
-  "Доставка (МП)": PurpleName.EMPTY,
-  "": PurpleName.NAME
-});
-
-enum TariffPaymentType { EMPTY, PAYMENT_TYPE, PURPLE }
-
-final tariffPaymentTypeValues = EnumValues({
-  "Наличные": TariffPaymentType.EMPTY,
-  "": TariffPaymentType.PAYMENT_TYPE,
-  "Картой": TariffPaymentType.PURPLE
-});
-
-enum TariffCalcType { WITHDIST, EMPTY }
-
-final tariffCalcTypeValues = EnumValues({
-  "": TariffCalcType.EMPTY,
-  "withdist": TariffCalcType.WITHDIST
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

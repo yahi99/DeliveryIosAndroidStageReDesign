@@ -1269,7 +1269,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         child: Align(
                           child: Text(
                             'Ваш заказ из ' +
-                                (ordersStoryModelItem.productsData.store != null
+                                (ordersStoryModelItem.productsData != null
                                     ? ordersStoryModelItem.productsData.store.name
                                     : 'Пусто'),
                             style: TextStyle(
