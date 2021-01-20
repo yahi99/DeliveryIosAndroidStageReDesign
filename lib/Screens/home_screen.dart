@@ -4,9 +4,9 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Config/config.dart';
-import 'package:flutter_app/GetData/centrifugo.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getInitData.dart';
+import 'package:flutter_app/GetData/getFilteredStores.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
 import 'package:flutter_app/GetData/getTicketByFilter.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
@@ -1182,6 +1182,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
+//                            GestureDetector(
+//                              child: Container(
+//                                height: 40, width: 40,
+//                                child: Text('sdfsdf'),
+//                              ),
+//                              onTap: (){
+//                                getCurrentVersion();
+//                              },
+//                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
