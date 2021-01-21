@@ -4,6 +4,8 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Config/config.dart';
+import 'package:flutter_app/GetData/getClientLastOrderCopy.dart';
+import 'package:flutter_app/GetData/getCurrentVersion.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getInitData.dart';
 import 'package:flutter_app/GetData/getFilteredStores.dart';
@@ -1182,15 +1184,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-//                            GestureDetector(
-//                              child: Container(
-//                                height: 40, width: 40,
-//                                child: Text('sdfsdf'),
-//                              ),
-//                              onTap: (){
-//                                getCurrentVersion();
-//                              },
-//                            ),
+                            GestureDetector(
+                              child: Container(
+                                height: 40, width: 40,
+                                child: Text('sdfsdf'),
+                              ),
+                              onTap: (){
+                                getCurrentVersion();
+                              },
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
