@@ -1,0 +1,175 @@
+{
+  "sidebar": [
+    {
+      "authorization_title": "Login",
+      "orders_story_title": "Order history",
+      "my_addresses_title": "Favorite addresses",
+      "service_title": "Support",
+      "info_title": "Info",
+      "exit_title": "Exit"
+    }
+  ],
+  "home_screen": [
+    {
+      "order_state_widget": [
+        {
+          "order_desc": "Your order from",
+          "order": "Order"
+        },
+        {
+          "order_state_titles": [
+            {
+              "waiting_for_confirmation": "Processing",
+              "cooking": "Preparing",
+              "on_the_way": "On the way",
+              "chat": "Chat with driver"
+            }
+          ]
+        }
+      ],
+      "shares": [
+        {
+          "shares_title": "Promotions and news",
+          "shares_desc": "All"
+        }
+      ],
+      "restaurants": "Рестораны",
+      "filters_titles": [
+        {
+          "kitchens_title" : "Cuisine",
+          "distance_title" : "Distance"
+        }
+      ]
+    }
+  ],
+  "restaurant_screen": [
+    {
+      "cart_title":"Cart",
+      "cart_desc":"Not enough for free shipping",
+      "delivery": "Delivery",
+      "time_value": "min",
+      "add_button": "Add"
+    }
+  ],
+  "cart_screen": [
+    {
+      "cart_title": "Cart",
+      "delivery_title": "Delivery",
+      "take_away_title": "Pickup",
+      "take_away_desc": "Take your order for, in minutes",
+      "time_value": "min",
+      "total": "Total",
+      "button_title": "Next"
+    }
+  ],
+  "order_confirmation_screen": [
+    {
+      "address_confirmation": "Confirm address",
+      "departure_address_title": "Shipping address",
+      "departure_address_desc": "Select shipping address",
+      "change": "Change",
+      "your_address": "Your address",
+      "order_for_another_person": [
+        {
+          "title": "Ordering to another person",
+          "phone_number": "Recipient's phone number",
+          "name": "Recipient's name"
+        }
+      ],
+      "address": "Address",
+      "comment": "Comment",
+      "floor": "Floor",
+      "office": "Apt. / Office",
+      "intercom": "Intercom",
+      "entrance": "Front door",
+      "price": "Cost",
+      "total": "Total",
+      "time_value": "min",
+      "delivery_time": "Delivery time",
+      "payment_type": [
+        {
+          "title": "Payment method",
+          "cash": "Cash",
+          "card": "Card"
+        }
+      ],
+      "promo_code_title": "Enter promo code",
+      "promo_code_desc": "Promo code applied",
+      "at_restaurant": "Eat in a cafe",
+      "sale": "Sale",
+      "button_text": "Order"
+    }
+  ],
+  "order_success": [
+    {
+      "title": "Thank you for the order",
+      "desc": "Leave your review, it will help make the application better",
+      "comment": "Leave your review",
+      "button_text": "Rate order"
+    }
+  ],
+  "alert_dialogs": [
+    {
+      "add_item": "Product added to cart",
+      "rest_desc": "All previously added dishes from the restaurant will be removed from the cart",
+      "reject": "Cancel",
+      "confirm_desc": "We send your order to the system"
+    }
+  ],
+  "bottom_sheets": [
+    {
+      "show_first": "Show first",
+      "distance": "Show with distance",
+      "promo_button": "Apply",
+      "button": "Done"
+    }
+  ],
+  "order_details": [
+    {
+      "title": "Order details",
+      "state": "Delivered",
+      "store_address": "Facility address",
+      "delivery_address": "Delivery address",
+      "items_quantity": "pcs",
+      "repeat_button": "Repeat order",
+      "cancel_button": "Cancel order",
+      "delete_button": "Delete order data"
+    }
+  ],
+  "my_addresses": [
+    {
+      "change": "Change",
+      "button_text": "Add address",
+      "title": "Name",
+      "address": "Address"
+    }
+  ],
+  "service": [
+    {
+      "requests":"Your requests",
+      "order":"Order error",
+      "price":"Cost error",
+      "programme":"App error",
+      "another_cause":"Another reason",
+      "appeals":"My requests",
+      "completed":"Processed",
+      "not_completed":"In processing"
+    }
+  ],
+  "info": [
+    {
+      "about_app": "About app",
+      "desc": "Version 1.0 from oct 2020 build 34234",
+      "license": "License agreement'",
+      "policy": "Privacy policy",
+      "faem": "FAEM TECHNOLOGIES LLC"
+    }
+  ],
+  "profile": [
+    {
+      "title": "Your data",
+      "name": "Your name",
+      "phone_number": "Your number"
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/Screens/city_screen.dart';
 import 'package:flutter_app/Screens/device_id_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -21,6 +23,24 @@ class App extends StatelessWidget {
       home: DeviceIdScreen(),
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
+      ],
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],localeResolutionCallback: (locale, supportedLocaleList){
+
+        for(var v in supportedLocaleList){
+          if(v.languageCode == locale.languageCode && v.countryCode == locale.countryCode){
+            return locale;
+          }
+        }
+        return supportedLocaleList.first;
+      },
+      supportedLocales: [
+        const Locale('ru', 'RU'),
+        const Locale('en', 'US'),
       ],
     );
   }

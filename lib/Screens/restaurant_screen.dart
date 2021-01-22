@@ -2220,13 +2220,64 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           }else{
             return Container(
               height: getBottomSheetHeight(food),
-              child: _buildBottomNavigationMenu(food, menuItemCounterKey),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(12),
-                    topRight: const Radius.circular(12),
-                  )),
+              child: Stack(
+                children: [
+                  Container(
+                    height: getBottomSheetHeight(food),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      color: Colors.white
+                    ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(0)),
+                        child: Stack(
+                          children: <Widget>[
+                            Image.network(
+                              getImage(restaurantDataItems.image),
+                              fit: BoxFit.cover,
+                              height: 180.0,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 10, right: 15),
+                                  child: GestureDetector(
+                                    child: SvgPicture.asset(
+                                        'assets/svg_images/bottom_close.svg'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ))
+                          ],
+                        )),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 0),
+                    height: getBottomSheetContainerHeight(food),
+                    child: DraggableScrollableSheet(
+                      initialChildSize: getInitialChildHeight(food),
+                      builder: (BuildContext context, ScrollController scrollController){
+                        return ListView.builder(
+                          itemCount: 1,
+                          controller: scrollController,
+                          itemBuilder: (BuildContext context ,int index){
+                            return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             );
           }
         });
@@ -2250,39 +2301,9 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           )),
       child: Stack(
         children: <Widget>[
-          ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(0)),
-              child: Stack(
-                children: <Widget>[
-                  Image.network(
-                    getImage(restaurantDataItems.image),
-                    fit: BoxFit.cover,
-                    height: 180.0,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10, right: 15),
-                        child: GestureDetector(
-                          child: SvgPicture.asset(
-                              'assets/svg_images/bottom_close.svg'),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ))
-                ],
-              )),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: getBottomSheetContainerHeight(restaurantDataItems),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -2572,19 +2593,31 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
     }else if(food.variants == null || food.toppings == null){
       return 360;
     }else{
-      return 640;
+      return 600;
     }
   }
 
   double getBottomSheetContainerHeight(FoodRecords food){
     if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){
-      return 404;
+      return 550;
     }else if(food.comment != "" && food.comment != null){
-      return 273;
+      return 493;
     }else if(food.variants == null || food.toppings == null){
-      return 211;
+      return 390;
     }else{
-      return 475;
+      return 610;
+    }
+  }
+
+  double getInitialChildHeight(FoodRecords food){
+    if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){
+      return 0.72;
+    }else if(food.comment != "" && food.comment != null){
+      return 0.65;
+    }else if(food.variants == null || food.toppings == null){
+      return 0.57;
+    }else{
+      return 0.75;
     }
   }
 }
