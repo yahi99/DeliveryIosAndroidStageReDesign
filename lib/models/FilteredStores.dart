@@ -1,12 +1,24 @@
-// To parse this JSON data, do
-//
-//     final filteredStores = filteredStoresFromJson(jsonString);
-
 import 'dart:convert';
 
-List<FilteredStores> filteredStoresFromJson(String str) => List<FilteredStores>.from(json.decode(str).map((x) => FilteredStores.fromJson(x)));
+class FilteredStoresData{
+  List<FilteredStores> filteredStoresList;
 
-String filteredStoresToJson(List<FilteredStores> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  FilteredStoresData( {
+    this.filteredStoresList,
+  });
+
+  factory FilteredStoresData.fromJson(List<dynamic> parsedJson){
+    List<FilteredStores> storesList = null;
+    if(parsedJson != null){
+      storesList = parsedJson.map((i) => FilteredStores.fromJson(i)).toList();
+    }
+
+    return FilteredStoresData(
+        filteredStoresList:storesList,
+    );
+  }
+}
+
 
 class FilteredStores {
   FilteredStores({

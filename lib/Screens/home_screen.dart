@@ -4,12 +4,15 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Config/config.dart';
+import 'package:flutter_app/GetData/getAllStoreCategories.dart';
 import 'package:flutter_app/GetData/getClientLastOrderCopy.dart';
 import 'package:flutter_app/GetData/getCurrentVersion.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getInitData.dart';
 import 'package:flutter_app/GetData/getFilteredStores.dart';
 import 'package:flutter_app/GetData/getOrder.dart';
+import 'package:flutter_app/GetData/getProductData.dart';
+import 'package:flutter_app/GetData/getProductsByStoreUuid.dart';
 import 'package:flutter_app/GetData/getTicketByFilter.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/Localization/app_localizations.dart';
@@ -23,7 +26,9 @@ import 'package:flutter_app/Screens/profile_screen.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
 import 'package:flutter_app/Screens/service_screen.dart';
 import 'package:flutter_app/data/data.dart';
+import 'package:flutter_app/models/AllStoreCategories.dart';
 import 'package:flutter_app/models/ChatHistoryModel.dart';
+import 'package:flutter_app/models/FilteredStores.dart';
 import 'package:flutter_app/models/InitData.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
 import 'package:flutter_app/models/QuickMessagesModel.dart';
@@ -54,7 +59,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   int page = 1;
   int limit = 12;
   bool isLoading = true;
-  List<Records> records_items = new List<Records>();
+  List<FilteredStores> records_items = new List<FilteredStores>();
   String category_uuid = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<BasketButtonState> basketButtonStateKey = new GlobalKey<BasketButtonState>();
@@ -306,11 +311,11 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     int currentTime = now.hour*60+now.minute;
     int dayNumber  = now.weekday-1;
     List<Widget> restaurantList = [];
-    records_items.forEach((Records restaurant) {
-      int work_beginning = restaurant.work_schedule[dayNumber].work_beginning;
-      int work_ending = restaurant.work_schedule[dayNumber].work_ending;
-      bool day_off = restaurant.work_schedule[dayNumber].day_off;
-      bool available = restaurant.available != null ? restaurant.available : true;
+    records_items.forEach((FilteredStores restaurant) {
+//      int work_beginning = restaurant.work_schedule[dayNumber].work_beginning;
+//      int work_ending = restaurant.work_schedule[dayNumber].work_ending;
+//      bool day_off = restaurant.work_schedule[dayNumber].day_off;
+//      bool available = restaurant.available != null ? restaurant.available : true;
       restaurantList.add(InkWell(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -327,63 +332,64 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 border: Border.all(width: 1.0, color: Colors.grey[200])),
             child: Column(
               children: <Widget>[
-                ( day_off ||
-                    !available ||
-                    !(currentTime >= work_beginning && currentTime < work_ending)) ? Stack(
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                            bottomLeft: Radius.circular(0),
-                            bottomRight: Radius.circular(0)),
-                        child: Hero(
-                            tag: restaurant.uuid,
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                  Colors.grey,
-                                  BlendMode.saturation
-                              ),
-                              child: Image.network(
-                                getImage(restaurant.image),
-                                height: 200.0,
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 150.0),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          height: 32,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20)
-                              ),
-                              color: Colors.black.withOpacity(0.5)
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8),
-                              child: Text(
-                                "Заведение откроется в ${(work_beginning / 60).toStringAsFixed(0)} часов",
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ) : Stack(
+//                ( day_off ||
+//                    !available ||
+//                    !(currentTime >= work_beginning && currentTime < work_ending)) ? Stack(
+//                  children: [
+//                    ClipRRect(
+//                        borderRadius: BorderRadius.only(
+//                            topLeft: Radius.circular(15),
+//                            topRight: Radius.circular(15),
+//                            bottomLeft: Radius.circular(0),
+//                            bottomRight: Radius.circular(0)),
+//                        child: Hero(
+//                            tag: restaurant.uuid,
+//                            child: ColorFiltered(
+//                              colorFilter: ColorFilter.mode(
+//                                  Colors.grey,
+//                                  BlendMode.saturation
+//                              ),
+//                              child: Image.network(
+//                                getImage(restaurant.image),
+//                                height: 200.0,
+//                                width: MediaQuery.of(context).size.width,
+//                                fit: BoxFit.cover,
+//                              ),
+//                            ))),
+//                    Padding(
+//                      padding: const EdgeInsets.only(top: 150.0),
+//                      child: Align(
+//                        alignment: Alignment.bottomRight,
+//                        child: Container(
+//                          height: 32,
+//                          width: 250,
+//                          decoration: BoxDecoration(
+//                              borderRadius: BorderRadius.only(
+//                                  topLeft: Radius.circular(20),
+//                                  bottomLeft: Radius.circular(20)
+//                              ),
+//                              color: Colors.black.withOpacity(0.5)
+//                          ),
+//                          child: Center(
+//                            child: Padding(
+//                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+//                              child: Text(
+//                                "Заведение откроется в ${(work_beginning / 60).toStringAsFixed(0)} часов",
+//                                style: TextStyle(
+//                                    fontSize: 12.0,
+//                                    fontWeight: FontWeight.w600,
+//                                    color: Colors.white
+//                                ),
+//                                overflow: TextOverflow.ellipsis,
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                      ),
+//                    )
+//                  ],
+//                ) :
+                Stack(
                   children: [
                     ClipRRect(
                         borderRadius: BorderRadius.only(
@@ -394,7 +400,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         child:  Hero(
                             tag: restaurant.uuid,
                             child: Image.network(
-                              getImage(restaurant.image),
+                              getImage(restaurant.url),
                               height: 200.0,
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.cover,
@@ -464,7 +470,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                         'assets/svg_images/rest_car.svg'),
                                   ),
                                   Text(
-                                    (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                    '000',
+//                                    (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                     style: TextStyle(
                                         fontSize: 14.0,
                                         color: Colors.black,
@@ -517,7 +524,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             } else {
               noConnection(context);
             }
-            print(await Internet.checkConnection());
           }));
     });
     List<Widget> childrenColumn = new List<Widget>();
@@ -1063,15 +1069,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               )
           ),
         ),
-        body: FutureBuilder<DeliveryResponseData>(
-            future: loadRestaurant(page, limit, category_uuid),
+        body: FutureBuilder<FilteredStoresData>(
+            future: getFilteredStores(selectedCity.uuid),
             initialData: null,
             builder: (BuildContext context,
-                AsyncSnapshot<DeliveryResponseData> snapshot) {
+                AsyncSnapshot<FilteredStoresData> snapshot) {
               print(snapshot.connectionState);
               if (snapshot.hasData) {
                 if (page == 1) {
-                  records_count = snapshot.data.records_count;
+                  records_count = snapshot.data.filteredStoresList.length;
                   this.records_items.clear();
                 }
 //                if (snapshot.data.records_count == 0) {
@@ -1080,8 +1086,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 //                  );
 //                }
                 if (snapshot.connectionState == ConnectionState.done) {
-                  if(snapshot.data.records != null){
-                    records_items.addAll(snapshot.data.records);
+                  if(snapshot.data.filteredStoresList != null){
+                    records_items.addAll(snapshot.data.filteredStoresList);
                   }
                   isLoading = false;
                 }
@@ -1090,7 +1096,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     if (!isLoading &&
                         scrollInfo.metrics.pixels ==
                             scrollInfo.metrics.maxScrollExtent) {
-                      if (snapshot.data.records_count - (page + 1) * limit >
+                      if (snapshot.data.filteredStoresList.length - (page + 1) * limit >
                           (-1) * limit) {
                         // snapshot = null;
                         setState(() {
@@ -1185,15 +1191,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-                            // GestureDetector(
-                            //   child: Container(
-                            //     height: 40, width: 40,
-                            //     child: Text('sdfsdf'),
-                            //   ),
-                            //   onTap: (){
-                            //     getCurrentVersion();
-                            //   },
-                            // ),
+//                             GestureDetector(
+//                               child: Container(
+//                                 height: 40, width: 40,
+//                                 child: Text('sdfsdf'),
+//                               ),
+//                               onTap: (){
+//                                 getProductData();
+//                               },
+//                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
@@ -2173,109 +2179,73 @@ class KitchenListScreenState extends State<KitchenListScreen>{
   KitchenListScreenState();
 
   List<bool> selectedKitchens = List.generate(12, (index) => false);
-  List<String> images = [
-    'assets/svg_images/sushi.svg',
-    'assets/svg_images/pizza.svg',
-    'assets/svg_images/burger.svg',
-    'assets/svg_images/shashlik.svg',
-    'assets/svg_images/fish_meat.svg',
-    'assets/svg_images/cake.svg',
-    'assets/svg_images/breakfast.svg',
-    'assets/svg_images/dinner.svg',
-    'assets/svg_images/bread.svg',
-    'assets/svg_images/asian.svg',
-    'assets/svg_images/russian.svg',
-    'assets/svg_images/georgian.svg',
-  ];
-  List<String> images_white = [
-    'assets/svg_images/sushi_white.svg',
-    'assets/svg_images/pizza_white.svg',
-    'assets/svg_images/burger_white.svg',
-    'assets/svg_images/shashl_white.svg',
-    'assets/svg_images/fish_meat_white.svg',
-    'assets/svg_images/cake_white.svg',
-    'assets/svg_images/breakfast_white.svg',
-    'assets/svg_images/dinner_white.svg',
-    'assets/svg_images/bread_white.svg',
-    'assets/svg_images/asian_white.svg',
-    'assets/svg_images/russian_white.svg',
-    'assets/svg_images/georgian_white.svg',
-  ];
-  List<String> titles = [
-    'Суши',
-    'Пицца',
-    'Бургеры',
-    'Шашлык',
-    'Мясо и рыба',
-    'Пироги',
-    'Завтраки',
-    'Обеды',
-    'Перекус',
-    'Азиатская',
-    'Русская',
-    'Грузинская',
-  ];
+
+  List<AllStoreCategories> categories = new List<AllStoreCategories>();
+
+
+  Widget getCategories(){
+    return Container(
+      padding: EdgeInsets.only(bottom: 0, left: 8, right: 8, top: 0),
+      height: 490,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: List.generate(categories.length,(index){
+          return InkWell(
+            child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 8, right: 5, bottom: 10),
+                child: Container(
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 9.0, right: 10),
+                        child: (!selectedKitchens[index]) ? SvgPicture.asset('assets/svg_images/kitchen_unselected.svg') : SvgPicture.asset('assets/svg_images/kitchen_selected.svg'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(categories[index].name,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+            ),
+            onTap: (){
+              setState(() {
+                selectedKitchens[index] = !selectedKitchens[index];
+              });
+            },
+          );
+        }),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     return Column(
       children: [
-        Container(
-          padding: EdgeInsets.only(bottom: 0, left: 8, right: 8, top: 0),
-          height: 490,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: List.generate(12,(index){
-              return InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, left: 8, right: 5, bottom: 10),
-                  child: (!selectedKitchens[index]) ? Container(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 9.0, right: 10),
-                          child: SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(titles[index],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ) : Container(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 9.0, right: 10),
-                          child: SvgPicture.asset('assets/svg_images/kitchen_selected.svg'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(titles[index],
-                            style: TextStyle(
-                                fontSize: 18
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                onTap: (){
-                  setState(() {
-                    selectedKitchens[index] = !selectedKitchens[index];
-                  });
-                },
-              );
-            }),
-          ),
-        ),
+        (categories.length == 0) ?
+        FutureBuilder<AllStoreCategoriesData>(
+            future: getAllStoreCategories(),
+            initialData: null,
+            builder: (BuildContext context,
+                AsyncSnapshot<AllStoreCategoriesData> snapshot) {
+              if(snapshot.connectionState == ConnectionState.done){
+                categories.addAll(snapshot.data.allStoreCategoriesList);
+                return getCategories();
+              }else{
+                return Container();
+              }
+            }
+        )
+            :
+        getCategories(),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -2309,6 +2279,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
     }
   }
 }
+
 
 
 class FilterListScreen extends StatefulWidget {

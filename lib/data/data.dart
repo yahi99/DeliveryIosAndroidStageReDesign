@@ -6,6 +6,7 @@ import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/Screens/tickets_chat_screen.dart';
 import 'package:flutter_app/models/Auth.dart';
 import 'package:flutter_app/models/AuthCode.dart';
+import 'package:flutter_app/models/FilteredCities.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/user.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,6 +25,7 @@ AuthData authData = null;
 String FCMToken = '';
 int code = 0;
 NecessaryDataForAuth necessaryDataForAuth = new NecessaryDataForAuth(phone_number: null, refresh_token: null, device_id: null, name: null);
+FilteredCities selectedCity;
 
 var DeliveryStates = [
   'cooking',

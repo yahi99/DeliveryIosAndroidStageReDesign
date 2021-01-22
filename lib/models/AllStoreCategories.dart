@@ -1,12 +1,21 @@
-// To parse this JSON data, do
-//
-//     final allStoreCategories = allStoreCategoriesFromJson(jsonString);
+class AllStoreCategoriesData{
+  List<AllStoreCategories> allStoreCategoriesList;
 
-import 'dart:convert';
+  AllStoreCategoriesData( {
+    this.allStoreCategoriesList,
+  });
 
-List<AllStoreCategories> allStoreCategoriesFromJson(String str) => List<AllStoreCategories>.from(json.decode(str).map((x) => AllStoreCategories.fromJson(x)));
+  factory AllStoreCategoriesData.fromJson(List<dynamic> parsedJson){
+    List<AllStoreCategories> categoriesList = null;
+    if(parsedJson != null){
+      categoriesList = parsedJson.map((i) => AllStoreCategories.fromJson(i)).toList();
+    }
 
-String allStoreCategoriesToJson(List<AllStoreCategories> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+    return AllStoreCategoriesData(
+      allStoreCategoriesList:categoriesList,
+    );
+  }
+}
 
 class AllStoreCategories {
   AllStoreCategories({

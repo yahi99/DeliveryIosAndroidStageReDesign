@@ -1,12 +1,22 @@
-// To parse this JSON data, do
-//
-//     final productsByStoreUuid = productsByStoreUuidFromJson(jsonString);
+class ProductsByStoreUuidData{
+  List<ProductsByStoreUuid> productsByStoreUuidList;
 
-import 'dart:convert';
+  ProductsByStoreUuidData( {
+    this.productsByStoreUuidList,
+  });
 
-List<ProductsByStoreUuid> productsByStoreUuidFromJson(String str) => List<ProductsByStoreUuid>.from(json.decode(str).map((x) => ProductsByStoreUuid.fromJson(x)));
+  factory ProductsByStoreUuidData.fromJson(List<dynamic> parsedJson){
+    List<ProductsByStoreUuid> productsList = null;
+    if(parsedJson != null){
+      productsList = parsedJson.map((i) => ProductsByStoreUuid.fromJson(i)).toList();
+    }
 
-String productsByStoreUuidToJson(List<ProductsByStoreUuid> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+    return ProductsByStoreUuidData(
+      productsByStoreUuidList:productsList,
+    );
+  }
+}
+
 
 class ProductsByStoreUuid {
   ProductsByStoreUuid({
@@ -31,7 +41,7 @@ class ProductsByStoreUuid {
     uuid: json["uuid"],
     name: json["name"],
     storeUuid: json["store_uuid"],
-    productCategoriesUuid: List<String>.from(json["product_categories_uuid"].map((x) => x)),
+    productCategoriesUuid: (json["product_categories_uuid"] == null) ? null : List<String>.from(json["product_categories_uuid"].map((x) => x)),
     comment: json["comment"],
     url: json["url"],
     meta: Meta.fromJson(json["meta"]),

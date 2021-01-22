@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Screens/add_city_screen.dart';
 import 'package:flutter_app/Screens/auth_screen.dart';
 import 'package:flutter_app/Screens/device_id_screen.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
@@ -23,7 +24,9 @@ class CityScreenState extends State<CityScreen>{
 
   @override
   Widget build(BuildContext context) {
-
+    if(selectedCity != null){
+      cityController.text = selectedCity.name;
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -88,21 +91,25 @@ class CityScreenState extends State<CityScreen>{
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                      child: TextField(
-                        controller: cityController,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 2),
-                          hintText: 'Введите город',
-                          suffix: GestureDetector(child: SvgPicture.asset('assets/svg_images/city_cross.svg'),
-                            onTap: (){
-                              cityController.clear();
-                            },
+                      child: GestureDetector(
+                        child: TextField(
+                          controller: cityController,
+                          decoration: InputDecoration(
+                            enabled: false,
+                            contentPadding: EdgeInsets.only(left: 2),
+                            hintText: 'Введите город',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey
+                            )
                           ),
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey
-                          )
                         ),
+                        onTap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => AddCityScreen()),
+                                  (Route<dynamic> route) => false);
+                        },
                       ),
                     ),
                     Expanded(
@@ -128,9 +135,10 @@ class CityScreenState extends State<CityScreen>{
                               ),
                             ),
                             onTap: (){
+                              homeScreenKey = new GlobalKey<HomeScreenState>();
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => DeviceIdScreen()),
+                                      builder: (context) => HomeScreen()),
                                       (Route<dynamic> route) => false);
                             },
                           ),

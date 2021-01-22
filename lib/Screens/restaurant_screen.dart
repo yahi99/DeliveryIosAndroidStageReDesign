@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/GetData/getImage.dart';
+import 'package:flutter_app/GetData/getProductsByStoreUuid.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/PostData/restaurant_items_data_pass.dart';
 import 'package:flutter_app/data/data.dart';
+import 'package:flutter_app/models/FilteredStores.dart';
+import 'package:flutter_app/models/ProductsByStoreUuid.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/order.dart';
@@ -17,7 +20,7 @@ import 'cart_screen.dart';
 import 'home_screen.dart';
 
 class RestaurantScreen extends StatefulWidget {
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   RestaurantScreen({Key key, this.restaurant}) : super(key: key);
 
@@ -27,9 +30,9 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class RestaurantScreenState extends State<RestaurantScreen> {
-  final Records restaurant;
+  final FilteredStores restaurant;
   // Добавленные глобалки
-  RestaurantDataItems restaurantDataItems; // Модель текущего меню
+  ProductsByStoreUuidData restaurantDataItems; // Модель текущего меню
   CategoryList categoryList; // Виджет с категориями еды
   // (для подгрузки ВПЕРЕД по клику по категории)
   // ScrollController foodScrollController = new ScrollController(); // Скролл контроллер для хавки
@@ -63,10 +66,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     GlobalKey<ToppingsSelectorState> toppingsSelectorStateKey =
     new GlobalKey<ToppingsSelectorState>();
 
-    DateTime now = DateTime.now();
-    int dayNumber  = now.weekday-1;
-
-    int work_beginning = restaurant.work_schedule[dayNumber].work_beginning;
+//    DateTime now = DateTime.now();
+//    int dayNumber  = now.weekday-1;
+//
+//    int work_beginning = restaurant.work_schedule[dayNumber].work_beginning;
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -76,18 +79,18 @@ class RestaurantScreenState extends State<RestaurantScreen> {
           )),
       child: Stack(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 30),
-            child: Align(
-                alignment: Alignment.topCenter,
-                child: Text('К сожалению, доставка не доступна.\nБлижайшее время в ${( work_beginning/ 60).toStringAsFixed(0)} часов',
-                  style: TextStyle(
-                      fontSize: 16
-                  ),
-                  textAlign: TextAlign.center,
-                )
-            ),
-          ),
+//          Padding(
+//            padding: EdgeInsets.only(top: 30),
+//            child: Align(
+//                alignment: Alignment.topCenter,
+//                child: Text('К сожалению, доставка не доступна.\nБлижайшее время в ${( work_beginning/ 60).toStringAsFixed(0)} часов',
+//                  style: TextStyle(
+//                      fontSize: 16
+//                  ),
+//                  textAlign: TextAlign.center,
+//                )
+//            ),
+//          ),
           Padding(
             padding: EdgeInsets.only(top: 10,left: 15, right: 15, bottom: 25),
             child: Align(
@@ -275,10 +278,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   }
 
   _buildRestInfoNavigationMenu() {
-    DateTime now = DateTime.now();
-    int currentTime = now.hour*60+now.minute;
-    int dayNumber  = now.weekday-1;
-    int work_ending = restaurant.work_schedule[dayNumber].work_ending;
+//    DateTime now = DateTime.now();
+//    int currentTime = now.hour*60+now.minute;
+//    int dayNumber  = now.weekday-1;
+//    int work_ending = restaurant.work_schedule[dayNumber].work_ending;
     return Container(
       child: Column(
         children: [
@@ -311,7 +314,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.only(left: 20, top: 10),
             child: Align(
                 alignment: Alignment.topLeft,
-                child: Text(restaurant.destination_points[0].unrestrictedValue,
+                child: Text(restaurant.address.unrestrictedValue,
                   style: TextStyle(
                     fontSize: 14
                   ),
@@ -330,17 +333,17 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 )
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, top: 10),
-            child: Align(
-                alignment: Alignment.topLeft,
-                child: Text('Доставка до ${(work_ending / 60).toStringAsFixed(0)} часов',
-                  style: TextStyle(
-                      fontSize: 14
-                  ),
-                )
-            ),
-          ),
+//          Padding(
+//            padding: EdgeInsets.only(left: 20, top: 10),
+//            child: Align(
+//                alignment: Alignment.topLeft,
+//                child: Text('Доставка до ${(work_ending / 60).toStringAsFixed(0)} часов',
+//                  style: TextStyle(
+//                      fontSize: 14
+//                  ),
+//                )
+//            ),
+//          ),
           Padding(
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Align(
@@ -387,7 +390,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   }
 
   _buildFoodCategoryList() {
-    if(restaurant.product_category.length>0)
+    if(restaurant.productCategoriesUuid.length>0)
       return categoryList;
     else
       return Container(height: 0);
@@ -400,7 +403,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
   Widget _buildScreen() {
     isLoading = false;
     // Если хавки нет
-    if (restaurantDataItems.records_count == 0) {
+    if (restaurantDataItems.productsByStoreUuidList.length == 0) {
       return Column(
         children: <Widget>[
           Padding(
@@ -488,8 +491,8 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       );
     }
 
-    foodMenuItems.addAll(MenuItem.fromFoodRecordsList(restaurantDataItems.records, this));
-    foodMenuTitles.addAll(MenuItemTitle.fromCategoryList(restaurant.product_category));
+    foodMenuItems.addAll(MenuItem.fromFoodRecordsList(restaurantDataItems.productsByStoreUuidList, this));
+    foodMenuTitles.addAll(MenuItemTitle.fromCategoryList(restaurant.productCategoriesUuid));
     menuWithTitles = generateMenu();
     List<Widget> sliverChildren = getSliverChildren();
     GlobalKey<SliverTextState>sliverTextKey = new GlobalKey();
@@ -538,15 +541,15 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             i++;
           }
           String currentCategory = foodMenuTitles[0].title;
-          if(item is MenuItem){
-            currentCategory = item.key.currentState.restaurantDataItems.category;
-          } else if(item is MenuItemTitle){
-            currentCategory = item.key.currentState.title;
-          }
-          if(currentCategory != categoryList.key.currentState.currentCategory){
-            categoryList.key.currentState.SelectCategory(currentCategory);
-            await categoryList.key.currentState.ScrollToSelectedCategory();
-          }
+//          if(item is MenuItem){
+//            currentCategory = item.key.currentState.restaurantDataItems.category;
+//          } else if(item is MenuItemTitle){
+//            currentCategory = item.key.currentState.title;
+//          }
+//          if(currentCategory != categoryList.key.currentState.currentCategory){
+//            categoryList.key.currentState.SelectCategory(currentCategory);
+//            await categoryList.key.currentState.ScrollToSelectedCategory();
+//          }
         }
       }catch(e){
       }
@@ -561,7 +564,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 child: Stack(
                   children: <Widget>[
                     Image.network(
-                      getImage(restaurant.image),
+                      getImage(restaurant.url),
                       fit: BoxFit.cover,
                       height: 230.0,
                       width: MediaQuery.of(context).size.width,
@@ -651,7 +654,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                           child: Stack(
                             children: <Widget>[
                               Image.network(
-                                getImage(restaurant.image),
+                                getImage(restaurant.url),
                                 fit: BoxFit.cover,
                                 height: 230.0,
                                 width: MediaQuery.of(context).size.width,
@@ -780,11 +783,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                           child: SvgPicture.asset('assets/svg_images/rest_car.svg',
                                           ),
                                         ),
-                                        Text(
-                                          (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-                                          style: TextStyle(
-                                          ),
-                                        ),
+//                                        Text(
+//                                          (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+//                                          style: TextStyle(
+//                                          ),
+//                                        ),
                                       ],
                                     ),
                                   ),
@@ -842,14 +845,14 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 )
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:  EdgeInsets.only(bottom: 0),
-                child: BasketButton(
-                    key: basketButtonStateKey, restaurant: restaurant),
-              ),
-            )
+//            Align(
+//              alignment: Alignment.bottomCenter,
+//              child: Padding(
+//                padding:  EdgeInsets.only(bottom: 0),
+//                child: BasketButton(
+//                    key: basketButtonStateKey, restaurant: restaurant),
+//              ),
+//            )
           ],
         ),
       ),
@@ -867,11 +870,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     String lastCategoryName = "";
     int lastCategoryIndex = -1;
     foodMenuItems.forEach((foodMenuItem) {
-      if(foodMenuItem.restaurantDataItems.category != lastCategoryName){
-        lastCategoryIndex++;
-        lastCategoryName = foodMenuItem.restaurantDataItems.category;
-        menu.add(foodMenuTitles[lastCategoryIndex]);
-      }
+//      if(foodMenuItem.restaurantDataItems.category != lastCategoryName){
+//        lastCategoryIndex++;
+//        lastCategoryName = foodMenuItem.restaurantDataItems.category;
+//        menu.add(foodMenuTitles[lastCategoryIndex]);
+//      }
       menu.add(foodMenuItem);
     });
     return menu;
@@ -885,12 +888,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     }
     return Scaffold(
       key: _scaffoldStateKey,
-
-      body: FutureBuilder<RestaurantDataItems>(
-          future: loadAllRestaurantItems(restaurant),
+      body: FutureBuilder<ProductsByStoreUuidData>(
+          future: getProductsByStoreUuid(restaurant.uuid),
           initialData: null,
           builder: (BuildContext context,
-              AsyncSnapshot<RestaurantDataItems> snapshot) {
+              AsyncSnapshot<ProductsByStoreUuidData> snapshot) {
             print(snapshot.connectionState);
             if (snapshot.connectionState == ConnectionState.done) {
               restaurantDataItems = snapshot.data;
@@ -913,7 +915,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       return false;
     isLoading = true;
     // находим итем с данной категорией
-    MenuItemTitle targetCategory = menuWithTitles.firstWhere((element) => element is MenuItemTitle && element.title == restaurant.product_category[categoryIndex]);
+    MenuItemTitle targetCategory = menuWithTitles.firstWhere((element) => element is MenuItemTitle && element.title == restaurant.productCategoriesUuid[categoryIndex]);
     if(targetCategory != null){
       while(targetCategory.key.currentContext == null) {
         await sliverScrollController.animateTo(sliverScrollController.offset+200, duration: new Duration(milliseconds: 15),
@@ -1605,7 +1607,7 @@ class   CategoryList extends StatefulWidget {
   CategoryList({this.key, this.restaurant, this.parent}) : super(key: key);
   final GlobalKey<CategoryListState> key;
   final RestaurantScreenState parent;
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   @override
   CategoryListState createState() {
@@ -1614,7 +1616,7 @@ class   CategoryList extends StatefulWidget {
 }
 
 class CategoryListState extends State<CategoryList> {
-  final Records restaurant;
+  final FilteredStores restaurant;
   final RestaurantScreenState parent;
   String currentCategory;
   List<CategoryListItem> categoryItems;
@@ -1683,7 +1685,7 @@ class CategoryListState extends State<CategoryList> {
                 onTap: () async {
                   String value = categoryItems[index].value;
                   Navigator.pop(context);
-                  if(await parent.GoToCategory(restaurant.product_category.indexOf(value)))
+                  if(await parent.GoToCategory(restaurant.productCategoriesUuid.indexOf(value)))
                     SelectCategory(value);
                   ScrollToSelectedCategory();
                 },
@@ -1700,18 +1702,18 @@ class CategoryListState extends State<CategoryList> {
     // TODO: implement initState
     super.initState();
     categoryItems = new List<CategoryListItem>();
-    currentCategory = (restaurant.product_category.length > 0) ? restaurant.product_category[0] : '';
+    currentCategory = (restaurant.productCategoriesUuid.length > 0) ? restaurant.productCategoriesUuid[0] : '';
     firstStart = true;
   }
   @override
   Widget build(BuildContext context) {
     // Если категории в списке отличаются от категорий ресторана
-    if(categoryItems.length != restaurant.product_category.length){
+    if(categoryItems.length != restaurant.productCategoriesUuid.length){
       // Очищаем лист, если он не очищен
       if(categoryItems.length != 0)
         categoryItems.clear();
       // Заполянем список категорий категориями продуктов
-      restaurant.product_category.forEach((element) {
+      restaurant.productCategoriesUuid.forEach((element) {
         categoryItems.add(new CategoryListItem(key: new GlobalKey<CategoryListItemState>(),
             categoryList: this,value: element));
       });
@@ -1866,7 +1868,7 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
       onTap: () async {
         if (await Internet.checkConnection()) {
           //Если категория загрузась без ошибок
-          if(await categoryList.parent.GoToCategory(categoryList.restaurant.product_category.indexOf(value)))
+          if(await categoryList.parent.GoToCategory(categoryList.restaurant.productCategoriesUuid.indexOf(value)))
             categoryList.SelectCategory(value); // выделяем ее
         } else {
           noConnection(context);
@@ -2012,13 +2014,13 @@ class MenuItem extends StatefulWidget {
   MenuItem({this.key, this.restaurantDataItems, this.parent}) : super(key: key);
   final GlobalKey<MenuItemState> key;
   final RestaurantScreenState parent;
-  final FoodRecords restaurantDataItems;
+  final ProductsByStoreUuid restaurantDataItems;
 
   @override
   MenuItemState createState() {
     return new MenuItemState(restaurantDataItems, parent);
   }
-  static List<MenuItem> fromFoodRecordsList(List<FoodRecords> foodRecordsList, RestaurantScreenState parent) {
+  static List<MenuItem> fromFoodRecordsList(List<ProductsByStoreUuid> foodRecordsList, RestaurantScreenState parent) {
     List<MenuItem> result = new List<MenuItem>();
     foodRecordsList.forEach((element) {
       result.add(new MenuItem(parent: parent, restaurantDataItems: element, key: new GlobalKey<MenuItemState>()));
@@ -2028,7 +2030,7 @@ class MenuItem extends StatefulWidget {
 }
 
 class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
-  final FoodRecords restaurantDataItems;
+  final ProductsByStoreUuid restaurantDataItems;
   final RestaurantScreenState parent;
   Order order;
 
@@ -2045,21 +2047,21 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
     int itemQuantity = getQuantity();
     GlobalKey<CartItemsQuantityState> cartItemsQuantityKey = new GlobalKey();
     GlobalKey<MenuItemCounterState> menuItemCounterKey = new GlobalKey();
-    CartItemsQuantity cartItemsQuantity = new CartItemsQuantity(
-      key: cartItemsQuantityKey,
-      restaurantDataItems: restaurantDataItems,
-    );
+//    CartItemsQuantity cartItemsQuantity = new CartItemsQuantity(
+//      key: cartItemsQuantityKey,
+//      restaurantDataItems: restaurantDataItems,
+//    );
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
       child: Center(
           child: GestureDetector(
-              onTap: () async {
-                if (await Internet.checkConnection()) {
-                  onPressedButton(restaurantDataItems, menuItemCounterKey);
-                } else {
-                  noConnection(context);
-                }
-              },
+//              onTap: () async {
+//                if (await Internet.checkConnection()) {
+//                  onPressedButton(restaurantDataItems, menuItemCounterKey);
+//                } else {
+//                  noConnection(context);
+//                }
+//              },
               child: Container(
                 height: 150,
                 decoration: BoxDecoration(
@@ -2113,7 +2115,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text(
-                                              restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
+                                              '000',
+//                                              restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
                                               style: TextStyle(
                                                   fontSize: 10.0,
                                                   color: Colors.grey),
@@ -2127,7 +2130,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                  restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
+                                                  '00000',
+//                                                  restaurantDataItems.weight + '' + restaurantDataItems.weight_measure,
                                                   style: TextStyle(
                                                       fontSize: 10.0,
                                                       color: Colors.grey),
@@ -2142,7 +2146,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             Padding(
                                               padding: const EdgeInsets.only(top: 5),
                                               child: Text(
-                                                    '${restaurantDataItems.price} \₽',
+                                                '000',
+//                                                    '${restaurantDataItems.price} \₽',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.grey),
@@ -2154,7 +2159,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       ],
                                     ),
                                   ),
-                                  MenuItemCounter(foodRecords: restaurantDataItems, key: menuItemCounterKey, order: order, parent: this)
+//                                  MenuItemCounter(foodRecords: restaurantDataItems, key: menuItemCounterKey, order: order, parent: this)
                                 ],
                               ),
                             ),
@@ -2169,7 +2174,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                               topRight: Radius.circular(15),
                               bottomRight: Radius.circular(15)),
                           child: Image.network(
-                            getImage(restaurantDataItems.image),
+                            getImage(restaurantDataItems.url),
                             fit: BoxFit.cover,
                             height: 150,
                             width: 168,
@@ -2190,10 +2195,10 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
     print((now.minute).toString() + 'KANTENT');
     int dayNumber  = now.weekday-1;
 
-    int work_beginning = parent.restaurant.work_schedule[dayNumber].work_beginning;
-    int work_ending = parent.restaurant.work_schedule[dayNumber].work_ending;
-    bool day_off = parent.restaurant.work_schedule[dayNumber].day_off;
-    bool available = parent.restaurant.available != null ? parent.restaurant.available : true;
+//    int work_beginning = parent.restaurant.work_schedule[dayNumber].work_beginning;
+//    int work_ending = parent.restaurant.work_schedule[dayNumber].work_ending;
+//    bool day_off = parent.restaurant.work_schedule[dayNumber].day_off;
+//    bool available = parent.restaurant.available != null ? parent.restaurant.available : true;
     showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -2204,82 +2209,83 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
             )),
         context: context,
         builder: (context) {
-          if(day_off ||
-              !available ||
-              !(currentTime >= work_beginning && currentTime < work_ending)){
-            return Container(
-              height: 330,
-              child: parent._dayOff(food, menuItemCounterKey),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(12),
-                    topRight: const Radius.circular(12),
-                  )),
-            );
-          }else{
-            return Container(
-              height: getBottomSheetHeight(food),
-              child: Stack(
-                children: [
-                  Container(
-                    height: getBottomSheetHeight(food),
-                    decoration: BoxDecoration(
+//          if(day_off ||
+//              !available ||
+//              !(currentTime >= work_beginning && currentTime < work_ending)){
+//            return Container(
+//              height: 330,
+//              child: parent._dayOff(food, menuItemCounterKey),
+//              decoration: BoxDecoration(
+//                  color: Theme.of(context).canvasColor,
+//                  borderRadius: BorderRadius.only(
+//                    topLeft: const Radius.circular(12),
+//                    topRight: const Radius.circular(12),
+//                  )),
+//            );
+//          }else{
+//
+//          }
+          return Container(
+            height: getBottomSheetHeight(food),
+            child: Stack(
+              children: [
+                Container(
+                  height: getBottomSheetHeight(food),
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12),
                       ),
                       color: Colors.white
-                    ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
-                            bottomLeft: Radius.circular(0),
-                            bottomRight: Radius.circular(0)),
-                        child: Stack(
-                          children: <Widget>[
-                            Image.network(
-                              getImage(restaurantDataItems.image),
-                              fit: BoxFit.cover,
-                              height: 180.0,
-                              width: MediaQuery.of(context).size.width,
-                            ),
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 10, right: 15),
-                                  child: GestureDetector(
-                                    child: SvgPicture.asset(
-                                        'assets/svg_images/bottom_close.svg'),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ))
-                          ],
-                        )),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 0),
-                    height: getBottomSheetContainerHeight(food),
-                    child: DraggableScrollableSheet(
-                      initialChildSize: getInitialChildHeight(food),
-                      builder: (BuildContext context, ScrollController scrollController){
-                        return ListView.builder(
-                          itemCount: 1,
-                          controller: scrollController,
-                          itemBuilder: (BuildContext context ,int index){
-                            return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
-                          },
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(0)),
+                      child: Stack(
+                        children: <Widget>[
+                          Image.network(
+                            getImage(restaurantDataItems.url),
+                            fit: BoxFit.cover,
+                            height: 180.0,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10, right: 15),
+                                child: GestureDetector(
+                                  child: SvgPicture.asset(
+                                      'assets/svg_images/bottom_close.svg'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ))
+                        ],
+                      )),
+                ),
+//                Container(
+//                  padding: EdgeInsets.only(bottom: 0),
+//                  height: getBottomSheetContainerHeight(food),
+//                  child: DraggableScrollableSheet(
+//                    initialChildSize: getInitialChildHeight(food),
+//                    builder: (BuildContext context, ScrollController scrollController){
+//                      return ListView.builder(
+//                        itemCount: 1,
+//                        controller: scrollController,
+//                        itemBuilder: (BuildContext context ,int index){
+//                          return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
+//                        },
+//                      );
+//                    },
+//                  ),
+//                )
+              ],
+            ),
+          );
         });
   }
 
@@ -2463,94 +2469,94 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                     ),
                                   ),
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
-                                    child: FlatButton(
-                                      child: Text(
-                                        "Добавить",
-                                        style:
-                                        TextStyle(color: Colors.white, fontSize: 18),
-                                      ),
-                                      color: Color(0xFF09B44D),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      padding: EdgeInsets.only(
-                                          left: 55, top: 20, right: 55, bottom: 20),
-                                      onPressed: () async {
-                                        if (await Internet.checkConnection()) {
-                                          FoodRecords foodOrder =
-                                          FoodRecords.fromFoodRecords(
-                                              restaurantDataItems);
-                                          if (variantsSelectorStateKey.currentState !=
-                                              null) {
-                                            if (variantsSelectorStateKey
-                                                .currentState.selectedVariant !=
-                                                null) {
-                                              foodOrder.variants = [
-                                                variantsSelectorStateKey
-                                                    .currentState.selectedVariant
-                                              ];
-                                            } else {
-                                              foodOrder.variants = null;
-                                            }
-                                            print(foodOrder.variants);
-                                          }
-                                          if (toppingsSelectorStateKey.currentState !=
-                                              null) {
-                                            List<Toppings> toppingsList =
-                                            toppingsSelectorStateKey.currentState
-                                                .getSelectedToppings();
-                                            if (toppingsList.length != null) {
-                                              foodOrder.toppings = toppingsList;
-                                            } else {
-                                              foodOrder.toppings = null;
-                                            }
-                                            foodOrder.toppings.forEach((element) {
-                                              print(element.name);
-                                            });
-                                          }
-                                          if (currentUser.cartDataModel.cart.length > 0 &&
-                                              parent.restaurant.uuid !=
-                                                  currentUser.cartDataModel.cart[0]
-                                                      .restaurant.uuid) {
-                                            parent.showCartClearDialog(
-                                                context,
-                                                new Order(
-                                                    food: foodOrder,
-                                                    quantity:
-                                                    parent.counterKey.currentState.counter,
-                                                    restaurant: parent.restaurant,
-                                                    date: DateTime.now().toString()),
-                                                menuItemCounterKey);
-                                          } else {
-                                            currentUser.cartDataModel.addItem(new Order(
-                                                food: foodOrder,
-                                                quantity: parent.counterKey.currentState.counter,
-                                                restaurant: parent.restaurant,
-                                                date: DateTime.now().toString()));
-                                            currentUser.cartDataModel.saveData();
-                                            Navigator.pop(context);
-                                            Padding(
-                                              padding: EdgeInsets.only(bottom: 0),
-                                              child: parent.showAlertDialog(context),
-                                            );
-                                            parent.basketButtonStateKey.currentState.refresh();
-                                            //menuItemCounterKey.currentState.refresh();
-                                            setState(() {
-
-                                            });
-                                            parent.counterKey.currentState.refresh();
-                                          }
-                                        } else {
-                                          noConnection(context);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                )
+//                                Align(
+//                                  alignment: Alignment.bottomRight,
+//                                  child: Padding(
+//                                    padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
+//                                    child: FlatButton(
+//                                      child: Text(
+//                                        "Добавить",
+//                                        style:
+//                                        TextStyle(color: Colors.white, fontSize: 18),
+//                                      ),
+//                                      color: Color(0xFF09B44D),
+//                                      shape: RoundedRectangleBorder(
+//                                        borderRadius: BorderRadius.circular(10),
+//                                      ),
+//                                      padding: EdgeInsets.only(
+//                                          left: 55, top: 20, right: 55, bottom: 20),
+//                                      onPressed: () async {
+//                                        if (await Internet.checkConnection()) {
+//                                          FoodRecords foodOrder =
+//                                          FoodRecords.fromFoodRecords(
+//                                              restaurantDataItems);
+//                                          if (variantsSelectorStateKey.currentState !=
+//                                              null) {
+//                                            if (variantsSelectorStateKey
+//                                                .currentState.selectedVariant !=
+//                                                null) {
+//                                              foodOrder.variants = [
+//                                                variantsSelectorStateKey
+//                                                    .currentState.selectedVariant
+//                                              ];
+//                                            } else {
+//                                              foodOrder.variants = null;
+//                                            }
+//                                            print(foodOrder.variants);
+//                                          }
+//                                          if (toppingsSelectorStateKey.currentState !=
+//                                              null) {
+//                                            List<Toppings> toppingsList =
+//                                            toppingsSelectorStateKey.currentState
+//                                                .getSelectedToppings();
+//                                            if (toppingsList.length != null) {
+//                                              foodOrder.toppings = toppingsList;
+//                                            } else {
+//                                              foodOrder.toppings = null;
+//                                            }
+//                                            foodOrder.toppings.forEach((element) {
+//                                              print(element.name);
+//                                            });
+//                                          }
+//                                          if (currentUser.cartDataModel.cart.length > 0 &&
+//                                              parent.restaurant.uuid !=
+//                                                  currentUser.cartDataModel.cart[0]
+//                                                      .restaurant.uuid) {
+//                                            parent.showCartClearDialog(
+//                                                context,
+//                                                new Order(
+//                                                    food: foodOrder,
+//                                                    quantity:
+//                                                    parent.counterKey.currentState.counter,
+//                                                    restaurant: parent.restaurant,
+//                                                    date: DateTime.now().toString()),
+//                                                menuItemCounterKey);
+//                                          } else {
+//                                            currentUser.cartDataModel.addItem(new Order(
+//                                                food: foodOrder,
+//                                                quantity: parent.counterKey.currentState.counter,
+//                                                restaurant: parent.restaurant,
+//                                                date: DateTime.now().toString()));
+//                                            currentUser.cartDataModel.saveData();
+//                                            Navigator.pop(context);
+//                                            Padding(
+//                                              padding: EdgeInsets.only(bottom: 0),
+//                                              child: parent.showAlertDialog(context),
+//                                            );
+//                                            parent.basketButtonStateKey.currentState.refresh();
+//                                            //menuItemCounterKey.currentState.refresh();
+//                                            setState(() {
+//
+//                                            });
+//                                            parent.counterKey.currentState.refresh();
+//                                          }
+//                                        } else {
+//                                          noConnection(context);
+//                                        }
+//                                      },
+//                                    ),
+//                                  ),
+//                                )
                               ],
                             ),
                           )

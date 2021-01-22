@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Config/config.dart';
+import 'package:flutter_app/Screens/city_screen.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CartDataModel.dart';
@@ -30,13 +31,13 @@ class DeviceIdScreen extends StatelessWidget {
               AmplitudeAnalytics.initialize(necessaryDataForAuth.device_id).then((value){
                 AmplitudeAnalytics.analytics.logEvent('open_app');
               });
-              return HomeScreen();
+              return CityScreen();
             }
             print(necessaryDataForAuth.refresh_token);
             AmplitudeAnalytics.initialize(necessaryDataForAuth.phone_number).then((value){
               AmplitudeAnalytics.analytics.logEvent('open_app');
             });
-            return HomeScreen();
+            return CityScreen();
           } else {
             return Center(
               child: Image(

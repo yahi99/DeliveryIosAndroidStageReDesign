@@ -99,33 +99,33 @@ class CartPageState extends State<CartPageScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      InkWell(
-                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                              PageRouteBuilder(
-                                  pageBuilder: (context, animation, anotherAnimation) {
-                                    return RestaurantScreen(restaurant: restaurant,);
-                                  },
-                                  transitionDuration: Duration(milliseconds: 300),
-                                  transitionsBuilder:
-                                      (context, animation, anotherAnimation, child) {
-                                    return SlideTransition(
-                                      position: Tween(
-                                          begin: Offset(1.0, 0.0),
-                                          end: Offset(0.0, 0.0))
-                                          .animate(animation),
-                                      child: child,
-                                    );
-                                  }
-                              ), (Route<dynamic> route) => false),
-                          child: Container(
-                              height: 40,
-                              width: 60,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 12, bottom: 12, right: 25),
-                                child: SvgPicture.asset(
-                                    'assets/svg_images/arrow_left.svg'),
-                              ))),
+//                      InkWell(
+//                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
+//                              PageRouteBuilder(
+//                                  pageBuilder: (context, animation, anotherAnimation) {
+//                                    return RestaurantScreen(restaurant: restaurant,);
+//                                  },
+//                                  transitionDuration: Duration(milliseconds: 300),
+//                                  transitionsBuilder:
+//                                      (context, animation, anotherAnimation, child) {
+//                                    return SlideTransition(
+//                                      position: Tween(
+//                                          begin: Offset(1.0, 0.0),
+//                                          end: Offset(0.0, 0.0))
+//                                          .animate(animation),
+//                                      child: child,
+//                                    );
+//                                  }
+//                              ), (Route<dynamic> route) => false),
+//                          child: Container(
+//                              height: 40,
+//                              width: 60,
+//                              child: Padding(
+//                                padding: EdgeInsets.only(
+//                                    top: 12, bottom: 12, right: 25),
+//                                child: SvgPicture.asset(
+//                                    'assets/svg_images/arrow_left.svg'),
+//                              ))),
                       Padding(
                         padding: EdgeInsets.only(right: 20),
                         child: Text(
@@ -947,13 +947,13 @@ class CartScreenState extends State<CartScreen> {
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
     totalPrices.add(parent.totalPriceWidget);
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-                (Route<dynamic> route) => route.isFirst);
-        return false;
-      },
+//      onWillPop: () async {
+//        Navigator.of(context).pushAndRemoveUntil(
+//            MaterialPageRoute(
+//                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+//                (Route<dynamic> route) => route.isFirst);
+//        return false;
+//      },
       child: new Scaffold(
         key: _scaffoldStateKey,
         body: Container(
@@ -1379,13 +1379,13 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
     totalPrices.add(parent.totalPriceWidget);
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-                (Route<dynamic> route) => route.isFirst);
-        return false;
-      },
+//      onWillPop: () async {
+//        Navigator.of(context).pushAndRemoveUntil(
+//            MaterialPageRoute(
+//                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+//                (Route<dynamic> route) => route.isFirst);
+//        return false;
+//      },
       child: new Scaffold(
         key: _scaffoldStateKey,
         body: Container(
