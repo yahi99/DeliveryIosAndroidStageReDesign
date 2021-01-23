@@ -34,6 +34,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Localization/app_localizations.dart';
 import '../models/my_addresses_model.dart';
 import 'address_screen.dart';
 import 'auth_screen.dart';
@@ -1199,7 +1200,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Акции и новинки',
+                                  Text(AppLocalizations.of(context).getTranslation('home_screen.shares.shares_title'),
                                     style: TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.bold

@@ -1,5 +1,5 @@
 {
-  "sidebar": [
+  "sidebar":
     {
       "authorization_title": "Войти",
       "orders_story_title": "История заказов",
@@ -7,51 +7,44 @@
       "service_title": "Служба поддержки",
       "info_title": "Информация",
       "exit_title": "Выход"
-    }
-  ],
-  "home_screen": [
+    },
+  "home_screen":
     {
-      "order_state_widget": [
+      "order_state_widget":
         {
           "order_desc": "Ваш заказ из",
           "order": "Заказ"
         },
-        {
-          "order_state_titles": [
+          "order_state_titles":
             {
               "waiting_for_confirmation": "Обработка",
               "cooking": "Готовится",
               "on_the_way": "В пути",
               "chat": "Чат с водителем"
-            }
-          ]
-        }
-      ],
-      "shares": [
+            },
+      "shares":
         {
           "shares_title": "Акции и новинки",
           "shares_desc": "Все"
         }
-      ],
+      ,
       "restaurants": "Рестораны",
-      "filters_titles": [
+      "filters_titles":
         {
           "kitchens_title" : "Кухни",
           "distance_title" : "По расстоянию"
         }
-      ]
     }
-  ],
-  "restaurant_screen": [
+  ,
+  "restaurant_screen":
     {
       "cart_title":"Корзина",
       "cart_desc":"До бесплатной доставки осталось",
       "delivery": "Доставка",
       "time_value": "мин",
       "add_button": "Добавить"
-    }
-  ],
-  "cart_screen": [
+    },
+  "cart_screen":
     {
       "cart_title": "Корзина",
       "delivery_title": "Доставка",
@@ -60,22 +53,20 @@
       "time_value": "мин",
       "total": "Итого",
       "button_title": "Далее"
-    }
-  ],
-  "order_confirmation_screen": [
+    },
+  "order_confirmation_screen":
     {
       "address_confirmation": "Подтверждение адреса",
       "departure_address_title": "Адрес отправки",
       "departure_address_desc": "С какого адреса вам отправить?",
       "change": "Изменить",
       "your_address": "Ваш адрес",
-      "order_for_another_person": [
+      "order_for_another_person":
         {
           "title": "Заказ другому человеку",
           "phone_number": "Номер телефона получателя",
           "name": "Имя получателя"
-        }
-      ],
+        },
       "address": "Адрес",
       "comment": "Комментарий",
       "floor": "Этаж",
@@ -86,45 +77,41 @@
       "total": "Итого",
       "time_value": "мин",
       "delivery_time": "Время доставки",
-      "payment_type": [
+      "payment_type":
         {
           "title": "Способ оплаты",
           "cash": "Наличными",
           "card": "Картой"
         }
-      ],
+      ,
       "promo_code_title": "Введите промокод",
       "promo_code_desc": "Промокод применен",
       "at_restaurant": "Поем в заведении",
       "sale": "Скидка",
       "button_text": "Заказать"
-    }
-  ],
-  "order_success": [
+    },
+  "order_success":
     {
       "title": "Спасибо за заказ",
       "desc": "Оставьте свой отзыв, это поможет сделать приложение лучше",
       "comment": "Оставьте свой отзыв",
       "button_text": "Оценить заказ"
-    }
-  ],
-  "alert_dialogs": [
+    },
+  "alert_dialogs":
     {
       "add_item": "Товар добавлен в корзину",
       "rest_desc": "Все ранее добавленные блюда из ресторана будут удалены из корзины",
       "reject": "Отмена",
       "confirm_desc": "Отправляем ваш заказ в систему"
-    }
-  ],
-  "bottom_sheets": [
+    },
+  "bottom_sheets":
     {
       "show_first": "Отобразить сначала",
       "distance": "Показывать с отдаленностью",
       "promo_button": "Применить",
       "button": "Готово"
-    }
-  ],
-  "order_details": [
+    },
+  "order_details":
     {
       "title": "Детали заказа",
       "state": "Доставлен",
@@ -134,17 +121,15 @@
       "repeat_button": "Повторить заказ",
       "cancel_button": "Отменить заказ",
       "delete_button": "Удалить данные о заказе"
-    }
-  ],
-  "my_addresses": [
+    },
+  "my_addresses":
     {
       "change": "Изменить",
       "button_text": "Добавить адрес",
       "title": "Название",
       "address": "Адрес"
-    }
-  ],
-  "service": [
+    },
+  "service":
     {
       "requests":"Ваши запросы",
       "order":"Ошибка в заказе",
@@ -154,22 +139,19 @@
       "appeals":"Мои обращения",
       "completed":"Обработано",
       "not_completed":"В обработке"
-    }
-  ],
-  "info": [
+    },
+  "info":
     {
       "about_app": "О приложении",
       "desc": "Версия 1.0 от 13 окт. 2020 г.сборка 34234",
       "license": "Лицензионное соглашение'",
       "policy": "Политика конфиденцальности",
       "faem": "ООО «ФАЕМ ТЕХНОЛОГИИ»"
-    }
-  ],
-  "profile": [
+    },
+  "profile":
     {
       "title": "Ваши данные",
       "name": "Ваше имя",
       "phone_number": "Номер телефона"
     }
-  ]
 }

@@ -14,16 +14,26 @@ class AppLocalizations{
 
   AppLocalizations(this.locale);
 
-  Map<String, String> languageMap = Map();
+  Map<String, dynamic> languageMap = Map();
   Future load() async {
     final fileString =
         await rootBundle.loadString('assets/languages/${locale.languageCode}.json');
-    final Map<String, dynamic> mapData = json.decode(fileString);
-    languageMap = mapData.map((key, value) => MapEntry(key, value.toString()));
+     languageMap = json.decode(fileString);
   }
 
-  getTranslation(key){
-    return languageMap[key];
+  getTranslation(String key){
+    if(!key.contains('.'))
+      return languageMap[key];
+
+    List<String> keys = key.split('.');
+    var tempEntry;
+    keys.forEach((key) {
+      tempEntry = (tempEntry == null) ? languageMap[key] : tempEntry[key];
+    });
+
+    String result = tempEntry.toString();
+
+    return result;
   }
 }
 
@@ -34,7 +44,7 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations>{
 
   @override
   bool isSupported(Locale locale){
-    return ['ru', 'Акции и новинки'].contains(locale.languageCode);
+    return ['ru', 'en'].contains(locale.languageCode);
   }
 
   @override
