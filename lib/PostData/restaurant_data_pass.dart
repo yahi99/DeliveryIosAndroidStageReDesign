@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -20,8 +21,10 @@ Future<DeliveryResponseData> loadRestaurant(int page, int limit, String category
     });
   }
   var url = 'https://crm.apis.stage.faem.pro/api/v2/stores';
+  Locale locale;
   var response = await http.post(url, body: json_request, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
+    'Accept-Language': locale.languageCode
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
