@@ -17,6 +17,7 @@ import 'package:flutter_app/GetData/getTicketByFilter.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/PostData/RestarurantCategories.dart';
+import 'package:flutter_app/PostData/add_variant_to_cart.dart';
 import 'package:flutter_app/PostData/chat.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/PostData/restaurant_data_pass.dart';
@@ -1191,15 +1192,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-//                             GestureDetector(
-//                               child: Container(
-//                                 height: 40, width: 40,
-//                                 child: Text('sdfsdf'),
-//                               ),
-//                               onTap: (){
-//                                 getProductData();
-//                               },
-//                             ),
+                            GestureDetector(
+                              child: Container(
+                                height: 40, width: 40,
+                                child: Text('sdfsdf'),
+                              ),
+                              onTap: (){
+                                addVariantToCart('989c72d5-50b0-4afb-96e9-a592e5a80627');
+                              },
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
@@ -1254,20 +1255,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           ],
                         ),
                       ),
-                      (currentUser.cartDataModel.cart != null &&
-                          currentUser.cartDataModel.cart.length != 0)
-                          ? Padding(
-                        padding: const EdgeInsets.only(bottom: 0),
-                        child: BasketButton(
-                          key: basketButtonStateKey,
-                          restaurant:
-                          currentUser.cartDataModel.cart[0].restaurant,
-                        ),
-                      )
-                          : Visibility(
-                        child: Container(height: 80),
-                        visible: false,
-                      )
+                      // (currentUser.cartDataModel.cart != null &&
+                      //     currentUser.cartDataModel.cart.length != 0)
+                      //     ? Padding(
+                      //   padding: const EdgeInsets.only(bottom: 0),
+                      //   child: BasketButton(
+                      //     key: basketButtonStateKey,
+                      //     restaurant:
+                      //     currentUser.cartDataModel.cart[0].restaurant,
+                      //   ),
+                      // )
+                      //     : Visibility(
+                      //   child: Container(height: 80),
+                      //   visible: false,
+                      // )
                     ],
                   ),
                 );

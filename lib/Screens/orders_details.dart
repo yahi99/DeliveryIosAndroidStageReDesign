@@ -798,30 +798,30 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                             ),
                           )),
                       onTap: () async {
-                        if (await Internet.checkConnection()) {
-                          Records restaurant = ordersStoryModelItem.productsData.store;
-                          currentUser.cartDataModel.cart.clear();
-                          ordersStoryModelItem.productsData.products
-                              .forEach((Product element) {
-                            FoodRecords foodItem =
-                            FoodRecords.fromFoodRecordsStory(element);
-                            Order order = new Order(
-                                restaurant: restaurant,
-                                food: foodItem,
-                                date: DateTime.now().toString(),
-                                quantity: element.number,
-                                isSelected: false);
-                            currentUser.cartDataModel.cart.add(order);
-                          });
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(builder: (context) {
-                              return new CartPageScreen(restaurant: restaurant);
-                            }),
-                          );
-                        } else {
-                          noConnection(context);
-                        }
+                        // if (await Internet.checkConnection()) {
+                        //   Records restaurant = ordersStoryModelItem.productsData.store;
+                        //   currentUser.cartDataModel.cart.clear();
+                        //   ordersStoryModelItem.productsData.products
+                        //       .forEach((Product element) {
+                        //     FoodRecords foodItem =
+                        //     FoodRecords.fromFoodRecordsStory(element);
+                        //     Order order = new Order(
+                        //         restaurant: restaurant,
+                        //         food: foodItem,
+                        //         date: DateTime.now().toString(),
+                        //         quantity: element.number,
+                        //         isSelected: false);
+                        //     currentUser.cartDataModel.cart.add(order);
+                        //   });
+                        //   Navigator.push(
+                        //     context,
+                        //     new MaterialPageRoute(builder: (context) {
+                        //       return new CartPageScreen(restaurant: restaurant);
+                        //     }),
+                        //   );
+                        // } else {
+                        //   noConnection(context);
+                        // }
                       },
                     ) : (!not_cancel_state.contains(ordersStoryModelItem.state)) ?  GestureDetector(
                       child: Container(

@@ -8,6 +8,7 @@ import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/amplitude.dart';
 import 'package:flutter_app/models/order.dart';
 import 'package:flutter_svg/svg.dart';
+import '../models/FilteredStores.dart';
 import 'address_screen.dart';
 import 'address_screen.dart';
 import 'address_screen.dart';
@@ -19,7 +20,7 @@ import 'dart:io' show Platform;
 
 
 class CartPageScreen extends StatefulWidget {
-  final Records restaurant;
+  final FilteredStores restaurant;
   CartPageScreen({
     Key key,
     this.restaurant,
@@ -30,7 +31,7 @@ class CartPageScreen extends StatefulWidget {
 }
 
 class CartPageState extends State<CartPageScreen> {
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   int selectedPageId = 0;
   GlobalKey<CartTakeAwayScreenState> cartTakeAwayScreenKey = new GlobalKey<CartTakeAwayScreenState>();
@@ -340,7 +341,8 @@ class CartPageState extends State<CartPageScreen> {
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Text(
-                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  '000',
+                                  // (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     color: Colors.black,
@@ -428,7 +430,7 @@ class CartPageState extends State<CartPageScreen> {
 
 class CartScreen extends StatefulWidget {
   CartScreen({Key key, this.restaurant, this.parent}) : super(key: key);
-  final Records restaurant;
+  final FilteredStores restaurant;
   CartPageState parent;
 
   @override
@@ -442,7 +444,7 @@ class CartScreenState extends State<CartScreen> {
   String price;
   String discount;
   CartPageState parent;
-  final Records restaurant;
+  final FilteredStores restaurant;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
   GlobalKey<TotalPriceState> totalPriceKey;
   List<TotalPrice> totalPrices;
@@ -598,7 +600,8 @@ class CartScreenState extends State<CartScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0, top: 5),
                                 child: Text(
-                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  '000',
+                                  // (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                   style: TextStyle(
                                     fontSize: 12.0,
                                     color: Colors.black,
@@ -980,7 +983,7 @@ class CartScreenState extends State<CartScreen> {
 
 class CartTakeAwayScreen extends StatefulWidget {
   CartTakeAwayScreen({Key key, this.restaurant, this.parent}) : super(key: key);
-  final Records restaurant;
+  final FilteredStores restaurant;
   CartPageState parent;
 
   @override
@@ -994,7 +997,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
   String price;
   String discount;
   CartPageState parent;
-  final Records restaurant;
+  final FilteredStores restaurant;
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
   GlobalKey<TotalPriceState> totalPriceKey;
   List<TotalPrice> totalPrices;
@@ -1062,7 +1065,7 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
-                  Text('Заберите заказ на ${restaurant.destination_points[0].street + " " + restaurant.destination_points[0].house}, через 25 минут',
+                  Text('Заберите заказ на ${restaurant.address.street + " " + restaurant.address.house}, через 25 минут',
                     style: TextStyle(
                       fontSize: 14
                     ),
@@ -1588,7 +1591,7 @@ class TotalPriceState extends State<TotalPrice> {
 
 
 class EmptyCartScreen extends StatefulWidget {
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   EmptyCartScreen({Key key, this.restaurant}) : super(key: key);
 
@@ -1599,7 +1602,7 @@ class EmptyCartScreen extends StatefulWidget {
 }
 
 class EmptyCartScreenState extends State<EmptyCartScreen> {
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   EmptyCartScreenState(this.restaurant);
 

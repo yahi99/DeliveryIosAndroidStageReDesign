@@ -15,6 +15,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/CreateModelTakeAway.dart';
 import '../models/CreateOrderModel.dart';
+import '../models/FilteredStores.dart';
 import '../models/my_addresses_model.dart';
 import 'cart_screen.dart';
 import 'home_screen.dart';
@@ -27,7 +28,7 @@ class AddressScreen extends StatefulWidget {
   AddressScreen(
       {Key key, this.restaurant, this.addedAddress, this.myAddressesModelList})
       : super(key: key);
-  final Records restaurant;
+  final FilteredStores restaurant;
 
   @override
   AddressScreenState createState() =>
@@ -38,7 +39,7 @@ class AddressScreenState extends State<AddressScreen>
     with AutomaticKeepAliveClientMixin {
 
   InitialAddressModel selectedAddress; // Последний выбранный адрес
-  final Records restaurant;
+  final FilteredStores restaurant;
   GlobalKey<DestinationPointsSelectorState> destinationPointsSelectorStateKey =
   GlobalKey();
   CreateOrder createOrder;
@@ -79,8 +80,8 @@ class AddressScreenState extends State<AddressScreen>
   @override
   void initState() {
     super.initState();
-    addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
-    selectedAddress = restaurant.destination_points[0];
+    // addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
+    // selectedAddress = restaurant.address[0];
   }
 
   showPaymentErrorAlertDialog(BuildContext context) {
@@ -387,10 +388,10 @@ class AddressScreenState extends State<AddressScreen>
               ),
             ),
           ),
-          DestinationPointsSelector(
-            destinationPoints: restaurant.destination_points,
-            key: destinationPointsSelectorStateKey,
-          ),
+          // DestinationPointsSelector(
+          //   destinationPoints: restaurant.destination_points,
+          //   key: destinationPointsSelectorStateKey,
+          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -1319,7 +1320,7 @@ class AddressScreenState extends State<AddressScreen>
                                   intercom: intercomField.text,
                                   comment: commentField.text,
                                   cartDataModel: currentUser.cartDataModel,
-                                  restaurant: restaurant,
+                                  //restaurant: restaurant,
                                   payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
                                   door_to_door: status1,
                                 );
@@ -1353,7 +1354,7 @@ class AddressScreenState extends State<AddressScreen>
 
 class TakeAway extends StatefulWidget {
   TakeAway({Key key, this.restaurant}) : super(key: key);
-  final Records restaurant;
+  final FilteredStores restaurant;
   String name = '';
 
   @override
@@ -1365,7 +1366,7 @@ class TakeAwayState extends State<TakeAway>
   @override
   bool get wantKeepAlive => true;
   String comment;
-  final Records restaurant;
+  final FilteredStores restaurant;
   bool status1 = false;
 
   String cash_image = 'assets/svg_images/dollar_bills.svg';
@@ -1639,10 +1640,10 @@ class TakeAwayState extends State<TakeAway>
               ),
             ),
           ),
-          DestinationPointsSelector(
-            destinationPoints: restaurant.destination_points,
-            key: destinationPointsSelectorStateKey,
-          ),
+          // DestinationPointsSelector(
+          //   destinationPoints: restaurant.destination_points,
+          //   key: destinationPointsSelectorStateKey,
+          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -1734,8 +1735,8 @@ class TakeAwayState extends State<TakeAway>
   @override
   void initState() {
     super.initState();
-    addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
-    selectedAddress = restaurant.destination_points[0];
+    // addressValueController = TextEditingController(text: restaurant.destination_points[0].street + ' ' + restaurant.destination_points[0].house);
+    // selectedAddress = restaurant.destination_points[0];
   }
 
 
@@ -2305,7 +2306,8 @@ class TakeAwayState extends State<TakeAway>
                                     cartDataModel: currentUser.cartDataModel,
                                     restaurantAddress: selectedAddress,
                                     without_delivery: true,
-                                    restaurant: restaurant);
+                                    //restaurant: restaurant
+                                );
                                 if(selectedPaymentId == 1){
                                   _cardPayment(totalPrice);
                                   return;
