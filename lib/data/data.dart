@@ -23,6 +23,7 @@ AuthCodeData authCodeData = null;
 AuthData authData = null;
 String FCMToken = '';
 int code = 0;
+Locale locale;
 NecessaryDataForAuth necessaryDataForAuth = new NecessaryDataForAuth(phone_number: null, refresh_token: null, device_id: null, name: null);
 
 var DeliveryStates = [

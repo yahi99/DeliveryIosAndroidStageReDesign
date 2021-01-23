@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/NecessaryAddressModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -13,6 +14,7 @@ Future<NecessaryAddressData> loadNecessaryAddressData(String name) async {
   var url = 'https://crm.apis.stage.faem.pro/api/v2/addresses';
   var response = await http.post(url, body: json_request, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
+    'Accept-Language': 'ru'
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);

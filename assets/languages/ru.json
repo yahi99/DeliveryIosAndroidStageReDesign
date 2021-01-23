@@ -1,7 +1,7 @@
 {
   "sidebar":
     {
-      "authorization_title": "Войти",
+      "authorization_title": "Авторизоваться",
       "orders_story_title": "История заказов",
       "my_addresses_title": "Мои адреса",
       "service_title": "Служба поддержки",
@@ -12,7 +12,7 @@
     {
       "order_state_widget":
         {
-          "order_desc": "Ваш заказ из",
+          "order_desc": "Ваш заказ из ",
           "order": "Заказ"
         },
           "order_state_titles":
@@ -26,16 +26,14 @@
         {
           "shares_title": "Акции и новинки",
           "shares_desc": "Все"
-        }
-      ,
+        },
       "restaurants": "Рестораны",
       "filters_titles":
         {
           "kitchens_title" : "Кухни",
           "distance_title" : "По расстоянию"
         }
-    }
-  ,
+    },
   "restaurant_screen":
     {
       "cart_title":"Корзина",

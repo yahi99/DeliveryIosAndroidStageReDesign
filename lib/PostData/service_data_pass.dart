@@ -23,7 +23,8 @@ Future<ServiceModel> loadServiceData(TicketModel ticketModel) async {
     'Content-Type': 'application/json; charset=UTF-8',
     'Accept': 'application/json',
     'Source':'faem_food',
-    'Authorization':'Bearer ' + authCodeData.token
+    'Authorization':'Bearer ' + authCodeData.token,
+    'Accept-Language': 'ru'
   });
   if (response.statusCode == 200) {
 

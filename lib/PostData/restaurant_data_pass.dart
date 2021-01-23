@@ -24,7 +24,7 @@ Future<DeliveryResponseData> loadRestaurant(int page, int limit, String category
   Locale locale;
   var response = await http.post(url, body: json_request, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
-    'Accept-Language': locale.languageCode
+    'Accept-Language': 'ru'
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);

@@ -16,7 +16,8 @@ Future<bool> sendTicketMessage(String uuid, String message) async {
     'Accept': 'application/json',
     'Source':'ios_client_app_1',
     "ServiceName": 'faem_food',
-    'Authorization':'Bearer ' + authCodeData.token
+    'Authorization':'Bearer ' + authCodeData.token,
+    'Accept-Language': 'ru'
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);

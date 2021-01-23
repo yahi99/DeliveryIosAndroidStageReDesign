@@ -15,7 +15,8 @@ Future<StoreCategoriesByCItyUuid> getClientLastOrderCopy() async {
     'Accept': 'application/json',
     'Source':'ios_client_app_1',
     "ServiceName": 'faem_food',
-    'Authorization':'Bearer ' + token
+    'Authorization':'Bearer ' + token,
+    'Accept-Language': 'ru'
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);

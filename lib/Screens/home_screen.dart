@@ -546,7 +546,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         child: ListTile(
           leading: SvgPicture.asset('assets/svg_images/info.svg'),
           title: Text(
-            'Информация',
+            AppLocalizations.of(context).getTranslation('sidebar.info_title'),
             style: TextStyle(
                 fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
           ),
@@ -613,7 +613,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: SvgPicture.asset('assets/svg_images/order_story.svg'),
             ),
             title: Text(
-              'История заказов',
+              AppLocalizations.of(context).getTranslation('sidebar.orders_story_title'),
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
@@ -636,7 +636,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           child: ListTile(
             leading: SvgPicture.asset('assets/svg_images/my_addresses.svg'),
             title: Text(
-              'Мои адреса',
+              AppLocalizations.of(context).getTranslation('sidebar.my_addresses_title'),
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
@@ -659,7 +659,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           child: ListTile(
             leading: SvgPicture.asset('assets/svg_images/service.svg'),
             title: Text(
-              'Служба поддержки',
+              AppLocalizations.of(context).getTranslation('sidebar.service_title'),
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
@@ -684,7 +684,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           child: ListTile(
             leading: SvgPicture.asset('assets/svg_images/exit.svg'),
             title: Text(
-              'Выход',
+              AppLocalizations.of(context).getTranslation('sidebar.exit_title'),
               style: TextStyle(
                   fontSize: 17, color: Color(0xFF424242), letterSpacing: 0.45),
             ),
@@ -715,7 +715,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   child: Padding(
                     padding: EdgeInsets.only(top: 0, bottom: 20),
                     child: Text(
-                      'Авторизоваться',
+                      AppLocalizations.of(context).getTranslation('sidebar.authorization_title'),
                       style: TextStyle(
                           fontSize: 17,
                           color: Color(0xFF424242),
@@ -784,7 +784,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                       child: Row(
                         children: [
                           Text(
-                            "По расстоянию",
+                            AppLocalizations.of(context).getTranslation('home_screen.filters_titles.distance_title'),
                             style: TextStyle(
                                 color: Color(0xFF424242),
                                 fontSize: 15),
@@ -823,7 +823,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Кухни",
+                                AppLocalizations.of(context).getTranslation('home_screen.filters_titles.kitchens_title'),
                                 style: TextStyle(
                                     color: Color(0xFF424242),
                                     fontSize: 15),
@@ -986,7 +986,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 30, bottom: 35),
-              child: Text('Мои адреса',
+              child: Text(AppLocalizations.of(context).getTranslation('sidebar.my_addresses_title'),
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold
@@ -1008,7 +1008,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         borderRadius: BorderRadius.circular(10)
                     ),
                     child: Center(
-                      child: Text('Готово',
+                      child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.button'),
                         style: TextStyle(
                             fontSize: 24,
                             color: Colors.white
@@ -1232,7 +1232,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                             Padding(
                               padding:
                               EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text('Рестораны',
+                              child: Text(AppLocalizations.of(context).getTranslation('home_screen.restaurants'),
                                   style: TextStyle(
                                     fontSize: 28,
                                     color: Color(0xFF3F3F3F),
@@ -1380,7 +1380,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                         padding: EdgeInsets.only(left: 10),
                         child: Align(
                           child: Text(
-                            'Ваш заказ из ' +
+                            AppLocalizations.of(context).getTranslation('home_screen.order_desc') +
                                 (ordersStoryModelItem.productsData != null
                                     ? ordersStoryModelItem.productsData.store.name
                                     : 'Пусто'),
@@ -1410,7 +1410,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                                     padding: EdgeInsets.only(
                                         left: 10, right: 10, top: 7, bottom: 5),
                                     child: Text(
-                                      'Заказ',
+                                        AppLocalizations.of(context).getTranslation('home_screen.order'),
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 13),
                                     )),
@@ -1464,7 +1464,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
-                                child: Text('Обработка',
+                                child: Text(AppLocalizations.of(context).getTranslation('home_screen.order_state_titles.waiting_for_confirmation'),
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 10)),
@@ -1520,7 +1520,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
-                                child: Text('Готовится',
+                                child: Text(AppLocalizations.of(context).getTranslation('home_screen.order_state_titles.cooking'),
                                     style: (cooking_state
                                         .contains(ordersStoryModelItem.state) ||
                                         in_the_way.contains(ordersStoryModelItem.state))
@@ -1580,7 +1580,7 @@ class OrderCheckingState extends State<OrderChecking> with AutomaticKeepAliveCli
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
-                                child: Text('В пути',
+                                child: Text(AppLocalizations.of(context).getTranslation('home_screen.order_state_titles.on_the_way'),
                                     style: (in_the_way
                                         .contains(ordersStoryModelItem.state))
                                         ? TextStyle(
@@ -1720,7 +1720,7 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  'Чат с водителем',
+                  AppLocalizations.of(context).getTranslation('home_screen.order_state_titles.chat'),
                   style: TextStyle(
                       fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xFF424242)),
                 ),
@@ -1831,7 +1831,6 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                         print(
                                             key + ' ' + value.currentState.toString());
                                       });
-                                      print("Отправка сообщения");
                                       messageField.clear();
                                       setState(() {
                                         GlobalKey<ChatMessageScreenState>
@@ -2282,7 +2281,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
           child: Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: FlatButton(
-              child: Text('Применить',
+              child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.promo_button'),
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white)),
@@ -2392,7 +2391,7 @@ class FilterListScreenState extends State<FilterListScreen>{
             Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 10),
               child: FlatButton(
-                child: Text('Готово',
+                child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.button'),
                     style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.white)),
