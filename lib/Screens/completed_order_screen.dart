@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/PostData/service_data_pass.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/TicketModel.dart';
@@ -34,7 +35,7 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Спасибо за заказ!',
+                        AppLocalizations.of(context).getTranslation('order_success.title'),
                         style: TextStyle(color: Color(0xFF424242), fontSize: 24),
                       ),
                       Padding(
@@ -77,7 +78,7 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                           style: TextStyle(fontSize: 14),
                           keyboardType: TextInputType.text,
                           decoration: new InputDecoration(
-                            hintText: 'Оставьте свой отзыв',
+                            hintText: AppLocalizations.of(context).getTranslation('order_success.comment'),
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16
@@ -100,7 +101,7 @@ class CompletedOrderScreenState extends State<CompletedOrderScreen> {
                   padding: EdgeInsets.only(left: 0, top: 20, bottom: 20),
                   child: FlatButton(
                     child: Text(
-                      "Оценить заказ",
+                      AppLocalizations.of(context).getTranslation('order_success.button_text'),
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     color: Color(0xFF09B44D),

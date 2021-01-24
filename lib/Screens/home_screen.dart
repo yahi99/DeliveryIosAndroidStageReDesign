@@ -142,7 +142,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             child: Padding(
               padding: const EdgeInsets.only(top: 15, left: 20, bottom: 15),
               child: Text(
-                'Отобразить сначала',
+                AppLocalizations.of(context).getTranslation('bottom_sheets.show_first'),
                 style: TextStyle(
                     color: Color(0xFF000000),
                     fontSize: 20,
@@ -194,7 +194,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               child: Padding(
                 padding: const EdgeInsets.only(top: 15.0, left: 15),
                 child: Text(
-                  'Кухни',
+                  AppLocalizations.of(context).getTranslation('home_screen.filters_titles.kitchens_title'),
                   style: TextStyle(
                       color: Color(0xFF000000),
                       fontSize: 20,
@@ -245,7 +245,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             child: Padding(
               padding: const EdgeInsets.only(top: 15.0, left: 20),
               child: Text(
-                'Показывать с отдаленностью',
+                AppLocalizations.of(context).getTranslation('bottom_sheets.distance'),
                 style: TextStyle(
                     color: Color(0xFF000000),
                     fontSize: 20,
@@ -256,33 +256,33 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           ),
           ListTile(
             contentPadding: EdgeInsets.only(left: 20, right: 15),
-            title: Text('Доверюсь вам'),
+            title: Text('до 1 км'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
             contentPadding: EdgeInsets.only(left: 20, right: 15),
-            title: Text('С высоким рейтингом'),
+            title: Text('до 2 км'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
             contentPadding: EdgeInsets.only(left: 20, right: 15),
-            title: Text('Быстрые'),
+            title: Text('до 3 км'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
             contentPadding: EdgeInsets.only(left: 20, right: 15),
-            title: Text('Недорогие'),
+            title: Text('до 5 км'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           ListTile(
             contentPadding: EdgeInsets.only(left: 20, right: 15),
-            title: Text('Дорогие'),
+            title: Text('Любые'),
             trailing: SvgPicture.asset('assets/svg_images/circle.svg'),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: FlatButton(
-              child: Text('Готово',
+              child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.promo_button'),
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white)),
@@ -1210,7 +1210,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(top: 0, right: 10),
-                                        child: Text('Все',
+                                        child: Text(AppLocalizations.of(context).getTranslation('home_screen.shares.shares_desc'),
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,

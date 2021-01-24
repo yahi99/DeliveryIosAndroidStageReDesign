@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -57,14 +58,14 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 0, left: 0, bottom: 0),
-                    child: Text('Мои адреса',
+                    child: Text(AppLocalizations.of(context).getTranslation('sidebar.my_addresses_title'),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF424242))),
                   ),
                   InkWell(
-                    child: (changeMode) ? Text('Готово') : Text('Изменить'),
+                    child: (changeMode) ? Text(AppLocalizations.of(context).getTranslation('bottom_sheets.button'),) : Text(AppLocalizations.of(context).getTranslation('my_addresses.change')),
                     onTap: () async {
                       setState(() {
                         changeMode = !changeMode;
@@ -289,7 +290,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                                         child: Container(
                                                                           padding: EdgeInsets.only(top: 20, bottom: 20),
                                                                           child: Center(
-                                                                            child: Text("Отмена",
+                                                                            child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.reject'),
                                                                               style: TextStyle(
                                                                                   color: Color(0xFF007AFF),
                                                                                   fontSize: 20
@@ -354,7 +355,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                                                                     height: 50,
                                                                     width: 100,
                                                                     child: Center(
-                                                                      child: Text("Отмена",
+                                                                      child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.reject'),
                                                                         style: TextStyle(
                                                                             color: Color(0xFF007AFF),
                                                                             fontSize: 20
@@ -424,7 +425,7 @@ class MyAddressesScreenState extends State<MyAddressesScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20.0, right: 10, left: 10),
                   child: FlatButton(
-                    child: Text('Добавить адрес',
+                    child: Text(AppLocalizations.of(context).getTranslation('my_addresses.button_text'),
                         style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white)),

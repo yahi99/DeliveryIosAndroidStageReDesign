@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'about_app_screen.dart';
@@ -51,7 +52,7 @@ class InformationScreenState extends State<InformationScreen>{
               ),
               Padding(
                 padding: EdgeInsets.only(top: 30, left: 70, right: 15, bottom: 10),
-                child: Text('Информация',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
+                child: Text(AppLocalizations.of(context).getTranslation('sidebar.info_title'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF424242))),
               ),
             ],
           ),
@@ -64,7 +65,7 @@ class InformationScreenState extends State<InformationScreen>{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('О приложении',
+                      Text(AppLocalizations.of(context).getTranslation('info.about_app'),
                         style: TextStyle(
                             color: Color(0xFF424242),
                             fontSize: 17

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/Screens/autocolplete_field_list.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
@@ -34,6 +35,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
     commentField.text = myAddressesModel.description;
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
@@ -68,7 +70,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                   children: <Widget>[
                     Align(
                       alignment: Alignment.topLeft,
-                      child: Text('Название',
+                      child: Text(AppLocalizations.of(context).getTranslation('my_addresses.title'),
                           style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
                     ),
                     Container(
@@ -89,15 +91,18 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                         ),
                       ),
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Text('Адрес',
-                            style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Divider(height: 1.0, color: Color(0xFFEDEDED)),
                     ),
+                    // Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.only(top: 10, bottom: 10),
+                    //     child: Text(AppLocalizations.of(context).getTranslation('my_addresses.address'),
+                    //         style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
+                    //   ),
+                    // ),
                     AutoCompleteField(autoCompleteFieldKey, onSelected: (){
                       myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteFieldKey.currentState.selectedValue);
                       return;
@@ -115,7 +120,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                 padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 5),
                 child: FlatButton(
                   child: Text(
-                    "Добавить адрес",
+                      AppLocalizations.of(context).getTranslation('my_addresses.button_text'),
                       style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.white)

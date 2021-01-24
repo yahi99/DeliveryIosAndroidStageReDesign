@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/PostData/restaurant_items_data_pass.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ResponseData.dart';
@@ -94,7 +95,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 alignment: Alignment.bottomCenter,
                 child: FlatButton(
                   child: Text(
-                    "Далее",
+                    AppLocalizations.of(context).getTranslation('cart_screen.button_title'),
                     style:
                     TextStyle(color: Colors.white, fontSize: 16),
                   ),
@@ -125,7 +126,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         elevation: 20,
         content: Center(
-          child: Text("Товар добавлен в коризну"),
+          child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.add_item'),),
         ));
     // show the dialog
     showDialog(
@@ -143,7 +144,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
               height: 50,
               width: 100,
               child: Center(
-                child: Text("Товар добавлен в коризну"),
+                child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.add_item'),),
               ),
             ),
           ),
@@ -230,7 +231,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                           padding: EdgeInsets.only(top: 20, bottom: 20),
                           child: Center(
                             child: Text(
-                              'Отмена',
+                              AppLocalizations.of(context).getTranslation('alert_dialogs.reject'),
                               style: TextStyle(
                                 fontSize: 17,
                               ),
@@ -299,7 +300,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Align(
                 alignment: Alignment.topLeft,
-                child: Text('Адрес',
+                child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.address'),
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14
@@ -322,7 +323,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Align(
                 alignment: Alignment.topLeft,
-                child: Text("Время доставки",
+                child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.delivery_time'),
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14
@@ -345,7 +346,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Align(
                 alignment: Alignment.topLeft,
-                child: Text('Кухни',
+                child: Text(AppLocalizations.of(context).getTranslation('home_screen.filters_titles.kitchens_title'),
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14
@@ -802,7 +803,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 child: Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
-                                    child: Text('Доставка 80-150 ₽',
+                                    child: Text(AppLocalizations.of(context).getTranslation('restaurant_screen.delivery') +  '80-150 ₽',
                                       style: TextStyle(
                                       ),
                                     ),
@@ -1257,7 +1258,7 @@ class BasketButtonState extends State<BasketButton> {
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 5),
             child: Center(
-              child: Text('До бесплатной доставки осталось 250\₽',
+              child: Text(AppLocalizations.of(context).getTranslation('restaurant_screen.cart_desc') + '250\₽',
                 style: TextStyle(
                     fontSize: 12
                 ),
@@ -1294,7 +1295,7 @@ class BasketButtonState extends State<BasketButton> {
                         padding: EdgeInsets.only(
                           right: 15,
                         ),
-                        child: Text('Корзина',
+                        child: Text(AppLocalizations.of(context).getTranslation('restaurant_screen.cart_title'),
                             style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.white)),
@@ -2469,7 +2470,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                     padding: EdgeInsets.only(left: 6, right: 15, bottom: 0),
                                     child: FlatButton(
                                       child: Text(
-                                        "Добавить",
+                                        AppLocalizations.of(context).getTranslation('restaurant_screen.add_button'),
                                         style:
                                         TextStyle(color: Colors.white, fontSize: 18),
                                       ),

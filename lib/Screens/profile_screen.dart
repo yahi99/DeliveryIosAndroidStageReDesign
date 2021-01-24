@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
@@ -74,7 +75,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
-                          "Ваши данные",
+                            AppLocalizations.of(context).getTranslation('profile.title'),
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),
@@ -95,7 +96,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                           padding:
                           EdgeInsets.only(left: 30, top: 0, bottom: 10),
                           child: Text(
-                            'Ваше имя',
+                            AppLocalizations.of(context).getTranslation('profile.name'),
                             style: TextStyle(
                                 fontSize: 13, color: Color(0xFF8A8A8A)),
                           ),
@@ -135,7 +136,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                           padding:
                           EdgeInsets.only(left: 30, top: 20, bottom: 15),
                           child: Text(
-                            'Номер телефона',
+                            AppLocalizations.of(context).getTranslation('profile.phone_number'),
                             style: TextStyle(
                                 fontSize: 13, color: Color(0xFF8A8A8A)),
                           ),

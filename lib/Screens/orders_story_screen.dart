@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
@@ -84,7 +85,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
                       ),
                       (ordersStoryModelItem.stateTitle == "Завершен") ? Row(
                         children: [
-                          Text('Доставлен',
+                          Text(AppLocalizations.of(context).getTranslation('order_details.state'),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14
@@ -151,7 +152,7 @@ class OrdersStoryScreenState extends State<OrdersStoryScreen> {
       child: Scaffold(
           body: Column(
             children: [
-              ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: 'История зазказов',),
+              ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: AppLocalizations.of(context).getTranslation('sidebar.orders_story_title'),),
               Divider(height: 1.0, color: Colors.grey),
               FutureBuilder<OrdersStoryModel>(
                   future: loadOrdersStoryModel(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -77,7 +78,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Text(
-                            "Служба поддержки",
+                            AppLocalizations.of(context).getTranslation('sidebar.service_title'),
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -98,7 +99,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: EdgeInsets.only(top: 30, left: 16, bottom: 10),
-                        child: Text('Ваши вопросы',
+                        child: Text(AppLocalizations.of(context).getTranslation('service.requests'),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFFB9B9B9))),
@@ -108,7 +109,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                         child: Text(
-                          'Ошибка в заказе',
+                          AppLocalizations.of(context).getTranslation('service.order'),
                           style: TextStyle(fontSize: 17, color: Color(0xFF424242)),
                         ),
                       ),
@@ -124,7 +125,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                 ticketModel: new TicketModel(
-                                    title: 'Ошибка в заказе', description: ''),
+                                    title: AppLocalizations.of(context).getTranslation('service.order'), description: ''),
                               ),
                             ),
                           );
@@ -138,7 +139,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                         child: Text(
-                          'Ошибка стоимости',
+                          AppLocalizations.of(context).getTranslation('service.price'),
                           style: TextStyle(fontSize: 17, color: Color(0xFF424242)),
                         ),
                       ),
@@ -154,7 +155,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: 'Ошибка стоимости', description: '')),
+                                      title: AppLocalizations.of(context).getTranslation('service.price'), description: '')),
                             ),
                           );
                         } else {
@@ -167,7 +168,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                         child: Text(
-                          'Ошибка программмы',
+                          AppLocalizations.of(context).getTranslation('service.programme'),
                           style: TextStyle(fontSize: 17, color: Color(0xFF424242)),
                         ),
                       ),
@@ -183,7 +184,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: 'Ошибка программмы', description: '')),
+                                      title: AppLocalizations.of(context).getTranslation('service.programme'), description: '')),
                             ),
                           );
                         } else {
@@ -196,7 +197,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       leading: Padding(
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                         child: Text(
-                          'Другая причина',
+                          AppLocalizations.of(context).getTranslation('service.another_cause'),
                           style: TextStyle(fontSize: 17, color: Color(0xFF424242)),
                         ),
                       ),
@@ -212,7 +213,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                             new MaterialPageRoute(
                               builder: (context) => new ServiceOrdersStoryScreen(
                                   ticketModel: new TicketModel(
-                                      title: 'Другая причина', description: '')),
+                                      title: AppLocalizations.of(context).getTranslation('service.another_cause'), description: '')),
                             ),
                           );
                         } else {
@@ -225,7 +226,7 @@ class ServiceScreenState extends State<ServiceScreen> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: EdgeInsets.only(top: 30, left: 16, bottom: 10),
-                        child: Text('Мои обращения',
+                        child: Text(AppLocalizations.of(context).getTranslation('service.appeals'),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFFB9B9B9))),
@@ -313,7 +314,8 @@ class ServiceScreenState extends State<ServiceScreen> {
                                                   Container(
                                                     child: Row(
                                                       children: [
-                                                        Text((snapshot.data.records[index].status == "resolved") ? 'Обработанно' : 'В обработке',
+                                                        Text((snapshot.data.records[index].status == "resolved") ? AppLocalizations.of(context).getTranslation('service.completed') :
+                                                        AppLocalizations.of(context).getTranslation('service.not_completed'),
                                                           style: TextStyle(
                                                               fontSize: 18
                                                           ),

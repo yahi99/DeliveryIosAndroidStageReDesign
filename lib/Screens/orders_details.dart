@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/PutData/OrderCancel.dart';
 import 'package:flutter_app/Screens/cart_screen.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
@@ -218,7 +219,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   ),
                   (ordersStoryModelItem.stateTitle == "Завершен") ? Row(
                     children: [
-                      Text('Доставлен',
+                      Text(AppLocalizations.of(context).getTranslation('order_details.state'),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14
@@ -256,13 +257,13 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Адрес заведения',
+                    AppLocalizations.of(context).getTranslation('order_details.store_address'),
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF3F3F3F),),
                   ),
                   Text(
-                    'Адрес доставки',
+                    AppLocalizations.of(context).getTranslation('order_details.delivery_address'),
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF3F3F3F),),
@@ -473,7 +474,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         Padding(
                           padding: EdgeInsets.only(left: 15, right: 15, top: 10),
                           child: Text(
-                            '${product.number}шт',
+                            '${product.number}' + AppLocalizations.of(context).getTranslation('order_details.items_quantity'),
                             style: TextStyle(
                                 color: Colors.black, fontSize: 18),
                           ),
@@ -500,7 +501,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             Padding(
               padding: EdgeInsets.only(left: 15, bottom: 20, top: 10),
               child: Text(
-                'Итого',
+                AppLocalizations.of(context).getTranslation('cart_screen.total'),
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Color(0xFF000000)),
@@ -542,7 +543,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Доставка",
+                  AppLocalizations.of(context).getTranslation('cart_screen.delivery_title'),
                   style: TextStyle(
                       color: Color(0xFF000000),
                       fontSize: 18),
@@ -564,7 +565,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
             Padding(
               padding: EdgeInsets.only(left: 15, bottom: 20, top: 10),
               child: Text(
-                'Итого',
+                AppLocalizations.of(context).getTranslation('cart_screen.total'),
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Color(0xFF000000)),
@@ -754,7 +755,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(right: 40),
                         child: Text(
-                          "Детали заказа",
+                          AppLocalizations.of(context).getTranslation('order_details.title'),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -791,7 +792,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Повторить заказ',
+                              AppLocalizations.of(context).getTranslation('order_details.repeat_button'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,),
@@ -833,7 +834,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Отменить заказ',
+                              AppLocalizations.of(context).getTranslation('order_details.cancel_button'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,),
@@ -997,7 +998,7 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Удалить данные о заказе',
+                              AppLocalizations.of(context).getTranslation('order_details.delete_button'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,),

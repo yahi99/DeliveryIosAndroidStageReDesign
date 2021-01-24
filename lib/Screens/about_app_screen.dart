@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,7 +20,7 @@ class AboutAppScreenState extends State<AboutAppScreen> {
           color: Colors.white,
           child: Stack(
             children: <Widget>[
-              ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: 'О приложении'),
+              ScreenTitlePop(img: 'assets/svg_images/arrow_left.svg', title: AppLocalizations.of(context).getTranslation('info.about_app'),),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -60,7 +61,7 @@ class AboutAppScreenState extends State<AboutAppScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('Лицензионное соглашение',
+                                  Text(AppLocalizations.of(context).getTranslation('info.license'),
                                       style:
                                       TextStyle(fontSize: 17, color: Color(0xFF424242))),
                                   GestureDetector(
@@ -91,7 +92,7 @@ class AboutAppScreenState extends State<AboutAppScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('Политика конфиденцальности',
+                                  Text(AppLocalizations.of(context).getTranslation('info.policy'),
                                       style:
                                       TextStyle(fontSize: 17, color: Color(0xFF424242))),
                                   GestureDetector(
@@ -123,7 +124,7 @@ class AboutAppScreenState extends State<AboutAppScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 20, left: 15),
                   child: Text(
-                    '@ 2011-2020 ООО «ФАЕМ ТЕХНОЛОГИИ»',
+                    '@ 2011-2020 ${AppLocalizations.of(context).getTranslation('info.faem')}',
                     style: TextStyle(color: Color(0x97979797), fontSize: 15),
                   ),
                 ),

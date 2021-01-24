@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CreateModelTakeAway.dart';
 import 'package:flutter_app/models/CreateOrderModel.dart';
@@ -179,7 +180,7 @@ class AddressScreenState extends State<AddressScreen>
                   ],
                 ),
               ),
-              onTap: ()=>_selectItem("Наличными")
+              onTap: ()=>_selectItem(AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.cash'),)
           ),
           InkWell(
               child: Padding(
@@ -210,7 +211,7 @@ class AddressScreenState extends State<AddressScreen>
                   ],
                 ),
               ),
-              onTap: ()=>_selectItem("Картой")
+              onTap: ()=>_selectItem(AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.card'),)
           ),
         ],
       ),
@@ -234,7 +235,7 @@ class AddressScreenState extends State<AddressScreen>
                     Padding(
                       padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
                       child: Text(
-                        'Отправляем ваш заказ в систему',
+                        AppLocalizations.of(context).getTranslation('alert_dialogs.confirm_desc'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 17,
@@ -283,7 +284,7 @@ class AddressScreenState extends State<AddressScreen>
   void _selectItem(String name) {
     Navigator.pop(context);
     setState(() {
-      if(name.toLowerCase() == "наличными")
+      if(name.toLowerCase() == AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.cash'))
         selectedPaymentId = 0;
       else
         selectedPaymentId = 1;
@@ -379,7 +380,7 @@ class AddressScreenState extends State<AddressScreen>
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 30, bottom: 35),
-              child: Text('Адрес отправки',
+              child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_title'),
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold
@@ -404,7 +405,7 @@ class AddressScreenState extends State<AddressScreen>
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
-                    child: Text('Готово',
+                    child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.button'),
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.white
@@ -436,7 +437,7 @@ class AddressScreenState extends State<AddressScreen>
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
-                  child: Text('Ваш адрес',
+                  child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.your_address'),
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -456,7 +457,7 @@ class AddressScreenState extends State<AddressScreen>
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.only(top: 20, left: 15, bottom: 15),
-              child: Text('Ваш адрес',
+              child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.your_address'),
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -615,7 +616,7 @@ class AddressScreenState extends State<AddressScreen>
                                     MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        'Заказ другому человеку',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.title'),
                                         style: TextStyle(
                                             color: Color(0xFF3F3F3F),
                                             fontSize: 15),
@@ -645,7 +646,7 @@ class AddressScreenState extends State<AddressScreen>
                                   child: TextField(
                                     controller: phoneNumberController,
                                     decoration: new InputDecoration(
-                                      hintText: 'Номер телефона получателя',
+                                      hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.phone_number'),
                                       contentPadding: EdgeInsets.only(top: 5),
                                       hintStyle: TextStyle(
                                           fontSize: 14,
@@ -662,7 +663,7 @@ class AddressScreenState extends State<AddressScreen>
                                     controller: nameController,
                                     decoration: new InputDecoration(
                                       contentPadding: EdgeInsets.only(top: 5),
-                                      hintText: 'Имя получателя',
+                                      hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.name'),
                                       hintStyle: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey
@@ -695,7 +696,7 @@ class AddressScreenState extends State<AddressScreen>
                               MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Заказ другому человеку',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.title'),
                                   style: TextStyle(
                                       color: Color(0xFF3F3F3F),
                                       fontSize: 15),
@@ -726,7 +727,7 @@ class AddressScreenState extends State<AddressScreen>
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: EdgeInsets.only(left: 15, bottom: 15),
-                          child: Text('Адрес отправки',
+                          child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_title'),
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -756,13 +757,13 @@ class AddressScreenState extends State<AddressScreen>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text('С какого адреса вам отправить?',
+                                      Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_desc'),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFB8B8B8)
                                         ),
                                       ),
-                                      Text('Изменить',
+                                      Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.change'),
                                         style: TextStyle(
                                           fontSize: 12,
                                         ),
@@ -812,7 +813,7 @@ class AddressScreenState extends State<AddressScreen>
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        'Подъезд',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.entrance'),
                                         style: TextStyle(
                                             color: Color(0xFFB0B0B0),
                                             fontSize: 13),
@@ -843,7 +844,7 @@ class AddressScreenState extends State<AddressScreen>
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        'Этаж',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.floor'),
                                         style: TextStyle(
                                             color: Color(0xFFB0B0B0),
                                             fontSize: 13),
@@ -874,7 +875,7 @@ class AddressScreenState extends State<AddressScreen>
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        'Кв./офис',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.office'),
                                         style: TextStyle(
                                             color: Color(0xFFB0B0B0),
                                             fontSize: 13),
@@ -905,7 +906,7 @@ class AddressScreenState extends State<AddressScreen>
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        'Домофон',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.intercom'),
                                         style: TextStyle(
                                             color: Color(0xFFB0B0B0),
                                             fontSize: 13),
@@ -966,7 +967,7 @@ class AddressScreenState extends State<AddressScreen>
                                     child: Padding(
                                       padding: EdgeInsets.all(5),
                                       child: Text(
-                                        'Комментарий',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.comment'),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey
@@ -990,7 +991,7 @@ class AddressScreenState extends State<AddressScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Стоимость',
+                              AppLocalizations.of(context).getTranslation('order_confirmation_screen.price'),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14),
@@ -1014,7 +1015,7 @@ class AddressScreenState extends State<AddressScreen>
                               child: Row(
                                 children: [
                                   Text(
-                                    'Доставка',
+                                    AppLocalizations.of(context).getTranslation('cart_screen.delivery_title'),
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14),
@@ -1022,7 +1023,7 @@ class AddressScreenState extends State<AddressScreen>
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      '30-50 мин.',
+                                      '30-50 ${AppLocalizations.of(context).getTranslation('cart_screen.time_value')}.',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 12),
@@ -1047,7 +1048,7 @@ class AddressScreenState extends State<AddressScreen>
                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                          children: <Widget>[
                            Text(
-                             'Скидка',
+                       AppLocalizations.of(context).getTranslation('order_confirmation_screen.sale'),
                              style: TextStyle(
                                  color: Colors.red,
                                  fontSize: 14),
@@ -1068,7 +1069,7 @@ class AddressScreenState extends State<AddressScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Итого',
+                              AppLocalizations.of(context).getTranslation('order_confirmation_screen.total'),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 22),
@@ -1164,13 +1165,13 @@ class AddressScreenState extends State<AddressScreen>
                                 Column(
                                   children: [
                                     Text(
-                                      'Время доставки',
+                                      AppLocalizations.of(context).getTranslation('order_confirmation_screen.delivery_time'),
                                       style: TextStyle(
                                           color: Color(0xFF3F3F3F),
                                           fontSize: 15),
                                     ),
                                     Text(
-                                      '30-40 мин',
+                                      '30-40 ${AppLocalizations.of(context).getTranslation('order_confirmation_screen.time_value')}',
                                       style: TextStyle(
                                           color: Color(0xFF3F3F3F),
                                           fontSize: 15),
@@ -1178,7 +1179,7 @@ class AddressScreenState extends State<AddressScreen>
                                   ],
                                 ),
                                 Text(
-                                  'Изменить',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.change'),
                                   style: TextStyle(
                                       color: Color(0xFF3F3F3F),
                                       fontSize: 15),
@@ -1222,7 +1223,7 @@ class AddressScreenState extends State<AddressScreen>
                                           Column(
                                             children: [
                                               Text(
-                                                "Способ оплаты",
+                                                AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.title'),
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     color: Color(0xFFB8B8B8)),
@@ -1285,7 +1286,7 @@ class AddressScreenState extends State<AddressScreen>
                                       fontSize: 18.0,
                                       color: Colors.black)),
                               Text(
-                                '~30-50 мин.',
+                                '~30-50 ${AppLocalizations.of(context).getTranslation('order_confirmation_screen.time_value')}.',
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   color: Colors.black,
@@ -1294,7 +1295,7 @@ class AddressScreenState extends State<AddressScreen>
                             ],
                           ),
                           FlatButton(
-                            child: Text('Заказать',
+                            child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.button_text'),
                                 style: TextStyle(
                                     fontSize: 18.0,
                                     color: Colors.white)),
@@ -1487,7 +1488,7 @@ class TakeAwayState extends State<TakeAway>
                   ],
                 ),
               ),
-              onTap: ()=>_selectItem("Наличными")
+              onTap: ()=>_selectItem(AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.cash'),)
           ),
           InkWell(
               child: Padding(
@@ -1518,7 +1519,7 @@ class TakeAwayState extends State<TakeAway>
                   ],
                 ),
               ),
-              onTap: ()=>_selectItem("Картой")
+              onTap: ()=>_selectItem(AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.card'),)
           ),
         ],
       ),
@@ -1542,7 +1543,7 @@ class TakeAwayState extends State<TakeAway>
                     Padding(
                       padding: EdgeInsets.only(left: 10, top: 20, bottom: 20, right: 10),
                       child: Text(
-                        'Отправляем ваш заказ в систему',
+                        AppLocalizations.of(context).getTranslation('alert_dialogs.confirm_desc'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 17,
@@ -1591,7 +1592,7 @@ class TakeAwayState extends State<TakeAway>
   void _selectItem(String name) {
     Navigator.pop(context);
     setState(() {
-      if(name.toLowerCase() == "наличными")
+      if(name.toLowerCase() == AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.cash'))
         selectedPaymentId = 0;
       else
         selectedPaymentId = 1;
@@ -1631,7 +1632,7 @@ class TakeAwayState extends State<TakeAway>
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15),
-              child: Text('Адрес отправки',
+              child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_title'),
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold
@@ -1656,7 +1657,7 @@ class TakeAwayState extends State<TakeAway>
                       borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
-                    child: Text('Готово',
+                    child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.button'),
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.white
@@ -1842,7 +1843,7 @@ class TakeAwayState extends State<TakeAway>
                                     MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        'Заказ другому человеку',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.title'),
                                         style: TextStyle(
                                             color: Color(0xFF3F3F3F),
                                             fontSize: 15),
@@ -1873,7 +1874,7 @@ class TakeAwayState extends State<TakeAway>
                                     controller: phoneNumberController,
                                     decoration: new InputDecoration(
                                       contentPadding: EdgeInsets.only(top: 5),
-                                      hintText: 'Номер телефона получателя',
+                                      hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.phone_number'),
                                       hintStyle: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey
@@ -1890,7 +1891,7 @@ class TakeAwayState extends State<TakeAway>
                                     controller: nameController,
                                     decoration: new InputDecoration(
                                       contentPadding: EdgeInsets.only(top: 5),
-                                      hintText: 'Имя получателя',
+                                      hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.name'),
                                       hintStyle: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey
@@ -1923,7 +1924,7 @@ class TakeAwayState extends State<TakeAway>
                               MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Заказ другому человеку',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_for_another_person.title'),
                                   style: TextStyle(
                                       color: Color(0xFF3F3F3F),
                                       fontSize: 15),
@@ -1954,7 +1955,7 @@ class TakeAwayState extends State<TakeAway>
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15, bottom: 15),
-                          child: Text('Адрес отправки',
+                          child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_title'),
                             style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold
@@ -1985,13 +1986,13 @@ class TakeAwayState extends State<TakeAway>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text('С какого адреса вам отправить?',
+                                      Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.departure_address_desc'),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFB8B8B8)
                                         ),
                                       ),
-                                      Text('Изменить',
+                                      Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.change'),
                                         style: TextStyle(
                                           fontSize: 12,
                                         ),
@@ -2034,7 +2035,7 @@ class TakeAwayState extends State<TakeAway>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Стоимость',
+                              AppLocalizations.of(context).getTranslation('order_confirmation_screen.price'),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14),
@@ -2055,7 +2056,7 @@ class TakeAwayState extends State<TakeAway>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Итого',
+                              AppLocalizations.of(context).getTranslation('order_confirmation_screen.total'),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 22),
@@ -2091,7 +2092,7 @@ class TakeAwayState extends State<TakeAway>
                               MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Поем в заведении',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.at_restaurant'),
                                   style: TextStyle(
                                       color: Color(0xFF3F3F3F),
                                       fontSize: 15),
@@ -2147,7 +2148,7 @@ class TakeAwayState extends State<TakeAway>
                                     child: Padding(
                                       padding: EdgeInsets.all(5),
                                       child: Text(
-                                        'Комментарий',
+                                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.comment'),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey
@@ -2167,7 +2168,7 @@ class TakeAwayState extends State<TakeAway>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Скидка',
+                              AppLocalizations.of(context).getTranslation('order_confirmation_screen.sale'),
                               style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 14),
@@ -2215,7 +2216,7 @@ class TakeAwayState extends State<TakeAway>
                                           Column(
                                             children: [
                                               Text(
-                                                "Способ оплаты",
+                                                AppLocalizations.of(context).getTranslation('order_confirmation_screen.payment_type.title'),
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     color: Color(0xFFB8B8B8)),
@@ -2275,7 +2276,7 @@ class TakeAwayState extends State<TakeAway>
                                       fontSize: 18.0,
                                       color: Colors.black)),
                               Text(
-                                '~30-50 мин.',
+                                '~30-50 ${AppLocalizations.of(context).getTranslation('order_confirmation_screen.time_value')}.',
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   color: Colors.black,
@@ -2284,7 +2285,7 @@ class TakeAwayState extends State<TakeAway>
                             ],
                           ),
                           FlatButton(
-                            child: Text('Заказать',
+                            child: Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.button_text'),
                                 style: TextStyle(
                                     fontSize: 18.0,
                                     color: Colors.white)),
@@ -2301,7 +2302,7 @@ class TakeAwayState extends State<TakeAway>
                                 }
                                 createOrderTakeAway =
                                 new CreateOrderTakeAway(
-                                    comment: (status1) ? "Поем в заведении" : comment,
+                                    comment: (status1) ? AppLocalizations.of(context).getTranslation('order_confirmation_screen.at_restaurant') : comment,
                                     cartDataModel: currentUser.cartDataModel,
                                     restaurantAddress: selectedAddress,
                                     without_delivery: true,
@@ -2518,7 +2519,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Text(
-                                'Адрес',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.address'),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey
@@ -2794,7 +2795,7 @@ class PromoTextState extends State<PromoText>{
                         color: Color(0xFFC0BFC6),
                         fontSize: 14
                     ),
-                    hintText: 'Введите промокод',
+                    hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.promo_code_title')
                   ),
                 )
             ),
@@ -2808,7 +2809,7 @@ class PromoTextState extends State<PromoText>{
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10),),
                   ),
                   child: Center(
-                    child: Text('Применить',
+                    child: Text(AppLocalizations.of(context).getTranslation('bottom_sheets.promo_button'),
                       style: TextStyle(
                           fontSize: 21,
                           color: Colors.white
@@ -2857,7 +2858,7 @@ class PromoTextState extends State<PromoText>{
                   top: 10, left: 15, right: 15, bottom: 10),
               child: Column(
                 children: [
-                  (promoCodeField.text != '') ? Text('Промокод применен',
+                  (promoCodeField.text != '') ? Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.promo_code_desc'),
                     style: TextStyle(
                         color: Color(0xFFB8B8B8), fontSize: 12),) : Container(),
                   (promoCodeField.text != '') ? Align(

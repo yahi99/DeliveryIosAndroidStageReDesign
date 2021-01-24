@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
+import 'package:flutter_app/Localization/app_localizations.dart';
 import 'package:flutter_app/Screens/restaurant_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/OrderStoryModel.dart';
@@ -90,7 +91,7 @@ class ServiceOrdersStoryScreenState extends State<ServiceOrdersStoryScreen> {
                       ),
                       Row(
                         children: [
-                          Text((ordersStoryModelItem.stateTitle = "Завершен") != null ? 'Доставлен' : '',
+                          Text((ordersStoryModelItem.stateTitle = "Завершен") != null ? AppLocalizations.of(context).getTranslation('order_details.state') : '',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14
@@ -125,7 +126,7 @@ class ServiceOrdersStoryScreenState extends State<ServiceOrdersStoryScreen> {
           ordersStoryModelItem.createdAtUnix * 1000);
       var time = '';
       time = format.format(date);
-      if(ordersStoryModelItem.productsData.products != null && ordersStoryModelItem.productsData.products.length > 0){
+      if(ordersStoryModelItem.productsData != null && ordersStoryModelItem.productsData.products.length > 0){
         restaurantList.add(
           InkWell(
               child: column(ordersStoryModelItem),
@@ -185,7 +186,7 @@ class ServiceOrdersStoryScreenState extends State<ServiceOrdersStoryScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
-                          "История заказов",
+                            AppLocalizations.of(context).getTranslation('sidebar.orders_story_title'),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
