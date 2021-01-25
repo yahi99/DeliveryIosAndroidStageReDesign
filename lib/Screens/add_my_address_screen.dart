@@ -34,6 +34,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
     commentField.text = myAddressesModel.description;
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
@@ -89,14 +90,9 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
                         ),
                       ),
                     ),
-                    Divider(height: 1.0, color: Color(0xFFEDEDED)),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Text('Адрес',
-                            style: TextStyle(fontSize: 14, color: Color(0xFF9B9B9B))),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Divider(height: 1.0, color: Color(0xFFEDEDED)),
                     ),
                     AutoCompleteField(autoCompleteFieldKey, onSelected: (){
                       myAddressesModel.address = FavouriteAddress.fromInitialAddressModelChild(autoCompleteFieldKey.currentState.selectedValue);
@@ -112,7 +108,7 @@ class AddMyAddressScreenState extends State<AddMyAddressScreen> {
               width: MediaQuery.of(context).size.width,
               color: Colors.white,
               child: Padding(
-                padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 5),
+                padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 10),
                 child: FlatButton(
                   child: Text(
                     "Добавить адрес",

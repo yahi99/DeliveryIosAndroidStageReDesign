@@ -2365,6 +2365,88 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                 height: 0,
                               ),
                               Divider(height: 0, color: Color(0xFFE6E6E6),),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15, right: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text('Белки',
+                                          style: TextStyle(
+                                            color: Color(0xFF7D7D7D),
+                                            fontSize: 14
+                                          ),
+                                        ),
+                                        Text((productsDescription.variants!= null) ? productsDescription.variants[0].meta.energyValue.protein.toString(): '',
+                                          style: TextStyle(
+                                              color: Color(0xFF7D7D7D),
+                                              fontSize: 14
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 30),
+                                      child: Column(
+                                        children: [
+                                          Text('Жиры ',
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                          Text(productsDescription.variants[0].meta.energyValue.fat.toString(),
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 30),
+                                      child: Column(
+                                        children: [
+                                          Text('Углеводы',
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                          Text(productsDescription.variants[0].meta.energyValue.carbohydrates.toString(),
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 30),
+                                      child: Column(
+                                        children: [
+                                          Text('Ккал',
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                          Text(productsDescription.variants[0].meta.energyValue.calories.toString(),
+                                            style: TextStyle(
+                                                color: Color(0xFF7D7D7D),
+                                                fontSize: 14
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(height: 0, color: Color(0xFFE6E6E6),),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -2372,10 +2454,9 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       ? Align(
                                     alignment: Alignment.topLeft,
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 15, top: 10),
+                                      padding: EdgeInsets.only(left: 15, top: 15),
                                       child: Text(
                                         productsDescription.name,
-                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                   )
@@ -2403,7 +2484,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       padding: EdgeInsets.only(left: 15, top: 10),
                                       child: Text(
                                         'Добавки',
-                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                   )

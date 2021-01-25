@@ -16,7 +16,6 @@ Future<ProductsByStoreUuidData> getProductsByStoreUuid(String store_uuid) async 
   });
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
-    print(response.body);
     productsByStoreUuid = new ProductsByStoreUuidData.fromJson(jsonResponse);
   } else {
     print('Request failed with status: ${response.statusCode}.');

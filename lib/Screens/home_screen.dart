@@ -21,6 +21,7 @@ import 'package:flutter_app/PostData/add_variant_to_cart.dart';
 import 'package:flutter_app/PostData/chat.dart';
 import 'package:flutter_app/GetData/orders_story_data.dart';
 import 'package:flutter_app/PostData/restaurant_data_pass.dart';
+import 'package:flutter_app/Screens/add_address_screen.dart';
 import 'package:flutter_app/Screens/completed_order_screen.dart';
 import 'package:flutter_app/Screens/orders_details.dart';
 import 'package:flutter_app/Screens/profile_screen.dart';
@@ -966,7 +967,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         context: context,
         builder: (context) {
           return Container(
-            height: 300,
+            height: 360,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -991,8 +992,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, top: 30, bottom: 35),
-              child: Text('Мои адреса',
+              padding: const EdgeInsets.only(left: 15, top: 30, bottom: 20),
+              child: Text('Адреса',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold
@@ -1000,6 +1001,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               ),
             ),
           ),
+          buildAddressesList(),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -1032,6 +1034,51 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget buildAddressesListSelector(){
+    return Expanded(
+      child: AddressSelector(myFavouriteAddressList: myAddressesModelList, parent:  this, addressSelectorKey: addressSelectorKey),
+    );
+  }
+
+  Widget buildAddressesList(){
+    if(myAddressesModelList != null){
+      return Container(
+          height: 160,
+          child: Column(
+            children: [
+              buildAddressesListSelector(),
+            ],
+          )
+      );
+    }
+    return Container(
+      height: 160,
+      child: Column(
+        children: [
+          FutureBuilder<List<MyFavouriteAddressesModel>>(
+            future: MyFavouriteAddressesModel.getAddresses(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<MyFavouriteAddressesModel>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                myAddressesModelList = snapshot.data;
+                myAddressesModelList
+                    .add(new MyFavouriteAddressesModel(tag: null));
+                return buildAddressesListSelector();
+              } else {
+                return Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.green,
+                    size: 20.0,
+                  ),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
@@ -1192,15 +1239,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-                            GestureDetector(
-                              child: Container(
-                                height: 40, width: 40,
-                                child: Text('sdfsdf'),
-                              ),
-                              onTap: (){
-                                addVariantToCart('989c72d5-50b0-4afb-96e9-a592e5a80627');
-                              },
-                            ),
+//                            GestureDetector(
+//                              child: Container(
+//                                height: 40, width: 40,
+//                                child: Text('sdfsdf'),
+//                              ),
+//                              onTap: (){
+//                                addVariantToCart('989c72d5-50b0-4afb-96e9-a592e5a80627');
+//                              },
+//                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
@@ -1281,6 +1328,134 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                 );
               }
             }),
+      ),
+    );
+  }
+}
+
+class AddressSelector extends StatefulWidget {
+  List<MyFavouriteAddressesModel> myFavouriteAddressList;
+  HomeScreenState parent;
+  GlobalKey<AddressSelectorState> addressSelectorKey;
+
+  AddressSelector({this.addressSelectorKey, this.myFavouriteAddressList, this.parent}) : super(key: addressSelectorKey);
+
+  @override
+  AddressSelectorState createState() => AddressSelectorState(myFavouriteAddressList, parent);
+}
+
+class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+  MyFavouriteAddressesModel myFavouriteAddressesModel = null;
+  List<MyFavouriteAddressesModel> myFavouriteAddressList;
+  HomeScreenState parent;
+  TextEditingController notFavouriteAddressController = new TextEditingController();
+
+  AddressSelectorState(this.myFavouriteAddressList, this.parent);
+
+  void initState() {
+    if(myFavouriteAddressList.length > 0){
+      myFavouriteAddressesModel = myFavouriteAddressList[0];
+      if(myFavouriteAddressList.last.address != null && myFavouriteAddressList.last.tag == null){
+        myFavouriteAddressesModel = myFavouriteAddressList.last;
+        notFavouriteAddressController.text = myFavouriteAddressList.last.address.street + ' ' +
+            myFavouriteAddressList.last.address.house;
+      }
+    }
+  }
+
+
+  Widget build(BuildContext context) {
+    List<Widget> widgetsList = new List<Widget>();
+    myFavouriteAddressList.forEach((element) {
+      if(element.tag == null) {
+        widgetsList.add(Container()
+        );
+      } else {
+        widgetsList.add(
+            Padding(
+              padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    child: InkWell(
+                      child: Container(
+                        child: Row(
+                          children: [
+                            (myFavouriteAddressesModel == element)
+                                ? SvgPicture.asset(
+                                'assets/svg_images/address_screen_selector.svg')
+                                :
+                            SvgPicture.asset(
+                                'assets/svg_images/circle.svg'),
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.only(left: 15),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 10, bottom: 5),
+                                    child: Text(
+                                      element.address.street + ' ' +
+                                          element.address.house,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        setState(() {
+                          myFavouriteAddressesModel = element;
+                          notFavouriteAddressController.text = '';
+                          myFavouriteAddressList.last.address = null;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+        );
+      }
+    });
+    return Container(
+      color: Colors.white,
+      child: ScrollConfiguration(
+        behavior: new ScrollBehavior(),
+        child: ListView(
+          children: [
+            Container(
+                child: Column(
+                  children: widgetsList,
+                )
+            ),
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 10),
+                child: Row(
+                  children: [
+                    SvgPicture.asset('assets/svg_images/address_screen_plus.svg'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text('Указать дрйгой адрес',
+                        style: TextStyle(
+                          color: Color(0xFF09B44D),
+                          fontSize: 18
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
