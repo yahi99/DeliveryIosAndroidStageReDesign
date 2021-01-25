@@ -83,6 +83,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   AddressScreenState homeScreenState;
   KitchenListScreen kitchenListScreen;
   ScrollController catScrollController;
+  bool selectedCategoryFromHomeScreen = false;
 
 
   @override
@@ -826,7 +827,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     height: 45,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color(0xFFF6F6F6)),
+                        color: (!selectedCategoryFromHomeScreen && category_uuid.length > 0) ? Color(0xFF09B44D) : Color(0xFFF6F6F6)),
                     child: Padding(
                         padding: EdgeInsets.only(left: 15, right: 15),
                         child: Center(
@@ -836,7 +837,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               Text(
                                 "Кухни",
                                 style: TextStyle(
-                                    color: Color(0xFF424242),
+                                    color: (!selectedCategoryFromHomeScreen && category_uuid.length > 0) ? Colors.white: Color(0xFF424242),
                                     fontSize: 15),
                               ),
                               Padding(
@@ -848,7 +849,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         )
                     ),
                   ),
-                 (category_uuid.length != 0) ? Padding(
+                 (category_uuid.length != 0 && !selectedCategoryFromHomeScreen) ? Padding(
                    padding: const EdgeInsets.only(left: 70, bottom: 20),
                    child: Container(
                      width: 23,
@@ -888,7 +889,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               height: 45,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: (!category_uuid.contains(element.uuid))
+                  color: (!category_uuid.contains(element.uuid) || !selectedCategoryFromHomeScreen)
                       ? Color(0xFFF6F6F6)
                       : Color(0xFF09B44D)),
               child: Padding(
@@ -897,7 +898,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     child: Text(
                       element.name[0].toUpperCase() + element.name.substring(1),
                       style: TextStyle(
-                          color: (!category_uuid.contains(element.uuid))
+                          color: (!category_uuid.contains(element.uuid)|| !selectedCategoryFromHomeScreen)
                               ? Color(0xFF424242)
                               : Colors.white,
                           fontSize: 15),
@@ -909,6 +910,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             setState(() {
               isLoading = true;
               page = 1;
+              selectedCategoryFromHomeScreen = true;
               if(category_uuid.contains(element.uuid)){
                 category_uuid.clear();
               } else {
@@ -2466,6 +2468,7 @@ class KitchenListScreenState extends State<KitchenListScreen>{
                   if(selectedKitchens[i])
                     parent.category_uuid.add(categories[i].uuid);
                 }
+                parent.selectedCategoryFromHomeScreen = false;
                 Navigator.pop(context);
                 parent.setState(() {
 
