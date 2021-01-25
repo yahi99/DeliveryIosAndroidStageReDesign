@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/GetData/getImage.dart';
 import 'package:flutter_app/GetData/getProductsByStoreUuid.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/PostData/add_variant_to_cart.dart';
 import 'package:flutter_app/PostData/restaurant_items_data_pass.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/FilteredStores.dart';
@@ -866,14 +867,14 @@ class RestaurantScreenState extends State<RestaurantScreen> {
 
   List<Widget> generateMenu() {
     List<Widget> menu = new List<Widget>();
-    String lastCategoryName = "";
+    String lastCategoryUuid = "";
     int lastCategoryIndex = -1;
     foodMenuItems.forEach((foodMenuItem) {
-//      if(foodMenuItem.restaurantDataItems.category != lastCategoryName){
-//        lastCategoryIndex++;
-//        lastCategoryName = foodMenuItem.restaurantDataItems.category;
-//        menu.add(foodMenuTitles[lastCategoryIndex]);
-//      }
+     if(foodMenuItem.restaurantDataItems.productCategoriesUuid[0] != lastCategoryUuid){
+       lastCategoryIndex++;
+       lastCategoryUuid = foodMenuItem.restaurantDataItems.productCategoriesUuid[0];
+       menu.add(foodMenuTitles[lastCategoryIndex]);
+     }
     print(foodMenuItem.restaurantDataItems.uuid);
       menu.add(foodMenuItem);
     });
@@ -915,7 +916,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
       return false;
     isLoading = true;
     // находим итем с данной категорией
-    MenuItemTitle targetCategory = menuWithTitles.firstWhere((element) => element is MenuItemTitle && element.title == restaurant.productCategoriesUuid[categoryIndex]);
+    MenuItemTitle targetCategory = menuWithTitles.firstWhere((element) => element is MenuItemTitle && element.title == restaurant.productCategoriesUuid[categoryIndex].name);
     if(targetCategory != null){
       while(targetCategory.key.currentContext == null) {
         await sliverScrollController.animateTo(sliverScrollController.offset+200, duration: new Duration(milliseconds: 15),
@@ -946,10 +947,10 @@ class MenuItemTitle extends StatefulWidget {
     return new MenuItemTitleState(title);
   }
 
-  static List<MenuItemTitle> fromCategoryList(List<String> categories){
+  static List<MenuItemTitle> fromCategoryList(List<CategoriesUuid> categories){
     List<MenuItemTitle> result = new List<MenuItemTitle>();
     categories.forEach((element) {
-      result.add(new MenuItemTitle(key: new GlobalKey<MenuItemTitleState>(), title: element,));
+      result.add(new MenuItemTitle(key: new GlobalKey<MenuItemTitleState>(), title: element.name,));
     });
     return result;
   }
@@ -1632,7 +1633,7 @@ class   CategoryList extends StatefulWidget {
 class CategoryListState extends State<CategoryList> {
   final FilteredStores restaurant;
   final RestaurantScreenState parent;
-  String currentCategory;
+  CategoriesUuid currentCategory;
   List<CategoryListItem> categoryItems;
   bool firstStart;
   ScrollController categoryListScrollController = new ScrollController();
@@ -1679,13 +1680,13 @@ class CategoryListState extends State<CategoryList> {
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
                   child: Row(
                     children: [
-                      Text(categoryItems[index].value[0].toUpperCase() + categoryItems[index].value.substring(1),
+                      Text(categoryItems[index].value.name[0].toUpperCase() + categoryItems[index].value.name.substring(1),
                         style: (categoryItems[index].value != currentCategory) ? TextStyle(fontSize: 18) : TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         textAlign: TextAlign.start,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10, top: 2),
-                        child: Text(categoryItems[index].value.length.toString(),
+                        child: Text(categoryItems[index].value.name.length.toString(),
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.grey,
@@ -1697,7 +1698,7 @@ class CategoryListState extends State<CategoryList> {
                   ),
                 ),
                 onTap: () async {
-                  String value = categoryItems[index].value;
+                  CategoriesUuid value = categoryItems[index].value;
                   Navigator.pop(context);
                   if(await parent.GoToCategory(restaurant.productCategoriesUuid.indexOf(value)))
                     SelectCategory(value);
@@ -1793,8 +1794,8 @@ class CategoryListState extends State<CategoryList> {
 
   }
 
-  void SelectCategory(String category) {
-    String oldCategory = this.currentCategory;
+  void SelectCategory(CategoriesUuid category) {
+    CategoriesUuid oldCategory = this.currentCategory;
     this.currentCategory = category;
     CategoryListItem categoryItem =
     categoryItems.firstWhere((element) => element.value == oldCategory);
@@ -1830,7 +1831,7 @@ class CategoryListState extends State<CategoryList> {
 class CategoryListItem extends StatefulWidget {
   CategoryListItem({this.key, this.value, this.categoryList}) : super(key: key);
   final GlobalKey<CategoryListItemState> key;
-  final String value;
+  final CategoriesUuid value;
   final CategoryListState categoryList;
 
   @override
@@ -1842,7 +1843,7 @@ class CategoryListItem extends StatefulWidget {
 
 class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAliveClientMixin {
   final CategoryListState categoryList;
-  final String value;
+  final CategoriesUuid value;
 
   CategoryListItemState(this.value, this.categoryList);
 
@@ -1870,7 +1871,7 @@ class CategoryListItemState extends State<CategoryListItem> with AutomaticKeepAl
                 padding: EdgeInsets.only(left: 15, right: 15),
                 child: Center(
                   child: Text(
-                    value[0].toUpperCase() + value.substring(1),
+                    value.name[0].toUpperCase() + value.name.substring(1),
                     style: TextStyle(
                         color: (value != categoryList.currentCategory)
                             ? Color(0xFF424242)
@@ -2313,6 +2314,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           AsyncSnapshot<ProductsDataModel> snapshot){
         if(snapshot.connectionState == ConnectionState.done){
           ProductsDataModel productsDescription = snapshot.data;
+          print(productsDescription.uuid);
           return Container(
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -2378,7 +2380,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             fontSize: 14
                                           ),
                                         ),
-                                        Text((productsDescription.variants!= null) ? productsDescription.variants[0].meta.energyValue.protein.toString(): '',
+                                        Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ? productsDescription.variants[0].meta.energyValue.protein.toString(): '',
                                           style: TextStyle(
                                               color: Color(0xFF7D7D7D),
                                               fontSize: 14
@@ -2390,13 +2392,13 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       padding: EdgeInsets.only(left: 30),
                                       child: Column(
                                         children: [
-                                          Text('Жиры ',
+                                          Text('Жиры',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text(productsDescription.variants[0].meta.energyValue.fat.toString(),
+                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.fat.toString():'',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2415,7 +2417,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text(productsDescription.variants[0].meta.energyValue.carbohydrates.toString(),
+                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.carbohydrates.toString():"",
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2434,7 +2436,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text(productsDescription.variants[0].meta.energyValue.calories.toString(),
+                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.calories.toString():'',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2581,73 +2583,74 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             padding: EdgeInsets.only(
                                                 left: 55, top: 20, right: 55, bottom: 20),
                                             onPressed: () async {
-                                              // if (await Internet.checkConnection()) {
-                                              //   FoodRecords foodOrder =
-                                              //   FoodRecords.fromFoodRecords(
-                                              //       restaurantDataItems);
-                                              //   if (variantsSelectorStateKey.currentState !=
-                                              //       null) {
-                                              //     if (variantsSelectorStateKey
-                                              //         .currentState.selectedVariant !=
-                                              //         null) {
-                                              //       foodOrder.variants = [
-                                              //         variantsSelectorStateKey
-                                              //             .currentState.selectedVariant
-                                              //       ];
-                                              //     } else {
-                                              //       foodOrder.variants = null;
-                                              //     }
-                                              //     print(foodOrder.variants);
-                                              //   }
-                                              //   if (toppingsSelectorStateKey.currentState !=
-                                              //       null) {
-                                              //     List<Toppings> toppingsList =
-                                              //     toppingsSelectorStateKey.currentState
-                                              //         .getSelectedToppings();
-                                              //     if (toppingsList.length != null) {
-                                              //       foodOrder.toppings = toppingsList;
-                                              //     } else {
-                                              //       foodOrder.toppings = null;
-                                              //     }
-                                              //     foodOrder.toppings.forEach((element) {
-                                              //       print(element.name);
-                                              //     });
-                                              //   }
-                                              //   if (currentUser.cartDataModel.cart.length > 0 &&
-                                              //       parent.restaurant.uuid !=
-                                              //           currentUser.cartDataModel.cart[0]
-                                              //               .restaurant.uuid) {
-                                              //     parent.showCartClearDialog(
-                                              //         context,
-                                              //         new Order(
-                                              //             food: foodOrder,
-                                              //             quantity:
-                                              //             parent.counterKey.currentState.counter,
-                                              //             restaurant: parent.restaurant,
-                                              //             date: DateTime.now().toString()),
-                                              //         menuItemCounterKey);
-                                              //   } else {
-                                              //     currentUser.cartDataModel.addItem(new Order(
-                                              //         food: foodOrder,
-                                              //         quantity: parent.counterKey.currentState.counter,
-                                              //         restaurant: parent.restaurant,
-                                              //         date: DateTime.now().toString()));
-                                              //     currentUser.cartDataModel.saveData();
-                                              //     Navigator.pop(context);
-                                              //     Padding(
-                                              //       padding: EdgeInsets.only(bottom: 0),
-                                              //       child: parent.showAlertDialog(context),
-                                              //     );
-                                              //     parent.basketButtonStateKey.currentState.refresh();
-                                              //     //menuItemCounterKey.currentState.refresh();
-                                              //     setState(() {
-                                              //
-                                              //     });
-                                              //     parent.counterKey.currentState.refresh();
-                                              //   }
-                                              // } else {
-                                              //   noConnection(context);
-                                              // }
+                                              if (await Internet.checkConnection()) {
+                                                addVariantToCart(variantsSelectorStateKey.currentState.selectedVariant.uuid);
+                                                // FoodRecords foodOrder =
+                                                // FoodRecords.fromFoodRecords(
+                                                //     restaurantDataItems);
+                                                // if (variantsSelectorStateKey.currentState !=
+                                                //     null) {
+                                                //   if (variantsSelectorStateKey
+                                                //       .currentState.selectedVariant !=
+                                                //       null) {
+                                                //     foodOrder.variants = [
+                                                //       variantsSelectorStateKey
+                                                //           .currentState.selectedVariant
+                                                //     ];
+                                                //   } else {
+                                                //     foodOrder.variants = null;
+                                                //   }
+                                                //   print(foodOrder.variants);
+                                                // }
+                                                // if (toppingsSelectorStateKey.currentState !=
+                                                //     null) {
+                                                //   List<Toppings> toppingsList =
+                                                //   toppingsSelectorStateKey.currentState
+                                                //       .getSelectedToppings();
+                                                //   if (toppingsList.length != null) {
+                                                //     foodOrder.toppings = toppingsList;
+                                                //   } else {
+                                                //     foodOrder.toppings = null;
+                                                //   }
+                                                //   foodOrder.toppings.forEach((element) {
+                                                //     print(element.name);
+                                                //   });
+                                                // }
+                                                // if (currentUser.cartDataModel.cart.length > 0 &&
+                                                //     parent.restaurant.uuid !=
+                                                //         currentUser.cartDataModel.cart[0]
+                                                //             .restaurant.uuid) {
+                                                //   parent.showCartClearDialog(
+                                                //       context,
+                                                //       new Order(
+                                                //           food: foodOrder,
+                                                //           quantity:
+                                                //           parent.counterKey.currentState.counter,
+                                                //           restaurant: parent.restaurant,
+                                                //           date: DateTime.now().toString()),
+                                                //       menuItemCounterKey);
+                                                // } else {
+                                                //   currentUser.cartDataModel.addItem(new Order(
+                                                //       food: foodOrder,
+                                                //       quantity: parent.counterKey.currentState.counter,
+                                                //       restaurant: parent.restaurant,
+                                                //       date: DateTime.now().toString()));
+                                                //   currentUser.cartDataModel.saveData();
+                                                //   Navigator.pop(context);
+                                                //   Padding(
+                                                //     padding: EdgeInsets.only(bottom: 0),
+                                                //     child: parent.showAlertDialog(context),
+                                                //   );
+                                                //   parent.basketButtonStateKey.currentState.refresh();
+                                                //   //menuItemCounterKey.currentState.refresh();
+                                                //   setState(() {
+                                                //
+                                                //   });
+                                                //   parent.counterKey.currentState.refresh();
+                                                // }
+                                              } else {
+                                                noConnection(context);
+                                              }
                                             },
                                           ),
                                         ),

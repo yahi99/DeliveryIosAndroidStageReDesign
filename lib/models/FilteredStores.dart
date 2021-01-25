@@ -43,9 +43,9 @@ class FilteredStores {
 
   String uuid;
   String name;
-  List<String> storeCategoriesUuid;
-  List<String> productCategoriesUuid;
-  List<PaymentType> paymentTypes;
+  List<CategoriesUuid> storeCategoriesUuid;
+  List<CategoriesUuid> productCategoriesUuid;
+  List<String> paymentTypes;
   String cityUuid;
   String legalEntityUuid;
   String parentUuid;
@@ -57,14 +57,14 @@ class FilteredStores {
   int lat;
   int lon;
   String url;
-  Meta meta;
+  FilteredStoreMeta meta;
 
   factory FilteredStores.fromJson(Map<String, dynamic> json) => FilteredStores(
     uuid: json["uuid"],
     name: json["name"],
-    storeCategoriesUuid: List<String>.from(json["store_categories_uuid"].map((x) => x)),
-    productCategoriesUuid: List<String>.from(json["product_categories_uuid"].map((x) => x)),
-    paymentTypes: List<PaymentType>.from(json["payment_types"].map((x) => paymentTypeValues.map[x])),
+    storeCategoriesUuid: List<CategoriesUuid>.from(json["store_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
+    productCategoriesUuid: List<CategoriesUuid>.from(json["product_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
+    paymentTypes: List<String>.from(json["payment_types"]),
     cityUuid: json["city_uuid"],
     legalEntityUuid: json["legal_entity_uuid"],
     parentUuid: json["parent_uuid"],
@@ -76,15 +76,15 @@ class FilteredStores {
     lat: json["lat"],
     lon: json["lon"],
     url: json["url"],
-    meta: Meta.fromJson(json["meta"]),
+    meta: FilteredStoreMeta.fromJson(json["meta"]),
   );
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
     "name": name,
-    "store_categories_uuid": List<dynamic>.from(storeCategoriesUuid.map((x) => x)),
-    "product_categories_uuid": List<dynamic>.from(productCategoriesUuid.map((x) => x)),
-    "payment_types": List<dynamic>.from(paymentTypes.map((x) => paymentTypeValues.reverse[x])),
+    "store_categories_uuid": List<dynamic>.from(storeCategoriesUuid.map((x) => x.toJson())),
+    "product_categories_uuid": List<dynamic>.from(productCategoriesUuid.map((x) => x.toJson())),
+    "payment_types": List<dynamic>.from(paymentTypes.map((x) => x)),
     "city_uuid": cityUuid,
     "legal_entity_uuid": legalEntityUuid,
     "parent_uuid": parentUuid,
@@ -200,33 +200,77 @@ class Address {
   };
 }
 
-class Meta {
-  Meta();
+class FilteredStoreMeta {
+  FilteredStoreMeta({
+    this.images,
+    this.rating,
+    this.avgDeliveryTime,
+    this.avgDeliveryPrice,
+  });
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+  List<String> images;
+  double rating;
+  int avgDeliveryTime;
+  int avgDeliveryPrice;
+
+  factory FilteredStoreMeta.fromJson(Map<String, dynamic> json) => FilteredStoreMeta(
+    images: List<String>.from(json["images"].map((x) => x)),
+    rating: json["rating"].toDouble(),
+    avgDeliveryTime: json["avg_delivery_time"],
+    avgDeliveryPrice: json["avg_delivery_price"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "images": List<dynamic>.from(images.map((x) => x)),
+    "rating": rating,
+    "avg_delivery_time": avgDeliveryTime,
+    "avg_delivery_price": avgDeliveryPrice,
+  };
+}
+
+
+class CategoriesUuid {
+  CategoriesUuid({
+    this.uuid,
+    this.name,
+    this.priority,
+    this.comment,
+    this.url,
+    this.meta,
+  });
+
+  String uuid;
+  String name;
+  int priority;
+  String comment;
+  String url;
+  ProductCategoriesUuidMeta meta;
+
+  factory CategoriesUuid.fromJson(Map<String, dynamic> json) => CategoriesUuid(
+    uuid: json["uuid"],
+    name: json["name"],
+    priority: json["priority"],
+    comment: json["comment"] == null ? null : json["comment"],
+    url: json["url"],
+    meta: ProductCategoriesUuidMeta.fromJson(json["meta"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "uuid": uuid,
+    "name": name,
+    "priority": priority,
+    "comment": comment == null ? null : comment,
+    "url": url,
+    "meta": meta.toJson(),
+  };
+}
+
+class ProductCategoriesUuidMeta {
+  ProductCategoriesUuidMeta();
+
+  factory ProductCategoriesUuidMeta.fromJson(Map<String, dynamic> json) => ProductCategoriesUuidMeta(
   );
 
   Map<String, dynamic> toJson() => {
   };
-}
-
-enum PaymentType { CASH, CARD }
-
-final paymentTypeValues = EnumValues({
-  "card": PaymentType.CARD,
-  "cash": PaymentType.CASH
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

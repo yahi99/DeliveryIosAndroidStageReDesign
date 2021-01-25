@@ -62,13 +62,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   int limit = 12;
   bool isLoading = true;
   List<FilteredStores> records_items = new List<FilteredStores>();
-  String category_uuid = '';
+  List<String> category_uuid = new List<String>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<BasketButtonState> basketButtonStateKey = new GlobalKey<BasketButtonState>();
   int records_count = -1;
   Amplitude analytics;
   final String apiKey = 'e0a9f43456e45fc41f68e3d8a149d18d';
-  RestaurantCategories restaurantCategories;
+  List<AllStoreCategories> restaurantCategories;
   var take = ['order_payment'];
   OrdersStoryModelItem ordersStoryModelItem;
   bool firstSelected = false;
@@ -81,6 +81,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   List<MyFavouriteAddressesModel> myAddressesModelList;
   GlobalKey<AddressSelectorState> addressSelectorKey = new GlobalKey();
   AddressScreenState homeScreenState;
+  KitchenListScreen kitchenListScreen;
+  ScrollController catScrollController;
 
 
   @override
@@ -91,6 +93,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    catScrollController = new ScrollController();
   }
 
   @override
@@ -164,7 +167,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   }
 
 
-  _kitchensFilter(GlobalKey<KitchenListScreenState> kitchenListKey) {
+  _kitchensFilter(List<AllStoreCategories> categories) {
     showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -177,7 +180,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         builder: (context) {
           return Container(
             height: 600,
-            child: _buildKitchensFilterNavigationMenu(kitchenListKey),
+            child: _buildKitchensFilterNavigationMenu(categories),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
                 borderRadius: BorderRadius.only(
@@ -189,7 +192,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   }
 
 
-  _buildKitchensFilterNavigationMenu(GlobalKey<KitchenListScreenState> kitchenListKey) {
+  _buildKitchensFilterNavigationMenu(List<AllStoreCategories> categories) {
     return Container(
       height: 610,
       child: Column(
@@ -210,7 +213,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               ),
             ),
           ),
-          KitchenListScreen(key: kitchenListKey),
+          kitchenListScreen,
 
         ],
       ),
@@ -314,6 +317,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     int dayNumber  = now.weekday-1;
     List<Widget> restaurantList = [];
     records_items.forEach((FilteredStores restaurant) {
+      print(restaurant.uuid);
 //      int work_beginning = restaurant.work_schedule[dayNumber].work_beginning;
 //      int work_ending = restaurant.work_schedule[dayNumber].work_ending;
 //      bool day_off = restaurant.work_schedule[dayNumber].day_off;
@@ -402,7 +406,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         child:  Hero(
                             tag: restaurant.uuid,
                             child: Image.network(
-                              getImage(restaurant.url),
+                              getImage((restaurant.meta.images != null && restaurant.meta.images.length > 0) ? restaurant.meta.images[0] : ''),
                               height: 200.0,
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.cover,
@@ -448,7 +452,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 3.0),
-                                      child: Text('5.0',
+                                      child: Text(restaurant.meta.rating.toString(),
                                         style: TextStyle(
                                             color: Colors.white
                                         ),
@@ -472,7 +476,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                         'assets/svg_images/rest_car.svg'),
                                   ),
                                   Text(
-                                    '000',
+                                    restaurant.meta.avgDeliveryTime.toString(),
 //                                    (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
                                     style: TextStyle(
                                         fontSize: 14.0,
@@ -495,7 +499,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'от 100 руб',
+                                    'от ${restaurant.meta.avgDeliveryPrice} руб',
                                     style: TextStyle(
                                         fontSize: 14.0,
                                         color: Colors.black,
@@ -748,7 +752,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   }
 
 
-  List<Widget> _buildRestaurantCategoriesList(List<Record> categories){
+  List<Widget> _buildRestaurantCategoriesList(List<AllStoreCategories> categories){
     List<Widget> result = new List<Widget>();
     result.add(Row(
       children: [
@@ -844,30 +848,30 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         )
                     ),
                   ),
-//                  (kitchenListKey.currentState.selectedKitchens.length != 0) ? Padding(
-//                    padding: const EdgeInsets.only(left: 70, bottom: 20),
-//                    child: Container(
-//                      width: 23,
-//                        height: 23,
-//                        padding: EdgeInsets.all(5),
-//                        decoration: BoxDecoration(
-//                            borderRadius: BorderRadius.circular(20),
-//                            color: Colors.white
-//                        ),
-//                        child: Center(
-//                          child: Text('${kitchenListKey.currentState.selectedKitchens.length}',
-//                            style: TextStyle(
-//                              fontSize: 14
-//                            ),
-//                          ),
-//                        )
-//                    ),
-//                  ): Container()
+                 (category_uuid.length != 0) ? Padding(
+                   padding: const EdgeInsets.only(left: 70, bottom: 20),
+                   child: Container(
+                     width: 23,
+                       height: 23,
+                       padding: EdgeInsets.all(5),
+                       decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(20),
+                           color: Colors.white
+                       ),
+                       child: Center(
+                         child: Text('${category_uuid.length}',
+                           style: TextStyle(
+                             fontSize: 14
+                           ),
+                         ),
+                       )
+                   ),
+                 ): Container()
                 ],
               )),
           onTap: () async {
             if (await Internet.checkConnection()) {
-              _kitchensFilter(kitchenListKey);
+              _kitchensFilter(categories);
             } else {
               noConnection(context);
             }
@@ -884,7 +888,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
               height: 45,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: (element.uuid != category_uuid)
+                  color: (!category_uuid.contains(element.uuid))
                       ? Color(0xFFF6F6F6)
                       : Color(0xFF09B44D)),
               child: Padding(
@@ -893,8 +897,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     child: Text(
                       element.name[0].toUpperCase() + element.name.substring(1),
                       style: TextStyle(
-                          color: (element.uuid !=
-                              category_uuid)
+                          color: (!category_uuid.contains(element.uuid))
                               ? Color(0xFF424242)
                               : Colors.white,
                           fontSize: 15),
@@ -906,7 +909,11 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             setState(() {
               isLoading = true;
               page = 1;
-              category_uuid = (element.uuid == category_uuid) ? '' : element.uuid;
+              if(category_uuid.contains(element.uuid)){
+                category_uuid.clear();
+              } else {
+                category_uuid.add(element.uuid);
+              }
             });
           } else {
             noConnection(context);
@@ -918,41 +925,44 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   }
 
 
-  _buildRestaurantCategories(){
-    if(restaurantCategories != null){
+  Future<Widget> _buildRestaurantCategories() async{
+    restaurantCategories = (await getAllStoreCategories()).allStoreCategoriesList;
+    kitchenListScreen = KitchenListScreen(restaurantCategories, this,key: kitchenListKey);
+    if(true){
       return Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Container(
           height: 45,
           child: ListView(
+            controller: catScrollController,
               scrollDirection: Axis.horizontal,
-              children: _buildRestaurantCategoriesList(restaurantCategories.records)
+              children: _buildRestaurantCategoriesList(restaurantCategories)
           ),
         ),
       );
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-      child: Container(
-        height: 45,
-        child: FutureBuilder<RestaurantCategories>(
-          future: loadRestaurantCategories(1, 12),
-          initialData: null,
-          builder: (BuildContext context, AsyncSnapshot<RestaurantCategories> snapshot){
-            if(snapshot.hasData){
-              if(snapshot.connectionState == ConnectionState.done){
-                restaurantCategories = snapshot.data;
-                return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: _buildRestaurantCategoriesList(restaurantCategories.records)
-                );
-              }
-            }
-            return Container(height: 0);
-          },
-        ),
-      ),
-    );
+    // return Padding(
+    //   padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+    //   child: Container(
+    //     height: 45,
+    //     child: FutureBuilder<RestaurantCategories>(
+    //       future: loadRestaurantCategories(1, 12),
+    //       initialData: null,
+    //       builder: (BuildContext context, AsyncSnapshot<RestaurantCategories> snapshot){
+    //         if(snapshot.hasData){
+    //           if(snapshot.connectionState == ConnectionState.done){
+    //             restaurantCategories = snapshot.data;
+    //             return ListView(
+    //                 scrollDirection: Axis.horizontal,
+    //                 children: _buildRestaurantCategoriesList(restaurantCategories.records)
+    //             );
+    //           }
+    //         }
+    //         return Container(height: 0);
+    //       },
+    //     ),
+    //   ),
+    // );
   }
 
   void _dispatchAddress() {
@@ -1135,7 +1145,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
 //                }
                 if (snapshot.connectionState == ConnectionState.done) {
                   if(snapshot.data.filteredStoresList != null){
-                    records_items.addAll(snapshot.data.filteredStoresList);
+                    if(category_uuid.isNotEmpty){
+                      var stores = snapshot.data.filteredStoresList.where((element) =>
+                      element.storeCategoriesUuid != null && element.storeCategoriesUuid.length > 0 &&
+                          category_uuid.contains(element.storeCategoriesUuid[0].uuid));
+                      records_items.addAll(stores);
+                    } else {
+                      records_items.addAll(snapshot.data.filteredStoresList);
+                    }
+
                   }
                   isLoading = false;
                 }
@@ -1239,15 +1257,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                 }
                               },
                             ),
-//                            GestureDetector(
-//                              child: Container(
-//                                height: 40, width: 40,
-//                                child: Text('sdfsdf'),
-//                              ),
-//                              onTap: (){
-//                                addVariantToCart('989c72d5-50b0-4afb-96e9-a592e5a80627');
-//                              },
-//                            ),
+                           // GestureDetector(
+                            //                            //   child: Container(
+                            //                            //     height: 40, width: 40,
+                            //                            //     child: Text('sdfsdf'),
+                            //                            //   ),
+                            //                            //   onTap: (){
+                            //                            //     addVariantToCart('989c72d5-50b0-4afb-96e9-a592e5a80627');
+                            //                            //   },
+                            //                            // ),
                             Padding(
                               padding: const EdgeInsets.only(left: 22, top: 15, right: 20),
                               child: Row(
@@ -1294,7 +1312,16 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   )),
                             ),
                             Container(
-                              child: _buildRestaurantCategories(),
+                              child: FutureBuilder<Widget>(
+                                future: _buildRestaurantCategories(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Widget> snapshot){
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    return snapshot.data;
+                                  }
+                                  return Container();
+                                },
+                              ),
                             ),
                             (records_items.isEmpty && !isLoading) ?  Center(
                               child: Container(),
@@ -2342,24 +2369,30 @@ class ContainerReSizeState extends State<ContainerReSize>{
 
 class KitchenListScreen extends StatefulWidget {
 
-  KitchenListScreen({Key key}) : super(key: key);
+  List<AllStoreCategories> categories;
+  HomeScreenState parent;
+  KitchenListScreen(this.categories, this.parent, {Key key}) : super(key: key);
 
   @override
   KitchenListScreenState createState() {
-    return new KitchenListScreenState();
+    return new KitchenListScreenState(categories, parent);
   }
 }
 
 class KitchenListScreenState extends State<KitchenListScreen>{
 
-  KitchenListScreenState();
+  KitchenListScreenState(this.categories, this.parent);
 
-  List<bool> selectedKitchens = List.generate(12, (index) => false);
+  HomeScreenState parent;
 
-  List<AllStoreCategories> categories = new List<AllStoreCategories>();
+  List<bool> selectedKitchens;
+
+  List<AllStoreCategories> categories;
 
 
+  
   Widget getCategories(){
+
     return Container(
       padding: EdgeInsets.only(bottom: 0, left: 8, right: 8, top: 0),
       height: 490,
@@ -2400,27 +2433,18 @@ class KitchenListScreenState extends State<KitchenListScreen>{
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    print("СУПА ИНИТ СТЕЙТО");
+    selectedKitchens = List.generate(categories.length, (index) => parent.category_uuid.contains(categories[index].uuid));
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return Column(
       children: [
-        (categories.length == 0) ?
-        FutureBuilder<AllStoreCategoriesData>(
-            future: getAllStoreCategories(),
-            initialData: null,
-            builder: (BuildContext context,
-                AsyncSnapshot<AllStoreCategoriesData> snapshot) {
-              if(snapshot.connectionState == ConnectionState.done){
-                categories.addAll(snapshot.data.allStoreCategoriesList);
-                return getCategories();
-              }else{
-                return Container();
-              }
-            }
-        )
-            :
         getCategories(),
         Align(
           alignment: Alignment.bottomCenter,
@@ -2437,7 +2461,15 @@ class KitchenListScreenState extends State<KitchenListScreen>{
               ),
               padding: EdgeInsets.only(left: 120, top: 20, right: 120, bottom: 20),
               onPressed: () async {
+                parent.category_uuid.clear();
+                for(int i = 0; i<selectedKitchens.length; i++){
+                  if(selectedKitchens[i])
+                    parent.category_uuid.add(categories[i].uuid);
+                }
                 Navigator.pop(context);
+                parent.setState(() {
+
+                });
               },
             ),
           ),
