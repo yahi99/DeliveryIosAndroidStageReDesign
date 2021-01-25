@@ -212,6 +212,73 @@ class CartPageState extends State<CartPageScreen> {
                                     );
                                   },
                                 );
+                              }else{
+                                return showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 0),
+                                      child: Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                                        child: Container(
+                                            height: 130,
+                                            width: 300,
+                                            child: Column(
+                                              children: <Widget>[
+                                                InkWell(
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                                                    child: Center(
+                                                      child: Text("Очистить корзину",
+                                                        style: TextStyle(
+                                                            color: Color(0xFFFF3B30),
+                                                            fontSize: 20
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
+                                                      currentUser.cartDataModel.cart.clear();
+                                                      currentUser.cartDataModel.saveData();
+                                                    });
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                        builder: (context) =>
+                                                        new EmptyCartScreen(restaurant: restaurant),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                Divider(
+                                                  height: 1,
+                                                  color: Colors.grey,
+                                                ),
+                                                InkWell(
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                                                    child: Center(
+                                                      child: Text("Отмена",
+                                                        style: TextStyle(
+                                                            color: Color(0xFF007AFF),
+                                                            fontSize: 20
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: (){
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+                                    );
+                                  },
+                                );
                               }
                             },
                           )),
@@ -844,6 +911,80 @@ class CartScreenState extends State<CartScreen> {
                             );
                           },
                         );
+                      }else{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 0),
+                              child: Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                                child: Container(
+                                    height: 130,
+                                    width: 300,
+                                    child: Column(
+                                      children: <Widget>[
+                                        InkWell(
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                                            child: Center(
+                                              child: Text("Удалить",
+                                                style: TextStyle(
+                                                    color: Color(0xFFFF3B30),
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              if(parent.totalPriceWidget.key.currentState != null){
+                                                parent.totalPriceWidget.key.currentState.setState(() {
+
+                                                });
+                                              }
+                                              currentUser.cartDataModel.cart.removeAt(index);
+                                              currentUser.cartDataModel.saveData();
+                                            });
+                                            Navigator.pop(context);
+                                            if (currentUser.cartDataModel.cart.length == 0) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                  new EmptyCartScreen(restaurant: restaurant),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                          color: Colors.grey,
+                                        ),
+                                        InkWell(
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                                            child: Center(
+                                              child: Text("Отмена",
+                                                style: TextStyle(
+                                                    color: Color(0xFF007AFF),
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: (){
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            );
+                          },
+                        );
                       }
                     },
                   ),
@@ -1272,6 +1413,80 @@ class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
                                     ),
                                   )
                                 ],
+                              ),
+                            );
+                          },
+                        );
+                      }else{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 0),
+                              child: Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                                child: Container(
+                                    height: 130,
+                                    width: 300,
+                                    child: Column(
+                                      children: <Widget>[
+                                        InkWell(
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                                            child: Center(
+                                              child: Text("Удалить",
+                                                style: TextStyle(
+                                                    color: Color(0xFFFF3B30),
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              if(parent.totalPriceWidget.key.currentState != null){
+                                                parent.totalPriceWidget.key.currentState.setState(() {
+
+                                                });
+                                              }
+                                              currentUser.cartDataModel.cart.removeAt(index);
+                                              currentUser.cartDataModel.saveData();
+                                            });
+                                            Navigator.pop(context);
+                                            if (currentUser.cartDataModel.cart.length == 0) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                  new EmptyCartScreen(restaurant: restaurant),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                          color: Colors.grey,
+                                        ),
+                                        InkWell(
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                                            child: Center(
+                                              child: Text("Отмена",
+                                                style: TextStyle(
+                                                    color: Color(0xFF007AFF),
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: (){
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    )),
                               ),
                             );
                           },
