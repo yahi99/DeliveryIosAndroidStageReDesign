@@ -842,7 +842,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-                                child: SvgPicture.asset('assets/svg_images/arrow_down'),
+                                child: SvgPicture.asset('assets/svg_images/arrow_down',
+                                  color: (!selectedCategoryFromHomeScreen && category_uuid.length > 0) ? Colors.white: Colors.black,
+                                ),
                               )
                             ],
                           ),

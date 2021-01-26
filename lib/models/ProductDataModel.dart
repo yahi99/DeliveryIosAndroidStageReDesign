@@ -1,44 +1,54 @@
+// To parse this JSON data, do
+//
+//     final productsDataModel = productsDataModelFromJson(jsonString);
+
+import 'dart:convert';
+
+ProductsDataModel productsDataModelFromJson(String str) => ProductsDataModel.fromJson(json.decode(str));
+
+String productsDataModelToJson(ProductsDataModel data) => json.encode(data.toJson());
+
 class ProductsDataModel {
   ProductsDataModel({
     this.uuid,
     this.name,
     this.storeUuid,
-    this.productCategories,
     this.comment,
     this.url,
     this.meta,
-    this.variants,
+    this.productCategories,
+    this.variantGroups,
   });
 
   String uuid;
   String name;
   String storeUuid;
-  List<ProductCategory> productCategories;
   String comment;
   String url;
   ProductsDataModelMeta meta;
-  List<Variant> variants;
+  List<ProductCategory> productCategories;
+  List<VariantGroup> variantGroups;
 
   factory ProductsDataModel.fromJson(Map<String, dynamic> json) => ProductsDataModel(
     uuid: json["uuid"],
     name: json["name"],
     storeUuid: json["store_uuid"],
-    productCategories: List<ProductCategory>.from(json["product_categories"].map((x) => ProductCategory.fromJson(x))),
     comment: json["comment"],
     url: json["url"],
     meta: ProductsDataModelMeta.fromJson(json["meta"]),
-    variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
+    productCategories: List<ProductCategory>.from(json["product_categories"].map((x) => ProductCategory.fromJson(x))),
+    variantGroups: List<VariantGroup>.from(json["variant_groups"].map((x) => VariantGroup.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
     "name": name,
     "store_uuid": storeUuid,
-    "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
     "comment": comment,
     "url": url,
     "meta": meta.toJson(),
-    "variants": List<dynamic>.from(variants.map((x) => x.toJson())),
+    "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
+    "variant_groups": List<dynamic>.from(variantGroups.map((x) => x.toJson())),
   };
 }
 
@@ -85,6 +95,50 @@ class ProductCategory {
     "comment": comment,
     "url": url,
     "meta": meta.toJson(),
+  };
+}
+
+class VariantGroup {
+  VariantGroup({
+    this.uuid,
+    this.name,
+    this.productUuid,
+    this.required,
+    this.multiselect,
+    this.description,
+    this.meta,
+    this.variants,
+  });
+
+  String uuid;
+  String name;
+  String productUuid;
+  bool required;
+  bool multiselect;
+  String description;
+  ProductsDataModelMeta meta;
+  List<Variant> variants;
+
+  factory VariantGroup.fromJson(Map<String, dynamic> json) => VariantGroup(
+    uuid: json["uuid"],
+    name: json["name"],
+    productUuid: json["product_uuid"],
+    required: json["required"],
+    multiselect: json["multiselect"],
+    description: json["description"],
+    meta: ProductsDataModelMeta.fromJson(json["meta"]),
+    variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "uuid": uuid,
+    "name": name,
+    "product_uuid": productUuid,
+    "required": required,
+    "multiselect": multiselect,
+    "description": description,
+    "meta": meta.toJson(),
+    "variants": List<dynamic>.from(variants.map((x) => x.toJson())),
   };
 }
 

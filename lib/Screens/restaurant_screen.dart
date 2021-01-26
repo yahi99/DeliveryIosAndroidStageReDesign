@@ -404,90 +404,91 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     isLoading = false;
     // Если хавки нет
     if (restaurantDataItems.productsByStoreUuidList.length == 0) {
-      return Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 50, bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: InkWell(
-                        onTap: () async {
-                          homeScreenKey =
-                          new GlobalKey<HomeScreenState>();
-                          if(await Internet.checkConnection()){
-                            Navigator.of(context).pushAndRemoveUntil(
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation, anotherAnimation) {
-                                      return HomeScreen();
-                                    },
-                                    transitionDuration: Duration(milliseconds: 300),
-                                    transitionsBuilder:
-                                        (context, animation, anotherAnimation, child) {
-                                      return SlideTransition(
-                                        position: Tween(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset(0.0, 0.0))
-                                            .animate(animation),
-                                        child: child,
-                                      );
-                                    }
-                                ), (Route<dynamic> route) => false);
-                          }else{
-                            noConnection(context);
-                          }
-                        },
-                        child: Container(
-                            height: 40,
-                            width: 60,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 12, bottom: 12, right: 10, left: 16),
-                              child: SvgPicture.asset(
-                                  'assets/svg_images/arrow_left.svg'),
-                            ))),
-                  ),
-                ),
-                Flexible(
-                  flex: 7,
-                  child: Align(
-                    alignment: Alignment.center,
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 50, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
                     child: Padding(
-                      padding: EdgeInsets.only(right: 30),
-                      child: Text(
-                        this.restaurant.name,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      padding: EdgeInsets.only(left: 0),
+                      child: InkWell(
+                          onTap: () async {
+                            homeScreenKey =
+                            new GlobalKey<HomeScreenState>();
+                            if(await Internet.checkConnection()){
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation, anotherAnimation) {
+                                        return HomeScreen();
+                                      },
+                                      transitionDuration: Duration(milliseconds: 300),
+                                      transitionsBuilder:
+                                          (context, animation, anotherAnimation, child) {
+                                        return SlideTransition(
+                                          position: Tween(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset(0.0, 0.0))
+                                              .animate(animation),
+                                          child: child,
+                                        );
+                                      }
+                                  ), (Route<dynamic> route) => false);
+                            }else{
+                              noConnection(context);
+                            }
+                          },
+                          child: Container(
+                              height: 40,
+                              width: 60,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 12, bottom: 12, right: 10, left: 16),
+                                child: SvgPicture.asset(
+                                    'assets/svg_images/arrow_left.svg'),
+                              ))),
                     ),
                   ),
-                )
-              ],
+                  Flexible(
+                    flex: 7,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 30),
+                        child: Text(
+                          this.restaurant.name,
+                          style: TextStyle(
+                              fontSize: 18,),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
-          ),
-          _buildFoodCategoryList(),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-            child: Divider(color: Color(0xFFEEEEEE), height: 1,),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-            child: Center(
-              child: Text('Нет товаров данной категории'),
+            Padding(
+              padding: const EdgeInsets.only(top: 0.0, bottom: 0),
+              child: Divider(color: Color(0xFFEEEEEE), height: 1,),
             ),
-          ),
-          SizedBox(height: 10.0),
-        ],
+            _buildFoodCategoryList(),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 0),
+              child: Divider(color: Color(0xFFEEEEEE), height: 1,),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+              child: Center(
+                child: Text('Нет товаров данной категории'),
+              ),
+            ),
+          ],
+        ),
       );
     }
 
@@ -564,7 +565,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 child: Stack(
                   children: <Widget>[
                     Image.network(
-                      getImage(restaurant.url),
+                      getImage((restaurant.meta.images != null && restaurant.meta.images.length > 0) ? restaurant.meta.images[0] : ''),
                       fit: BoxFit.cover,
                       height: 230.0,
                       width: MediaQuery.of(context).size.width,
@@ -572,7 +573,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                     Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
-                          padding: EdgeInsets.only(top: 40, left: 15),
+                          padding: EdgeInsets.only(top: 40, left: 15, right: 0),
                           child: GestureDetector(
                             child: SvgPicture.asset(
                                 'assets/svg_images/rest_arrow_left.svg'),
@@ -617,7 +618,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                   backgroundColor: Colors.white,
                   leading: Padding(
                       padding: const EdgeInsets.all(20),
-                      child: InkWell(child: SliverImage(key: sliverImageKey, image: null,),
+                      child: InkWell(child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: SliverImage(key: sliverImageKey, image: null,),
+                      ),
                         onTap: () async {
                           homeScreenKey =
                           new GlobalKey<HomeScreenState>();
@@ -654,7 +658,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                           child: Stack(
                             children: <Widget>[
                               Image.network(
-                                getImage(restaurant.url),
+                                getImage((restaurant.meta.images != null && restaurant.meta.images.length > 0) ? restaurant.meta.images[0] : ''),
                                 fit: BoxFit.cover,
                                 height: 230.0,
                                 width: MediaQuery.of(context).size.width,
@@ -754,7 +758,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 5),
-                                          child: Text('5.0',
+                                          child: Text(restaurant.meta.rating.toString(),
                                             style: TextStyle(
                                             ),
                                           ),
@@ -783,11 +787,11 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                           child: SvgPicture.asset('assets/svg_images/rest_car.svg',
                                           ),
                                         ),
-//                                        Text(
-//                                          (restaurant.order_preparation_time_second != null)? '~' +  '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
-//                                          style: TextStyle(
-//                                          ),
-//                                        ),
+                                        Text(
+                                          '~' +  '${restaurant.meta.avgDeliveryTime} мин',
+                                          style: TextStyle(
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -805,7 +809,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                                 child: Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(left:8, right: 13, top: 5, bottom: 5),
-                                    child: Text('Доставка 80-150 ₽',
+                                    child: Text('Доставка ${restaurant.meta.avgDeliveryPrice} ₽',
                                       style: TextStyle(
                                       ),
                                     ),
@@ -1390,39 +1394,77 @@ class BasketButtonState extends State<BasketButton> {
 
 class VariantsSelector extends StatefulWidget {
   List<Variant> variantsList;
+  GlobalKey<VariantsSelectorState> key;
+  bool required;
+  String groupName;
 
-  VariantsSelector({Key key, this.variantsList}) : super(key: key);
+
+  VariantsSelector({this.key, this.variantsList, this.required, this.groupName}) : super(key: key);
 
   @override
-  VariantsSelectorState createState() => VariantsSelectorState(variantsList);
+  VariantsSelectorState createState() => VariantsSelectorState(variantsList, required, groupName);
 }
 
 class VariantsSelectorState extends State<VariantsSelector> {
-  Variant selectedVariant;
+  List<Variant> selectedVariants;
   List<Variant> variantsList;
+  bool required;
+  String groupName;
+
 
   @override
   void initState() {
-
-    if(variantsList.length > 0){
-      selectedVariant = variantsList[0];
-    }
+    selectedVariants = new List<Variant>();
+    variantsList.forEach((element) {
+      if(element.variantDefault)
+        selectedVariants.add(element);
+    });
     super.initState();
   }
 
-  VariantsSelectorState(this.variantsList);
+  VariantsSelectorState(this.variantsList, this.required, this.groupName);
+
+  List<Variant> getSelectedToppings() {
+
+    return selectedVariants;
+  }
 
   Widget build(BuildContext context) {
     List<Widget> widgetsList = new List<Widget>();
-    variantsList.forEach((element) {
-      print(element.uuid);
-      widgetsList.add(
+    widgetsList.add(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 15, top: 15),
+              child: Text(
+                groupName,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 15, top: 10),
+            child: Text((required) ? 'Обязательно' : 'Опционально'),
+          )
+        ],
+      ),
+    );
+    if(!required){
+      variantsList.forEach((element) {
+       widgetsList.add( MyCheckBox(element, element.name, this));
+     });
+    }else{
+      variantsList.forEach((element) {
+        print(element.uuid);
+        widgetsList.add(
           GestureDetector(
             child: Padding(
               padding:  EdgeInsets.only(top: 13, bottom: 22 , left: 15),
               child: Row(
                 children: [
-                  (selectedVariant == element) ? SvgPicture.asset('assets/svg_images/checked_rest_circle.svg')
+                  (selectedVariants.contains(element)) ? SvgPicture.asset('assets/svg_images/checked_rest_circle.svg')
                       : SvgPicture.asset('assets/svg_images/rest_circle.svg'),
                   Padding(
                     padding: EdgeInsets.only(left: 18),
@@ -1438,40 +1480,14 @@ class VariantsSelectorState extends State<VariantsSelector> {
             ),
             onTap: (){
               setState(() {
-                selectedVariant = element;
+                selectedVariants.clear();
+                selectedVariants.add(element);
               });
             },
           )
-        // Padding(
-        //   padding:  EdgeInsets.only(left: 2),
-        //   child: ListTile(
-        //     contentPadding: EdgeInsets.zero,
-        //     title: GestureDetector(
-        //       child: Padding(
-        //         padding: const EdgeInsets.only(right: 30),
-        //         child: Text(
-        //           element.name,
-        //           style: TextStyle(color: Color(0xFF424242)),
-        //         ),
-        //       ),onTap: (){
-        //       setState(() {
-        //         selectedVariant = element;
-        //       });
-        //     },
-        //     ),
-        //     leading: Radio(
-        //       value: element,
-        //       groupValue: selectedVariant,
-        //       onChanged: (Variants value) {
-        //         setState(() {
-        //           selectedVariant = value;
-        //         });
-        //       },
-        //     ),
-        //   ),
-        // ),
-      );
-    });
+        );
+      });
+    }
     return Container(
       color: Colors.white,
       child: ScrollConfiguration(
@@ -1494,7 +1510,7 @@ class VariantsSelectorState extends State<VariantsSelector> {
 //   @override
 //   ToppingsSelectorState createState() => ToppingsSelectorState(toppingsList);
 // }
-//
+
 // class ToppingsSelectorState extends State<ToppingsSelector> {
 //   List<Toppings> toppingsList;
 //   List<MyCheckBox> widgetsList = new List<MyCheckBox>();
@@ -1521,100 +1537,66 @@ class VariantsSelectorState extends State<VariantsSelector> {
 //     );
 //   }
 //
-//   List<Toppings> getSelectedToppings() {
-//     List<Toppings> result = new List<Toppings>();
-//     widgetsList.forEach((element) {
-//       if (element.key.currentState != null &&
-//           element.key.currentState.isSelected) {
-//         result.add(element.topping);
-//       }
-//     });
-//     return result;
-//   }
 // }
 //
-// class MyCheckBox extends StatefulWidget {
-//   Toppings topping;
-//   String title;
-//   GlobalKey<MyCheckBoxState> key;
-//
-//   MyCheckBox({this.key, this.topping, this.title}) : super(key: key);
-//
-//   @override
-//   MyCheckBoxState createState() => MyCheckBoxState(topping, title);
-// }
-//
-// class MyCheckBoxState extends State<MyCheckBox> {
-//   Toppings topping;
-//   String title;
-//   bool isSelected = false;
-//
-//   MyCheckBoxState(this.topping, this.title);
-//
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       child: Padding(
-//         padding:  EdgeInsets.only(left: 15, top: 12, bottom: 17),
-//         child: Row(
-//           children: [
-//             (isSelected) ? SvgPicture.asset('assets/svg_images/kitchen_selected.svg') :
-//             SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
-//             Padding(
-//               padding: EdgeInsets.only(left: 15),
-//               child: Text(
-//                 title,
-//                 style: TextStyle(color: Color(0xff424242), fontSize: 14),
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(left: 12.0),
-//               child: Text(
-//                 '+ ${topping.price} \₽',
-//                 style: TextStyle(color: Colors.grey, fontSize: 14),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       onTap: (){
-//         setState(() {
-//           isSelected = !isSelected;
-//         });
-//       },
-//     );
-//     return Padding(
-//       padding: const EdgeInsets.only(left: 6),
-//       child: CheckboxListTile(
-//         contentPadding: EdgeInsets.zero,
-//         controlAffinity: ListTileControlAffinity.leading,
-//         value: isSelected,
-//         title: Padding(
-//           padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.6),
-//           child: Row(
-//             children: [
-//               Text(
-//                 title,
-//                 style: TextStyle(color: Color(0xff424242), fontSize: 14),
-//               ),
-//               Padding(
-//                 padding: EdgeInsets.only(left: 8.0),
-//                 child: Text(
-//                   '+ ${topping.price} \₽',
-//                   style: TextStyle(color: Colors.grey, fontSize: 14),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         onChanged: (bool f) {
-//           setState(() {
-//             isSelected = f;
-//           });
-//         },
-//       ),
-//     );
-//   }
-// }
+ class MyCheckBox extends StatefulWidget {
+   Variant topping;
+   String title;
+   GlobalKey<MyCheckBoxState> key;
+   VariantsSelectorState parent;
+
+   MyCheckBox(this.topping, this.title, this.parent, {this.key}) : super(key: key);
+
+   @override
+   MyCheckBoxState createState() => MyCheckBoxState(topping, title, parent);
+ }
+
+ class MyCheckBoxState extends State<MyCheckBox> {
+   Variant topping;
+   String title;
+   bool isSelected = false;
+   VariantsSelectorState parent;
+
+   MyCheckBoxState(this.topping, this.title, this.parent);
+
+   Widget build(BuildContext context) {
+     return InkWell(
+       child: Padding(
+         padding:  EdgeInsets.only(left: 15, top: 12, bottom: 17),
+         child: Row(
+           children: [
+             (isSelected) ? SvgPicture.asset('assets/svg_images/kitchen_selected.svg') :
+             SvgPicture.asset('assets/svg_images/kitchen_unselected.svg'),
+             Padding(
+               padding: EdgeInsets.only(left: 15),
+               child: Text(
+                 title,
+                 style: TextStyle(color: Color(0xff424242), fontSize: 14),
+               ),
+             ),
+             Padding(
+               padding: EdgeInsets.only(left: 12.0),
+               child: Text(
+                 '+ ${topping.price} \₽',
+                 style: TextStyle(color: Colors.grey, fontSize: 14),
+               ),
+             ),
+           ],
+         ),
+       ),
+       onTap: (){
+         setState(() {
+           isSelected = !isSelected;
+           if(!isSelected){
+             parent.selectedVariants.remove(topping);
+           }else{
+             parent.selectedVariants.add(topping);
+           }
+         });
+       },
+     );
+   }
+ }
 
 
 // Список категорий
@@ -2206,9 +2188,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
 
     DateTime now = DateTime.now();
     int currentTime = now.hour*60+now.minute;
-    print((currentTime/60).toString() + 'KANTENT');
-    print((now.hour).toString() + 'KANTENT');
-    print((now.minute).toString() + 'KANTENT');
     int dayNumber  = now.weekday-1;
 
 //    int work_beginning = parent.restaurant.work_schedule[dayNumber].work_beginning;
@@ -2242,7 +2221,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
 //
 //          }
           return Container(
-            height: 400,
+            height: 300,
             child: Stack(
               children: [
                 Container(
@@ -2285,7 +2264,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                 ),
                Container(
                  padding: EdgeInsets.only(bottom: 0),
-                 height: 400,
+                 height: 600,
                  child: ListView.builder(
                    itemCount: 1,
                    scrollDirection: Axis.vertical,
@@ -2314,7 +2293,10 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
           AsyncSnapshot<ProductsDataModel> snapshot){
         if(snapshot.connectionState == ConnectionState.done){
           ProductsDataModel productsDescription = snapshot.data;
-          print(productsDescription.uuid);
+
+          List<VariantsSelector> variantsSelectors = getVariantGroups(productsDescription);
+
+
           return Container(
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -2380,7 +2362,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             fontSize: 14
                                           ),
                                         ),
-                                        Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ? productsDescription.variants[0].meta.energyValue.protein.toString(): '',
+                                        Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0) ? productsDescription.variantGroups[0].
+                                        variants[0].meta.energyValue.protein.toString(): '',
                                           style: TextStyle(
                                               color: Color(0xFF7D7D7D),
                                               fontSize: 14
@@ -2398,7 +2381,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.fat.toString():'',
+                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0) ?productsDescription.variantGroups[0].
+                                          variants[0].meta.energyValue.fat.toString():'',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2417,7 +2401,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.carbohydrates.toString():"",
+                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0) ?productsDescription.variantGroups[0].
+                                          variants[0].meta.energyValue.carbohydrates.toString():"",
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2436,7 +2421,8 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variants!= null && productsDescription.variants.length > 0) ?productsDescription.variants[0].meta.energyValue.calories.toString():'',
+                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0) ?productsDescription.variantGroups[0].
+                                          variants[0].meta.energyValue.calories.toString():'',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -2448,61 +2434,9 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                   ],
                                 ),
                               ),
-                              Divider(height: 0, color: Color(0xFFE6E6E6),),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  (productsDescription.variants != null)
-                                      ? Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 15, top: 15),
-                                      child: Text(
-                                        productsDescription.name,
-                                      ),
-                                    ),
-                                  )
-                                      : Container(
-                                    height: 0,
-                                  ),
-                                  (productsDescription.variants != null) ? Padding(
-                                    padding: EdgeInsets.only(right: 15, top: 10),
-                                    child: Text('Обязательно'),
-                                  ) : Container()
-                                ],
+                              Column(
+                                children: variantsSelectors
                               ),
-                              (productsDescription.variants != null)
-                                  ? VariantsSelector(
-                                  key: variantsSelectorStateKey,
-                                  variantsList: productsDescription.variants)
-                                  : Container(height: 0),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  (true)
-                                      ? Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 15, top: 10),
-                                      child: Text(
-                                        'Добавки',
-                                      ),
-                                    ),
-                                  )
-                                      : Container(
-                                    height: 0,
-                                  ),
-                                  (true) ? Padding(
-                                    padding: EdgeInsets.only(right: 15, top: 10),
-                                    child: Text('Опционально'),
-                                  ) : Container()
-                                ],
-                              ),
-                              // (restaurantDataItems.toppings != null)
-                              //     ? ToppingsSelector(
-                              //     key: toppingsSelectorStateKey,
-                              //     toppingsList: restaurantDataItems.toppings)
-                              //     : Container(height: 0),
                             ],
                           ),
                         ),
@@ -2510,7 +2444,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                           padding: EdgeInsets.only(top: 14),
                           child: Container(
                             padding: EdgeInsets.only(top: 10, bottom: 10),
-                            decoration: (productsDescription.variants != null) ? BoxDecoration(
+                            decoration: (productsDescription.variantGroups[0].variants != null) ? BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
@@ -2584,7 +2518,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 left: 55, top: 20, right: 55, bottom: 20),
                                             onPressed: () async {
                                               if (await Internet.checkConnection()) {
-                                                addVariantToCart(variantsSelectorStateKey.currentState.selectedVariant.uuid);
+                                                //addVariantToCart(variantsSelectorStateKey.currentState.selectedVariants.uuid);
                                                 // FoodRecords foodOrder =
                                                 // FoodRecords.fromFoodRecords(
                                                 //     restaurantDataItems);
@@ -2675,6 +2609,14 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
       },
     );
 
+  }
+
+  List<VariantsSelector> getVariantGroups(ProductsDataModel productsDescription){
+    List<VariantsSelector> result = new List<VariantsSelector>();
+    productsDescription.variantGroups.forEach((element) {
+      result.add(VariantsSelector(key: new GlobalKey<VariantsSelectorState>(), variantsList: element.variants, required: element.required, groupName: element.name,));
+    });
+    return result;
   }
 
 
