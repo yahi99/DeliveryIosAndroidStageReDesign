@@ -86,7 +86,7 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         child: Padding(
                           padding: EdgeInsets.only(
                               top: 20, bottom: 20, right: 0),
-                          child: Image(image: AssetImage('assets/images/arrow_left.png'),),
+                          child: SvgPicture.asset('assets/svg_images/arrow_left.svg'),
                         )))),
             onTap: () {
               Navigator.pushReplacement(
