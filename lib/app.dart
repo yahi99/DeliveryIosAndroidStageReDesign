@@ -2,8 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Localization/app_localizations.dart';
-import 'package:flutter_app/Screens/city_screen.dart';
-import 'package:flutter_app/Screens/device_id_screen.dart';
+import 'package:flutter_app/Preloader/device_id_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {

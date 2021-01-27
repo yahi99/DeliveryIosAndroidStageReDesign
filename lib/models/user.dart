@@ -1,5 +1,6 @@
+import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
+
 import 'CartDataModel.dart';
-import 'order.dart';
 
 class User{
   bool isLoggedIn;

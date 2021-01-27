@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
-import 'order.dart';
+import '../Screens/OrdersScreen/Model/order.dart';
 
 class CartDataModel {
   List<Order> cart = new List<Order>();

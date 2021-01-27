@@ -2,14 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
-import 'package:flutter_app/Screens/home_screen.dart';
-import 'package:flutter_app/Screens/tickets_chat_screen.dart';
-import 'package:flutter_app/models/Auth.dart';
-import 'package:flutter_app/models/AuthCode.dart';
-import 'package:flutter_app/models/FilteredCities.dart';
+import 'package:flutter_app/Screens/AuthScreen/Model/Auth.dart';
+import 'package:flutter_app/Screens/ChatScreen/View/chat_message_screen.dart';
+import 'package:flutter_app/Screens/ChatScreen/View/chat_screen.dart';
+import 'package:flutter_app/Screens/CityScreen/Model/FilteredCities.dart';
+import 'package:flutter_app/Screens/CodeScreen/Model/AuthCode.dart';
+import 'package:flutter_app/Screens/HomeScreen/View/home_screen.dart';
+import 'package:flutter_app/Screens/HomeScreen/Widgets/OrderChecking.dart';
+import 'package:flutter_app/Screens/ServiceScreen/View/tickets_chat_screen.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
 import 'package:flutter_app/models/user.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:convert' as convert;
 
 Map<String,GlobalKey<OrderCheckingState>> orderCheckingStates = new Map<String,GlobalKey<OrderCheckingState>>();
 Map<String,GlobalKey<ChatMessageScreenState>> chatMessagesStates = new Map<String,GlobalKey<ChatMessageScreenState>>();
@@ -26,6 +30,28 @@ String FCMToken = '';
 int code = 0;
 NecessaryDataForAuth necessaryDataForAuth = new NecessaryDataForAuth(phone_number: null, refresh_token: null, device_id: null, name: null);
 FilteredCities selectedCity;
+
+
+
+String getImage(String imgJson) {
+  try {
+    Map<String,dynamic> json = convert.jsonDecode(imgJson);
+    if(json.containsKey('medium_format')){
+      print('parsedJson ' + json['medium_format']);
+      return json['medium_format'];
+    }
+    print('not parsedJson ' + imgJson);
+    return imgJson;
+  } catch(e){
+    if(imgJson.startsWith('"\\"')) {
+      imgJson = imgJson.substring(3, imgJson.length - 3);
+    }else if(imgJson.startsWith('"')){
+      imgJson = imgJson.substring(1, imgJson.length - 1);
+    }
+    print('exception ' + imgJson);
+    return imgJson;
+  }
+}
 
 var DeliveryStates = [
   'cooking',

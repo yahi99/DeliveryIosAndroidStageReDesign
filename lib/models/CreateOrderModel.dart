@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter_app/models/InitialAddressModel.dart';
-import 'package:flutter_app/models/amplitude.dart';
+import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import '../Config/config.dart';
-import '../PostData/necessary_address_data_pass.dart';
+import '../Screens/OrderConfirmationScreen/API/necessary_address_data_pass.dart';
 import '../data/data.dart';
-import 'AuthCode.dart';
+import '../Screens/CodeScreen/Model/AuthCode.dart';
 import 'CartDataModel.dart';
 import 'NecessaryAddressModel.dart';
 import 'ResponseData.dart';
