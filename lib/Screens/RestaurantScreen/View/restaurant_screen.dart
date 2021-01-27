@@ -330,17 +330,17 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 )
             ),
           ),
-//          Padding(
-//            padding: EdgeInsets.only(left: 20, top: 10),
-//            child: Align(
-//                alignment: Alignment.topLeft,
-//                child: Text('Доставка до ${(work_ending / 60).toStringAsFixed(0)} часов',
-//                  style: TextStyle(
-//                      fontSize: 14
-//                  ),
-//                )
-//            ),
-//          ),
+         Padding(
+           padding: EdgeInsets.only(left: 20, top: 10),
+           child: Align(
+               alignment: Alignment.topLeft,
+               child: Text('${restaurant.meta.avgDeliveryTime} мин',
+                 style: TextStyle(
+                     fontSize: 14
+                 ),
+               )
+           ),
+         ),
           Padding(
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Align(
@@ -390,9 +390,9 @@ class RestaurantScreenState extends State<RestaurantScreen> {
     String lastCategoryUuid = "";
     int lastCategoryIndex = -1;
     foodMenuItems.forEach((foodMenuItem) {
-      if(foodMenuItem.restaurantDataItems.productCategoriesUuid[0] != lastCategoryUuid){
+      if(foodMenuItem.restaurantDataItems.productCategories[0].uuid != lastCategoryUuid){
         lastCategoryIndex++;
-        lastCategoryUuid = foodMenuItem.restaurantDataItems.productCategoriesUuid[0];
+        lastCategoryUuid = foodMenuItem.restaurantDataItems.productCategories[0].uuid;
         menu.add(foodMenuTitles[lastCategoryIndex]);
       }
       print(foodMenuItem.restaurantDataItems.uuid);

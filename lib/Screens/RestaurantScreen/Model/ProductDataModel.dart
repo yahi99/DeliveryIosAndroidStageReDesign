@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final productsDataModel = productsDataModelFromJson(jsonString);
-
 import 'dart:convert';
 
 ProductsDataModel productsDataModelFromJson(String str) => ProductsDataModel.fromJson(json.decode(str));
@@ -15,6 +11,8 @@ class ProductsDataModel {
     this.storeUuid,
     this.comment,
     this.url,
+    this.price,
+    this.defaultSet,
     this.meta,
     this.productCategories,
     this.variantGroups,
@@ -25,6 +23,8 @@ class ProductsDataModel {
   String storeUuid;
   String comment;
   String url;
+  int price;
+  bool defaultSet;
   ProductsDataModelMeta meta;
   List<ProductCategory> productCategories;
   List<VariantGroup> variantGroups;
@@ -35,6 +35,8 @@ class ProductsDataModel {
     storeUuid: json["store_uuid"],
     comment: json["comment"],
     url: json["url"],
+    price: json["price"],
+    defaultSet: json["default_set"],
     meta: ProductsDataModelMeta.fromJson(json["meta"]),
     productCategories: List<ProductCategory>.from(json["product_categories"].map((x) => ProductCategory.fromJson(x))),
     variantGroups: List<VariantGroup>.from(json["variant_groups"].map((x) => VariantGroup.fromJson(x))),
@@ -46,6 +48,8 @@ class ProductsDataModel {
     "store_uuid": storeUuid,
     "comment": comment,
     "url": url,
+    "price": price,
+    "default_set": defaultSet,
     "meta": meta.toJson(),
     "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
     "variant_groups": List<dynamic>.from(variantGroups.map((x) => x.toJson())),
@@ -53,12 +57,54 @@ class ProductsDataModel {
 }
 
 class ProductsDataModelMeta {
-  ProductsDataModelMeta();
+  ProductsDataModelMeta({
+    this.description,
+    this.images,
+    this.energyValue,
+  });
+
+  String description;
+  List<String> images;
+  EnergyValue energyValue;
 
   factory ProductsDataModelMeta.fromJson(Map<String, dynamic> json) => ProductsDataModelMeta(
+    description: json["description"],
+    images: json["images"] == null ? null : List<String>.from(json["images"].map((x) => x)),
+    energyValue: EnergyValue.fromJson(json["energy_value"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "description": description,
+    "images": images == null ? null : List<dynamic>.from(images.map((x) => x)),
+    "energy_value": energyValue.toJson(),
+  };
+}
+
+class EnergyValue {
+  EnergyValue({
+    this.protein,
+    this.fat,
+    this.carbohydrates,
+    this.calories,
+  });
+
+  int protein;
+  int fat;
+  int carbohydrates;
+  int calories;
+
+  factory EnergyValue.fromJson(Map<String, dynamic> json) => EnergyValue(
+    protein: json["protein"],
+    fat: json["fat"],
+    carbohydrates: json["carbohydrates"],
+    calories: json["calories"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "protein": protein,
+    "fat": fat,
+    "carbohydrates": carbohydrates,
+    "calories": calories,
   };
 }
 
@@ -77,7 +123,7 @@ class ProductCategory {
   int priority;
   String comment;
   String url;
-  ProductsDataModelMeta meta;
+  ProductCategoryMeta meta;
 
   factory ProductCategory.fromJson(Map<String, dynamic> json) => ProductCategory(
     uuid: json["uuid"],
@@ -85,7 +131,7 @@ class ProductCategory {
     priority: json["priority"],
     comment: json["comment"],
     url: json["url"],
-    meta: ProductsDataModelMeta.fromJson(json["meta"]),
+    meta: ProductCategoryMeta.fromJson(json["meta"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -95,6 +141,16 @@ class ProductCategory {
     "comment": comment,
     "url": url,
     "meta": meta.toJson(),
+  };
+}
+
+class ProductCategoryMeta {
+  ProductCategoryMeta();
+
+  factory ProductCategoryMeta.fromJson(Map<String, dynamic> json) => ProductCategoryMeta(
+  );
+
+  Map<String, dynamic> toJson() => {
   };
 }
 
@@ -116,7 +172,7 @@ class VariantGroup {
   bool required;
   bool multiselect;
   String description;
-  ProductsDataModelMeta meta;
+  ProductCategoryMeta meta;
   List<Variant> variants;
 
   factory VariantGroup.fromJson(Map<String, dynamic> json) => VariantGroup(
@@ -126,7 +182,7 @@ class VariantGroup {
     required: json["required"],
     multiselect: json["multiselect"],
     description: json["description"],
-    meta: ProductsDataModelMeta.fromJson(json["meta"]),
+    meta: ProductCategoryMeta.fromJson(json["meta"]),
     variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
   );
 
@@ -161,7 +217,7 @@ class Variant {
   int price;
   String description;
   bool variantDefault;
-  VariantMeta meta;
+  ProductsDataModelMeta meta;
 
   factory Variant.fromJson(Map<String, dynamic> json) => Variant(
     uuid: json["uuid"],
@@ -171,7 +227,7 @@ class Variant {
     price: json["price"],
     description: json["description"],
     variantDefault: json["default"],
-    meta: VariantMeta.fromJson(json["meta"]),
+    meta: ProductsDataModelMeta.fromJson(json["meta"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -183,57 +239,5 @@ class Variant {
     "description": description,
     "default": variantDefault,
     "meta": meta.toJson(),
-  };
-}
-
-class VariantMeta {
-  VariantMeta({
-    this.description,
-    this.images,
-    this.energyValue,
-  });
-
-  String description;
-  dynamic images;
-  EnergyValue energyValue;
-
-  factory VariantMeta.fromJson(Map<String, dynamic> json) => VariantMeta(
-    description: json["description"],
-    images: json["images"],
-    energyValue: EnergyValue.fromJson(json["energy_value"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "description": description,
-    "images": images,
-    "energy_value": energyValue.toJson(),
-  };
-}
-
-class EnergyValue {
-  EnergyValue({
-    this.protein,
-    this.fat,
-    this.carbohydrates,
-    this.calories,
-  });
-
-  int protein;
-  int fat;
-  int carbohydrates;
-  int calories;
-
-  factory EnergyValue.fromJson(Map<String, dynamic> json) => EnergyValue(
-    protein: json["protein"],
-    fat: json["fat"],
-    carbohydrates: json["carbohydrates"],
-    calories: json["calories"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "protein": protein,
-    "fat": fat,
-    "carbohydrates": carbohydrates,
-    "calories": calories,
   };
 }

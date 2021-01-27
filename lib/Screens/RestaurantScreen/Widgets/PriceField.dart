@@ -17,9 +17,7 @@ class PriceFieldState extends State<PriceField> {
   PriceFieldState(this.restaurantDataItems);
   Widget build(BuildContext context) {
     return Text(
-      '00',
-      // '${restaurantDataItems.price * count}\₽',
-
+      '${restaurantDataItems.price * count}\₽',
       style: TextStyle(
           fontSize: 15.0,
           color: Color(0xFF000000)),

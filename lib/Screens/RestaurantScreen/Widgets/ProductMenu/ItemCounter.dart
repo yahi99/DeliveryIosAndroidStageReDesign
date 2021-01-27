@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Model/ProductsByStoreUuid.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/View/restaurant_screen.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Widgets/PriceField.dart';
+import 'package:flutter_app/data/data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'Item.dart';
@@ -66,8 +68,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, bottom: 5, top: 5, right: 5),
                     child: Text(
-                      '00',
-                      // '${foodRecords.price} \₽',
+                       '${foodRecords.price} \₽',
                       style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,

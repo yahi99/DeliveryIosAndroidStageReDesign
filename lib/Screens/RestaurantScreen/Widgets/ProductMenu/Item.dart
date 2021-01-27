@@ -144,8 +144,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                             Padding(
                                               padding: const EdgeInsets.only(top: 5),
                                               child: Text(
-                                                '000',
-//                                                    '${restaurantDataItems.price} \₽',
+                                                   '${restaurantDataItems.price} \₽',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.grey),
@@ -157,7 +156,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                       ],
                                     ),
                                   ),
-//                                  MenuItemCounter(foodRecords: restaurantDataItems, key: menuItemCounterKey, order: order, parent: this)
+                                 MenuItemCounter(foodRecords: restaurantDataItems, key: menuItemCounterKey, order: order, parent: this)
                                 ],
                               ),
                             ),
@@ -172,7 +171,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                             topRight: Radius.circular(15),
                             bottomRight: Radius.circular(15)),
                         child: Image.network(
-                          getImage(restaurantDataItems.url),
+                          getImage(restaurantDataItems.image[0]),
                           fit: BoxFit.cover,
                           height: 150,
                           width: 168,
@@ -221,11 +220,11 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
 //
 //          }
           return Container(
-            height: 300,
+            height: 600,
             child: Stack(
               children: [
                 Container(
-                  height: 200,
+                  height: 600,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
@@ -242,7 +241,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                       child: Stack(
                         children: <Widget>[
                           Image.network(
-                            getImage(restaurantDataItems.url),
+                            getImage(restaurantDataItems.image[0]),
                             fit: BoxFit.cover,
                             height: 180.0,
                             width: MediaQuery.of(context).size.width,
@@ -262,15 +261,18 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                         ],
                       )),
                 ),
-                Container(
-                  padding: EdgeInsets.only(bottom: 0),
-                  height: 600,
-                  child: ListView.builder(
-                    itemCount: 1,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context ,int index){
-                      return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
-                    },
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 0),
+                    height: 450,
+                    child: ListView.builder(
+                      itemCount: 1,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context ,int index){
+                        return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
+                      },
+                    ),
                   ),
                 )
               ],
@@ -331,15 +333,15 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                   ),
                                 ),
                               ),
-                              (restaurantDataItems.comment != "" &&
-                                  restaurantDataItems.comment != null)
+                              (productsDescription.meta.description != "" &&
+                                  productsDescription.meta.description != null)
                                   ? Padding(
                                 padding:
                                 EdgeInsets.only(left: 15, top: 20, bottom: 10),
                                 child: Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    restaurantDataItems.comment,
+                                    productsDescription.meta.description,
                                     style: TextStyle(
                                         color: Color(0xFFB0B0B0), fontSize: 13),
                                   ),
@@ -362,9 +364,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                               fontSize: 14
                                           ),
                                         ),
-                                        Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0
-                                        && productsDescription.variantGroups[0].variants!= null &&  productsDescription.variantGroups[0].variants.length > 0) ? productsDescription.variantGroups[0].
-                                        variants[0].meta.energyValue.protein.toString(): '',
+                                        Text((productsDescription!= null) ? productsDescription.meta.energyValue.protein.toString(): '',
                                           style: TextStyle(
                                               color: Color(0xFF7D7D7D),
                                               fontSize: 14
@@ -382,9 +382,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0
-                                              && productsDescription.variantGroups[0].variants!= null &&  productsDescription.variantGroups[0].variants.length > 0) ?productsDescription.variantGroups[0].
-                                          variants[0].meta.energyValue.fat.toString():'',
+                                          Text((productsDescription!= null) ? productsDescription.meta.energyValue.fat.toString(): '',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -403,9 +401,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0
-                                              && productsDescription.variantGroups[0].variants!= null &&  productsDescription.variantGroups[0].variants.length > 0) ?productsDescription.variantGroups[0].
-                                          variants[0].meta.energyValue.carbohydrates.toString():"",
+                                          Text((productsDescription!= null) ? productsDescription.meta.energyValue.carbohydrates.toString() :"",
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14
@@ -424,9 +420,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 fontSize: 14
                                             ),
                                           ),
-                                          Text((productsDescription.variantGroups!= null && productsDescription.variantGroups.length > 0
-                                              && productsDescription.variantGroups[0].variants!= null &&  productsDescription.variantGroups[0].variants.length > 0) ?productsDescription.variantGroups[0].
-                                          variants[0].meta.energyValue.calories.toString():'',
+                                          Text((productsDescription!= null) ? productsDescription.meta.energyValue.calories.toString(): '',
                                             style: TextStyle(
                                                 color: Color(0xFF7D7D7D),
                                                 fontSize: 14

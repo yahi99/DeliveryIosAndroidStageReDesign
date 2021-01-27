@@ -22,8 +22,43 @@ class ProductsByStoreUuid {
   ProductsByStoreUuid({
     this.uuid,
     this.name,
-    this.storeUuid,
-    this.productCategoriesUuid,
+    this.price,
+    this.defaultSet,
+    this.image,
+    this.productCategories,
+  });
+
+  String uuid;
+  String name;
+  int price;
+  bool defaultSet;
+  List<String> image;
+  List<ProductCategory> productCategories;
+
+  factory ProductsByStoreUuid.fromJson(Map<String, dynamic> json) => ProductsByStoreUuid(
+    uuid: json["uuid"],
+    name: json["name"],
+    price: json["price"],
+    defaultSet: json["default_set"],
+    image: List<String>.from(json["image"].map((x) => x)),
+    productCategories: List<ProductCategory>.from(json["product_categories"].map((x) => ProductCategory.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "uuid": uuid,
+    "name": name,
+    "price": price,
+    "default_set": defaultSet,
+    "image": List<dynamic>.from(image.map((x) => x)),
+    "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
+  };
+}
+
+class ProductCategory {
+  ProductCategory({
+    this.uuid,
+    this.name,
+    this.priority,
     this.comment,
     this.url,
     this.meta,
@@ -31,17 +66,15 @@ class ProductsByStoreUuid {
 
   String uuid;
   String name;
-  String storeUuid;
-  List<String> productCategoriesUuid;
+  int priority;
   String comment;
   String url;
   Meta meta;
 
-  factory ProductsByStoreUuid.fromJson(Map<String, dynamic> json) => ProductsByStoreUuid(
+  factory ProductCategory.fromJson(Map<String, dynamic> json) => ProductCategory(
     uuid: json["uuid"],
     name: json["name"],
-    storeUuid: json["store_uuid"],
-    productCategoriesUuid: (json["product_categories_uuid"] == null) ? null : List<String>.from(json["product_categories_uuid"].map((x) => x)),
+    priority: json["priority"],
     comment: json["comment"],
     url: json["url"],
     meta: Meta.fromJson(json["meta"]),
@@ -50,8 +83,7 @@ class ProductsByStoreUuid {
   Map<String, dynamic> toJson() => {
     "uuid": uuid,
     "name": name,
-    "store_uuid": storeUuid,
-    "product_categories_uuid": List<dynamic>.from(productCategoriesUuid.map((x) => x)),
+    "priority": priority,
     "comment": comment,
     "url": url,
     "meta": meta.toJson(),
