@@ -9,11 +9,12 @@ import 'package:flutter_app/Screens/CodeScreen/API/auth_code_data_pass.dart';
 import 'package:flutter_app/Screens/HomeScreen/View/home_screen.dart';
 import 'package:flutter_app/Screens/NameScreen/View/name_screen.dart';
 import 'package:flutter_app/data/data.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Centrifugo/centrifugo.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:async';
+
+import '../../../Amplitude/amplitude.dart';
+import '../../../Centrifugo/centrifugo.dart';
 
 class CodeScreen extends StatefulWidget {
   CodeScreen({Key key}) : super(key: key);

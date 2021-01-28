@@ -1,8 +1,9 @@
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CreateOrderModel.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Screens/HomeScreen/Model/StoreByUuid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../Model/StoreByUuid.dart';
 
 
 Future<StoreByUuid> getStoreByUuid() async {

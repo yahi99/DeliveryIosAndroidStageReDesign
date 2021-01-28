@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Screens/HomeScreen/API/getInitData.dart';
 import 'package:flutter_app/Screens/OrdersScreen/Model/OrderStoryModel.dart';
 import 'package:flutter_app/Screens/OrdersScreen/View/orders_details.dart';
 import 'package:flutter_app/data/data.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Screens/HomeScreen/Model/InitData.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../API/getInitData.dart';
+import '../Model/InitData.dart';
 
 class OrderChecking extends StatefulWidget {
   OrdersStoryModelItem ordersStoryModelItem;

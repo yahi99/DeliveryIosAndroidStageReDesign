@@ -14,13 +14,14 @@ import 'package:flutter_app/Screens/InformationScreen/View/infromation_screen.da
 import 'package:flutter_app/Screens/MyAddressesScreen/View/my_addresses_screen.dart';
 import 'package:flutter_app/Screens/OrdersScreen/View/orders_story_screen.dart';
 import 'package:flutter_app/Screens/ProfileScreen/View/profile_screen.dart';
-import 'package:flutter_app/Screens/RestaurantScreen/View/restaurant_screen.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Widgets/CartButton/CartButton.dart';
 import 'package:flutter_app/Screens/ServiceScreen/View/service_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../CityScreen/View/city_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   GlobalKey<CartButtonState> basketButtonStateKey = new GlobalKey<CartButtonState>();
   Filter filter;
   RestaurantsList restaurantsList;
+  GlobalKey<CityScreenState> cityScreenKey = new GlobalKey<CityScreenState>();
 
 
   @override
@@ -283,7 +285,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
         context: context,
         builder: (context) {
           return Container(
-            height: 360,
+            height: 200,
             child: _buildDispatchAddressBottomNavigationMenu(),
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
@@ -309,11 +311,22 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 30, bottom: 20),
-              child: Text('Адреса',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold
-                ),
+              child: Row(
+                children: [
+                  Text('Адреса',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text('Сменить город',
+                    style: TextStyle(
+                        fontSize: 16,
+                      color: Colors.grey,
+                      decoration: TextDecoration.underline
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -421,7 +434,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                    color: Color(0xFF09B44D)
                                ),
                                child: Center(
-                                 child: Text('Хаджи Мамсурова,42',
+                                 child: Text('Владикавказ',
                                    style: TextStyle(
                                        color: Colors.white,
                                        fontSize: 13
@@ -430,7 +443,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                ),
                              ),
                              onTap: (){
-                               _dispatchAddress();
+                               Navigator.push(
+                                 context,
+                                 new MaterialPageRoute(
+                                   builder: (context) =>
+                                   new CityScreen(),
+                                 ),
+                               );
                              },
                            ),
                            Padding(
@@ -488,7 +507,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   color: Color(0xFF09B44D)
                               ),
                               child: Center(
-                                child: Text('Хаджи Мамсурова,42',
+                                child: Text('Владикавказ',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13
@@ -497,7 +516,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               ),
                             ),
                             onTap: (){
-                              _dispatchAddress();
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (context) =>
+                                  new CityScreen(),
+                                ),
+                              );
                             },
                           ),
                           Padding(

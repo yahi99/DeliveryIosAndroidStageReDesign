@@ -20,7 +20,7 @@ class CartDataModel {
       }
       Map<String, dynamic> item =
           {
-            "uuid": order.food.uuid,
+            "name": order.food.name,
             "variant_uuid": (order.food.variants != null) ? order.food.variants[0].uuid : null,
             "toppings_uuid": toppingsUuid,
             "number": order.quantity,

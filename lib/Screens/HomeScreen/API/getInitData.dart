@@ -1,8 +1,9 @@
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CreateOrderModel.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Screens/HomeScreen/Model/InitData.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../Model/InitData.dart';
 
 
 Future<InitData> getInitData() async {

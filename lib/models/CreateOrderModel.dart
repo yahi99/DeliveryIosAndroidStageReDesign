@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_app/models/InitialAddressModel.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import '../Amplitude/amplitude.dart';
 import '../Config/config.dart';
 import '../Screens/OrderConfirmationScreen/API/necessary_address_data_pass.dart';
 import '../data/data.dart';

@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Screens/CityScreen/Model/CityByCoordinates.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../Model/CityByCoordinates.dart';
 
 Future<CityByCoordinates> getCityByCoordinates(double lat, double long) async {
 

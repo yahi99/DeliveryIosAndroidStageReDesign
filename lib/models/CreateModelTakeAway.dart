@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:flutter_app/Screens/CodeScreen/Model/AuthCode.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import '../Amplitude/amplitude.dart';
 import '../data/data.dart';
 import 'CartDataModel.dart';
 import 'ResponseData.dart';

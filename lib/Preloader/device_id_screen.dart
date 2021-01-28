@@ -3,7 +3,8 @@ import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/Screens/CityScreen/View/city_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/CartDataModel.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
+
+import '../Amplitude/amplitude.dart';
 
 class DeviceIdScreen extends StatelessWidget {
 

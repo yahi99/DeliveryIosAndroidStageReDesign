@@ -9,9 +9,10 @@ import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Amplitude/amplitude.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:io' show Platform;
+
+import '../../../Amplitude/amplitude.dart';
 
 
 class CartPageScreen extends StatefulWidget {

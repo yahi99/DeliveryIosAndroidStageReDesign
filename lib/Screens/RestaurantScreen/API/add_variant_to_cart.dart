@@ -3,6 +3,9 @@ import 'package:flutter_app/Screens/CodeScreen/Model/AuthCode.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import '../../../models/CartDataModel.dart';
+import '../Model/ProductDataModel.dart';
+
 Future<AuthCodeData> addVariantToCart(String variant_uuid) async {
 
   AuthCodeData authCodeData = null;
@@ -23,4 +26,27 @@ Future<AuthCodeData> addVariantToCart(String variant_uuid) async {
   }
   print(response.body);
   return authCodeData;
+
+}
+
+Future sendData(String variant_uuid) async {
+  var url = 'http://78.110.156.74:3003/api/v3/orders/carts/${variant_uuid}';
+  CartDataModel cartDataModel;
+  var response = await http.post(url, body: jsonEncode({
+    "cart_item":[
+      "product" ,
+    ]
+  }), headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Accept': 'application/json',
+    'Source':'ios_client_app_1',
+    "ServiceName": 'faem_food',
+  });
+
+  if (response.statusCode == 200) {
+    var jsonResponse = convert.jsonDecode(response.body);
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+  print(response.body);
 }

@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:device_id/device_id.dart';
 import 'package:flutter_app/Screens/CodeScreen/Model/AuthCode.dart';
 import 'package:flutter_app/data/data.dart';
-import 'file:///C:/Users/79187/AndroidStudioProjects/DeliveryIosAndroidStageReDesign/lib/Centrifugo/centrifugo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../Centrifugo/centrifugo.dart';
 
 class NecessaryDataForAuth{
   String device_id;
