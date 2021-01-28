@@ -6,6 +6,7 @@ import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_app/Screens/address_screen.dart';
+import '../Localization/app_localizations.dart';
 import 'address_screen.dart';
 import 'my_addresses_screen.dart';
 
@@ -100,7 +101,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                 padding: EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 5),
                 child: FlatButton(
                   child: Text(
-                      "Добавить адрес",
+                      AppLocalizations.of(context).getTranslation('my_addresses.button_text'),
                       style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.white)

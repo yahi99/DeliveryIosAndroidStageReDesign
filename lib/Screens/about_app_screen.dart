@@ -42,7 +42,7 @@ class AboutAppScreenState extends State<AboutAppScreen> {
                           padding: EdgeInsets.only(bottom: 25),
                           child: Center(
                             child: Text(
-                              'Версия 1.0 от 13 окт. 2020 г.\nсборка 34234',
+                              AppLocalizations.of(context).getTranslation('info.desc'),
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Color(0x97979797), fontSize: 15),
                             ),

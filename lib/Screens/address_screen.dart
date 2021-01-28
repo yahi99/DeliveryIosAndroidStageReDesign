@@ -101,7 +101,7 @@ class AddressScreenState extends State<AddressScreen>
                     Padding(
                       padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
                       child: Text(
-                        'Ошибка при оплате',
+                        AppLocalizations.of(context).getTranslation('alert_dialogs.payment_error'),
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -251,30 +251,6 @@ class AddressScreenState extends State<AddressScreen>
                     ),
                   ],
                 )),
-          ),
-        );
-      },
-    );
-  }
-
-  emptyFields(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.of(context).pop(true);
-        });
-        return Center(
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            child: Container(
-              height: 50,
-              width: 100,
-              child: Center(
-                child: Text("Введите адрес"),
-              ),
-            ),
           ),
         );
       },
@@ -576,7 +552,7 @@ class AddressScreenState extends State<AddressScreen>
                         child: Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: Text(
-                            "Подтверждение заказа",
+                            AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_confirmation'),
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

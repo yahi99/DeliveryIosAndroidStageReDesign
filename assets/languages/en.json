@@ -55,7 +55,7 @@
     },
   "order_confirmation_screen":
     {
-      "address_confirmation": "Confirm address",
+      "order_confirmation": "Confirm order",
       "departure_address_title": "Shipping address",
       "departure_address_desc": "Select shipping address",
       "change": "Change",
@@ -100,7 +100,8 @@
       "add_item": "Product added to cart",
       "rest_desc": "All previously added dishes from the restaurant will be removed from the cart",
       "reject": "Cancel",
-      "confirm_desc": "We send your order to the system"
+      "confirm_desc": "We send your order to the system",
+      "payment_error": "Payment error"
     },
   "bottom_sheets":
     {
@@ -141,7 +142,7 @@
   "info":
     {
       "about_app": "About app",
-      "desc": "Version 1.0 from oct 2020 build 34234",
+      "desc": "Version 1.0 from oct 2020 \nbuild 34234",
       "license": "License agreement",
       "policy": "Privacy policy",
       "faem": "FAEM TECHNOLOGIES LLC"
