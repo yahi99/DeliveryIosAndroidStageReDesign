@@ -920,7 +920,7 @@ class AddressScreenState extends State<AddressScreen>
                                 controller: commentField,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 15),
-                                  hintText: 'Оставить комментарий',
+                                  hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.leave_the_comment'),
                                   hintStyle: TextStyle(
                                       color: Color(0xFFE6E6E6)
                                   ),
@@ -1385,7 +1385,7 @@ class TakeAwayState extends State<TakeAway>
                     Padding(
                       padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
                       child: Text(
-                        'Ошибка при оплате',
+                        AppLocalizations.of(context).getTranslation('alert_dialogs.payment_error'),
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -1541,29 +1541,6 @@ class TakeAwayState extends State<TakeAway>
     );
   }
 
-  emptyFields(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.of(context).pop(true);
-        });
-        return Center(
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            child: Container(
-              height: 50,
-              width: 100,
-              child: Center(
-                child: Text("Введите адрес"),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   void _selectItem(String name) {
     Navigator.pop(context);
@@ -1779,7 +1756,7 @@ class TakeAwayState extends State<TakeAway>
                         child: Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: Text(
-                            "Подтверждение заказа",
+                            AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_confirmation'),
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -2106,7 +2083,7 @@ class TakeAwayState extends State<TakeAway>
                                 controller: commentField,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 15),
-                                  hintText: 'Оставить комментарий',
+                                  hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.leave_the_comment'),
                                   hintStyle: TextStyle(
                                       color: Color(0xFFE6E6E6)
                                   ),
@@ -2472,7 +2449,7 @@ class AddressSelectorState extends State<AddressSelector> with AutomaticKeepAliv
                         controller: notFavouriteAddressController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: 15),
-                          hintText: 'Указать другой адрес',
+                          hintText: AppLocalizations.of(context).getTranslation('order_confirmation_screen.specify_another_address'),
                           hintStyle: TextStyle(
                               color: Color(0xFFE6E6E6)
                           ),
@@ -2630,9 +2607,9 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                 alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 20),
-                  child: (necessaryDataForAuth.name == '') ? Text('Ваш заказ принят!', style: TextStyle(
+                  child: (necessaryDataForAuth.name == '') ? Text(AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_accepted'), style: TextStyle(
                       fontSize: 24
-                  ),) : Text(name + ', ваш заказ принят! ',
+                  ),) : Text(name + ', ${AppLocalizations.of(context).getTranslation('order_confirmation_screen.order_accepted')} ',
                     style: TextStyle(
                         fontSize: 24
                     ),
@@ -2660,7 +2637,7 @@ class OrderSuccessScreenState extends State<OrderSuccessScreen> {
                     EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 15),
                     child: FlatButton(
                       child: Text(
-                        'Продолжить',
+                        AppLocalizations.of(context).getTranslation('order_confirmation_screen.continue'),
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       color: Color(0xFF09B44D),

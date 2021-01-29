@@ -8,6 +8,10 @@
       "info_title": "Info",
       "exit_title": "Exit"
     },
+  "auth_screen":
+  {
+    "phone_number": "Enter your phone number"
+  },
   "home_screen":
     {
       "order_state_widget":
@@ -51,7 +55,8 @@
       "take_away_desc": "Take your order for, in minutes",
       "time_value": "min",
       "total": "Total",
-      "button_title": "Next"
+      "button_title": "Next",
+      "delete": "Delete"
     },
   "order_confirmation_screen":
     {
@@ -60,6 +65,7 @@
       "departure_address_desc": "Select shipping address",
       "change": "Change",
       "your_address": "Your address",
+      "specify_another_address": "Specify another address",
       "order_for_another_person":
         {
           "title": "Ordering to another person",
@@ -68,6 +74,7 @@
         },
       "address": "Address",
       "comment": "Comment",
+      "leave_the_comment": "Leave a comment",
       "floor": "Floor",
       "office": "Apt. / Office",
       "intercom": "Intercom",
@@ -75,14 +82,16 @@
       "price": "Cost",
       "total": "Total",
       "time_value": "min",
+      "continue": "Continue",
       "delivery_time": "Delivery time",
+      "order_accepted": "Your order is accepted!",
       "payment_type":
         {
           "title": "Payment method",
           "cash": "Cash",
           "card": "Card"
         },
-      "promo_code_title": "Enter promo code",
+      "promo_code_title": "  Enter\npromo code",
       "promo_code_desc": "Promo code applied",
       "at_restaurant": "Eat in a cafe",
       "sale": "Sale",

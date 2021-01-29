@@ -10,6 +10,8 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Localization/app_localizations.dart';
+
 class AuthScreen extends StatefulWidget {
   AuthScreen({Key key}) : super(key: key);
 
@@ -89,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
-                          'Укажите ваш номер телефона',
+                          AppLocalizations.of(context).getTranslation('auth_screen.phone_number'),
                           style: TextStyle(
                               fontSize: 18,
                             color: Colors.white
@@ -251,7 +253,7 @@ class ButtonState extends State<Button> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return FlatButton(
-      child: Text('Далее',
+      child: Text(AppLocalizations.of(context).getTranslation('cart_screen.button_title'),
           style: TextStyle(
               fontSize: 18.0,
               color: Colors.white)),

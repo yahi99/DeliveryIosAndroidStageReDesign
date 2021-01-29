@@ -6,6 +6,8 @@ import 'package:flutter_app/models/RecommendationAddressModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../Localization/app_localizations.dart';
+
 class AutoCompleteField extends StatefulWidget {
   GlobalKey<AutoCompleteFieldState> key;
   AsyncCallback onSelected;
@@ -81,7 +83,7 @@ class AutoCompleteFieldState extends State<AutoCompleteField> with AutomaticKeep
                               child: Padding(
                                 padding: EdgeInsets.all(5),
                                 child: Text(
-                                  'Адрес',
+                                  AppLocalizations.of(context).getTranslation('order_confirmation_screen.address'),
                                   style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey

@@ -261,7 +261,7 @@ class CartPageState extends State<CartPageScreen> {
                                                   child: Container(
                                                     padding: EdgeInsets.only(top: 20, bottom: 20),
                                                     child: Center(
-                                                      child: Text("Отмена",
+                                                      child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.reject'),
                                                         style: TextStyle(
                                                             color: Color(0xFF007AFF),
                                                             fontSize: 20
@@ -408,7 +408,7 @@ class CartPageState extends State<CartPageScreen> {
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Text(
-                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                  (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} ${AppLocalizations.of(context).getTranslation('cart_screen.time_value')}' : '',
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     color: Colors.black,
@@ -851,7 +851,7 @@ class CartScreenState extends State<CartScreen> {
                                         height: 50,
                                         width: 700,
                                         child: Center(
-                                          child: Text("Удалить",
+                                          child: Text(AppLocalizations.of(context).getTranslation('cart_screen.delete'),
                                             style: TextStyle(
                                                 color: Color(0xFFFF3B30),
                                                 fontSize: 20
@@ -929,7 +929,7 @@ class CartScreenState extends State<CartScreen> {
                                           child: Container(
                                             padding: EdgeInsets.only(top: 20, bottom: 20),
                                             child: Center(
-                                              child: Text("Удалить",
+                                              child: Text(AppLocalizations.of(context).getTranslation('cart_screen.delete'),
                                                 style: TextStyle(
                                                     color: Color(0xFFFF3B30),
                                                     fontSize: 20
@@ -967,7 +967,7 @@ class CartScreenState extends State<CartScreen> {
                                           child: Container(
                                             padding: EdgeInsets.only(top: 20, bottom: 20),
                                             child: Center(
-                                              child: Text("Отмена",
+                                              child: Text(AppLocalizations.of(context).getTranslation('alert_dialogs.reject'),
                                                 style: TextStyle(
                                                     color: Color(0xFF007AFF),
                                                     fontSize: 20

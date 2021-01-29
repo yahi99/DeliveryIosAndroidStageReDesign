@@ -8,6 +8,14 @@
       "info_title": "Информация",
       "exit_title": "Выход"
     },
+  "auth_screen":
+  {
+    "phone_number": "Укажите ваш номер телефона"
+  },
+  "code_screen":
+  {
+    "code": "Укажите ваш номер телефона"
+  },
   "home_screen":
     {
       "order_state_widget":
@@ -50,7 +58,8 @@
       "take_away_desc": "Заберите заказ на, через минут",
       "time_value": "мин",
       "total": "Итого",
-      "button_title": "Далее"
+      "button_title": "Далее",
+      "delete": "Удалить"
     },
   "order_confirmation_screen":
     {
@@ -59,6 +68,7 @@
       "departure_address_desc": "С какого адреса вам отправить?",
       "change": "Изменить",
       "your_address": "Ваш адрес",
+      "specify_another_address": "Указать другой адрес",
       "order_for_another_person":
         {
           "title": "Заказ другому человеку",
@@ -67,6 +77,7 @@
         },
       "address": "Адрес",
       "comment": "Комментарий",
+      "leave_the_comment": "Оставить комментарий",
       "floor": "Этаж",
       "office": "Кв./Офис",
       "intercom": "Домофон",
@@ -74,7 +85,9 @@
       "price": "Стоимость",
       "total": "Итого",
       "time_value": "мин",
+      "continue": "Продолжить",
       "delivery_time": "Время доставки",
+      "order_accepted": "Ваш заказ принят!",
       "payment_type":
         {
           "title": "Способ оплаты",
@@ -82,7 +95,7 @@
           "card": "Картой"
         }
       ,
-      "promo_code_title": "Введите промокод",
+      "promo_code_title": "  Введите\nnпромокод",
       "promo_code_desc": "Промокод применен",
       "at_restaurant": "Поем в заведении",
       "sale": "Скидка",
