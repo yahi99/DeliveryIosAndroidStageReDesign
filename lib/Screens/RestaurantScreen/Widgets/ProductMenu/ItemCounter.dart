@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Screens/CartScreen/Model/CartModel.dart';
 import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Model/ProductsByStoreUuid.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/View/restaurant_screen.dart';
@@ -11,7 +12,7 @@ import 'Item.dart';
 
 class MenuItemCounter extends StatefulWidget {
   GlobalKey<PriceFieldState> priceFieldKey;
-  Order order;
+  Item order;
   ProductsByStoreUuid foodRecords;
   MenuItemState parent;
   MenuItemCounter({Key key, this.priceFieldKey, this.foodRecords, this.order, this.parent}) : super(key: key);
@@ -24,7 +25,7 @@ class MenuItemCounter extends StatefulWidget {
 
 class MenuItemCounterState extends State<MenuItemCounter> {
   GlobalKey<PriceFieldState> priceFieldKey;
-  Order order;
+  Item order;
   ProductsByStoreUuid foodRecords;
   GlobalKey<MenuItemCounterState> menuItemCounterKey = new GlobalKey();
 
@@ -52,7 +53,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
 
 
   void updateCartItemQuantity(){
-    order.quantity = counter;
+    order.count = counter;
   }
 
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class MenuItemCounterState extends State<MenuItemCounter> {
         ),
       );
     }
-    counter = order.quantity;
+    counter = order.count;
     return Padding(
         padding: EdgeInsets.only(left: 15, right: 0),
         child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [

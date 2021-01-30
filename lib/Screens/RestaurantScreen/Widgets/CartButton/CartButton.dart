@@ -27,12 +27,12 @@ class CartButtonState extends State<CartButton> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (currentUser.cartDataModel.cart != null &&
-        (currentUser.cartDataModel.cart.length == 0 ||
-            currentUser.cartDataModel.cart[0].restaurant.uuid !=
-                restaurant.uuid)) {
-      return Container();
-    }
+    // if (currentUser.cartModel.cart != null &&
+    //     (currentUser.cartModel.cart.length == 0 ||
+    //         currentUser.cartModel.cart[0].restaurant.uuid !=
+    //             restaurant.uuid)) {
+    //   return Container();
+    // }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 115,
@@ -114,7 +114,7 @@ class CartButtonState extends State<CartButton> {
               padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
               onPressed: () async {
                 if (await Internet.checkConnection()) {
-                  if (currentUser.cartDataModel.cart.length == 0) {
+                  if (currentUser.cartModel.items.length == 0) {
                     Navigator.of(context).push(
                         PageRouteBuilder(
                             pageBuilder: (context, animation, anotherAnimation) {

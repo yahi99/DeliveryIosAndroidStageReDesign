@@ -17,10 +17,10 @@ class DeviceIdScreen extends StatelessWidget {
         builder:
             (BuildContext context, AsyncSnapshot<NecessaryDataForAuth> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            CartDataModel.getCart().then((value) {
-              currentUser.cartDataModel = value;
-              print('Cnjbn');
-            });
+            // CartDataModel.getCart().then((value) {
+            //   currentUser.cartModel = value;
+            //   print('Cnjbn');
+            // });
             necessaryDataForAuth = snapshot.data;
             if (necessaryDataForAuth.refresh_token == null ||
                 necessaryDataForAuth.phone_number == null ||

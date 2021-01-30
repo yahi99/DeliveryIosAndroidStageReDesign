@@ -62,8 +62,8 @@ class FilteredStores {
   factory FilteredStores.fromJson(Map<String, dynamic> json) => FilteredStores(
     uuid: json["uuid"],
     name: json["name"],
-    storeCategoriesUuid: List<CategoriesUuid>.from(json["store_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
-    productCategoriesUuid: List<CategoriesUuid>.from(json["product_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
+    storeCategoriesUuid: (json["store_categories_uuid"] == null) ? null : List<CategoriesUuid>.from(json["store_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
+    productCategoriesUuid: (json["product_categories_uuid"] == null) ? null : List<CategoriesUuid>.from(json["product_categories_uuid"].map((x) => CategoriesUuid.fromJson(x))),
     paymentTypes: List<String>.from(json["payment_types"]),
     cityUuid: json["city_uuid"],
     legalEntityUuid: json["legal_entity_uuid"],
@@ -146,8 +146,8 @@ class Address {
   String houseType;
   int accuracyLevel;
   int radius;
-  int lat;
-  int lon;
+  double lat;
+  double lon;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
     uuid: json["uuid"],
@@ -170,8 +170,8 @@ class Address {
     houseType: json["house_type"],
     accuracyLevel: json["accuracy_level"],
     radius: json["radius"],
-    lat: json["lat"],
-    lon: json["lon"],
+    lat: json["lat"] * 1.0,
+    lon: json["lon"] * 1.0,
   );
 
   Map<String, dynamic> toJson() => {
@@ -214,7 +214,7 @@ class FilteredStoreMeta {
   int avgDeliveryPrice;
 
   factory FilteredStoreMeta.fromJson(Map<String, dynamic> json) => FilteredStoreMeta(
-    images: List<String>.from(json["images"].map((x) => x)),
+    images: (json["images"] == null) ? null : List<String>.from(json["images"].map((x) => x)),
     rating: json["rating"].toDouble(),
     avgDeliveryTime: json["avg_delivery_time"],
     avgDeliveryPrice: json["avg_delivery_price"],

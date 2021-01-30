@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
+import 'package:flutter_app/Screens/CartScreen/Model/CartModel.dart';
 import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
+import 'package:flutter_app/Screens/RestaurantScreen/API/add_variant_to_cart.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/API/getProductData.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Model/ProductDataModel.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/Model/ProductsByStoreUuid.dart';
@@ -35,7 +38,7 @@ class MenuItem extends StatefulWidget {
 class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
   final ProductsByStoreUuid restaurantDataItems;
   final RestaurantScreenState parent;
-  Order order;
+  Item order;
 
 
   MenuItemState(this.restaurantDataItems, this.parent);
@@ -47,7 +50,7 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    int itemQuantity = getQuantity();
+    int itemQuantity = 0;
     GlobalKey<MenuItemCounterState> menuItemCounterKey = new GlobalKey();
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
@@ -516,7 +519,17 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 left: 55, top: 20, right: 55, bottom: 20),
                                             onPressed: () async {
                                               if (await Internet.checkConnection()) {
-                                                //addVariantToCart(variantsSelectorStateKey.currentState.selectedVariants.uuid);
+                                                ProductsDataModel cartProduct = ProductsDataModel.fromJson(productsDescription.toJson());
+
+                                                cartProduct.variantGroups = new List<VariantGroup>();
+                                                variantsSelectors.forEach((variantGroupSelector) {
+                                                  cartProduct.variantGroups.add(VariantGroup.fromJson(variantGroupSelector.variantGroup.toJson()));
+                                                  cartProduct.variantGroups.last.variants = variantGroupSelector.key.currentState.selectedVariants;
+                                                });
+                                                Navigator.pop(context);
+                                                parent.basketButtonStateKey.currentState.refresh();
+                                                parent.counterKey.currentState.refresh();
+                                                currentUser.cartModel = await addVariantToCart(cartProduct, necessaryDataForAuth.device_id, parent.counterKey.currentState.counter);
                                                 // FoodRecords foodOrder =
                                                 // FoodRecords.fromFoodRecords(
                                                 //     restaurantDataItems);
@@ -568,17 +581,12 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                                                 //       restaurant: parent.restaurant,
                                                 //       date: DateTime.now().toString()));
                                                 //   currentUser.cartDataModel.saveData();
-                                                //   Navigator.pop(context);
+                                                //
                                                 //   Padding(
                                                 //     padding: EdgeInsets.only(bottom: 0),
                                                 //     child: parent.showAlertDialog(context),
                                                 //   );
-                                                //   parent.basketButtonStateKey.currentState.refresh();
-                                                //   //menuItemCounterKey.currentState.refresh();
-                                                //   setState(() {
                                                 //
-                                                //   });
-                                                //   parent.counterKey.currentState.refresh();
                                                 // }
                                               } else {
                                                 noConnection(context);
@@ -612,28 +620,28 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
   List<VariantsSelector> getVariantGroups(ProductsDataModel productsDescription){
     List<VariantsSelector> result = new List<VariantsSelector>();
     productsDescription.variantGroups.forEach((element) {
-      result.add(VariantsSelector(key: new GlobalKey<VariantsSelectorState>(), variantsList: element.variants, required: element.required, groupName: element.name,));
+      result.add(VariantsSelector(key: new GlobalKey<VariantsSelectorState>(), variantGroup: element,));
     });
     return result;
   }
 
 
-  Order getCartItem(){
-    if(order != null){
-      return order;
-    }
-    try{
-      order = currentUser.cartDataModel.cart.firstWhere((element) => element.food.uuid == restaurantDataItems.uuid);
-    }catch(e){
-      order = null;
-    }
-    return order;
-  }
-
-  int getQuantity(){
-    order = getCartItem();
-    return (order == null) ? 0 : order.quantity;
-  }
+  // Order getCartItem(){
+  //   if(order != null){
+  //     return order;
+  //   }
+  //   try{
+  //     // order = currentUser.cartModel.cart.firstWhere((element) => element.food.uuid == restaurantDataItems.uuid);
+  //   }catch(e){
+  //     order = null;
+  //   }
+  //   return order;
+  // }
+  //
+  // int getQuantity(){
+  //   order = getCartItem();
+  //   return (order == null) ? 0 : order.quantity;
+  // }
 
 // double getBottomSheetHeight(ProductsDataModel food){
 //   if(food.variants != null && food.toppings == null|| food.variants == null&& food.toppings != null){

@@ -69,7 +69,7 @@ var DeliveryStates = [
 
 // User
 final currentUser = User(
-  cartDataModel: null,
+  cartModel: null,
   name: '',
   orders: [
   ],

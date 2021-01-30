@@ -309,8 +309,8 @@ class AddressScreenState extends State<AddressScreen>
                     if(url == 'https://delivery-stage.faem.ru/payment-widget.html?status=success'){
                       _timer.cancel();
                       await createOrder.sendData();
-                      currentUser.cartDataModel.cart.clear();
-                      currentUser.cartDataModel.saveData();
+                      // currentUser.cartModel.cart.clear();
+                      // currentUser.cartModel.saveData();
                       homeScreenKey = new GlobalKey<HomeScreenState>();
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
@@ -500,22 +500,22 @@ class AddressScreenState extends State<AddressScreen>
   Widget build(BuildContext context) {
     FocusNode focusNode;
     double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
+    // currentUser.cartModel.cart.forEach(
+    //         (Order order) {
+    //       if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+    //         totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+    //       }else{
+    //         totalPrice += order.quantity * order.food.price;
+    //       }
+    //       double toppingsCost = 0;
+    //       if(order.food.toppings != null){
+    //         order.food.toppings.forEach((element) {
+    //           toppingsCost += order.quantity * element.price;
+    //         });
+    //         totalPrice += toppingsCost;
+    //       }
+    //     }
+    // );
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: Colors.white,
@@ -1316,7 +1316,7 @@ class AddressScreenState extends State<AddressScreen>
                                   entrance: entranceField.text,
                                   intercom: intercomField.text,
                                   comment: commentField.text,
-                                  cartDataModel: currentUser.cartDataModel,
+                                  // cartDataModel: currentUser.cartModel,
                                   //restaurant: restaurant,
                                   payment_type: (selectedPaymentId == 1) ? 'card' : 'cash',
                                   door_to_door: status1,
@@ -1326,8 +1326,8 @@ class AddressScreenState extends State<AddressScreen>
                                   return;
                                 }
                                 await createOrder.sendData();
-                                currentUser.cartDataModel.cart.clear();
-                                currentUser.cartDataModel.saveData();
+                                // currentUser.cartModel.cart.clear();
+                                // currentUser.cartModel.saveData();
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) => OrderSuccessScreen(name: necessaryDataForAuth.name)),
@@ -1699,8 +1699,8 @@ class TakeAwayState extends State<TakeAway>
                       _timer.cancel();
 
                       await createOrderTakeAway.sendData();
-                      currentUser.cartDataModel.cart.clear();
-                      currentUser.cartDataModel.saveData();
+                      // currentUser.cartModel.cart.clear();
+                      // currentUser.cartModel.saveData();
                       homeScreenKey = new GlobalKey<HomeScreenState>();
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
@@ -1741,8 +1741,8 @@ class TakeAwayState extends State<TakeAway>
   @override
   Widget build(BuildContext context) {
     double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) => totalPrice += order.quantity * order.food.price);
+    // currentUser.cartModel.cart.forEach(
+    //         (Order order) => totalPrice += order.quantity * order.food.price);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: Colors.white,
@@ -2300,7 +2300,7 @@ class TakeAwayState extends State<TakeAway>
                                 createOrderTakeAway =
                                 new CreateOrderTakeAway(
                                     comment: (status1) ? "Поем в заведении" : comment,
-                                    cartDataModel: currentUser.cartDataModel,
+                                    // cartDataModel: currentUser.cartModel,
                                     restaurantAddress: selectedAddress,
                                     without_delivery: true,
                                     //restaurant: restaurant
@@ -2310,8 +2310,8 @@ class TakeAwayState extends State<TakeAway>
                                   return;
                                 }
                                 await createOrderTakeAway.sendData();
-                                currentUser.cartDataModel.cart.clear();
-                                currentUser.cartDataModel.saveData();
+                                // currentUser.cartModel.cart.clear();
+                                // currentUser.cartModel.saveData();
 //                            homeScreenKey = new GlobalKey<HomeScreenState>();
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(

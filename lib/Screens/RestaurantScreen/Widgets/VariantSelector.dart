@@ -3,24 +3,22 @@ import 'package:flutter_app/Screens/RestaurantScreen/Model/ProductDataModel.dart
 import 'package:flutter_svg/flutter_svg.dart';
 
 class VariantsSelector extends StatefulWidget {
-  List<Variant> variantsList;
+  VariantGroup variantGroup;
   GlobalKey<VariantsSelectorState> key;
-  bool required;
-  String groupName;
 
 
-  VariantsSelector({this.key, this.variantsList, this.required, this.groupName}) : super(key: key);
+  VariantsSelector({this.key, this.variantGroup}) : super(key: key);
 
   @override
-  VariantsSelectorState createState() => VariantsSelectorState(variantsList, required, groupName);
+  VariantsSelectorState createState() => VariantsSelectorState(variantGroup);
 }
 
 class VariantsSelectorState extends State<VariantsSelector> {
+  VariantGroup variantGroup;
   List<Variant> selectedVariants;
   List<Variant> variantsList;
   bool required;
   String groupName;
-
 
   @override
   void initState() {
@@ -32,7 +30,11 @@ class VariantsSelectorState extends State<VariantsSelector> {
     super.initState();
   }
 
-  VariantsSelectorState(this.variantsList, this.required, this.groupName);
+  VariantsSelectorState(this.variantGroup){
+    groupName = variantGroup.name;
+    variantsList = variantGroup.variants;
+    required = variantGroup.required;
+  }
 
   List<Variant> getSelectedToppings() {
 

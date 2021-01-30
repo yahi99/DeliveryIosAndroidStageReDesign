@@ -434,7 +434,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                    color: Color(0xFF09B44D)
                                ),
                                child: Center(
-                                 child: Text('Владикавказ',
+                                 child: Text(selectedCity.name,
                                    style: TextStyle(
                                        color: Colors.white,
                                        fontSize: 13
@@ -507,7 +507,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                                   color: Color(0xFF09B44D)
                               ),
                               child: Center(
-                                child: Text('Владикавказ',
+                                child: Text(selectedCity.name,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13

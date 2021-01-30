@@ -54,6 +54,17 @@ class ProductsDataModel {
     "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
     "variant_groups": List<dynamic>.from(variantGroups.map((x) => x.toJson())),
   };
+
+  Map<String, dynamic> toServerJson() => {
+    "product": {
+      "uuid": uuid,
+      "name": name,
+      "store_uuid": storeUuid,
+      "meta": meta.toJson(),
+      "product_categories": List<dynamic>.from(productCategories.map((x) => x.toJson())),
+    },
+    "variant_groups": List<dynamic>.from(variantGroups.map((x) => x.toJson())),
+  };
 }
 
 class ProductsDataModelMeta {
@@ -93,12 +104,22 @@ class EnergyValue {
   int carbohydrates;
   int calories;
 
-  factory EnergyValue.fromJson(Map<String, dynamic> json) => EnergyValue(
-    protein: json["protein"],
-    fat: json["fat"],
-    carbohydrates: json["carbohydrates"],
-    calories: json["calories"],
-  );
+  factory EnergyValue.fromJson(Map<String, dynamic> json){
+    if(json == null){
+      return EnergyValue(
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+        calories: 0,
+      );
+    }
+    return EnergyValue(
+      protein: json["protein"],
+      fat: json["fat"],
+      carbohydrates: json["carbohydrates"],
+      calories: json["calories"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "protein": protein,

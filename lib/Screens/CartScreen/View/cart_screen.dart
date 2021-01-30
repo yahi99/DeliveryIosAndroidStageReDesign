@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
 import 'package:flutter_app/Screens/AuthScreen/View/auth_screen.dart';
+import 'package:flutter_app/Screens/CartScreen/API/clear_cart.dart';
+import 'package:flutter_app/Screens/CartScreen/API/decriment_cart_item.dart';
+import 'package:flutter_app/Screens/CartScreen/API/delete_item_from_cart.dart';
+import 'package:flutter_app/Screens/CartScreen/API/increment_cart_item_count.dart';
+import 'package:flutter_app/Screens/CartScreen/Model/CartModel.dart';
 import 'package:flutter_app/Screens/HomeScreen/Model/FilteredStores.dart';
 import 'package:flutter_app/Screens/HomeScreen/View/home_screen.dart';
 import 'package:flutter_app/Screens/OrderConfirmationScreen/View/address_screen.dart';
 import 'package:flutter_app/Screens/OrdersScreen/Model/order.dart';
+import 'package:flutter_app/Screens/RestaurantScreen/View/restaurant_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/ResponseData.dart';
 import 'package:flutter_app/models/RestaurantDataItems.dart';
@@ -30,7 +36,7 @@ class CartPageState extends State<CartPageScreen> {
   final FilteredStores restaurant;
 
   int selectedPageId = 0;
-  GlobalKey<CartTakeAwayScreenState> cartTakeAwayScreenKey = new GlobalKey<CartTakeAwayScreenState>();
+  GlobalKey<CartScreenState> cartTakeAwayScreenKey = new GlobalKey<CartScreenState>();
   GlobalKey<CartScreenState> cartScreenKey = new GlobalKey<CartScreenState>();
   TotalPrice totalPriceWidget = new TotalPrice(key: new GlobalKey(),);
 
@@ -61,24 +67,24 @@ class CartPageState extends State<CartPageScreen> {
   Widget build(BuildContext context) {
     FocusNode focusNode;
     double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
-    var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey, parent: this,);
-    var cartTakeAwayScreen = CartTakeAwayScreen(restaurant: restaurant, key: cartTakeAwayScreenKey, parent: this,);
+    // currentUser.cartModel.cart.forEach(
+    //         (Order order) {
+    //       if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+    //         totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+    //       }else{
+    //         totalPrice += order.quantity * order.food.price;
+    //       }
+    //       double toppingsCost = 0;
+    //       if(order.food.toppings != null){
+    //         order.food.toppings.forEach((element) {
+    //           toppingsCost += order.quantity * element.price;
+    //         });
+    //         totalPrice += toppingsCost;
+    //       }
+    //     }
+    // );
+    var cartScreen = CartScreen(restaurant: restaurant, key: cartScreenKey, parent: this, isTakeAwayScreen: false,);
+    var cartTakeAwayScreen = CartScreen(restaurant: restaurant, key: cartTakeAwayScreenKey, parent: this, isTakeAwayScreen: true,);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.white,
@@ -96,33 +102,33 @@ class CartPageState extends State<CartPageScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-//                      InkWell(
-//                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
-//                              PageRouteBuilder(
-//                                  pageBuilder: (context, animation, anotherAnimation) {
-//                                    return RestaurantScreen(restaurant: restaurant,);
-//                                  },
-//                                  transitionDuration: Duration(milliseconds: 300),
-//                                  transitionsBuilder:
-//                                      (context, animation, anotherAnimation, child) {
-//                                    return SlideTransition(
-//                                      position: Tween(
-//                                          begin: Offset(1.0, 0.0),
-//                                          end: Offset(0.0, 0.0))
-//                                          .animate(animation),
-//                                      child: child,
-//                                    );
-//                                  }
-//                              ), (Route<dynamic> route) => false),
-//                          child: Container(
-//                              height: 40,
-//                              width: 60,
-//                              child: Padding(
-//                                padding: EdgeInsets.only(
-//                                    top: 12, bottom: 12, right: 25),
-//                                child: SvgPicture.asset(
-//                                    'assets/svg_images/arrow_left.svg'),
-//                              ))),
+                     InkWell(
+                         onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                             PageRouteBuilder(
+                                 pageBuilder: (context, animation, anotherAnimation) {
+                                   return RestaurantScreen(restaurant: restaurant,);
+                                 },
+                                 transitionDuration: Duration(milliseconds: 300),
+                                 transitionsBuilder:
+                                     (context, animation, anotherAnimation, child) {
+                                   return SlideTransition(
+                                     position: Tween(
+                                         begin: Offset(1.0, 0.0),
+                                         end: Offset(0.0, 0.0))
+                                         .animate(animation),
+                                     child: child,
+                                   );
+                                 }
+                             ), (Route<dynamic> route) => false),
+                         child: Container(
+                             height: 40,
+                             width: 60,
+                             child: Padding(
+                               padding: EdgeInsets.only(
+                                   top: 12, bottom: 12, right: 25),
+                               child: SvgPicture.asset(
+                                   'assets/svg_images/arrow_left.svg'),
+                             ))),
                       Padding(
                         padding: EdgeInsets.only(right: 20),
                         child: Text(
@@ -163,11 +169,10 @@ class CartPageState extends State<CartPageScreen> {
                                                   ),
                                                 ),
                                               ),
-                                              onTap: () {
+                                              onTap: () async {
+                                                currentUser.cartModel = await clearCart(necessaryDataForAuth.device_id);
                                                 setState(() {
                                                   AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                                                  currentUser.cartDataModel.cart.clear();
-                                                  currentUser.cartDataModel.saveData();
                                                 });
                                                 Navigator.pushReplacement(
                                                   context,
@@ -234,11 +239,10 @@ class CartPageState extends State<CartPageScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  onTap: () {
+                                                  onTap: () async {
+                                                    currentUser.cartModel = await clearCart(necessaryDataForAuth.device_id);
                                                     setState(() {
                                                       AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                                                      currentUser.cartDataModel.cart.clear();
-                                                      currentUser.cartDataModel.saveData();
                                                     });
                                                     Navigator.pushReplacement(
                                                       context,
@@ -492,12 +496,13 @@ class CartPageState extends State<CartPageScreen> {
 }
 
 class CartScreen extends StatefulWidget {
-  CartScreen({Key key, this.restaurant, this.parent}) : super(key: key);
+  CartScreen({Key key, this.restaurant, this.parent, this.isTakeAwayScreen}) : super(key: key);
   final FilteredStores restaurant;
   CartPageState parent;
+  bool isTakeAwayScreen;
 
   @override
-  CartScreenState createState() => CartScreenState(restaurant, parent);
+  CartScreenState createState() => CartScreenState(restaurant, parent, isTakeAwayScreen);
 }
 
 class CartScreenState extends State<CartScreen> {
@@ -513,6 +518,7 @@ class CartScreenState extends State<CartScreen> {
   List<TotalPrice> totalPrices;
   double total;
   bool delete = false;
+  bool isTakeAwayScreen;
 
   showCartItemDeleteDialogAlertDialog(BuildContext context, int index) {
     showDialog(
@@ -545,8 +551,8 @@ class CartScreenState extends State<CartScreen> {
                       onTap: () {
                         setState(() {
                           AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                          currentUser.cartDataModel.cart.clear();
-                          currentUser.cartDataModel.saveData();
+                          // currentUser.cartModel.cart.clear();
+                          // currentUser.cartModel.saveData();
                         });
                         Navigator.pushReplacement(
                           context,
@@ -586,18 +592,21 @@ class CartScreenState extends State<CartScreen> {
   }
 
 
-  CartScreenState(this.restaurant, this.parent);
+  CartScreenState(this.restaurant, this.parent, this.isTakeAwayScreen);
 
   _buildList() {
+    if(currentUser.cartModel == null || currentUser.cartModel.items.length == 0){
+      return Container();
+    }
     return Expanded(
       child: ListView.separated(
         padding: EdgeInsets.zero,
-        itemCount: currentUser.cartDataModel.cart.length + 1,
+        itemCount: currentUser.cartModel.items.length + 1,
         itemBuilder: (BuildContext context, int index) {
-          if (index < currentUser.cartDataModel.cart.length) {
-            Order order = currentUser.cartDataModel.cart[index];
+          if (index < currentUser.cartModel.items.length) {
+            Item order = currentUser.cartModel.items[index];
             return Dismissible(
-              key: Key(currentUser.cartDataModel.cart[index].food.uuid),
+              key: Key(currentUser.cartModel.items[index].product.uuid),
               background: Container(
                 alignment: AlignmentDirectional.centerEnd,
                 color: Colors.red,
@@ -606,20 +615,19 @@ class CartScreenState extends State<CartScreen> {
                   child: SvgPicture.asset('assets/svg_images/del_basket.svg'),
                 )
               ),
-              onDismissed: (direction) {
+              onDismissed: (direction) async {
                 AmplitudeAnalytics.analytics.logEvent('remove_from_cart ', eventProperties: {
-                  'uuid': currentUser.cartDataModel.cart[index].food.uuid
+                  'uuid': currentUser.cartModel.items[index].product.uuid
                 });
+                await deleteItemFromCart(necessaryDataForAuth.device_id, currentUser.cartModel.items[index].id);
                 setState(() {
                   if(parent.totalPriceWidget.key.currentState != null){
                     parent.totalPriceWidget.key.currentState.setState(() {
 
                     });
                   }
-                  currentUser.cartDataModel.cart.removeAt(index);
-                  currentUser.cartDataModel.saveData();
                 });
-                if (currentUser.cartDataModel.cart.length == 0) {
+                if (currentUser.cartModel.items.length == 0) {
                   Navigator.pushReplacement(
                     context,
                     new MaterialPageRoute(
@@ -630,12 +638,7 @@ class CartScreenState extends State<CartScreen> {
                 }
               },
               direction: DismissDirection.endToStart,
-              child: (order.food.toppings == null && order.food.variants == null)? Container(
-                height: 113,
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: _buildCartItem(order, index),
-              ): Container(
+              child: Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 child: _buildCartItem(order, index),
@@ -646,7 +649,7 @@ class CartScreenState extends State<CartScreen> {
               padding: EdgeInsets.all(15.0),
               child: Column(
                 children: <Widget>[
-                  Container(
+                  (isTakeAwayScreen) ? Container() : Container(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Row(
@@ -663,8 +666,7 @@ class CartScreenState extends State<CartScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0, top: 5),
                                 child: Text(
-                                  '000',
-                                  // (restaurant.order_preparation_time_second != null)? '~' + '${restaurant.order_preparation_time_second ~/ 60} мин' : '',
+                                   (currentUser.cartModel.cookingPromiseTime != null)? '~' + '${currentUser.cartModel.cookingPromiseTime ~/ 60} мин' : '',
                                   style: TextStyle(
                                     fontSize: 12.0,
                                     color: Colors.black,
@@ -674,7 +676,7 @@ class CartScreenState extends State<CartScreen> {
                             ],
                           ),
                           Text(
-                            '150 \₽',
+                            (currentUser.cartModel.deliveryPrice != null)? '~' + '${currentUser.cartModel.deliveryPrice} \₽' : '',
                             style: TextStyle(
                                 fontSize: 18.0,
                                 color: Color(0xFF000000)),
@@ -701,7 +703,7 @@ class CartScreenState extends State<CartScreen> {
                               fontSize: 18.0,
                               color: Color(0xFF000000)),
                         ),
-                        totalPrices[0]
+                        Text((currentUser.cartModel.totalPrice != null)? '~' + '${currentUser.cartModel.totalPrice} \₽' : '')
                       ],
                     ),
                   ),
@@ -729,13 +731,7 @@ class CartScreenState extends State<CartScreen> {
     );
   }
 
-  _buildCartItem(Order order, int index) {
-    double toppingsCost = 0;
-    if(order.food.toppings != null){
-      order.food.toppings.forEach((element) {
-        toppingsCost += order.quantity * element.price;
-      });
-    }
+  _buildCartItem(Item order, int index) {
     GlobalKey<CounterState> counterKey = new GlobalKey();
     GlobalKey<PriceFieldState> priceFieldKey =
     new GlobalKey<PriceFieldState>();
@@ -753,7 +749,7 @@ class CartScreenState extends State<CartScreen> {
                   topRight: Radius.circular(10),
                   bottomRight: Radius.circular(10)),
               child: Image.network(
-                getImage(order.food.image),
+                getImage((order.product.meta.images != null && order.product.meta.images.length != 0) ? order.product.meta.images[0] : null ),
                 fit: BoxFit.cover,
                 height: 70,
                 width: 70,
@@ -768,7 +764,7 @@ class CartScreenState extends State<CartScreen> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      order.food.name,
+                      order.product.name,
                       style: TextStyle(
                           decoration: TextDecoration.none,
                           fontSize: 14.0,
@@ -777,46 +773,30 @@ class CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
-                (order.food.variants != null)
-                    ? Align(
-                  alignment: Alignment.topLeft,
-                      child: Text(
-                  order.food.variants[0].name,
-                  style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 10.0,
-                        color: Colors.grey),
-                  textAlign: TextAlign.start,
-                ),
-                    ) : Container(height: 0,),
-                (order.food.toppings != null)
-                    ? Align(
-                  alignment: Alignment.topLeft,
-                      child: Column(
+                (order.variantGroups != null)
+                    ? Column(
                   children: List.generate(
-                        order.food.toppings.length,
-                            (index) => Text(
-                              order.food.toppings[index]
-                                  .name,
-                              style: TextStyle(
-                                  decoration:
-                                  TextDecoration.none,
-                                  fontSize: 10.0,
-                                  color: Colors.grey),
-                              textAlign: TextAlign.start,
-                            )),
-                ),
-                    )
-                    : Container(height: 0,),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 15, top: (order.food.toppings == null
-                      && order.food.variants == null) ? 23 : 10),
-                  child: Counter(
-                    key: counterKey,
-                    priceFieldKey: priceFieldKey,
-                    order: order,
-                    totalPriceList: totalPrices,
+                    order.variantGroups.length,
+                      (index){
+                        return Column(
+                          children: List.generate(
+                            order.variantGroups[index].variants.length,
+                              (variantsIndex){
+                                return Align(
+                                  child: Text(order.variantGroups[index].variants[variantsIndex].name),
+                                );
+                              }
+                          )
+                        );
+                      }
                   ),
+                ) : Container(height: 0,),
+                Counter(
+                  key: counterKey,
+                  priceFieldKey: priceFieldKey,
+                  order: order,
+                  totalPriceList: totalPrices,
+                  parent: this,
                 ),
               ],
             ),
@@ -825,23 +805,60 @@ class CartScreenState extends State<CartScreen> {
             alignment: Alignment.topRight,
             child: Column(
               children: [
-                PriceField(key: priceFieldKey, order: order),
-                Padding(
-                  padding: EdgeInsets.only(top:getBasketButtonHeight(order.food), left: (order.food.toppings != null
-                      || order.food.variants != null) ? 30 : 0),
-                  child: GestureDetector(
-                    child: SvgPicture.asset(
-                        'assets/svg_images/del_basket.svg'),
-                    onTap: () {
-                      if(Platform.isIOS){
-                        return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                              child: Stack(
-                                children: [
-                                  Dialog(
+                PriceField(key: priceFieldKey, order: currentUser.cartModel),
+                GestureDetector(
+                  child: SvgPicture.asset(
+                      'assets/svg_images/del_basket.svg'),
+                  onTap: () {
+                    if(Platform.isIOS){
+                      return showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
+                            child: Stack(
+                              children: [
+                                Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                  child: InkWell(
+                                    child: Container(
+                                      height: 50,
+                                      width: 700,
+                                      child: Center(
+                                        child: Text("Удалить",
+                                          style: TextStyle(
+                                              color: Color(0xFFFF3B30),
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      currentUser.cartModel = await deleteItemFromCart(necessaryDataForAuth.device_id, order.id);
+                                      Navigator.pop(context);
+                                      setState(() {
+                                        // if(parent.totalPriceWidget.key.currentState != null){
+                                        //   parent.totalPriceWidget.key.currentState.setState(() {
+                                        //
+                                        //   });
+                                        // }
+                                      });
+                                      if (currentUser.cartModel.items.length == 0) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          new MaterialPageRoute(
+                                            builder: (context) =>
+                                            new EmptyCartScreen(restaurant: restaurant),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 120),
+                                  child: Dialog(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
                                     child: InkWell(
@@ -849,46 +866,79 @@ class CartScreenState extends State<CartScreen> {
                                         height: 50,
                                         width: 700,
                                         child: Center(
-                                          child: Text("Удалить",
+                                          child: Text("Отмена",
                                             style: TextStyle(
-                                                color: Color(0xFFFF3B30),
+                                                color: Color(0xFF007AFF),
                                                 fontSize: 20
                                             ),
                                           ),
                                         ),
                                       ),
-                                      onTap: () {
-                                        setState(() {
-                                          if(parent.totalPriceWidget.key.currentState != null){
-                                            parent.totalPriceWidget.key.currentState.setState(() {
-
-                                            });
-                                          }
-                                          currentUser.cartDataModel.cart.removeAt(index);
-                                          currentUser.cartDataModel.saveData();
-                                        });
+                                      onTap: (){
                                         Navigator.pop(context);
-                                        if (currentUser.cartDataModel.cart.length == 0) {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            new MaterialPageRoute(
-                                              builder: (context) =>
-                                              new EmptyCartScreen(restaurant: restaurant),
-                                            ),
-                                          );
-                                        }
                                       },
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 120),
-                                    child: Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                      child: InkWell(
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 0),
+                            child: Dialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                              child: Container(
+                                  height: 130,
+                                  width: 300,
+                                  child: Column(
+                                    children: <Widget>[
+                                      InkWell(
                                         child: Container(
-                                          height: 50,
-                                          width: 700,
+                                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                                          child: Center(
+                                            child: Text("Удалить",
+                                              style: TextStyle(
+                                                  color: Color(0xFFFF3B30),
+                                                  fontSize: 20
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () async {
+                                          currentUser.cartModel = await deleteItemFromCart(necessaryDataForAuth.device_id, order.id);
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            // if(parent.totalPriceWidget.key.currentState != null){
+                                            //   parent.totalPriceWidget.key.currentState.setState(() {
+                                            //
+                                            //   });
+                                            // }
+                                          });
+                                          if (currentUser.cartModel.items.length == 0) {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              new MaterialPageRoute(
+                                                builder: (context) =>
+                                                new EmptyCartScreen(restaurant: restaurant),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      Divider(
+                                        height: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: 20, bottom: 20),
                                           child: Center(
                                             child: Text("Отмена",
                                               style: TextStyle(
@@ -902,90 +952,14 @@ class CartScreenState extends State<CartScreen> {
                                           Navigator.pop(context);
                                         },
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      }else{
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 0),
-                              child: Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                                child: Container(
-                                    height: 130,
-                                    width: 300,
-                                    child: Column(
-                                      children: <Widget>[
-                                        InkWell(
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                                            child: Center(
-                                              child: Text("Удалить",
-                                                style: TextStyle(
-                                                    color: Color(0xFFFF3B30),
-                                                    fontSize: 20
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              if(parent.totalPriceWidget.key.currentState != null){
-                                                parent.totalPriceWidget.key.currentState.setState(() {
-
-                                                });
-                                              }
-                                              currentUser.cartDataModel.cart.removeAt(index);
-                                              currentUser.cartDataModel.saveData();
-                                            });
-                                            Navigator.pop(context);
-                                            if (currentUser.cartDataModel.cart.length == 0) {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  new EmptyCartScreen(restaurant: restaurant),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        Divider(
-                                          height: 1,
-                                          color: Colors.grey,
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                                            child: Center(
-                                              child: Text("Отмена",
-                                                style: TextStyle(
-                                                    color: Color(0xFF007AFF),
-                                                    fontSize: 20
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: (){
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
+                                    ],
+                                  )),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -1037,11 +1011,10 @@ class CartScreenState extends State<CartScreen> {
                               ),
                             )),
                       ),
-                      onTap: () {
+                      onTap: () async {
+                        await clearCart(necessaryDataForAuth.device_id);
                         setState(() {
                           AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                          currentUser.cartDataModel.cart.clear();
-                          currentUser.cartDataModel.saveData();
                         });
                         Navigator.pushReplacement(
                           context,
@@ -1087,13 +1060,13 @@ class CartScreenState extends State<CartScreen> {
     totalPrices.add(new TotalPrice(key: new GlobalKey(),));
     totalPrices.add(parent.totalPriceWidget);
     return WillPopScope(
-//      onWillPop: () async {
-//        Navigator.of(context).pushAndRemoveUntil(
-//            MaterialPageRoute(
-//                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-//                (Route<dynamic> route) => route.isFirst);
-//        return false;
-//      },
+     onWillPop: () async {
+       Navigator.of(context).pushAndRemoveUntil(
+           MaterialPageRoute(
+               builder: (context) => RestaurantScreen(restaurant: restaurant,)),
+               (Route<dynamic> route) => route.isFirst);
+       return false;
+     },
       child: new Scaffold(
         key: _scaffoldStateKey,
         body: Container(
@@ -1118,561 +1091,76 @@ class CartScreenState extends State<CartScreen> {
   }
 }
 
-class CartTakeAwayScreen extends StatefulWidget {
-  CartTakeAwayScreen({Key key, this.restaurant, this.parent}) : super(key: key);
-  final FilteredStores restaurant;
-  CartPageState parent;
-
-  @override
-  CartTakeAwayScreenState createState() => CartTakeAwayScreenState(restaurant, parent);
-}
-
-class CartTakeAwayScreenState extends State<CartTakeAwayScreen> {
-  String title;
-  String category;
-  String description;
-  String price;
-  String discount;
-  CartPageState parent;
-  final FilteredStores restaurant;
-  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
-  GlobalKey<TotalPriceState> totalPriceKey;
-  List<TotalPrice> totalPrices;
-  double total;
-  bool delete = false;
-
-
-  CartTakeAwayScreenState(this.restaurant, this.parent);
-
-  _buildList() {
-    return Expanded(
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        itemCount: currentUser.cartDataModel.cart.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (index < currentUser.cartDataModel.cart.length) {
-            Order order = currentUser.cartDataModel.cart[index];
-            return Dismissible(
-              key: Key(currentUser.cartDataModel.cart[index].food.uuid),
-              background: Container(
-                alignment: AlignmentDirectional.centerEnd,
-                color: Colors.red,
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-              ),
-              onDismissed: (direction) {
-                AmplitudeAnalytics.analytics.logEvent('remove_from_cart ', eventProperties: {
-                  'uuid': currentUser.cartDataModel.cart[index].food.uuid
-                });
-                setState(() {
-                  if(parent.totalPriceWidget.key.currentState != null){
-                    parent.totalPriceWidget.key.currentState.setState(() {
-
-                    });
-                  }
-                  currentUser.cartDataModel.cart.removeAt(index);
-                  currentUser.cartDataModel.saveData();
-                });
-                if (currentUser.cartDataModel.cart.length == 0) {
-                  Navigator.pushReplacement(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (context) =>
-                      new EmptyCartScreen(restaurant: restaurant),
-                    ),
-                  );
-                }
-              },
-              direction: DismissDirection.endToStart,
-              child: (order.food.toppings == null && order.food.variants == null)? Container(
-                height: 113,
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: _buildCartItem(order, index),
-              ): Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: _buildCartItem(order, index),
-              ),
-            );
-          }
-          return Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  Text('Заберите заказ на ${restaurant.address.street + " " + restaurant.address.house}, через 25 минут',
-                    style: TextStyle(
-                      fontSize: 14
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Итого',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color(0xFF000000)),
-                      ),
-                      totalPrices[0]
-                    ],
-                  ),
-
-                  SizedBox(height: 80.0)
-                ],
-              ));
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            height: 1.0,
-            color: Color(0xFFE6E6E6),
-          );
-        },
-      ),
-    );
-  }
-
-  _buildCartItem(Order order, int index) {
-    double toppingsCost = 0;
-    if(order.food.toppings != null){
-      order.food.toppings.forEach((element) {
-        toppingsCost += order.quantity * element.price;
-      });
-    }
-    GlobalKey<CounterState> counterKey = new GlobalKey();
-    GlobalKey<PriceFieldState> priceFieldKey =
-    new GlobalKey<PriceFieldState>();
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
-              child: Image.network(
-                getImage(order.food.image),
-                fit: BoxFit.cover,
-                height: 70,
-                width: 70,
-              ),),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 85),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      order.food.name,
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 14.0,
-                          color: Color(0xFF000000)),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                (order.food.variants != null)
-                    ? Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    order.food.variants[0].name,
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 10.0,
-                        color: Colors.grey),
-                    textAlign: TextAlign.start,
-                  ),
-                ) : Container(height: 0,),
-                (order.food.toppings != null)
-                    ? Align(
-                  alignment: Alignment.topLeft,
-                  child: Column(
-                    children: List.generate(
-                        order.food.toppings.length,
-                            (index) => Text(
-                          order.food.toppings[index]
-                              .name,
-                          style: TextStyle(
-                              decoration:
-                              TextDecoration.none,
-                              fontSize: 10.0,
-                              color: Colors.grey),
-                          textAlign: TextAlign.start,
-                        )),
-                  ),
-                )
-                    : Container(height: 0,),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 15, top: (order.food.toppings == null
-                      && order.food.variants == null) ? 23 : 10),
-                  child: Counter(
-                    key: counterKey,
-                    priceFieldKey: priceFieldKey,
-                    order: order,
-                    totalPriceList: totalPrices,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Column(
-              children: [
-                PriceField(key: priceFieldKey, order: order),
-                Padding(
-                  padding: EdgeInsets.only(top: 30, left: (order.food.toppings != null
-                      || order.food.variants != null) ? 25 : 0),
-                  child: GestureDetector(
-                    child: SvgPicture.asset(
-                        'assets/svg_images/del_basket.svg'),
-                    onTap: () {
-                      if(Platform.isIOS){
-                        return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
-                              child: Stack(
-                                children: [
-                                  Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                    child: InkWell(
-                                      child: Container(
-                                        height: 50,
-                                        width: 700,
-                                        child: Center(
-                                          child: Text("Удалить",
-                                            style: TextStyle(
-                                                color: Color(0xFFFF3B30),
-                                                fontSize: 20
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          if(parent.totalPriceWidget.key.currentState != null){
-                                            parent.totalPriceWidget.key.currentState.setState(() {
-
-                                            });
-                                          }
-                                          currentUser.cartDataModel.cart.removeAt(index);
-                                          currentUser.cartDataModel.saveData();
-                                        });
-                                        Navigator.pop(context);
-                                        if (currentUser.cartDataModel.cart.length == 0) {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            new MaterialPageRoute(
-                                              builder: (context) =>
-                                              new EmptyCartScreen(restaurant: restaurant),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 120),
-                                    child: Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                      child: InkWell(
-                                        child: Container(
-                                          height: 50,
-                                          width: 700,
-                                          child: Center(
-                                            child: Text("Отмена",
-                                              style: TextStyle(
-                                                  color: Color(0xFF007AFF),
-                                                  fontSize: 20
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: (){
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      }else{
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 0),
-                              child: Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                                child: Container(
-                                    height: 130,
-                                    width: 300,
-                                    child: Column(
-                                      children: <Widget>[
-                                        InkWell(
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                                            child: Center(
-                                              child: Text("Удалить",
-                                                style: TextStyle(
-                                                    color: Color(0xFFFF3B30),
-                                                    fontSize: 20
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              if(parent.totalPriceWidget.key.currentState != null){
-                                                parent.totalPriceWidget.key.currentState.setState(() {
-
-                                                });
-                                              }
-                                              currentUser.cartDataModel.cart.removeAt(index);
-                                              currentUser.cartDataModel.saveData();
-                                            });
-                                            Navigator.pop(context);
-                                            if (currentUser.cartDataModel.cart.length == 0) {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  new EmptyCartScreen(restaurant: restaurant),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        Divider(
-                                          height: 1,
-                                          color: Colors.grey,
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                                            child: Center(
-                                              child: Text("Отмена",
-                                                style: TextStyle(
-                                                    color: Color(0xFF007AFF),
-                                                    fontSize: 20
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: (){
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Container(
-                height: 202,
-                width: 300,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, top: 20, bottom: 20),
-                      child: Text(
-                        'Вы действительно хотите\nотчистить корзину?',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF424242)),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Center(
-                              child: Text(
-                                'Очистить',
-                                style: TextStyle(
-                                    color: Color(0xFFFF0600),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          AmplitudeAnalytics.analytics.logEvent('remove_from_cart_all');
-                          currentUser.cartDataModel.cart.clear();
-                          currentUser.cartDataModel.saveData();
-                        });
-                        Navigator.pushReplacement(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (context) =>
-                            new EmptyCartScreen(restaurant: restaurant),
-                          ),
-                        );
-                      },
-                    ),
-                    Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    InkWell(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Center(
-                              child: Text(
-                                'Отмена',
-                                style: TextStyle(
-                                    fontSize: 17, color: Color(0xFF424242)),
-                              ),
-                            )),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                )),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    totalPrices = new List<TotalPrice>();
-    totalPrices.add(new TotalPrice(key: new GlobalKey(),));
-    totalPrices.add(new TotalPrice(key: new GlobalKey(),));
-    totalPrices.add(parent.totalPriceWidget);
-    return WillPopScope(
-//      onWillPop: () async {
-//        Navigator.of(context).pushAndRemoveUntil(
-//            MaterialPageRoute(
-//                builder: (context) => RestaurantScreen(restaurant: restaurant,)),
-//                (Route<dynamic> route) => route.isFirst);
-//        return false;
-//      },
-      child: new Scaffold(
-        key: _scaffoldStateKey,
-        body: Container(
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                _buildList(),
-              ],
-            )),
-      ),
-    );
-  }
-}
 
 class Counter extends StatefulWidget {
+  State parent;
   GlobalKey<PriceFieldState> priceFieldKey;
-  Order order;
+  Item order;
   List<TotalPrice> totalPriceList;
-  Counter({Key key, this.priceFieldKey, this.order, this.totalPriceList}) : super(key: key);
+  Counter({Key key, this.priceFieldKey, this.order, this.totalPriceList, this.parent}) : super(key: key);
 
   @override
   CounterState createState() {
-    return new CounterState(priceFieldKey, order, totalPriceList);
+    return new CounterState(priceFieldKey, order, totalPriceList, parent);
   }
 }
 
 class CounterState extends State<Counter> {
+  State parent;
   GlobalKey<PriceFieldState> priceFieldKey;
   List<TotalPrice> totalPriceList;
-  Order order;
-  CounterState(this.priceFieldKey, this.order, this.totalPriceList);
+  Item order;
+  CounterState(this.priceFieldKey, this.order, this.totalPriceList, this.parent);
 
-  int counter = 1;
-
-  // ignore: non_constant_identifier_names
-  void _incrementCounter_plus() {
-    setState(() {
-      counter++;
-      updateCartItemQuantity();
-    });
-  }
+  int counter;
 
   // ignore: non_constant_identifier_names
-  void _incrementCounter_minus() {
-    setState(() {
-      counter--;
-      updateCartItemQuantity();
+  Future<void> _incrementCounter_plus() async {
+
+    currentUser.cartModel = await incrementCartItemCount(necessaryDataForAuth.device_id, order.id);
+    parent.setState(() {
+
     });
+    // setState(() {
+    //   counter++;
+    //   //updateCartItemQuantity();
+    // });
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<void> _incrementCounter_minus() async {
+    currentUser.cartModel = await decrementCartItem(necessaryDataForAuth.device_id, order.id);
+    parent.setState(() {
+
+    });
+    // setState(() {
+    //   counter--;
+    //   //updateCartItemQuantity();
+    // });
   }
 
 
-  void updateCartItemQuantity(){
-    order.quantity = counter;
-    priceFieldKey.currentState.setState(() {
-
-    });
-    totalPriceList.forEach((totalPrice) {
-      if(totalPrice.key.currentState != null)
-        totalPrice.key.currentState.setState(() {
-
-        });
-    });
-
-  }
+  // void updateCartItemQuantity(){
+  //   order.count = counter;
+  //   priceFieldKey.currentState.setState(() {
+  //
+  //   });
+  //   totalPriceList.forEach((totalPrice) {
+  //     if(totalPrice.key.currentState != null)
+  //       totalPrice.key.currentState.setState(() {
+  //
+  //       });
+  //   });
+  // }
 
   Widget build(BuildContext context) {
-    counter = order.quantity;
+    counter = order.count;
     return Row(
         children: [
           InkWell(
-            onTap: () {
+            onTap: () async {
               if (counter != 1) {
-                _incrementCounter_minus();
+                await _incrementCounter_minus();
                 // counter = restaurantDataItems.records_count;
               }
             },
@@ -1694,10 +1182,11 @@ class CounterState extends State<Counter> {
           InkWell(
             onTap: () async {
               if (await Internet.checkConnection()) {
-                setState(() {
-                  _incrementCounter_plus();
-                  // counter = restaurantDataItems.records_count;
-                });
+                await _incrementCounter_plus();
+                // setState(() {
+                //
+                //   // counter = restaurantDataItems.records_count;
+                // });
               } else {
                 noConnection(context);
               }
@@ -1714,7 +1203,7 @@ class CounterState extends State<Counter> {
 
 
 class PriceField extends StatefulWidget {
-  Order order;
+  CartModel order;
   PriceField({Key key, this.order}) : super(key: key);
 
   @override
@@ -1725,23 +1214,14 @@ class PriceField extends StatefulWidget {
 
 class PriceFieldState extends State<PriceField> {
   int count = 1;
-  Order order;
-  PriceFieldState(this.order);
+  CartModel cartModel;
+  PriceFieldState(this.cartModel);
   double totalPrice = 0;
 
   Widget build(BuildContext context) {
-    double toppingsCost = 0;
-    if(order.food.toppings != null){
-      order.food.toppings.forEach((element) {
-        toppingsCost += order.quantity * element.price;
-      });
-      totalPrice += toppingsCost;
-    }
     return Padding(
       padding: EdgeInsets.only(left: 20),
-      child: Text('${(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null) ?
-      (order.quantity * (order.food.price + order.food.variants[0].price) + toppingsCost).toStringAsFixed(0) :
-      (order.quantity * order.food.price + toppingsCost).toStringAsFixed(0)} \₽',
+      child: Text('${cartModel.totalPrice} \₽',
           style: TextStyle(
               decoration: TextDecoration.none,
               fontSize: 18.0,
@@ -1772,22 +1252,22 @@ class TotalPriceState extends State<TotalPrice> {
 
   Widget build(BuildContext context) {
     double totalPrice = 0;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
+    // currentUser.cartModel.cart.forEach(
+    //         (Order order) {
+    //       if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+    //         totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+    //       }else{
+    //         totalPrice += order.quantity * order.food.price;
+    //       }
+    //       double toppingsCost = 0;
+    //       if(order.food.toppings != null){
+    //         order.food.toppings.forEach((element) {
+    //           toppingsCost += order.quantity * element.price;
+    //         });
+    //         totalPrice += toppingsCost;
+    //       }
+    //     }
+    // );
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Text(

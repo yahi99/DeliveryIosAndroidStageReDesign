@@ -676,22 +676,22 @@ class OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     double totalPrice = 134;
-    currentUser.cartDataModel.cart.forEach(
-            (Order order) {
-          if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
-            totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
-          }else{
-            totalPrice += order.quantity * order.food.price;
-          }
-          double toppingsCost = 0;
-          if(order.food.toppings != null){
-            order.food.toppings.forEach((element) {
-              toppingsCost += order.quantity * element.price;
-            });
-            totalPrice += toppingsCost;
-          }
-        }
-    );
+    // currentUser.cartModel.cart.forEach(
+    //         (Order order) {
+    //       if(order.food.variants != null && order.food.variants.length > 0 && order.food.variants[0].price != null){
+    //         totalPrice += order.quantity * (order.food.price + order.food.variants[0].price);
+    //       }else{
+    //         totalPrice += order.quantity * order.food.price;
+    //       }
+    //       double toppingsCost = 0;
+    //       if(order.food.toppings != null){
+    //         order.food.toppings.forEach((element) {
+    //           toppingsCost += order.quantity * element.price;
+    //         });
+    //         totalPrice += toppingsCost;
+    //       }
+    //     }
+    // );
     var state_array = [
       'waiting_for_confirmation',
       'cooking',

@@ -170,7 +170,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 15, top: 20, bottom: 20, right: 15),
                       child: Text(
-                        'Все ранее добавленные блюда из ресторна ${currentUser.cartDataModel.cart[0].restaurant.name} будут удалены из корзины',
+                        'Все ранее добавленные блюда из ресторна ${currentUser.cartModel.storeUuid} будут удалены из корзины',
                         style: TextStyle(
                             fontSize: 17, fontWeight: FontWeight.bold),
                       ),
@@ -197,23 +197,23 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                       ),
                       onTap: () async {
                         if (await Internet.checkConnection()) {
-                          if (currentUser.cartDataModel.cart.length > 0 &&
-                              currentUser
-                                  .cartDataModel.cart[0].restaurant.uuid !=
-                                  restaurant.uuid) {
-                            currentUser.cartDataModel.cart.clear();
-                            currentUser.cartDataModel.addItem(order);
-                            currentUser.cartDataModel.saveData();
-                            basketButtonStateKey.currentState.refresh();
-                            menuItemCounterKey.currentState.refresh();
-                            counterKey.currentState.refresh();
-                          }
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 0),
-                            child: showAlertDialog(context),
-                          );
+                          // if (currentUser.cartModel.cart.length > 0 &&
+                          //     currentUser
+                          //         .cartModel.cart[0].restaurant.uuid !=
+                          //         restaurant.uuid) {
+                          //   currentUser.cartModel.cart.clear();
+                          //   currentUser.cartModel.addItem(order);
+                          //   currentUser.cartModel.saveData();
+                          //   basketButtonStateKey.currentState.refresh();
+                          //   menuItemCounterKey.currentState.refresh();
+                          //   counterKey.currentState.refresh();
+                          // }
+                          // Navigator.pop(context);
+                          // Navigator.pop(context);
+                          // Padding(
+                          //   padding: EdgeInsets.only(bottom: 0),
+                          //   child: showAlertDialog(context),
+                          // );
                         } else {
                           noConnection(context);
                         }
@@ -357,10 +357,10 @@ class RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.only(left: 20, top: 10),
             child: Align(
                 alignment: Alignment.topLeft,
-                child: Text('Бургеры и тд',
-                  style: TextStyle(
-                      fontSize: 14
-                  ),
+                child: Row(
+                  children: List.generate(restaurant.storeCategoriesUuid.length, (index){
+                    return Text(restaurant.storeCategoriesUuid[index].name);
+                  }),
                 )
             ),
           )
@@ -847,14 +847,14 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                 )
               ],
             ),
-//            Align(
-//              alignment: Alignment.bottomCenter,
-//              child: Padding(
-//                padding:  EdgeInsets.only(bottom: 0),
-//                child: BasketButton(
-//                    key: basketButtonStateKey, restaurant: restaurant),
-//              ),
-//            )
+           Align(
+             alignment: Alignment.bottomCenter,
+             child: Padding(
+               padding:  EdgeInsets.only(bottom: 0),
+               child: CartButton(
+                   key: basketButtonStateKey, restaurant: restaurant),
+             ),
+           )
           ],
         ),
       ),

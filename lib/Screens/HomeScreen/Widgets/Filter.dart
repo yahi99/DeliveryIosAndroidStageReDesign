@@ -35,6 +35,7 @@ class FilterState extends State<Filter> with AutomaticKeepAliveClientMixin{
   ScrollController catScrollController;
   GlobalKey<KitchenListScreenState> kitchenListKey = new GlobalKey();
 
+
   @override
   bool get wantKeepAlive => true;
 
@@ -400,7 +401,7 @@ class FilterState extends State<Filter> with AutomaticKeepAliveClientMixin{
 
   // список категорий
   Future<Widget> _buildRestaurantCategories() async{
-    restaurantCategories = (await getAllStoreCategories()).allStoreCategoriesList;
+    restaurantCategories = (await getAllStoreCategories(selectedCity.uuid)).allStoreCategoriesList;
     kitchenListScreen = KitchenListScreen(restaurantCategories, this,key: kitchenListKey);
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -437,7 +438,7 @@ class FilterState extends State<Filter> with AutomaticKeepAliveClientMixin{
           if(snapshot.connectionState == ConnectionState.done){
             return snapshot.data;
           }
-          return Container();
+          return Container(width: 0.0, height: 0.0);
         },
       ),
     );
