@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
-import 'package:flutter_app/Screens/CartScreen/View/cart_screen.dart';
+import 'package:flutter_app/Screens/CartScreen/View/cart_pave_view.dart';
 import 'package:flutter_app/Screens/HomeScreen/Model/FilteredStores.dart';
 import 'package:flutter_app/Screens/HomeScreen/View/home_screen.dart';
 import 'package:flutter_app/Screens/OrderConfirmationScreen/View/add_address_screen.dart';

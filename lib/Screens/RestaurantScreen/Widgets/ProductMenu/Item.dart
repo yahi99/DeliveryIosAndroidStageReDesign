@@ -267,7 +267,6 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    padding: EdgeInsets.only(bottom: 0),
                     height: 450,
                     child: ListView.builder(
                       itemCount: 1,
@@ -276,8 +275,30 @@ class MenuItemState extends State<MenuItem> with AutomaticKeepAliveClientMixin{
                         return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
                       },
                     ),
-                  ),
-                )
+                  )
+                ),
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Container(
+                //     child: DraggableScrollableSheet(
+                //         initialChildSize: 0.8,
+                //         minChildSize: 0.4,
+                //         maxChildSize: 0.9,
+                //         builder: (BuildContext context, myscrollController) {
+                //           return Container(
+                //             child: ListView.builder(
+                //               controller: myscrollController,
+                //               itemCount: 1,
+                //               scrollDirection: Axis.vertical,
+                //               itemBuilder: (BuildContext context ,int index){
+                //                 return _buildBottomNavigationMenu(restaurantDataItems, menuItemCounterKey);
+                //               },
+                //             ),
+                //           );
+                //         }
+                //     ),
+                //   ),
+                // )
               ],
             ),
           );

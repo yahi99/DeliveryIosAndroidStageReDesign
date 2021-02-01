@@ -833,6 +833,7 @@ class RestaurantScreenState extends State<RestaurantScreen> {
                     delegate: SliverChildBuilderDelegate(
                           (context, index){
                         return Container(
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.2),
                           decoration: BoxDecoration(
                             color: Colors.white
                           ),

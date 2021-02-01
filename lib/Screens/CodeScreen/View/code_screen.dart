@@ -120,7 +120,7 @@ class _CodeScreenState extends State<CodeScreen> {
         resizeToAvoidBottomPadding: false,
         body: FutureBuilder<AuthData>(
           future:
-          loadAuthData(necessaryDataForAuth.device_id, currentUser.phone),
+          loadAuthData(necessaryDataForAuth.device_id, currentUser.phone, ''),
           builder: (BuildContext context, AsyncSnapshot<AuthData> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Stack(

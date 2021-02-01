@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
-import 'package:flutter_app/Screens/CartScreen/View/cart_screen.dart';
+import 'package:flutter_app/Screens/CartScreen/View/cart_pave_view.dart';
+import 'package:flutter_app/Screens/CartScreen/View/empty_cart_screen.dart';
 import 'package:flutter_app/Screens/HomeScreen/Model/FilteredStores.dart';
 import 'package:flutter_app/Screens/RestaurantScreen/View/restaurant_screen.dart';
 import 'package:flutter_app/data/data.dart';
