@@ -14,6 +14,7 @@ Future<String> getCentrifugoToken() async {
     "ServiceName": 'faem_food',
     'Authorization':'Bearer ' + authCodeData.token
   });
+  print(response.body + 'ku');
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     return jsonResponse['token'];

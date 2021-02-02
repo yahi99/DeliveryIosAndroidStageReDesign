@@ -36,7 +36,7 @@ class Centrifugo{
     });
     client.connect();
 
-    final subscription = client.getSubscription('client/' + authCodeData.client_uuid);
+    final subscription = client.getSubscription('client/' + authCodeData.clientUuid);
 
     subscription.publishStream.listen((event){
       var parsedJson = convert.jsonDecode(utf8.decode(event.data));

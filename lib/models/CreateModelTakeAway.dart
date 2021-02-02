@@ -29,10 +29,14 @@ class CreateOrderTakeAway {
   });
 
   sendRefreshToken() async{
-    var url = 'https://client.apis.stage.faem.pro/api/v2/auth/refresh';
-    var response = await http.post(url, body: jsonEncode({"refresh": authCodeData.refresh_token}),
+    var url = 'http://78.110.156.74:3005/api/v3/auth/clients/refresh';
+    var response = await http.post(url, body: jsonEncode({
+      "refresh": authCodeData.refreshToken.value,
+      "service": "eda",
+      "device_id": necessaryDataForAuth.device_id}),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':'Bearer ' + authCodeData.token
         });
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);

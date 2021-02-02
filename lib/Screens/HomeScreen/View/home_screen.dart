@@ -14,14 +14,16 @@ import 'package:flutter_app/Screens/InformationScreen/View/infromation_screen.da
 import 'package:flutter_app/Screens/MyAddressesScreen/View/my_addresses_screen.dart';
 import 'package:flutter_app/Screens/OrdersScreen/View/orders_story_screen.dart';
 import 'package:flutter_app/Screens/ProfileScreen/View/profile_screen.dart';
-import 'package:flutter_app/Screens/RestaurantScreen/Widgets/CartButton/CartButton.dart';
 import 'package:flutter_app/Screens/ServiceScreen/View/service_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/last_addresses_model.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../Preloader/device_id_screen.dart';
+import '../../../data/data.dart';
 import '../../CityScreen/View/city_screen.dart';
+import '../../RestaurantScreen/Widgets/CartButton/CartButton.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -223,7 +225,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             onTap: () async {
               if (await Internet.checkConnection()) {
                 necessaryDataForAuth.refresh_token = null;
-                authCodeData.refresh_token = null;
+                authCodeData.refreshToken.value = null;
+                authCodeData.token = null;
                 await NecessaryDataForAuth.saveData();
                 await LastAddressesModel.clear();
                 Navigator.of(context).pushAndRemoveUntil(
@@ -603,6 +606,16 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           Promotion(),
                           SizedBox(
                             height: 10,
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              height: 40,width: 40,
+                              child: Text('sdf'),
+                            ),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => DeviceIdScreen()),);
+                            },
                           ),
                           Padding(
                             padding:

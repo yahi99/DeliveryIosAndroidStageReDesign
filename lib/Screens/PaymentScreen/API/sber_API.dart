@@ -11,7 +11,7 @@ import '../../../data/data.dart';
 
 class SberAPI{
 
-  static String sberToken = '';
+  static String sberToken = 'h1ed6cv2f93cm8teci2b63aeeg';
   static String returnUrl = '';
   static String failUrl = '';
   static String language = '';

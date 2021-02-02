@@ -3,14 +3,15 @@ import 'package:flutter_app/Screens/CodeScreen/Model/AuthCode.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-Future<AuthCodeData> loadAuthCodeData(String device_id, int code) async {
+Future<AuthCodeData> loadAuthCodeData(String device_id, int code, String service) async {
 
   AuthCodeData authCodeData = null;
   var json_request = jsonEncode({
     "device_id": device_id,
-    "code": code
+    "code": code,
+    "service": service,
   });
-  var url = 'https://client.apis.stage.faem.pro/api/v2/auth/verification';
+  var url = 'http://78.110.156.74:3005/api/v3/clients/verification';
   var response = await http.post(url, body: json_request, headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   });

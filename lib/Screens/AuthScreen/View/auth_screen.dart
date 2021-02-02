@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Config/config.dart';
 import 'package:flutter_app/Internet/check_internet.dart';
-import 'package:flutter_app/Screens/CodeScreen/View/code_screen.dart';
 import 'package:flutter_app/Screens/HomeScreen/View/home_screen.dart';
 import 'package:flutter_app/data/data.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -10,6 +9,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Amplitude/amplitude.dart';
+import '../../../data/data.dart';
+import '../../../data/data.dart';
+import '../../CodeScreen/View/code_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   AuthScreen({Key key}) : super(key: key);
@@ -282,7 +284,11 @@ class ButtonState extends State<Button> {
               );
             } else {
               print(necessaryDataForAuth.refresh_token);
-              String refresh_token_oppai = await NecessaryDataForAuth.refreshToken(necessaryDataForAuth.refresh_token);
+              String refresh_token_oppai = await NecessaryDataForAuth.refreshToken(
+                  necessaryDataForAuth.refresh_token,
+                  necessaryDataForAuth.token,
+                  necessaryDataForAuth.device_id
+              );
               if (refresh_token_oppai == null) {
                 currentUser.isLoggedIn = false;
                 Navigator.push(

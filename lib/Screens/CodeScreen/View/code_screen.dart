@@ -15,6 +15,8 @@ import 'dart:async';
 
 import '../../../Amplitude/amplitude.dart';
 import '../../../Centrifugo/centrifugo.dart';
+import '../../../data/data.dart';
+import '../../../data/data.dart';
 
 class CodeScreen extends StatefulWidget {
   CodeScreen({Key key}) : super(key: key);
@@ -120,7 +122,7 @@ class _CodeScreenState extends State<CodeScreen> {
         resizeToAvoidBottomPadding: false,
         body: FutureBuilder<AuthData>(
           future:
-          loadAuthData(necessaryDataForAuth.device_id, currentUser.phone, ''),
+          loadAuthData(necessaryDataForAuth.device_id, currentUser.phone, 'eda'),
           builder: (BuildContext context, AsyncSnapshot<AuthData> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Stack(
@@ -363,15 +365,17 @@ class _CodeScreenState extends State<CodeScreen> {
                                 code4.controller.text;
                             authCodeData = await loadAuthCodeData(
                                 necessaryDataForAuth.device_id,
-                                int.parse(temp));
+                                int.parse(temp), 'eda');
                             if (authCodeData != null) {
                               await AmplitudeAnalytics.analytics.setUserId(currentUser.phone);
                               AmplitudeAnalytics.analytics.logEvent('login');
                               necessaryDataForAuth.phone_number =
                                   currentUser.phone;
                               necessaryDataForAuth.refresh_token =
-                                  authCodeData.refresh_token;
-                              NecessaryDataForAuth.saveData();
+                                  authCodeData.refreshToken.value;
+                              necessaryDataForAuth.token =
+                              authCodeData.token;
+                              await NecessaryDataForAuth.saveData();
                               await Centrifugo.connectToServer();
                               if(necessaryDataForAuth.name == null){
                                 Navigator.push(

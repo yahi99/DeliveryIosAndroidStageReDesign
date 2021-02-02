@@ -8,6 +8,9 @@ import 'package:flutter_app/data/data.dart';
 import 'package:flutter_app/models/my_addresses_model.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../data/data.dart';
+import '../../../data/data.dart';
+
 // ignore: must_be_immutable
 class AddCityScreen extends StatefulWidget {
   AddressScreenState parent;
@@ -100,6 +103,7 @@ class AddCityScreenState extends State<AddCityScreen> {
                   onPressed: () async {
                     if (await Internet.checkConnection()) {
                       selectedCity = autoCompleteFieldKey.currentState.selectedValue;
+                      necessaryDataForAuth.city_uuid = selectedCity.uuid;
                       Navigator.pop(context);
                       Navigator.push(context,
                         new MaterialPageRoute(builder: (context) => new CityScreen()),
